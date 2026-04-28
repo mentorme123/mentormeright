@@ -53,7 +53,7 @@ export default function LoginPage() {
         }
       } else if (activeTab === 'counselor') {
         // Counselors logic: verify if they exist in counselors table or have admin role
-        const { data: counselorData } = await supabase
+        await supabase
           .from('counselors')
           .select('id')
           .limit(1); // Needs proper mapping in a real prod environment (e.g. counselor_user_id)
@@ -63,8 +63,9 @@ export default function LoginPage() {
         router.push("/dashboard/counselor");
       }
 
-    } catch (err: any) {
-      setError(err.message || "Failed to log in.");
+    } catch (err: unknown) {
+      const error = err as Error;
+      setError(error.message || "Failed to log in.");
       // Logout if they were unauthorized to clear the stale session
       await supabase.auth.signOut();
     } finally {

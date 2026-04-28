@@ -157,8 +157,9 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json({ report: JSON.parse(cleanJson) });
 
-  } catch (error: any) {
-    console.error('Error generating report:', error);
-    return NextResponse.json({ error: error.message || 'Failed to generate report' }, { status: 500 });
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error('Error generating report:', err);
+    return NextResponse.json({ error: err.message || 'Failed to generate report' }, { status: 500 });
   }
 }

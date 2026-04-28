@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import Papa from "papaparse";
 import { Upload, Users, FileSpreadsheet, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase";
 
 export default function InstitutionDashboard() {
-  const supabase = createClient();
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
@@ -21,6 +19,7 @@ export default function InstitutionDashboard() {
       skipEmptyLines: true,
       complete: async (results) => {
         try {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const rows = results.data as any[];
           
           if (rows.length === 0) {
@@ -42,8 +41,9 @@ export default function InstitutionDashboard() {
           setStudentsImported(rows.length);
           setUploadStatus('success');
 
-        } catch (err: any) {
-          setErrorMessage(err.message || "Failed to process CSV.");
+        } catch (err: unknown) {
+          const error = err as Error;
+          setErrorMessage(error.message || "Failed to process CSV.");
           setUploadStatus('error');
         }
       },

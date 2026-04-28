@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays, Video, FileText, ChevronRight, User, Loader2 } from "lucide-react";
+import { CalendarDays, Video, FileText, User, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function CounselorDashboard() {

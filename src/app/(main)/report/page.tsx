@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { Printer, Sparkles, AlertTriangle, Target, Briefcase, GraduationCap, Calendar, Landmark, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer } from "recharts";
@@ -406,7 +405,7 @@ export default function ReportPage() {
               The report is intended for educational and career planning purposes only. Career outcomes depend on a range of personal, academic, and environmental factors that cannot be fully captured by any single assessment. 
             </p>
             <p>
-              MentorMe does not guarantee specific career or academic outcomes. This report should be used as one of several inputs in a student's overall career planning process. Students and parents are encouraged to consult with qualified career counsellors, educators, and professionals before making final decisions.
+              MentorMe does not guarantee specific career or academic outcomes. This report should be used as one of several inputs in a student&apos;s overall career planning process. Students and parents are encouraged to consult with qualified career counsellors, educators, and professionals before making final decisions.
             </p>
           </div>
 

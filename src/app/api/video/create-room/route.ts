@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   try {
     const DAILY_API_KEY = process.env.DAILY_API_KEY;
 
@@ -34,8 +34,9 @@ export async function POST(req: NextRequest) {
 
     // room.url is the magic link that instantly opens the secure video call
     return NextResponse.json({ roomUrl: room.url });
-  } catch (error: any) {
-    console.error('Error creating Daily.co room:', error);
-    return NextResponse.json({ error: error.message || 'Server Error' }, { status: 500 });
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error('Error creating Daily.co room:', err);
+    return NextResponse.json({ error: err.message || 'Server Error' }, { status: 500 });
   }
 }

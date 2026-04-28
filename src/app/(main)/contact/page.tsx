@@ -23,7 +23,7 @@ export default function ContactPage() {
             transition={{ delay: 0.1 }}
             className="text-xl text-muted-foreground"
           >
-            We're here to help you navigate your career journey. Reach out to the MentorMe team today.
+            We&apos;re here to help you navigate your career journey. Reach out to the MentorMe team today.
           </motion.p>
         </div>
       </section>
@@ -42,7 +42,7 @@ export default function ContactPage() {
             <div className="space-y-4">
               <h2 className="text-3xl font-bold text-foreground">Official Contact Information</h2>
               <p className="text-muted-foreground leading-relaxed">
-                Whether you're a student looking for guidance, a professional seeking a pivot, or an institution wanting to partner with us, we are just a message away.
+                Whether you&apos;re a student looking for guidance, a professional seeking a pivot, or an institution wanting to partner with us, we are just a message away.
               </p>
             </div>
 

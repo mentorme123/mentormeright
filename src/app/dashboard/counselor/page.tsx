@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { CalendarDays, Video, FileText, User, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function CounselorDashboard() {
   const router = useRouter();
@@ -103,10 +104,20 @@ export default function CounselorDashboard() {
       <div className="max-w-6xl mx-auto space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-           <div>
-             <h1 className="text-3xl font-black text-emerald-700 uppercase tracking-tight">Counselor Portal</h1>
-             <p className="text-slate-500 font-medium">Welcome back. You have {upcomingSessions.filter(s => s.date === 'Today').length} sessions scheduled for today.</p>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
+           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
+           <div className="flex items-center gap-4 relative z-10">
+              <div className="relative h-16 w-16 rounded-2xl border-4 border-slate-50 overflow-hidden shadow-md bg-emerald-50">
+                <Image 
+                  src={`https://api.dicebear.com/7.x/initials/svg?seed=counselor@mentorme.in&backgroundColor=0D7377`}
+                  alt="Avatar"
+                  fill
+                />
+              </div>
+              <div>
+                <h1 className="text-3xl font-black text-emerald-700 uppercase tracking-tight">Counselor Portal</h1>
+                <p className="text-slate-500 font-medium">Welcome back. You have {upcomingSessions.filter(s => s.date === 'Today').length} sessions scheduled for today.</p>
+              </div>
            </div>
            <Button 
              onClick={handleGoogleCalendarSync}

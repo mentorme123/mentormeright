@@ -66,18 +66,27 @@ export function Navbar() {
           </Link>
           
           {user ? (
-            <>
-              <Link href="/assessment">
-                <Button variant="ghost" className="hidden sm:inline-flex font-semibold">Dashboard</Button>
-              </Link>
+            <div className="flex items-center gap-3 pl-2 border-l border-slate-200">
+              <div className="flex flex-col items-end hidden sm:flex">
+                 <span className="text-xs font-bold text-slate-800 leading-none">{user.user_metadata?.full_name || user.email?.split('@')[0]}</span>
+                 <span className="text-[10px] font-black text-brand-blue uppercase tracking-widest mt-1">Member</span>
+              </div>
+              <div className="relative h-10 w-10 rounded-full border-2 border-brand-blue/20 overflow-hidden bg-slate-100">
+                <Image 
+                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.email}&backgroundColor=1B3A6B,0D7377,F0A500&fontFamily=Arial&fontWeight=700`}
+                  alt="User Avatar"
+                  fill
+                />
+              </div>
               <Button 
                 onClick={handleSignOut}
-                variant="outline" 
-                className="font-semibold border-slate-200"
+                variant="ghost" 
+                size="sm"
+                className="text-slate-500 hover:text-red-600 font-bold text-xs"
               >
                 Sign Out
               </Button>
-            </>
+            </div>
           ) : (
             <>
               <Link href="/login">

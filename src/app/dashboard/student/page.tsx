@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import Image from "next/image";
 import { 
   ClipboardList, 
   FileText, 
@@ -12,7 +13,8 @@ import {
   ArrowRight, 
   Loader2, 
   Sparkles,
-  Target
+  Target,
+  Globe
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -64,9 +66,18 @@ export default function StudentDashboard() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden">
            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
-           <div>
-             <h1 className="text-3xl font-black text-slate-800 tracking-tight">Hello, {user?.user_metadata?.full_name || user?.email?.split('@')[0]}! 👋</h1>
-             <p className="text-slate-500 font-medium mt-1">Welcome back to your career intelligence hub.</p>
+           <div className="flex items-center gap-4 relative z-10">
+              <div className="relative h-16 w-16 rounded-2xl border-4 border-slate-50 overflow-hidden shadow-md">
+                <Image 
+                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.email}&backgroundColor=1B3A6B,0D7377,F0A500`}
+                  alt="Avatar"
+                  fill
+                />
+              </div>
+              <div>
+                <h1 className="text-3xl font-black text-slate-800 tracking-tight">Hello, {user?.user_metadata?.full_name || user?.email?.split('@')[0]}! 👋</h1>
+                <p className="text-slate-500 font-medium mt-1">Welcome back to your career intelligence hub.</p>
+              </div>
            </div>
            {assessmentStatus === 'completed' && (
              <Link href="/report">
@@ -82,6 +93,28 @@ export default function StudentDashboard() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
              
+             {/* Industry Insights (Live API Simulation) */}
+             <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
+                <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                   <Globe size={24} className="text-brand-blue" /> High-Growth Career Insights
+                </h3>
+                <div className="grid sm:grid-cols-2 gap-4">
+                   {[
+                     { title: "Generative AI in FinTech", trend: "+45% Hiring", color: "text-emerald-600 bg-emerald-50" },
+                     { title: "Sustainability Consulting", trend: "+30% Hiring", color: "text-blue-600 bg-blue-50" },
+                     { title: "Cybersecurity Analyst", trend: "+60% Demand", color: "text-purple-600 bg-purple-50" },
+                     { title: "Renewable Energy Tech", trend: "+25% Growth", color: "text-orange-600 bg-orange-50" }
+                   ].map((news, i) => (
+                     <div key={i} className="p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group cursor-pointer">
+                        <h4 className="font-bold text-slate-700 group-hover:text-brand-blue transition-colors">{news.title}</h4>
+                        <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-md mt-2 inline-block ${news.color}`}>
+                          {news.trend}
+                        </span>
+                     </div>
+                   ))}
+                </div>
+             </div>
+
              {/* Assessment Card */}
              <div className="bg-brand-blue text-white rounded-3xl p-8 shadow-xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl transform translate-x-1/4 -translate-y-1/4 group-hover:scale-110 transition-transform"></div>

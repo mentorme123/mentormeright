@@ -1,3 +1,9 @@
+import { WP_QUESTIONS } from "./questions-wp";
+import { GR_QUESTIONS } from "./questions-gr";
+import { UG_QUESTIONS } from "./questions-ug";
+
+export type AudienceType = "ST" | "UG" | "GR" | "WP";
+
 export interface Question {
   id: number;
   section: 1 | 2 | 3;
@@ -128,4 +134,14 @@ const ALL_QUESTIONS: Question[] = [
 
 export function getMockQuestions(): Question[] {
   return ALL_QUESTIONS;
+}
+
+export function getQuestions(audience: AudienceType = "ST"): Question[] {
+  switch (audience) {
+    case "WP": return WP_QUESTIONS;
+    case "GR": return GR_QUESTIONS;
+    case "UG": return UG_QUESTIONS;
+    case "ST":
+    default:   return ALL_QUESTIONS;
+  }
 }

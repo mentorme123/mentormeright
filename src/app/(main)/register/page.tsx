@@ -13,6 +13,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("individual");
+  const [audienceType, setAudienceType] = useState("ST");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -39,9 +40,11 @@ export default function RegisterPage() {
           ]);
 
         if (profileError) throw profileError;
+        // Save audience type so assessment loads correct question set
+        if (role === 'individual') {
+          localStorage.setItem("mentorme_audience", audienceType);
+        }
         setSuccess(true);
-        
-        // Immediately route the user based on their selected role
         if (role === 'individual') {
           router.push("/assessment");
         } else {
@@ -121,17 +124,34 @@ export default function RegisterPage() {
           </div>
           <div className="space-y-2">
             <label className="text-sm font-bold text-slate-700" htmlFor="role">I am a...</label>
-            <select 
-              id="role" 
+            <select
+              id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none" 
+              className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none"
               required
             >
               <option value="individual">Student / Professional</option>
               <option value="institutional">Institution / College</option>
             </select>
           </div>
+          {role === 'individual' && (
+            <div className="space-y-2">
+              <label className="text-sm font-bold text-slate-700" htmlFor="audience">My current status is...</label>
+              <select
+                id="audience"
+                value={audienceType}
+                onChange={(e) => setAudienceType(e.target.value)}
+                className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none"
+                required
+              >
+                <option value="ST">School Student (Grade 5–12)</option>
+                <option value="UG">University / College Student</option>
+                <option value="GR">Graduate / Post-Graduate</option>
+                <option value="WP">Working Professional</option>
+              </select>
+            </div>
+          )}
           <div className="space-y-2">
             <label className="text-sm font-bold text-slate-700" htmlFor="password">Password</label>
             <input 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getMockQuestions, Question } from "@/lib/mock-questions";
+import { getQuestions, Question, AudienceType } from "@/lib/mock-questions";
 import { Button } from "@/components/ui/button";
 
 export default function AssessmentPage() {
@@ -14,7 +14,9 @@ export default function AssessmentPage() {
 
   useEffect(() => {
     // Load questions and previous answers
-    const q = getMockQuestions();
+    // Load audience-specific questions
+    const audience = (localStorage.getItem("mentorme_audience") || "ST") as AudienceType;
+    const q = getQuestions(audience);
     setQuestions(q);
     
     const saved = localStorage.getItem("mentorme_assessment_progress");

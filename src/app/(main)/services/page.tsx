@@ -12,7 +12,7 @@ export default function ServicesPage() {
       icon: <BookOpen size={32} />,
       color: "text-brand-orange",
       bg: "bg-brand-orange/10",
-      pdfUrl: "/downloads/school-college-programs.pdf",
+      pdfUrl: "/downloads/school-programs.pdf",
       programs: [
         { name: "Robotics Training", desc: "Hands-on training, no lab investment, STEM integration." },
         { name: "AI Training Program", desc: "Generative AI, ML & NLP, Ethics & responsible AI." },

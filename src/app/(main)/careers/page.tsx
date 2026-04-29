@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Briefcase, Heart, Rocket, GraduationCap, Megaphone, PhoneCall, TrendingUp, Users } from "lucide-react";
+import { Briefcase, Heart, Rocket, GraduationCap, Megaphone, PhoneCall, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 export default function CareersPage() {

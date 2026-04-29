@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Sparkles, Globe, Zap, Calendar } from "lucide-react";
 
 export default function Home() {
   return (
@@ -98,6 +99,55 @@ export default function Home() {
               className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
             />
           </motion.div>
+        </div>
+      </section>
+
+      {/* Platform Superpowers Section */}
+      <section className="py-24 px-4 bg-slate-900 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16 space-y-4">
+            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Platform Superpowers</h2>
+            <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">Built for scale, powered by intelligence. Experience the future of career guidance.</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { 
+                title: "AI Trajectory Engine", 
+                desc: "Instant 10-page reports mapping your psychometric data to global job markets.",
+                icon: <Sparkles className="text-brand-orange" size={28} />
+              },
+              { 
+                title: "Global Search", 
+                desc: "Access a real-time database of 1,000+ universities and 500+ career paths.",
+                icon: <Globe className="text-brand-blue" size={28} />
+              },
+              { 
+                title: "Enterprise Bulk Import", 
+                desc: "Schools can provision thousands of student accounts in seconds via CSV.",
+                icon: <Zap className="text-emerald-500" size={28} />
+              },
+              { 
+                title: "Smart Scheduling", 
+                desc: "1-click sync with Google Calendar for expert video consultations.",
+                icon: <Calendar className="text-purple-500" size={28} />
+              },
+            ].map((feature, i) => (
+              <motion.div 
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-sm hover:bg-white/10 transition-all hover:-translate-y-2 group"
+              >
+                <div className="mb-6 p-4 bg-white/5 rounded-2xl inline-block group-hover:scale-110 transition-transform">{feature.icon}</div>
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-slate-400 text-sm leading-relaxed font-medium">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

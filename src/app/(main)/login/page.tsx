@@ -64,7 +64,7 @@ export default function LoginPage() {
       const userRole = userProfile.role;
 
       if (activeTab === "student") {
-        if (userRole === "individual") router.push("/assessment");
+        if (userRole === "individual") router.push("/dashboard/student");
         else throw new Error("This account is not registered as a Student.");
       } else if (activeTab === "institution") {
         if (userRole === "institutional") router.push("/dashboard/institution");

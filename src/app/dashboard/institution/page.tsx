@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { Upload, Users, FileSpreadsheet, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { UniversitySearch } from "@/components/university-search";
 
 export default function InstitutionDashboard() {
   const router = useRouter();
@@ -261,6 +262,11 @@ export default function InstitutionDashboard() {
                 </div>
               )}
            </div>
+        </div>
+
+        {/* University Discovery Tools */}
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-8">
+           <UniversitySearch />
         </div>
 
       </div>

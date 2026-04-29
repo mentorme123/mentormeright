@@ -61,7 +61,7 @@ export default function RegisterPage() {
           localStorage.setItem("mentorme_audience", values.audienceType || "ST");
         }
         setSuccess(true);
-        router.push(values.role === "individual" ? "/assessment" : "/dashboard/institution");
+        router.push(values.role === "individual" ? "/dashboard/student" : "/dashboard/institution");
       }
     } catch (err: unknown) {
       setServerError((err as Error).message || "Failed to register. Please try again.");

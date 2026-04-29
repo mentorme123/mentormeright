@@ -42,6 +42,20 @@ export default function CounselorDashboard() {
     { id: 3, name: "Taaha", time: "11:00 AM", date: "Tomorrow", grade: "Working Professional", isPaid: true },
   ];
 
+  const handleGoogleCalendarSync = () => {
+    const nextSession = upcomingSessions[0];
+    const eventTitle = encodeURIComponent(`MentorMe Counseling: ${nextSession.name}`);
+    const details = encodeURIComponent(`Career counseling session for student ${nextSession.name} (${nextSession.grade}). \n\nJoin via Jitsi: https://meet.jit.si/MentorMe-Session-${nextSession.id}`);
+    
+    // Create a date for today at 10:00 AM (mock for now)
+    const startTime = "20260430T100000Z";
+    const endTime = "20260430T110000Z";
+    
+    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&details=${details}&dates=${startTime}/${endTime}`;
+    
+    window.open(googleCalendarUrl, "_blank");
+  };
+
   const handleJoinVideo = async (sessionId: number) => {
     setIsJoining(sessionId);
     try {
@@ -94,7 +108,10 @@ export default function CounselorDashboard() {
              <h1 className="text-3xl font-black text-emerald-700 uppercase tracking-tight">Counselor Portal</h1>
              <p className="text-slate-500 font-medium">Welcome back. You have {upcomingSessions.filter(s => s.date === 'Today').length} sessions scheduled for today.</p>
            </div>
-           <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md">
+           <Button 
+             onClick={handleGoogleCalendarSync}
+             className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md"
+           >
               <CalendarDays size={18} className="mr-2" /> Sync with Google Calendar
            </Button>
         </div>
@@ -169,24 +186,14 @@ export default function CounselorDashboard() {
                  </Button>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
-                 <h3 className="font-bold text-slate-800 mb-4">Quick Analytics</h3>
-                 <div className="space-y-4">
-                    <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-                       <span className="text-slate-500 font-medium">Sessions This Month</span>
-                       <span className="font-black text-slate-800">24</span>
-                    </div>
-                    <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-                       <span className="text-slate-500 font-medium">Avg. Student Rating</span>
-                       <span className="font-black text-brand-orange">4.9/5.0</span>
-                    </div>
-                    <div className="flex justify-between items-center pb-1">
-                       <span className="text-slate-500 font-medium">Earnings (Pending Payout)</span>
-                       <span className="font-black text-emerald-600">₹85,000</span>
-                    </div>
-                 </div>
-              </div>
-           </div>
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                <h3 className="font-bold text-slate-800 mb-4">Daily Inspiration</h3>
+                <div className="italic text-slate-600 border-l-4 border-brand-orange pl-4 py-2">
+                   "The best way to predict the future is to create it."
+                   <p className="not-italic font-bold text-slate-400 mt-2 text-sm">— Peter Drucker</p>
+                </div>
+            </div>
+         </div>
 
         </div>
 

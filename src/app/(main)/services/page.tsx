@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BookOpen, Briefcase, GraduationCap, Building2, Globe2, BrainCircuit } from "lucide-react";
+import { BookOpen, Briefcase, GraduationCap, Building2, Globe2, BrainCircuit, Download } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -12,6 +12,7 @@ export default function ServicesPage() {
       icon: <BookOpen size={32} />,
       color: "text-brand-orange",
       bg: "bg-brand-orange/10",
+      pdfUrl: "/downloads/school-college-programs.pdf",
       programs: [
         { name: "Robotics Training", desc: "Hands-on training, no lab investment, STEM integration." },
         { name: "AI Training Program", desc: "Generative AI, ML & NLP, Ethics & responsible AI." },
@@ -23,6 +24,7 @@ export default function ServicesPage() {
       icon: <GraduationCap size={32} />,
       color: "text-brand-blue",
       bg: "bg-brand-blue/10",
+      pdfUrl: "/downloads/school-college-programs.pdf",
       programs: [
         { name: "Machine Learning", desc: "Advanced ML training for engineering students." },
         { name: "Artificial Intelligence", desc: "Deep dive into AI architectures and deployment." },
@@ -35,6 +37,7 @@ export default function ServicesPage() {
       icon: <Building2 size={32} />,
       color: "text-purple-600",
       bg: "bg-purple-100",
+      pdfUrl: "/downloads/corporate-programs.pdf",
       programs: [
         { name: "Digital Marketing", desc: "Comprehensive modern digital marketing strategies." },
         { name: "Python Full Stack", desc: "End-to-end web development with Python." },
@@ -135,8 +138,18 @@ export default function ServicesPage() {
                       <p className="text-sm text-muted-foreground pl-6">{prog.desc}</p>
                     </div>
                   ))}
-                  <div className="pt-4 mt-4 border-t">
-                    <Link href="/contact" className="text-sm font-semibold text-brand-blue hover:underline">
+                  <div className="pt-4 mt-4 border-t flex flex-col gap-3">
+                    <a 
+                      href={cat.pdfUrl} 
+                      download 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-2 text-sm font-bold w-max p-2 px-4 rounded-lg bg-slate-100 hover:bg-slate-200 transition-colors ${cat.color}`}
+                    >
+                      <Download size={16} />
+                      Download Brochure
+                    </a>
+                    <Link href="/contact" className="text-sm font-semibold text-slate-500 hover:text-slate-800 hover:underline flex items-center gap-2 mt-2">
                       Inquire about these programs →
                     </Link>
                   </div>

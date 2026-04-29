@@ -71,10 +71,11 @@ export default function AssessmentPage() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
+      const audience = localStorage.getItem("mentorme_audience") || "ST";
       const response = await fetch('/api/generate-report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers })
+        body: JSON.stringify({ answers, audience })
       });
       
       const data = await response.json();

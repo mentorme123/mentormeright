@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { scoreAnswers, buildScoreSummary } from '@/lib/scoring';
 
 export async function POST(req: NextRequest) {
   try {
-    const { answers } = await req.json();
+    const { answers, audience } = await req.json();
 
     if (!answers || Object.keys(answers).length === 0) {
       return NextResponse.json({ error: 'No assessment data provided' }, { status: 400 });
     }
+
+    // Score all answers into parameter scores
+    const scores = scoreAnswers(answers);
+    const scoreSummary = buildScoreSummary(scores, audience || 'ST');
+
 
     const apiKey = process.env.GEMINI_API_KEY;
 
@@ -93,62 +99,60 @@ export async function POST(req: NextRequest) {
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
 
     const prompt = `
-      You are an elite career intelligence counselor. 
-      Analyze the following user answers from a 90-question psychometric assessment:
-      ${JSON.stringify(answers)}
-      
-      Generate an extremely detailed, professional 10-chapter career report in JSON format.
-      Use the exact structure below. All numerical scores must be provided realistically.
+You are an elite career intelligence counselor at MentorMe (mentormeright.in).
+A student/professional has completed a 90-question psychometric assessment.
 
-      {
-        "clientName": "...",
-        "grade": "...",
-        "executiveSummary": "A 3-4 sentence high-level overview of their personality and aptitude.",
-        "coreStrengths": [
-          { "name": "Numerical Skills", "score": 1-10, "max": 10, "desc": "..." },
-          { "name": "Verbal Skills", "score": 1-10, "max": 10, "desc": "..." },
-          { "name": "Administrative Skills", "score": 1-10, "max": 10, "desc": "..." },
-          { "name": "Mechanical Skills", "score": 1-10, "max": 10, "desc": "..." },
-          { "name": "Emotional Intelligence", "score": 1-5, "max": 5, "desc": "..." }
-        ],
-        "areasToDevelop": [
-          { "name": "Logical Skills", "score": 1-10, "max": 10, "desc": "..." },
-          { "name": "Engagement", "score": 1-5, "max": 5, "desc": "..." },
-          { "name": "Realistic", "score": 1-5, "max": 5, "desc": "..." }
-        ],
-        "careerInterests": [
-          { "name": "Investigative", "score": 1-5, "max": 5, "desc": "..." },
-          { "name": "Enterprising", "score": 1-5, "max": 5, "desc": "..." }
-        ],
-        "excellentFitCareers": [
-          { "title": "...", "salary": "...", "desc": "..." }
-        ],
-        "goodFitCareers": [
-          { "title": "...", "salary": "...", "desc": "..." }
-        ],
-        "academicRoadmap": {
-          "recommendedStream": "...",
-          "focusSubjects": "...",
-          "programmingNote": "...",
-          "extraCurricular": "..."
-        },
-        "educationPathways": {
-          "ugOptions": [ { "program": "...", "duration": "...", "leadsTo": "..." } ],
-          "pgOptions": [ { "program": "...", "path": "..." } ]
-        },
-        "entranceExams": [
-          { "exam": "...", "forTitle": "...", "timeline": "..." }
-        ],
-        "recommendedColleges": [
-          { "institution": "...", "location": "...", "program": "..." }
-        ],
-        "nextSteps": [ "...", "..." ]
-      }
-      
-      Do not return any markdown formatting outside of the JSON object. Return strictly valid JSON.
+Here are their SCORED results across all 17 parameters:
+
+${scoreSummary}
+
+Based STRICTLY on these scores, generate a detailed, personalised career intelligence report in JSON format.
+Use the scores to determine realistic skill ratings, career fits, and development areas.
+High scores (>75%) = strength. Medium (50-75%) = moderate. Low (<50%) = develop.
+Top RIASEC traits drive career recommendations. Top skill scores confirm those careers.
+
+Return ONLY valid JSON with this structure:
+{
+  "executiveSummary": "3-4 sentences personalised overview based on their actual scores",
+  "coreStrengths": [
+    { "name": "...", "score": number, "max": number, "desc": "why this is a strength based on their score" }
+  ],
+  "areasToDevelop": [
+    { "name": "...", "score": number, "max": number, "desc": "specific actionable advice to improve" }
+  ],
+  "careerInterests": [
+    { "name": "...", "score": number, "max": number, "desc": "how this RIASEC trait shapes their career fit" }
+  ],
+  "excellentFitCareers": [
+    { "title": "...", "salary": "Indian salary range", "desc": "why this career fits their specific scores" }
+  ],
+  "goodFitCareers": [
+    { "title": "...", "salary": "Indian salary range", "desc": "..." }
+  ],
+  "academicRoadmap": {
+    "recommendedStream": "...",
+    "focusSubjects": "...",
+    "programmingNote": "...",
+    "extraCurricular": "..."
+  },
+  "educationPathways": {
+    "ugOptions": [ { "program": "...", "duration": "...", "leadsTo": "..." } ],
+    "pgOptions": [ { "program": "...", "path": "..." } ]
+  },
+  "entranceExams": [
+    { "exam": "...", "forTitle": "...", "timeline": "..." }
+  ],
+  "recommendedColleges": [
+    { "institution": "...", "location": "India", "program": "..." }
+  ],
+  "nextSteps": [ "...", "..." ]
+}
+
+Do not return any markdown. Return strictly valid JSON only.
     `;
 
     const result = await model.generateContent(prompt);
+
     const response = await result.response;
     const text = response.text();
     

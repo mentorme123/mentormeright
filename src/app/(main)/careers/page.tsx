@@ -1,29 +1,43 @@
 import { Button } from "@/components/ui/button";
-import { Briefcase, Heart, Rocket, GraduationCap, Code, Megaphone } from "lucide-react";
+import { Briefcase, Heart, Rocket, GraduationCap, Megaphone, PhoneCall, TrendingUp, Users } from "lucide-react";
 import Link from "next/link";
 
 export default function CareersPage() {
   const openPositions = [
     {
-      title: "Senior AI Instructor",
+      title: "Training and Placement Officer (TPO)",
       department: "Education & Training",
-      location: "Hyderabad, India (Hybrid)",
+      location: "Hyderabad, India",
       type: "Full-Time",
-      icon: <Code size={24} className="text-brand-blue" />
+      icon: <GraduationCap size={24} className="text-brand-blue" />
     },
     {
-      title: "Career Counselor",
-      department: "Student Support",
+      title: "Business Developer (BD)",
+      department: "Business Development",
+      location: "Hyderabad, India / Remote",
+      type: "Full-Time",
+      icon: <Briefcase size={24} className="text-brand-orange" />
+    },
+    {
+      title: "Sales Executive",
+      department: "Sales",
+      location: "Hyderabad, India",
+      type: "Full-Time",
+      icon: <TrendingUp size={24} className="text-emerald-600" />
+    },
+    {
+      title: "Telecaller",
+      department: "Customer Outreach",
       location: "Remote",
-      type: "Full-Time",
-      icon: <GraduationCap size={24} className="text-brand-orange" />
+      type: "Full-Time / Part-Time",
+      icon: <PhoneCall size={24} className="text-purple-600" />
     },
     {
-      title: "Digital Marketing Specialist",
+      title: "Marketing Specialist",
       department: "Marketing",
       location: "Hyderabad, India",
       type: "Full-Time",
-      icon: <Megaphone size={24} className="text-purple-600" />
+      icon: <Megaphone size={24} className="text-brand-blue" />
     }
   ];
 

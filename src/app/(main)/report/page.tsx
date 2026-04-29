@@ -108,15 +108,27 @@ export default function ReportPage() {
           nav, footer { display: none !important; }
         }
       `}} />
-
-      {/* Floating Web Print Controls */}
-      <div className="fixed bottom-8 right-8 z-50 print:hidden flex flex-col gap-4">
-        <Button onClick={handlePrint} size="lg" className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold shadow-2xl rounded-full h-16 w-16 p-0 flex flex-col items-center justify-center animate-bounce">
-          <Printer size={24} />
+      
+      {/* Navigation & Controls */}
+      <div className="max-w-[210mm] mx-auto mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 print:hidden">
+        <Button 
+          variant="ghost" 
+          onClick={() => router.push("/dashboard/student")}
+          className="font-bold text-slate-700 bg-white/50 backdrop-blur-sm border border-white/50"
+        >
+          ← Back to Dashboard
         </Button>
+        <div className="flex gap-4 w-full sm:w-auto">
+          <Button 
+            onClick={handlePrint}
+            className="flex-1 sm:flex-none bg-brand-blue text-white font-bold shadow-lg px-8"
+          >
+            <Printer className="mr-2" size={18} /> Print or Save as PDF
+          </Button>
+        </div>
       </div>
 
-      <div className="flex flex-col items-center">
+      <div className="relative flex flex-col items-center">
         
         {/* PAGE 1: TITLE PAGE */}
         <A4Page pageNumber={1}>

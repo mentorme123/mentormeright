@@ -231,68 +231,71 @@ export default function AssessmentPage() {
         </div>
 
         {/* Question Card */}
-        <div className="bg-card border shadow-sm rounded-2xl p-6 sm:p-10 space-y-8">
-          <h2 className="text-2xl sm:text-3xl font-semibold leading-tight text-foreground">
+        <div className="bg-white border border-slate-200 shadow-xl shadow-slate-200/50 rounded-3xl p-6 sm:p-12 space-y-10 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          
+          <h2 className="text-2xl sm:text-4xl font-black leading-tight text-slate-800 relative z-10">
             {currentQ.text}
           </h2>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4 relative z-10">
             {Object.entries(currentQ.options).map(([key, value]) => {
               const isSelected = answers[currentQ.id] === key;
               return (
                 <button
                   key={key}
                   onClick={() => handleSelectOption(key)}
-                  className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-center gap-4 group ${
+                  className={`w-full text-left p-5 sm:p-6 rounded-2xl border-2 transition-all duration-300 flex items-center justify-between group active:scale-[0.99] ${
                     isSelected 
-                      ? 'border-brand-blue bg-brand-blue/5' 
-                      : 'border-muted hover:border-brand-blue/50 hover:bg-muted/50'
+                      ? 'border-brand-blue bg-brand-blue/5 shadow-inner' 
+                      : 'border-slate-100 bg-slate-50 hover:border-brand-blue/30 hover:bg-white hover:shadow-lg'
                   }`}
                 >
-                  <div className={`h-8 w-8 rounded-full border flex items-center justify-center font-semibold text-sm ${
-                    isSelected
-                      ? 'border-brand-blue bg-brand-blue text-white'
-                      : 'border-muted-foreground/30 text-muted-foreground group-hover:border-brand-blue/50'
-                  }`}>
-                    {key}
-                  </div>
-                  <span className={`text-lg ${isSelected ? 'font-medium text-brand-blue' : 'text-foreground'}`}>
+                  <span className={`text-lg font-bold transition-colors ${isSelected ? 'text-brand-blue' : 'text-slate-600 group-hover:text-slate-900'}`}>
                     {value}
                   </span>
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                    isSelected ? 'border-brand-blue bg-brand-blue' : 'border-slate-300 group-hover:border-brand-blue/50'
+                  }`}>
+                    {isSelected && <div className="w-2 h-2 bg-white rounded-full"></div>}
+                  </div>
                 </button>
               );
             })}
-          </div>
-        </div>
+          {/* Navigation */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100">
+            <Button 
+              variant="ghost" 
+              onClick={handlePrev}
+              disabled={currentIndex === 0}
+              className="w-full sm:w-auto font-bold text-slate-500"
+            >
+              ← Previous Question
+            </Button>
 
-        {/* Navigation */}
-        <div className="flex items-center justify-between pt-4">
-          <Button 
-            variant="outline" 
-            onClick={handlePrev} 
-            disabled={currentIndex === 0}
-            className="w-24"
-          >
-            Previous
-          </Button>
-          
-          {isLastQuestion ? (
-            <Button 
-              onClick={handleSubmit} 
-              disabled={!isCurrentAnswered || isSubmitting}
-              className="w-32 bg-brand-orange hover:bg-brand-orange/90 text-white"
-            >
-              {isSubmitting ? "Processing..." : "Submit"}
-            </Button>
-          ) : (
-            <Button 
-              onClick={handleNext} 
-              disabled={!isCurrentAnswered}
-              className="w-24 bg-brand-blue hover:bg-brand-blue/90 text-white"
-            >
-              Next
-            </Button>
-          )}
+            {!isLastQuestion ? (
+              <Button 
+                onClick={handleNext}
+                disabled={!isCurrentAnswered}
+                className="w-full sm:w-auto bg-brand-blue text-white font-bold px-12"
+              >
+                Next Question →
+              </Button>
+            ) : (
+              <Button 
+                onClick={handleSubmitAssessment}
+                disabled={!isCurrentAnswered || isSubmitting}
+                className="w-full sm:w-auto bg-brand-orange text-white font-black px-12 shadow-lg shadow-brand-orange/20"
+              >
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    Generating AI Report...
+                  </div>
+                ) : 'Complete Assessment & Generate Report'}
+              </Button>
+            )}
+          </div>
         </div>
 
       </div>

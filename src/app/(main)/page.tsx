@@ -438,6 +438,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Back to Top Floating Button */}
+      <Button 
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className="fixed bottom-8 right-8 z-50 rounded-full h-14 w-14 p-0 bg-white/80 backdrop-blur border border-slate-200 text-slate-800 shadow-xl hover:bg-white lg:hidden"
+      >
+        ↑
+      </Button>
     </div>
   );
 }

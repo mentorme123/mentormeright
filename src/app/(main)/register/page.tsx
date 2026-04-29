@@ -40,9 +40,13 @@ export default function RegisterPage() {
 
         if (profileError) throw profileError;
         setSuccess(true);
-        // Automatically sign them in and redirect if email confirmation is turned off,
-        // but normally we tell them to check their email.
-        router.push("/login?message=Registration%20successful.%20Please%20log%20in.");
+        
+        // Immediately route the user based on their selected role
+        if (role === 'individual') {
+          router.push("/assessment");
+        } else {
+          router.push("/dashboard/institution");
+        }
       }
     } catch (err: unknown) {
       const error = err as Error;

@@ -47,7 +47,7 @@ export async function GET(request: Request) {
         } else if (userProfile.role === 'institutional') {
           return NextResponse.redirect(`${origin}/dashboard/institution`);
         } else if (userProfile.role === 'admin') {
-          return NextResponse.redirect(`${origin}/dashboard/counselor`);
+          return NextResponse.redirect(`${origin}/dashboard/admin`);
         }
       }
 

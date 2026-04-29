@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 export async function POST(req: NextRequest) {
   try {
@@ -11,9 +19,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing name or email' }, { status: 400 });
     }
 
-    const { data, error } = await resend.emails.send({
-      from: 'MentorMe <no-reply@mentormeright.in>',
-      to: [email],
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to: email,
       subject: '🎓 Welcome to MentorMe — Your Account is Ready!',
       html: `
         <!DOCTYPE html>
@@ -71,12 +79,7 @@ export async function POST(req: NextRequest) {
       `,
     });
 
-    if (error) {
-      console.error('Resend welcome email error:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true, messageId: data?.id });
+    return NextResponse.json({ success: true, messageId: info.messageId });
 
   } catch (error: unknown) {
     const err = error as Error;
@@ -84,3 +87,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: err.message || 'Failed to send email' }, { status: 500 });
   }
 }
+

@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: Number(process.env.SMTP_PORT) === 465, // true for 465, false for other ports
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -36,9 +44,11 @@ export async function POST(req: NextRequest) {
         })
       : 'To be confirmed';
 
-    const { data, error } = await resend.emails.send({
-      from: 'MentorMe <no-reply@mentormeright.in>',
-      to: [user.email],
+    const joinUrl = `https://meet.jit.si/MentorMe-Session-${bookingId.slice(0, 8)}`;
+
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_FROM,
+      to: user.email,
       subject: '✅ Your MentorMe Counseling Session is Confirmed!',
       html: `
         <!DOCTYPE html>
@@ -61,7 +71,7 @@ export async function POST(req: NextRequest) {
 
                 <h2 style="color: #1B3A6B; font-size: 22px; font-weight: 700; margin: 0 0 16px;">Session Confirmed, ${user.name}!</h2>
                 <p style="color: #475569; font-size: 15px; line-height: 1.7; margin: 0 0 24px;">
-                  Your career counseling session has been booked and payment received. Here are your session details:
+                  Your career counseling session has been booked and payment received. You can join the session directly using the link below at the scheduled time.
                 </p>
 
                 <!-- Booking Details Card -->
@@ -90,8 +100,20 @@ export async function POST(req: NextRequest) {
                   </table>
                 </div>
 
+                <!-- Join Button -->
+                <div style="text-align: center; margin: 32px 0; padding: 32px; background: #f0fdf4; border-radius: 16px; border: 2px dashed #bbf7d0;">
+                  <p style="color: #166534; font-size: 14px; font-weight: 700; margin: 0 0 16px; text-transform: uppercase;">Your Private Meeting Link</p>
+                  <a href="${joinUrl}" 
+                     style="display: inline-block; background: linear-gradient(135deg, #059669, #047857); color: #ffffff; font-weight: 800; font-size: 16px; padding: 18px 48px; border-radius: 14px; text-decoration: none; box-shadow: 0 10px 15px -3px rgba(5, 150, 105, 0.3);">
+                    Join Session Now →
+                  </a>
+                  <p style="color: #64748b; font-size: 12px; margin: 16px 0 0;">
+                    Or copy this link: <a href="${joinUrl}" style="color: #059669;">${joinUrl}</a>
+                  </p>
+                </div>
+
                 <div style="background: #fef9c3; border-left: 4px solid #F0A500; border-radius: 8px; padding: 16px 20px; margin: 24px 0;">
-                  <p style="color: #92400e; font-size: 13px; margin: 0; font-weight: 600;">📹 A meeting link will be sent to you 30 minutes before your session.</p>
+                  <p style="color: #92400e; font-size: 13px; margin: 0; font-weight: 600;">📹 Please join 5 minutes early to test your camera and microphone.</p>
                 </div>
 
                 <div style="text-align: center; margin: 32px 0;">
@@ -113,12 +135,7 @@ export async function POST(req: NextRequest) {
       `,
     });
 
-    if (error) {
-      console.error('Booking confirmation email error:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true, messageId: data?.id });
+    return NextResponse.json({ success: true, messageId: info.messageId });
 
   } catch (error: unknown) {
     const err = error as Error;
@@ -126,3 +143,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: err.message || 'Failed to send confirmation email' }, { status: 500 });
   }
 }
+

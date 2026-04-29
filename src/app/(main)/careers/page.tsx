@@ -112,7 +112,7 @@ export default function CareersPage() {
                     </div>
                   </div>
                 </div>
-                <Link href="mailto:admin@mentormeright.in">
+                <Link href={`mailto:admin@mentormeright.in?subject=Application for ${job.title}&body=Hello MentorMe Team,%0D%0A%0D%0AI am writing to apply for the ${job.title} position.%0D%0A%0D%0APlease find my resume attached to this email.%0D%0A%0D%0AThank you,`}>
                   <Button className="w-full md:w-auto bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-8">
                     Apply Now
                   </Button>
@@ -124,7 +124,7 @@ export default function CareersPage() {
           <div className="mt-12 bg-brand-orange/10 border border-brand-orange/20 rounded-3xl p-8 text-center">
             <h3 className="text-2xl font-bold text-brand-orange mb-3">Don&apos;t see a perfect fit?</h3>
             <p className="text-slate-700 mb-6">We&apos;re always on the lookout for exceptional talent. Send your resume and a brief introduction to our team.</p>
-            <Link href="mailto:admin@mentormeright.in">
+            <Link href="mailto:admin@mentormeright.in?subject=General Career Inquiry&body=Hello MentorMe Team,%0D%0A%0D%0AI am interested in joining your team. Please find my resume attached.%0D%0A%0D%0AThank you,">
               <Button variant="outline" className="border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white font-bold">
                 Email Us Your Resume
               </Button>

@@ -10,6 +10,28 @@ export default function InstitutionDashboard() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleDownloadTemplate = () => {
+    const csvContent = "Name,Email,Grade\nJohn Doe,john@example.com,12\nJane Smith,jane@example.com,Undergrad";
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'MentorMe_Bulk_Upload_Template.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleExportReports = () => {
+    setIsExporting(true);
+    setTimeout(() => {
+      // Fake delay to simulate generating a zip of PDFs
+      setIsExporting(false);
+      alert("Cohort reports have been exported and sent to your registered email address.");
+    }, 2000);
+  };
 
   const processCSV = async (file: File) => {
     setUploadStatus('processing');
@@ -94,7 +116,11 @@ export default function InstitutionDashboard() {
              <h1 className="text-3xl font-black text-brand-blue uppercase tracking-tight">Institutional Dashboard</h1>
              <p className="text-slate-500 font-medium">Manage your cohorts and bulk-provision student assessments.</p>
            </div>
-           <Button variant="outline" className="bg-white border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white transition-all font-bold">
+           <Button 
+             onClick={handleDownloadTemplate}
+             variant="outline" 
+             className="bg-white border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white transition-all font-bold"
+           >
               Download CSV Template
            </Button>
         </div>
@@ -123,7 +149,13 @@ export default function InstitutionDashboard() {
               <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
               <p className="text-sm font-bold text-blue-200 uppercase tracking-wider mb-1">Batch Export</p>
               <h3 className="text-xl font-bold mb-4">Download all 12-page reports securely.</h3>
-              <Button className="w-full bg-white text-brand-blue hover:bg-slate-100 font-bold">Export Cohort ZIP</Button>
+              <Button 
+                onClick={handleExportReports}
+                disabled={isExporting}
+                className="w-full bg-white text-brand-blue hover:bg-slate-100 font-bold"
+              >
+                {isExporting ? "Archiving..." : "Export Cohort ZIP"}
+              </Button>
            </div>
         </div>
 

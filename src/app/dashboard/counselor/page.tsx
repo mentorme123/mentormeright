@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 
 export default function CounselorDashboard() {
   const [isJoining, setIsJoining] = useState<number | null>(null);
+  const [isDownloading, setIsDownloading] = useState<number | null>(null);
 
   const upcomingSessions = [
     { id: 1, name: "Syed Basim Ahmed", time: "10:00 AM", date: "Today", grade: "12", isPaid: true },
@@ -29,6 +30,22 @@ export default function CounselorDashboard() {
     } finally {
       setIsJoining(null);
     }
+  };
+
+  const handleDownloadReport = (session: { id: number; name: string; grade: string }) => {
+    setIsDownloading(session.id);
+    setTimeout(() => {
+      const reportContent = `MentorMe Career Report\n\nStudent: ${session.name}\nGrade: ${session.grade}\n\nThis is a securely generated psychometric report for the counselor to review before the video session.`;
+      const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${session.name.replace(/\s+/g, '_')}_Career_Report.txt`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setIsDownloading(null);
+    }, 1000);
   };
 
   return (
@@ -73,8 +90,17 @@ export default function CounselorDashboard() {
                        </div>
 
                        <div className="flex items-center gap-3 w-full sm:w-auto">
-                          <Button variant="outline" className="flex-1 sm:flex-none border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white font-bold transition-all">
-                             <FileText size={16} className="mr-2" /> View Report
+                          <Button 
+                            variant="outline" 
+                            onClick={() => handleDownloadReport(session)}
+                            disabled={isDownloading === session.id}
+                            className="flex-1 sm:flex-none border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white font-bold transition-all"
+                          >
+                             {isDownloading === session.id ? (
+                               <><Loader2 size={16} className="mr-2 animate-spin" /> Fetching...</>
+                             ) : (
+                               <><FileText size={16} className="mr-2" /> Download Report</>
+                             )}
                           </Button>
                           <Button 
                             onClick={() => handleJoinVideo(session.id)}

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
-  const [activeTab, setActiveTab] = useState<'student' | 'institution' | 'counselor'>('student');
+  const [activeTab, setActiveTab] = useState<'student' | 'institution' | 'counselor' | 'admin'>('student');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -79,6 +79,12 @@ export default function LoginPage() {
         // For now, if they select counselor, we just route them assuming they have access
         // (In a full app, counselor accounts would be linked to auth.users)
         router.push("/dashboard/counselor");
+      } else if (activeTab === 'admin') {
+        if (userRole === 'admin') {
+          router.push("/dashboard/admin");
+        } else {
+          throw new Error("Unauthorized: Not an Admin account.");
+        }
       }
 
     } catch (err: unknown) {
@@ -120,6 +126,12 @@ export default function LoginPage() {
            >
              Counselor
            </button>
+           <button 
+             onClick={() => setActiveTab('admin')}
+             className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'admin' ? 'bg-white shadow-sm text-purple-600' : 'text-slate-500 hover:text-slate-700'}`}
+           >
+             Admin
+           </button>
         </div>
 
         {error && (
@@ -137,7 +149,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none" 
-              placeholder={activeTab === 'institution' ? "director@school.edu" : "you@example.com"} 
+              placeholder={activeTab === 'institution' ? "director@school.edu" : activeTab === 'admin' ? "admin@mentormeright.in" : "you@example.com"} 
               required
             />
           </div>
@@ -162,6 +174,7 @@ export default function LoginPage() {
             className={`w-full py-6 text-lg font-bold rounded-xl text-white shadow-md transition-all ${
               activeTab === 'student' ? 'bg-brand-blue hover:bg-brand-blue/90' :
               activeTab === 'institution' ? 'bg-brand-orange hover:bg-brand-orange/90' :
+              activeTab === 'admin' ? 'bg-purple-600 hover:bg-purple-700' :
               'bg-emerald-600 hover:bg-emerald-700'
             }`}
           >

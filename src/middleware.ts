@@ -68,7 +68,7 @@ export async function middleware(request: NextRequest) {
   // If user is NOT logged in and trying to access a protected page
   if (!user && isProtectedPage) {
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    url.pathname = '/register'
     return NextResponse.redirect(url)
   }
 

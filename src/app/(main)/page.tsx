@@ -39,14 +39,14 @@ export default function Home() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8"
           >
-            <Link href="/assessment">
+            <Link href="/register">
               <Button size="lg" className="w-full sm:w-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-xl px-12 py-8 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-4 border-white/20">
-                Take Your Free Career Assessment Test
+                Register & Start Your Free Career Test
               </Button>
             </Link>
-            <Link href="/contact">
+            <Link href="/login">
               <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-10 py-6 rounded-full border-2 hover:bg-muted transition-all">
-                Contact Us
+                Login to Your Dashboard
               </Button>
             </Link>
           </motion.div>

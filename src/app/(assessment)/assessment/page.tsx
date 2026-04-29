@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { getQuestions, Question, AudienceType } from "@/lib/mock-questions";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase";
 
 export default function AssessmentPage() {
   const router = useRouter();
@@ -11,40 +12,119 @@ export default function AssessmentPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [assessmentId, setAssessmentId] = useState<string | null>(null);
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
-    // Load questions and previous answers
-    // Load audience-specific questions
-    const audience = (localStorage.getItem("mentorme_audience") || "ST") as AudienceType;
-    const q = getQuestions(audience);
-    setQuestions(q);
-    
-    const saved = localStorage.getItem("mentorme_assessment_progress");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setAnswers(parsed);
-        // Find first unanswered question
-        const firstUnanswered = q.findIndex(qn => !parsed[qn.id]);
-        if (firstUnanswered !== -1) {
-          setCurrentIndex(firstUnanswered);
-        } else {
-          setCurrentIndex(q.length - 1); // all answered
-        }
-      } catch (e) {
-        console.error("Failed to parse saved answers", e);
-      }
-    }
-    setIsLoaded(true);
-  }, []);
+    async function loadAssessment() {
+      // Load audience-specific questions
+      const audience = (localStorage.getItem("mentorme_audience") || "ST") as AudienceType;
+      const q = getQuestions(audience);
+      setQuestions(q);
+      
+      const dbAnswers: Record<number, string> = {};
 
-  const handleSelectOption = (optionKey: string) => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) {
+          router.push("/login?next=/assessment");
+          return;
+        }
+
+        // Verify role
+        const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single();
+        if (profile?.role !== 'individual' && profile?.role !== 'admin') {
+          router.push("/");
+          return;
+        }
+
+        if (user) {
+          // Check for active assessment
+          let { data: assessment } = await supabase
+            .from('assessments')
+            .select('id')
+            .eq('user_id', user.id)
+            .eq('status', 'in_progress')
+            .maybeSingle();
+
+          if (!assessment) {
+            // Create new assessment
+            const { data: newAssessment } = await supabase
+              .from('assessments')
+              .insert({ user_id: user.id })
+              .select('id')
+              .single();
+            assessment = newAssessment;
+          }
+
+          if (assessment) {
+            setAssessmentId(assessment.id);
+            // Fetch saved answers
+            const { data: answersData } = await supabase
+              .from('answers')
+              .select('question_id, selected_option')
+              .eq('assessment_id', assessment.id);
+              
+            if (answersData) {
+              answersData.forEach(ans => {
+                dbAnswers[ans.question_id] = ans.selected_option;
+              });
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error loading assessment from DB:", err);
+      }
+
+      // Merge local storage with DB answers (DB takes precedence)
+      let finalAnswers = { ...dbAnswers };
+      const savedLocal = localStorage.getItem("mentorme_assessment_progress");
+      if (savedLocal) {
+        try {
+          const parsed = JSON.parse(savedLocal);
+          // Only use local if DB is empty, to prevent overwriting cross-device progress with stale local data
+          if (Object.keys(dbAnswers).length === 0) {
+            finalAnswers = { ...parsed };
+          }
+        } catch { /* invalid JSON in localStorage, ignore */ }
+      }
+
+      setAnswers(finalAnswers);
+      
+      // Find first unanswered question
+      const firstUnanswered = q.findIndex(qn => !finalAnswers[qn.id]);
+      if (firstUnanswered !== -1) {
+        setCurrentIndex(firstUnanswered);
+      } else {
+        setCurrentIndex(q.length - 1); // all answered
+      }
+      
+      setIsLoaded(true);
+    }
+    
+    loadAssessment();
+  }, [supabase]);
+
+  const handleSelectOption = async (optionKey: string) => {
     const currentQ = questions[currentIndex];
     const newAnswers = { ...answers, [currentQ.id]: optionKey };
     setAnswers(newAnswers);
     
-    // Save to local storage (mocking real-time save to Supabase)
+    // Save to local storage for quick offline/fallback recovery
     localStorage.setItem("mentorme_assessment_progress", JSON.stringify(newAnswers));
+
+    // Persist to Supabase if logged in
+    if (assessmentId) {
+      // Fire and forget upsert
+      supabase.from('answers').upsert({
+        assessment_id: assessmentId,
+        question_id: currentQ.id,
+        selected_option: optionKey,
+        section: currentQ.section
+      }, { onConflict: 'assessment_id,question_id' }).then(({ error }) => {
+        if (error) console.error("Error saving answer to DB:", error);
+      });
+    }
 
     // Auto advance after short delay
     setTimeout(() => {
@@ -86,6 +166,29 @@ export default function AssessmentPage() {
 
       // Save report to localStorage for the report page to pick up
       localStorage.setItem("mentorme_ai_report", JSON.stringify(data.report));
+      // Clear stale progress
+      localStorage.removeItem("mentorme_assessment_progress");
+
+      // Persist to Supabase: mark assessment complete, save report record
+      if (assessmentId) {
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        // Mark assessment as completed
+        await supabase
+          .from('assessments')
+          .update({ status: 'completed', submitted_at: new Date().toISOString() })
+          .eq('id', assessmentId);
+
+        // Save the AI report to DB
+        if (user) {
+          await supabase.from('reports').insert({
+            user_id: user.id,
+            assessment_id: assessmentId,
+            report_content: data.report
+          });
+        }
+      }
+
       router.push("/report");
     } catch (error) {
       console.error("Error submitting assessment:", error);

@@ -1,16 +1,41 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Papa from "papaparse";
-import { Upload, Users, FileSpreadsheet, CheckCircle2, AlertCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase";
+import { Upload, Users, FileSpreadsheet, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function InstitutionDashboard() {
+  const router = useRouter();
+  const supabase = createClient();
+  const [loading, setLoading] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
   const [isExporting, setIsExporting] = useState(false);
+
+  useEffect(() => {
+    async function verifyRole() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+      const { data: profile } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+      
+      if (profile?.role !== 'institutional') {
+        router.push("/");
+      } else {
+        setLoading(false);
+      }
+    }
+    verifyRole();
+  }, [router, supabase]);
 
   const handleDownloadTemplate = () => {
     const csvContent = "Name,Email,Grade\nJohn Doe,john@example.com,12\nJane Smith,jane@example.com,Undergrad";
@@ -44,24 +69,35 @@ export default function InstitutionDashboard() {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const rows = results.data as any[];
           
-          if (rows.length === 0) {
-            throw new Error("The CSV file appears to be empty.");
-          }
+          if (rows.length === 0) throw new Error("The CSV file appears to be empty.");
+          if (!rows[0].Email) throw new Error("Missing required 'Email' column. Use the template.");
 
-          // Expected columns: Name, Email, Grade
-          if (!rows[0].Email) {
-            throw new Error("Missing required 'Email' column in CSV.");
-          }
+          // Get session token to authenticate the API call
+          const { createClient } = await import('@/lib/supabase');
+          const supabase = createClient();
+          const { data: { session } } = await supabase.auth.getSession();
 
-          // In a real production app, this should be sent to an API route (e.g. /api/bulk-import)
-          // which securely uses the SUPABASE_SERVICE_ROLE_KEY to bypass email confirmation 
-          // and mass-insert users into auth.users and public.users.
-          
-          // MOCK: Simulate server processing delay
-          await new Promise(r => setTimeout(r, 2000));
-          
-          setStudentsImported(rows.length);
+          if (!session) throw new Error("Session expired. Please log in again.");
+
+          const response = await fetch('/api/admin/bulk-provision', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${session.access_token}`,
+            },
+            body: JSON.stringify({ students: rows }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) throw new Error(data.error || 'Provisioning failed.');
+
+          setStudentsImported(data.results.success);
           setUploadStatus('success');
+
+          if (data.results.failed > 0) {
+            console.warn('Some rows failed:', data.results.errors);
+          }
 
         } catch (err: unknown) {
           const error = err as Error;
@@ -75,6 +111,7 @@ export default function InstitutionDashboard() {
       }
     });
   };
+
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -105,6 +142,14 @@ export default function InstitutionDashboard() {
       processCSV(file);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8">

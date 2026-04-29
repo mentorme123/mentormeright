@@ -1,12 +1,40 @@
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase";
 import { CalendarDays, Video, FileText, User, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function CounselorDashboard() {
+  const router = useRouter();
+  const supabase = createClient();
+  const [loading, setLoading] = useState(true);
   const [isJoining, setIsJoining] = useState<number | null>(null);
   const [isDownloading, setIsDownloading] = useState<number | null>(null);
+
+  useEffect(() => {
+    async function verifyRole() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+      // Note: Counselors might be a separate table or a role in the users table.
+      // For this implementation, we assume they have a specific role or link.
+      const { data: profile } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', user.id)
+        .single();
+      
+      // Allow both 'admin' and 'counselor' (if you add that role later)
+      if (profile?.role === 'individual' || profile?.role === 'institutional') {
+        router.push("/");
+      } else {
+        setLoading(false);
+      }
+    }
+    verifyRole();
+  }, [router, supabase]);
 
   const upcomingSessions = [
     { id: 1, name: "Syed Basim Ahmed", time: "10:00 AM", date: "Today", grade: "12", isPaid: true },
@@ -47,6 +75,14 @@ export default function CounselorDashboard() {
       setIsDownloading(null);
     }, 1000);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8">

@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { scoreAnswers, buildScoreSummary } from '@/lib/scoring';
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
   try {
     const { answers, audience } = await req.json();

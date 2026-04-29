@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase";
 import { Printer, Sparkles, AlertTriangle, Target, Briefcase, GraduationCap, Calendar, Landmark, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer } from "recharts";
@@ -49,18 +51,35 @@ const SectionHeader = ({ num, title }: { num: string, title: string }) => (
 );
 
 export default function ReportPage() {
+  const router = useRouter();
+  const supabase = createClient();
   const [report, setReport] = useState<ReportData | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("mentorme_ai_report");
-    if (saved) {
-      try {
-        setReport(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse report", e);
+    async function checkAuth() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login?next=/report");
+        return;
+      }
+      
+      const { data: profile } = await supabase.from('users').select('role').eq('id', user.id).single();
+      if (profile?.role !== 'individual' && profile?.role !== 'admin') {
+        router.push("/");
+        return;
+      }
+
+      const saved = localStorage.getItem("mentorme_ai_report");
+      if (saved) {
+        try {
+          setReport(JSON.parse(saved));
+        } catch (e) {
+          console.error("Failed to parse report", e);
+        }
       }
     }
-  }, []);
+    checkAuth();
+  }, [router, supabase]);
 
   const handlePrint = () => {
     window.print();

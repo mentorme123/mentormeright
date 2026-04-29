@@ -24,6 +24,7 @@ export function Navbar() {
           <Link href="/" className="hover:text-brand-blue transition-colors text-foreground">Home</Link>
           <Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link>
           <Link href="/services" className="hover:text-brand-blue transition-colors">Services</Link>
+          <Link href="/blogs" className="hover:text-brand-blue transition-colors">Blogs</Link>
           <Link href="/contact" className="hover:text-brand-blue transition-colors">Contact Us</Link>
         </div>
 

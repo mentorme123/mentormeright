@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { getQuestions, Question, AudienceType } from "@/lib/mock-questions";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
+import { Loader2, BrainCircuit } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function AssessmentPage() {
   const router = useRouter();
@@ -68,6 +70,19 @@ export default function AssessmentPage() {
   };
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [processingTime, setProcessingTime] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isSubmitting) {
+      interval = setInterval(() => {
+        setProcessingTime(prev => prev + 1);
+      }, 1000);
+    } else {
+      setProcessingTime(0);
+    }
+    return () => clearInterval(interval);
+  }, [isSubmitting]);
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -120,7 +135,55 @@ export default function AssessmentPage() {
   const isCurrentAnswered = !!answers[currentQ.id];
 
   return (
-    <div className="flex-1 flex flex-col items-center p-4 py-8 sm:py-16">
+    <div className="flex-1 flex flex-col items-center p-4 py-8 sm:py-16 relative">
+      
+      {/* Processing Overlay */}
+      <AnimatePresence>
+        {isSubmitting && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center flex flex-col items-center"
+            >
+              <div className="relative mb-6">
+                <div className="absolute inset-0 bg-brand-blue/20 rounded-full animate-ping"></div>
+                <div className="w-20 h-20 bg-brand-blue text-white rounded-full flex items-center justify-center relative z-10">
+                  <BrainCircuit size={40} className="animate-pulse" />
+                </div>
+              </div>
+              
+              <h2 className="text-2xl font-black text-slate-800 mb-2">Analyzing Profile</h2>
+              <p className="text-slate-500 mb-6">
+                Our AI is currently mapping your 90 responses across 17 parameters to generate your 12-page Career Intelligence Report.
+              </p>
+              
+              <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden mb-4 relative">
+                <motion.div 
+                  className="h-full bg-gradient-to-r from-brand-blue to-purple-600 rounded-full"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 45, ease: "linear" }}
+                />
+              </div>
+              
+              <div className="flex items-center justify-center gap-2 text-sm font-bold text-brand-blue">
+                <Loader2 size={16} className="animate-spin" />
+                <span>Processing... {processingTime}s elapsed</span>
+              </div>
+              <p className="text-xs text-slate-400 mt-4">
+                This process usually takes 30-60 seconds. Please do not close or refresh this page.
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="w-full max-w-3xl space-y-8">
         
         {/* Progress Header */}

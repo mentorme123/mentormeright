@@ -21,15 +21,9 @@ export function Footer() {
             <p className="text-lg font-semibold text-brand-orange">
               Turning Passions into Professions
             </p>
-            <div className="space-y-4 text-sm text-muted-foreground">
-              <div>
-                <p className="font-bold text-slate-900 mb-1">Student Support:</p>
-                <p>+91-9392707596 | admin@mentormeright.in</p>
-              </div>
-              <div>
-                <p className="font-bold text-slate-900 mb-1">Institutions & B2B:</p>
-                <p>+91-7674982983 | sandeep@mentormeright.in</p>
-              </div>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p><strong className="text-foreground">Call us at:</strong> +91-9392707596, +91-8188824440</p>
+              <p><strong className="text-foreground">Mail us at:</strong> admin@mentormeright.in</p>
               <p><strong className="text-foreground">Location:</strong> Hyderabad, India</p>
             </div>
           </div>

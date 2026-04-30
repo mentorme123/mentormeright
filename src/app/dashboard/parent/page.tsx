@@ -49,14 +49,13 @@ export default function ParentDashboard() {
       setLoading(false);
     }
     fetchParentData();
-  }, []);
+  }, [supabase]);
 
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-blue"></div>
     </div>;
   }
-
   return (
     <div className="min-h-screen bg-slate-50 pt-20 pb-12 px-4 md:px-8">
       <div className="max-w-7xl mx-auto space-y-8">
@@ -184,7 +183,7 @@ export default function ParentDashboard() {
                   Career ROI Insight
                 </h3>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                  Based on {student?.full_name.split(&apos; &apos;)[0]}&apos;s current skills and target career, the expected ROI for higher education is <span className="text-white font-bold">2.4x</span> within the first 3 years of graduation.
+                  Based on {student?.full_name.split(' ')[0]}&apos;s current skills and target career, the expected ROI for higher education is <span className="text-white font-bold">2.4x</span> within the first 3 years of graduation.
                 </p>
                 <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
                   <span className="block text-xs font-bold text-slate-500 uppercase mb-2">Projected Starting Salary</span>

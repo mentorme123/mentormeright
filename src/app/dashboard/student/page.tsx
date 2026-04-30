@@ -7,42 +7,51 @@ import { createClient } from "@/lib/supabase";
 import Image from "next/image";
 import { 
   ClipboardList, 
-  Trophy, 
   ArrowRight, 
   Loader2, 
-  Target,
   Globe,
-  UserCircle,
+  User,
   Phone,
   MapPin,
   GraduationCap,
-  Briefcase
+  Briefcase,
+  TrendingUp,
+  Star,
+  AlertTriangle,
+  Video,
+  Mail,
+  X,
+  ChevronRight,
+  Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type UserProfile = any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ReportData = any;
 
 export default function StudentDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
-  
-  const [user, setUser] = useState<any>(null);
-  const [profile, setProfile] = useState<any>(null);
-  const [assessmentStatus, setAssessmentStatus] = useState<'not_started' | 'in_progress' | 'completed'>('not_started');
-  const [reportData, setReportData] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [authUser, setAuthUser] = useState<any>(null);
+  const [profile, setProfile] = useState<UserProfile>(null);
+  const [reportData, setReportData] = useState<ReportData>(null);
+  const [assessmentStatus, setAssessmentStatus] = useState<'not_started' | 'completed'>('not_started');
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
-  // Profile Modal State
-  const [showProfileModal, setShowProfileModal] = useState(false);
-  const [savingProfile, setSavingProfile] = useState(false);
-  const [formData, setFormData] = useState({
-    phone: "",
-    gender: "",
-    country: "",
-    state: "",
-    education_level: "",
-    current_package: "",
-    target_package: ""
-  });
+  // Onboarding form state
+  const [formPhone, setFormPhone] = useState("");
+  const [formGender, setFormGender] = useState("");
+  const [formCountry, setFormCountry] = useState("");
+  const [formState, setFormState] = useState("");
+  const [formEducation, setFormEducation] = useState("");
+  const [formCurrentPackage, setFormCurrentPackage] = useState("");
+  const [formTargetPackage, setFormTargetPackage] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     async function loadData() {
@@ -51,9 +60,9 @@ export default function StudentDashboard() {
         router.push("/login");
         return;
       }
-      setUser(user);
+      setAuthUser(user);
 
-      // Fetch Profile
+      // Fetch profile from users table
       const { data: userProfile } = await supabase
         .from('users')
         .select('*')
@@ -62,14 +71,20 @@ export default function StudentDashboard() {
       
       setProfile(userProfile);
 
-      if (userProfile && (!userProfile.phone || !userProfile.country)) {
-        setShowProfileModal(true);
+      // Check if profile is incomplete (no phone means they haven't filled the form)
+      if (userProfile && !userProfile.phone) {
+        setShowOnboarding(true);
+        // Pre-fill education from audience type
+        if (userProfile.audience_type) {
+          const audienceMap: Record<string, string> = { 'ST': 'School Student', 'UG': 'College/Undergraduate', 'GR': 'Graduate', 'WP': 'Working Professional' };
+          setFormEducation(audienceMap[userProfile.audience_type] || '');
+        }
       }
 
-      // Check assessment status
+      // Check assessment status and fetch report
       const { data: assessment } = await supabase
         .from('assessment_results')
-        .select('*')
+        .select('id, report, scores, completed_at')
         .eq('user_id', user.id)
         .order('completed_at', { ascending: false })
         .limit(1)
@@ -78,281 +93,424 @@ export default function StudentDashboard() {
       if (assessment) {
         setAssessmentStatus('completed');
         setReportData(assessment.report);
-      } else {
-        setAssessmentStatus('not_started');
       }
       setLoading(false);
     }
     loadData();
   }, [router, supabase]);
 
-  const handleSaveProfile = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSavingProfile(true);
-    
-    try {
-      const { error } = await supabase
-        .from('users')
-        .update({
-          phone: formData.phone,
-          gender: formData.gender,
-          country: formData.country,
-          state: formData.state,
-          education_level: formData.education_level,
-          current_package: formData.current_package,
-          target_package: formData.target_package
-        })
-        .eq('id', user.id);
-
-      if (error) throw error;
-      
-      setProfile({ ...profile, ...formData });
-      setShowProfileModal(false);
-    } catch (err) {
-      console.error("Error saving profile", err);
-      alert("Failed to save profile. Please try again.");
-    } finally {
-      setSavingProfile(false);
+  const handleSaveProfile = async () => {
+    if (!formPhone || !formGender || !formCountry || !formState || !formEducation) {
+      alert("Please fill in all required fields.");
+      return;
     }
+    setSaving(true);
+    const { error } = await supabase
+      .from('users')
+      .update({
+        phone: formPhone,
+        gender: formGender,
+        country: formCountry,
+        state: formState,
+        education_level: formEducation,
+        current_package: formCurrentPackage || null,
+        target_package: formTargetPackage || null,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', authUser.id);
+
+    if (error) {
+      alert("Failed to save profile. Please try again.");
+      console.error(error);
+    } else {
+      // Refresh the profile
+      const { data: updatedProfile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', authUser.id)
+        .single();
+      setProfile(updatedProfile);
+      setShowOnboarding(false);
+    }
+    setSaving(false);
   };
+
+  // Extract strengths and weaknesses from report
+  const getStrengths = (): string[] => {
+    if (!reportData) return [];
+    try {
+      if (reportData.strengths) return Array.isArray(reportData.strengths) ? reportData.strengths.slice(0, 4) : [];
+      if (reportData.top_strengths) return Array.isArray(reportData.top_strengths) ? reportData.top_strengths.slice(0, 4) : [];
+      if (reportData.keyStrengths) return Array.isArray(reportData.keyStrengths) ? reportData.keyStrengths.slice(0, 4) : [];
+      // Try nested
+      if (reportData.summary?.strengths) return reportData.summary.strengths.slice(0, 4);
+    } catch { /* ignore */ }
+    return [];
+  };
+
+  const getWeaknesses = (): string[] => {
+    if (!reportData) return [];
+    try {
+      if (reportData.areas_for_development) return Array.isArray(reportData.areas_for_development) ? reportData.areas_for_development.slice(0, 4) : [];
+      if (reportData.weaknesses) return Array.isArray(reportData.weaknesses) ? reportData.weaknesses.slice(0, 4) : [];
+      if (reportData.areasForImprovement) return Array.isArray(reportData.areasForImprovement) ? reportData.areasForImprovement.slice(0, 4) : [];
+      if (reportData.summary?.areas_for_development) return reportData.summary.areas_for_development.slice(0, 4);
+    } catch { /* ignore */ }
+    return [];
+  };
+
+  const isWorkingProfessional = profile?.audience_type === 'WP' || formEducation === 'Working Professional';
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-indigo" />
+        <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
       </div>
     );
   }
 
-  const topTraits = reportData?.career_pathways?.[0] || null;
-
   return (
-    <div className="min-h-screen bg-slate-50/30 pt-24 pb-12 px-4 sm:px-8 relative">
-      
-      {/* Profile Onboarding Modal */}
+    <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8">
+
+      {/* Onboarding Modal */}
       <AnimatePresence>
-        {showProfileModal && (
-          <motion.div 
+        {showOnboarding && (
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 overflow-y-auto"
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/70 backdrop-blur-md p-4"
           >
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              className="bg-white rounded-3xl p-8 max-w-2xl w-full shadow-2xl my-8"
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl max-h-[90vh] overflow-y-auto"
             >
-              <div className="text-center space-y-2 mb-8">
-                <h2 className="text-3xl font-black text-brand-blue uppercase tracking-tight">Complete Your Profile</h2>
-                <p className="text-slate-500 font-medium">We need a few more details to personalize your career intelligence journey.</p>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-black text-slate-800">Complete Your Profile</h2>
+                  <p className="text-slate-500 text-sm mt-1">Help us personalize your career guidance experience.</p>
+                </div>
+                <button onClick={() => setShowOnboarding(false)} className="p-2 hover:bg-slate-100 rounded-xl transition-colors">
+                  <X size={20} className="text-slate-400" />
+                </button>
               </div>
 
-              <form onSubmit={handleSaveProfile} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-700">Phone Number *</label>
-                    <input type="tel" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-brand-blue/20" placeholder="+1 234 567 8900" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-700">Gender *</label>
-                    <select required value={formData.gender} onChange={e => setFormData({...formData, gender: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-brand-blue/20">
-                      <option value="">Select Gender</option>
-                      <option value="Male">Male</option>
-                      <option value="Female">Female</option>
-                      <option value="Other">Other</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-700">Country *</label>
-                    <input type="text" required value={formData.country} onChange={e => setFormData({...formData, country: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-brand-blue/20" placeholder="United States" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold text-slate-700">State / Region *</label>
-                    <input type="text" required value={formData.state} onChange={e => setFormData({...formData, state: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-brand-blue/20" placeholder="California" />
-                  </div>
-                  <div className="space-y-2 md:col-span-2">
-                    <label className="text-sm font-bold text-slate-700">Education Level / Class *</label>
-                    <select required value={formData.education_level} onChange={e => setFormData({...formData, education_level: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-brand-blue/20">
-                      <option value="">Select Level</option>
-                      <option value="High School">High School (Grade 9-12)</option>
-                      <option value="Undergraduate">Undergraduate Student</option>
-                      <option value="Graduate">Graduate Student</option>
-                      <option value="Working Professional">Working Professional</option>
-                    </select>
-                  </div>
-                  
-                  {formData.education_level === "Working Professional" && (
-                    <>
-                      <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-700">Current Package (Optional)</label>
-                        <input type="text" value={formData.current_package} onChange={e => setFormData({...formData, current_package: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-brand-blue/20" placeholder="e.g. $80,000 / 12 LPA" />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-bold text-slate-700">Target Package (Optional)</label>
-                        <input type="text" value={formData.target_package} onChange={e => setFormData({...formData, target_package: e.target.value})} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 outline-none focus:ring-2 focus:ring-brand-blue/20" placeholder="e.g. $120,000 / 20 LPA" />
-                      </div>
-                    </>
-                  )}
+              <div className="space-y-4">
+                {/* Phone */}
+                <div>
+                  <label className="text-sm font-bold text-slate-700 mb-1 block">Phone Number *</label>
+                  <input
+                    type="tel"
+                    value={formPhone}
+                    onChange={(e) => setFormPhone(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                    required
+                  />
                 </div>
                 
-                <Button type="submit" disabled={savingProfile} className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-4 rounded-xl text-lg shadow-lg">
-                  {savingProfile ? "Saving Profile..." : "Save & Continue to Dashboard"}
+                {/* Gender */}
+                <div>
+                  <label className="text-sm font-bold text-slate-700 mb-1 block">Gender *</label>
+                  <select
+                    value={formGender}
+                    onChange={(e) => setFormGender(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                    required
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                </div>
+
+                {/* Country & State */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="text-sm font-bold text-slate-700 mb-1 block">Country *</label>
+                    <input
+                      type="text"
+                      value={formCountry}
+                      onChange={(e) => setFormCountry(e.target.value)}
+                      placeholder="India"
+                      className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-bold text-slate-700 mb-1 block">State *</label>
+                    <input
+                      type="text"
+                      value={formState}
+                      onChange={(e) => setFormState(e.target.value)}
+                      placeholder="Karnataka"
+                      className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Education Level */}
+                <div>
+                  <label className="text-sm font-bold text-slate-700 mb-1 block">Education Level *</label>
+                  <select
+                    value={formEducation}
+                    onChange={(e) => setFormEducation(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                    required
+                  >
+                    <option value="">Select Level</option>
+                    <option value="School Student">School Student (8th - 12th)</option>
+                    <option value="College/Undergraduate">College / Undergraduate</option>
+                    <option value="Graduate">Graduate / Post Graduate</option>
+                    <option value="Working Professional">Working Professional</option>
+                  </select>
+                </div>
+
+                {/* Working Professional Fields */}
+                {isWorkingProfessional && (
+                  <motion.div 
+                    initial={{ opacity: 0, height: 0 }} 
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="space-y-4 border-t border-slate-100 pt-4"
+                  >
+                    <p className="text-xs font-bold text-brand-orange uppercase tracking-wider">Professional Details</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-sm font-bold text-slate-700 mb-1 block">Current Package (LPA)</label>
+                        <input
+                          type="text"
+                          value={formCurrentPackage}
+                          onChange={(e) => setFormCurrentPackage(e.target.value)}
+                          placeholder="e.g. 8 LPA"
+                          className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-bold text-slate-700 mb-1 block">Target Package (LPA)</label>
+                        <input
+                          type="text"
+                          value={formTargetPackage}
+                          onChange={(e) => setFormTargetPackage(e.target.value)}
+                          placeholder="e.g. 15 LPA"
+                          className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+
+                <Button
+                  onClick={handleSaveProfile}
+                  disabled={saving}
+                  className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl mt-4 shadow-lg"
+                >
+                  {saving ? <><Loader2 className="animate-spin mr-2" size={16} /> Saving...</> : "Save & Continue"}
                 </Button>
-              </form>
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto space-y-10">
+      <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Premium Header */}
-        <div className="relative p-10 rounded-[40px] overflow-hidden bg-brand-slate text-white shadow-2xl">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-indigo/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-6">
-              <div className="relative h-20 w-20 rounded-3xl border-4 border-white/10 overflow-hidden shadow-2xl">
+        {/* Header */}
+        <div className="relative p-8 sm:p-10 rounded-3xl overflow-hidden bg-gradient-to-br from-brand-blue to-blue-900 text-white shadow-2xl">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
+          <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div className="flex items-center gap-5">
+              <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-2xl border-4 border-white/10 overflow-hidden shadow-2xl shrink-0">
                 <Image 
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.email}&backgroundColor=1B3A6B,0D7377,F0A500`}
+                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${authUser?.email}&backgroundColor=1B3A6B,0D7377,F0A500`}
                   alt="Avatar"
                   fill
                   className="object-cover"
                 />
               </div>
-              <div className="space-y-1">
-                <h1 className="text-4xl font-black tracking-tight">Welcome, {user?.user_metadata?.full_name || user?.email?.split('@')[0]}</h1>
-                <p className="text-blue-100/60 font-medium text-lg italic">&quot;The best way to predict the future is to create it.&quot;</p>
+              <div className="space-y-1 min-w-0">
+                <h1 className="text-2xl sm:text-3xl font-black tracking-tight truncate">Welcome, {authUser?.user_metadata?.full_name || authUser?.email?.split('@')[0]}</h1>
+                <p className="text-blue-200 font-medium text-sm truncate">{authUser?.email}</p>
               </div>
             </div>
             {assessmentStatus === 'completed' && (
               <Link href="/report">
-                <Button className="bg-brand-gold hover:bg-brand-gold/90 text-brand-slate font-black shadow-xl px-10 py-7 rounded-2xl text-lg transition-all hover:scale-105">
-                  View AI Career Report <ArrowRight className="ml-2" size={20} />
+                <Button className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold shadow-xl px-8 py-6 rounded-2xl text-base transition-all hover:scale-105 whitespace-nowrap">
+                  View AI Report <ArrowRight className="ml-2" size={18} />
                 </Button>
               </Link>
             )}
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-10">
-             
-             {/* Profile Details Mini Card */}
-             {profile && profile.phone && (
-               <div className="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-wrap gap-6 items-center text-sm font-medium text-slate-600">
-                 <div className="flex items-center gap-2"><Phone size={16} className="text-brand-orange"/> {profile.phone}</div>
-                 <div className="flex items-center gap-2"><MapPin size={16} className="text-brand-blue"/> {profile.state}, {profile.country}</div>
-                 <div className="flex items-center gap-2"><GraduationCap size={16} className="text-emerald-600"/> {profile.education_level}</div>
-                 {profile.current_package && (
-                   <div className="flex items-center gap-2"><Briefcase size={16} className="text-purple-600"/> Target: {profile.target_package}</div>
-                 )}
-               </div>
-             )}
+          <div className="lg:col-span-2 space-y-8">
 
-             {/* Assessment Main Card */}
-             <div className="relative bg-white rounded-[40px] p-10 border border-slate-100 shadow-xl shadow-slate-200/40 group overflow-hidden">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-brand-indigo/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform"></div>
-                <div className="relative z-10 space-y-8">
-                   <div className="flex justify-between items-center">
-                      <div className="p-4 bg-brand-indigo/5 rounded-2xl">
-                        <ClipboardList size={32} className="text-brand-indigo" />
-                      </div>
-                      <div className={`px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest ${
-                        assessmentStatus === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-brand-gold/10 text-brand-gold'
-                      }`}>
-                        {assessmentStatus.replace('_', ' ')}
-                      </div>
-                   </div>
-                   <div className="space-y-4">
-                      <h2 className="text-3xl font-black text-brand-slate leading-tight">Professional Career Intelligence Assessment</h2>
-                      <p className="text-slate-500 leading-relaxed text-lg font-medium max-w-2xl">
-                        Our proprietary 90-question psychometric engine maps your unique traits to over 500+ global career paths.
-                      </p>
-                   </div>
-                   
-                   {/* Track Record Display */}
-                   {assessmentStatus === 'completed' && reportData && (
-                     <div className="grid sm:grid-cols-2 gap-4 pt-4">
-                       <div className="bg-emerald-50 border border-emerald-100 p-5 rounded-2xl">
-                         <h4 className="font-bold text-emerald-800 mb-2">Dominant Trait</h4>
-                         <p className="text-emerald-700 text-sm">{reportData.executive_summary?.split('.')[0] || "Highly analytical with strong problem-solving skills."}</p>
-                       </div>
-                       <div className="bg-orange-50 border border-orange-100 p-5 rounded-2xl">
-                         <h4 className="font-bold text-orange-800 mb-2">Top Recommendation</h4>
-                         <p className="text-orange-700 text-sm font-bold">{topTraits?.title || "Technology & Strategy"}</p>
-                       </div>
-                     </div>
-                   )}
-
-                   <div className="pt-4">
-                     <Link href={assessmentStatus === 'completed' ? "/report" : "/assessment"}>
-                        <Button className="bg-brand-indigo hover:bg-brand-indigo/90 text-white font-black px-12 py-8 rounded-2xl text-xl shadow-xl shadow-brand-indigo/20 transition-all hover:scale-105">
-                          {assessmentStatus === 'not_started' ? 'Begin Evaluation' : assessmentStatus === 'in_progress' ? 'Continue Journey' : 'View Full AI Report'}
-                        </Button>
-                     </Link>
-                   </div>
+            {/* Profile Details Card */}
+            {profile?.phone && (
+              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-lg font-black text-slate-800 flex items-center gap-2">
+                    <User size={20} className="text-brand-blue" /> My Profile
+                  </h3>
+                  <button 
+                    onClick={() => setShowOnboarding(true)} 
+                    className="text-xs font-bold text-brand-blue hover:underline"
+                  >
+                    Edit
+                  </button>
                 </div>
-             </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                  {[
+                    { icon: <Mail size={14} />, label: "Email", value: profile.email },
+                    { icon: <Phone size={14} />, label: "Phone", value: profile.phone },
+                    { icon: <User size={14} />, label: "Gender", value: profile.gender },
+                    { icon: <MapPin size={14} />, label: "Location", value: `${profile.state || ''}, ${profile.country || ''}` },
+                    { icon: <GraduationCap size={14} />, label: "Education", value: profile.education_level },
+                    ...(profile.current_package ? [{ icon: <Briefcase size={14} />, label: "Current CTC", value: profile.current_package }] : []),
+                    ...(profile.target_package ? [{ icon: <TrendingUp size={14} />, label: "Target CTC", value: profile.target_package }] : []),
+                  ].filter(item => item.value && item.value !== ', ').map((item, i) => (
+                    <div key={i} className="p-3 bg-slate-50 rounded-xl">
+                      <div className="flex items-center gap-1.5 text-slate-400 mb-1">
+                        {item.icon}
+                        <span className="text-[10px] font-bold uppercase tracking-wider">{item.label}</span>
+                      </div>
+                      <p className="text-sm font-bold text-slate-700 truncate">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+             
+            {/* Assessment Card */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+              <div className="flex justify-between items-center mb-4">
+                <div className="p-3 bg-brand-blue/5 rounded-xl">
+                  <ClipboardList size={24} className="text-brand-blue" />
+                </div>
+                <div className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
+                  assessmentStatus === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-brand-orange/10 text-brand-orange'
+                }`}>
+                  {assessmentStatus === 'completed' ? 'Completed' : 'Pending'}
+                </div>
+              </div>
+              <h2 className="text-xl font-black text-slate-800 mb-2">Career Intelligence Assessment</h2>
+              <p className="text-slate-500 text-sm mb-6">
+                Our proprietary 90-question psychometric engine maps your unique traits to 500+ global career paths.
+              </p>
+              <Link href={assessmentStatus === 'completed' ? "/report" : "/assessment"}>
+                <Button className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-8 py-5 rounded-xl shadow-md transition-all hover:scale-105">
+                  {assessmentStatus === 'completed' ? 'View Full Report' : 'Begin Assessment'} <ChevronRight className="ml-1" size={16} />
+                </Button>
+              </Link>
+              {assessmentStatus === 'completed' && (
+                <Link href="/report">
+                  <Button variant="outline" className="ml-3 font-bold px-6 py-5 rounded-xl">
+                    <Download size={16} className="mr-2" /> Download PDF
+                  </Button>
+                </Link>
+              )}
+            </div>
+
+            {/* Strengths & Areas for Development */}
+            {assessmentStatus === 'completed' && (getStrengths().length > 0 || getWeaknesses().length > 0) && (
+              <div className="grid sm:grid-cols-2 gap-6">
+                {/* Strengths */}
+                {getStrengths().length > 0 && (
+                  <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2 text-base">
+                      <Star size={18} className="text-emerald-600" /> Top Strengths
+                    </h3>
+                    <div className="space-y-2">
+                      {getStrengths().map((s: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2 p-2.5 bg-emerald-50 rounded-lg">
+                          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5 shrink-0"></div>
+                          <span className="text-sm font-medium text-emerald-800">{typeof s === 'string' ? s : JSON.stringify(s)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Weaknesses */}
+                {getWeaknesses().length > 0 && (
+                  <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                    <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2 text-base">
+                      <AlertTriangle size={18} className="text-amber-500" /> Areas for Development
+                    </h3>
+                    <div className="space-y-2">
+                      {getWeaknesses().map((s: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2 p-2.5 bg-amber-50 rounded-lg">
+                          <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-1.5 shrink-0"></div>
+                          <span className="text-sm font-medium text-amber-800">{typeof s === 'string' ? s : JSON.stringify(s)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-10">
-             
-             {/* Premium Counseling CTA */}
-             <div className="bg-gradient-to-br from-brand-slate to-[#0D1A30] text-white rounded-[40px] p-10 shadow-2xl relative overflow-hidden group border border-white/10">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-brand-orange/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-                <div className="relative z-10">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-bold tracking-widest uppercase mb-6 text-brand-gold border border-white/5">
-                    <span className="w-2 h-2 rounded-full bg-brand-gold animate-pulse"></span> Highly Recommended
-                  </div>
-                  <h3 className="text-3xl font-black mb-4 leading-tight">1-on-1 Expert Counseling</h3>
-                  <p className="text-blue-100/70 text-sm leading-relaxed mb-8 font-medium">
-                     Your AI report provides the map, but an expert provides the compass. Book a session to decode your psychometric results, align them with market realities, and build an actionable roadmap.
-                  </p>
-                  
-                  <div className="space-y-3 mb-8">
-                    <div className="flex items-center gap-3 text-sm text-blue-50/90 font-medium">
-                      <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">✓</div>
-                      Decode your 12-page report
-                    </div>
-                    <div className="flex items-center gap-3 text-sm text-blue-50/90 font-medium">
-                      <div className="w-6 h-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">✓</div>
-                      Get unbiased college/job advice
+          <div className="space-y-8">
+            
+            {/* Market Insights */}
+            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+              <h3 className="font-black text-slate-800 mb-5 flex items-center gap-2 text-base">
+                <Globe size={18} className="text-brand-blue" /> Market Insights
+              </h3>
+              <div className="space-y-3">
+                {[
+                  { title: "Generative AI FinTech", trend: "+45%", color: "text-emerald-600 bg-emerald-50" },
+                  { title: "Sustainability Tech", trend: "+30%", color: "text-brand-blue bg-brand-blue/5" },
+                  { title: "Cybersecurity", trend: "+60%", color: "text-purple-600 bg-purple-50" },
+                ].map((news, i) => (
+                  <div key={i} className="p-4 rounded-xl border border-slate-100 hover:bg-slate-50 transition-all cursor-pointer">
+                    <div className="flex justify-between items-center">
+                      <h4 className="font-bold text-slate-700 text-sm">{news.title}</h4>
+                      <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${news.color}`}>
+                        {news.trend}
+                      </span>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
 
-                  <Link href="/counsellors" className="block w-full">
-                    <Button className="w-full bg-brand-orange hover:bg-brand-orange/90 text-white font-black py-7 rounded-2xl shadow-xl transition-all hover:scale-105 border-none">
-                       Book Consultation Now
-                    </Button>
-                  </Link>
-                </div>
-             </div>
-
-             <div className="bg-white border border-slate-100 rounded-[40px] p-10 shadow-xl shadow-slate-200/40">
-                <h3 className="font-black text-brand-slate mb-8 flex items-center gap-3 text-xl">
-                   <Globe size={24} className="text-brand-indigo" /> Market Insights
-                </h3>
-                <div className="space-y-6">
-                   {[
-                     { title: "Generative AI FinTech", trend: "+45%", color: "text-emerald-600 bg-emerald-50" },
-                     { title: "Sustainability Tech", trend: "+30%", color: "text-brand-indigo bg-brand-indigo/5" },
-                     { title: "Cybersecurity", trend: "+60%", color: "text-purple-600 bg-purple-50" },
-                   ].map((news, i) => (
-                     <div key={i} className="p-5 rounded-2xl border border-slate-50 hover:bg-slate-50 transition-all cursor-pointer group">
-                        <div className="flex justify-between items-center">
-                          <h4 className="font-bold text-brand-slate group-hover:text-brand-indigo transition-colors">{news.title}</h4>
-                          <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${news.color}`}>
-                            {news.trend}
-                          </span>
-                        </div>
-                     </div>
-                   ))}
-                </div>
-             </div>
-
+            {/* Why Counseling Matters */}
+            <div className="bg-gradient-to-br from-brand-blue to-blue-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
+              <div className="absolute bottom-0 right-0 w-32 h-32 bg-brand-orange/20 rounded-full blur-2xl translate-x-1/2 translate-y-1/2"></div>
+              <div className="relative z-10">
+                <Video size={28} className="text-brand-orange mb-3" />
+                <h3 className="text-xl font-black mb-3">Why 1-on-1 Counseling?</h3>
+                <ul className="space-y-2 text-blue-100 text-sm mb-6">
+                  <li className="flex items-start gap-2">
+                    <ChevronRight size={14} className="text-brand-orange shrink-0 mt-0.5" />
+                    <span>Decode your AI report with an expert counselor</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight size={14} className="text-brand-orange shrink-0 mt-0.5" />
+                    <span>Get a personalized career roadmap</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <ChevronRight size={14} className="text-brand-orange shrink-0 mt-0.5" />
+                    <span>Live video session, fully confidential</span>
+                  </li>
+                </ul>
+                <Link href="/counsellors">
+                  <Button className="w-full bg-brand-orange hover:bg-brand-orange/90 text-white font-bold py-5 rounded-xl shadow-lg transition-all hover:scale-105">
+                    Book Counseling Session
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
 
         </div>

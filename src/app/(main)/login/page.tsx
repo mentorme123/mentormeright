@@ -61,14 +61,15 @@ export default function LoginPage() {
 
       if (activeTab === 'student') {
         if (userRole === 'individual') {
-          // Check if they already took the assessment
-          const { data: assessmentData } = await supabase
+          // Check if they've already completed an assessment
+          const { data: existingResult } = await supabase
             .from('assessment_results')
             .select('id')
             .eq('user_id', data.user.id)
-            .limit(1);
+            .limit(1)
+            .maybeSingle();
 
-          if (assessmentData && assessmentData.length > 0) {
+          if (existingResult) {
             router.push("/dashboard/student");
           } else {
             router.push("/assessment");

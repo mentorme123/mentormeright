@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
-import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,8 +18,7 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
-      // Always use the production URL for OAuth — never localhost
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+      const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
@@ -28,9 +26,8 @@ export default function LoginPage() {
         },
       });
       if (error) throw error;
-    } catch (err: unknown) {
-      const error = err as Error;
-      setError(error.message || "Failed to log in with Google.");
+    } catch (err: any) {
+      setError(err.message || "Google Login Failed");
       setLoading(false);
     }
   };
@@ -41,86 +38,66 @@ export default function LoginPage() {
     setError("");
 
     try {
+      console.log("Attempting login for:", email);
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (authError) throw authError;
+      if (!data.user) throw new Error("No user found");
 
-      // Verify Role & Route — with auto-provisioning fallback
+      console.log("Auth success, checking profile...");
+
+      // 1. Get or Create Profile
       let { data: userProfile, error: profileError } = await supabase
         .from('users')
         .select('role')
         .eq('id', data.user.id)
         .maybeSingle();
 
-      // If profile is missing (e.g. sync delay), auto-create it as 'individual'
-      if (data.user) {
-        // Force Profile Creation - Essential for Login flow
-        const { error: upsertError } = await supabase
+      if (!userProfile) {
+        console.log("Profile missing, creating fallback...");
+        const { data: newProfile, error: createError } = await supabase
           .from('users')
-          .upsert(
-            [{ id: data.user.id, email: data.user.email, name: data.user.user_metadata?.full_name || 'User', role: 'individual' }],
-            { onConflict: 'id' }
-          );
-
-        if (upsertError) {
-          console.error("Profile sync error:", upsertError);
-          // Don't throw here, the login page will self-heal
-        }
+          .insert([{ 
+            id: data.user.id, 
+            email: data.user.email, 
+            name: data.user.user_metadata?.full_name || email.split('@')[0], 
+            role: 'individual' 
+          }])
+          .select('role')
+          .single();
         
-        if (!userProfile) {
-          userProfile = { role: 'individual' };
-        }
+        if (createError) throw createError;
+        userProfile = newProfile;
       }
 
-      const userRole = userProfile.role; // 'individual', 'institutional', 'admin'
+      const userRole = userProfile.role;
+      console.log("User Role:", userRole, "Active Tab:", activeTab);
 
-      // Flexible Routing
+      // 2. Route Based on Tab & Role
       if (activeTab === 'student') {
-        // Students can only be 'individual' role
-        if (userRole === 'individual') {
-          const { data: existingResult } = await supabase
-            .from('assessment_results')
-            .select('id')
-            .eq('user_id', data.user.id)
-            .limit(1)
-            .maybeSingle();
-
-          router.push(existingResult ? "/dashboard/student" : "/assessment");
+        if (userRole === 'individual' || userRole === 'admin') {
+          const { data: result } = await supabase.from('assessment_results').select('id').eq('user_id', data.user.id).limit(1).maybeSingle();
+          router.push(result ? "/dashboard/student" : "/assessment");
         } else {
-          setError("This account is registered as an Institution/Admin. Please select the correct tab.");
-          await supabase.auth.signOut();
-          setLoading(false);
-          return;
+          throw new Error("This account is an Institution. Please use the Institution tab.");
         }
       } else if (activeTab === 'institution') {
-        if (userRole === 'institutional') {
+        if (userRole === 'institutional' || userRole === 'admin') {
           router.push("/dashboard/institution");
         } else {
-          setError("This account is not authorized for Institutional access.");
-          await supabase.auth.signOut();
-          setLoading(false);
-          return;
+          throw new Error("This account is not an Institution.");
         }
-      } else if (activeTab === 'counselor') {
-        router.push("/dashboard/counselor");
-      } else if (activeTab === 'admin') {
-        if (userRole === 'admin') {
-          router.push("/dashboard/admin");
-        } else {
-          setError("Unauthorized: Not an Admin account.");
-          await supabase.auth.signOut();
-          setLoading(false);
-          return;
-        }
+      } else {
+        // Counselors/Admin
+        router.push(activeTab === 'admin' ? "/dashboard/admin" : "/dashboard/counselor");
       }
 
-    } catch (err: unknown) {
-      const error = err as Error;
-      setError(error.message || "Failed to log in.");
-      // Logout if they were unauthorized to clear the stale session
+    } catch (err: any) {
+      console.error("Login Error:", err);
+      setError(err.message || "Login failed. Check your credentials.");
       await supabase.auth.signOut();
     } finally {
       setLoading(false);
@@ -128,122 +105,97 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4 bg-slate-50 min-h-screen pt-24">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 pt-20">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
         
-        <div className="text-center space-y-2 mb-8">
-          <h1 className="text-3xl font-black text-brand-blue uppercase tracking-tight">MentorMe Portal</h1>
-          <p className="text-slate-500 font-medium text-sm">Select your portal to securely log in</p>
+        <div className="bg-brand-blue p-8 text-center text-white">
+          <h1 className="text-3xl font-black uppercase">MentorMe Portal</h1>
+          <p className="text-white/80 text-sm mt-2 font-medium">Access your career intelligence dashboard</p>
         </div>
 
-        {/* Custom Tabs */}
-        <div className="flex bg-slate-100 p-1 rounded-xl mb-8">
-           <button 
-             onClick={() => setActiveTab('student')}
-             className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'student' ? 'bg-white shadow-sm text-brand-blue' : 'text-slate-500 hover:text-slate-700'}`}
-           >
-             Student
-           </button>
-           <button 
-             onClick={() => setActiveTab('institution')}
-             className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'institution' ? 'bg-white shadow-sm text-brand-orange' : 'text-slate-500 hover:text-slate-700'}`}
-           >
-             Institution
-           </button>
-           <button 
-             onClick={() => setActiveTab('counselor')}
-             className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'counselor' ? 'bg-white shadow-sm text-emerald-600' : 'text-slate-500 hover:text-slate-700'}`}
-           >
-             Counselor
-           </button>
-           <button 
-             onClick={() => setActiveTab('admin')}
-             className={`flex-1 py-2 text-sm font-bold rounded-lg transition-all ${activeTab === 'admin' ? 'bg-white shadow-sm text-purple-600' : 'text-slate-500 hover:text-slate-700'}`}
-           >
-             Admin
-           </button>
+        <div className="p-8">
+          {/* Simple Tab Switcher */}
+          <div className="flex bg-slate-100 p-1 rounded-xl mb-8 border border-slate-200">
+            {['student', 'institution', 'counselor', 'admin'].map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab as any)}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === tab ? 'bg-white shadow-md text-brand-blue' : 'text-slate-500'}`}
+              >
+                {tab.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
+          {error && (
+            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-bold">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-xs font-black text-slate-500 uppercase">Email Address</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-blue focus:outline-none transition-all font-medium text-slate-700 bg-slate-50"
+                placeholder="Enter your email"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-black text-slate-500 uppercase">Password</label>
+                <Link href="#" className="text-xs font-bold text-brand-blue">Forgot Password?</Link>
+              </div>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-blue focus:outline-none transition-all font-medium text-slate-700 bg-slate-50"
+                placeholder="••••••••"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className={`w-full py-4 rounded-xl text-white font-black text-lg shadow-xl transition-all active:scale-95 ${
+                loading ? 'bg-slate-300' : 'bg-brand-orange hover:bg-brand-orange/90'
+              }`}
+            >
+              {loading ? "AUTHENTICATING..." : "SIGN IN NOW"}
+            </button>
+
+            <div className="text-center">
+              <span className="text-slate-400 text-sm">Or sign in with</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="w-full py-4 rounded-xl border-2 border-slate-100 font-bold text-slate-600 hover:bg-slate-50 flex items-center justify-center gap-3 transition-all"
+            >
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Sign in with Google
+            </button>
+          </form>
+
+          <div className="mt-8 pt-6 border-t border-slate-100 text-center">
+            <p className="text-sm text-slate-500 font-medium">
+              Don't have an account? <Link href="/register" className="text-brand-orange font-black">Register Free</Link>
+            </p>
+          </div>
         </div>
-
-        {error && (
-          <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg font-medium text-center">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleLogin} className="space-y-5">
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-700" htmlFor="email">Email Address</label>
-            <input 
-              id="email" 
-              type="email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none" 
-              placeholder={activeTab === 'institution' ? "director@school.edu" : activeTab === 'admin' ? "admin@mentormeright.in" : "you@example.com"} 
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <label className="text-sm font-bold text-slate-700" htmlFor="password">Password</label>
-              <Link href="#" className="text-xs text-brand-blue hover:underline font-semibold">Forgot?</Link>
-            </div>
-            <input 
-              id="password" 
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none" 
-              required
-            />
-          </div>
-          
-          <button 
-            type="submit" 
-            disabled={loading}
-            className={`w-full py-6 text-lg font-bold rounded-xl text-white shadow-md transition-all relative z-10 ${
-              activeTab === 'student' ? 'bg-brand-blue hover:bg-brand-blue/90' :
-              activeTab === 'institution' ? 'bg-brand-orange hover:bg-brand-orange/90' :
-              activeTab === 'admin' ? 'bg-purple-600 hover:bg-purple-700' :
-              'bg-emerald-600 hover:bg-emerald-700'
-            }`}
-          >
-            {loading ? "Authenticating..." : `Log In as ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`}
-          </button>
-
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-slate-200" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-slate-500">Or continue with</span>
-            </div>
-          </div>
-          
-          <button 
-            type="button" 
-            onClick={handleGoogleLogin}
-            disabled={loading}
-            className="w-full py-6 text-lg font-bold rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 shadow-sm flex items-center justify-center relative z-10"
-          >
-            <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-            </svg>
-            Google
-          </button>
-        </form>
-        
-        {activeTab === 'student' && (
-          <div className="mt-8 text-center text-sm font-medium border-t border-slate-100 pt-6">
-            <span className="text-slate-500">New to MentorMe? </span>
-            <Link href="/register" className="text-brand-orange font-bold hover:underline">
-              Create an account
-            </Link>
-          </div>
-        )}
       </div>
     </div>
   );

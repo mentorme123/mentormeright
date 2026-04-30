@@ -10,7 +10,7 @@ export default function Home() {
     <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden">
       
       {/* Hero Section */}
-      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 py-20 lg:py-32">
+      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-32 pb-20 lg:pt-48 lg:pb-32">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-blue/10 via-background to-background"></div>
         <div className="max-w-5xl space-y-8 relative z-10">
           <motion.h1 
@@ -255,8 +255,12 @@ export default function Home() {
                 <h4 className="font-semibold text-sm uppercase tracking-wider mb-2">Key Highlights</h4>
                 <p className="text-muted-foreground text-sm leading-relaxed mb-8">{item.highlights}</p>
                 <div className="flex gap-4">
-                  <Button variant="outline" className="flex-1">Know more</Button>
-                  <Button className="flex-1 bg-brand-blue text-white hover:bg-brand-blue/90">Contact us</Button>
+                  <Link href="/services" className="flex-1">
+                    <button className="w-full py-2.5 border border-brand-blue/20 text-brand-blue font-bold rounded-xl hover:bg-brand-blue/5 transition-all">Know more</button>
+                  </Link>
+                  <Link href="/contact" className="flex-1">
+                    <button className="w-full py-2.5 bg-brand-blue text-white hover:bg-brand-blue/90 font-bold rounded-xl transition-all shadow-md">Contact us</button>
+                  </Link>
                 </div>
               </motion.div>
             ))}
@@ -291,9 +295,11 @@ export default function Home() {
              viewport={{ once: true }}
              transition={{ delay: 0.4 }}
           >
-            <Button size="lg" className="bg-brand-orange hover:bg-brand-orange/90 text-white text-lg font-bold px-8 shadow-xl">
-              Learn more
-            </Button>
+            <Link href="/study-abroad">
+              <button className="bg-brand-orange hover:bg-brand-orange/90 text-white text-lg font-bold px-10 py-4 rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
+                Learn more
+              </button>
+            </Link>
           </motion.div>
         </div>
       </section>

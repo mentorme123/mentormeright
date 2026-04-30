@@ -75,15 +75,15 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <Link href="/assessment" className="hidden lg:block">
-            <Button className="bg-brand-orange text-white hover:bg-brand-orange/90 font-bold px-6 shadow-md shadow-brand-orange/20 animate-pulse-slow">
+            <button className="bg-brand-orange text-white hover:bg-brand-orange/90 font-bold px-6 py-2.5 rounded-lg shadow-md shadow-brand-orange/20 animate-pulse-slow transition-all">
               Free Career Assessment Test
-            </Button>
+            </button>
           </Link>
           <Link href="/login">
-            <Button variant="ghost" className="hidden sm:inline-flex font-semibold">Log in</Button>
+            <button className="hidden sm:inline-flex font-semibold px-4 py-2 hover:bg-muted rounded-lg transition-colors text-slate-700">Log in</button>
           </Link>
           <Link href="/register" className="hidden sm:block">
-            <Button className="bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold">Register</Button>
+            <button className="bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold px-6 py-2.5 rounded-lg transition-all shadow-md">Register</button>
           </Link>
 
           {/* Mobile Hamburger Button */}
@@ -121,16 +121,16 @@ export function Navbar() {
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
                 <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold shadow-md">
+                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">
                     Free Career Assessment Test
-                  </Button>
+                  </button>
                 </Link>
                 <div className="flex gap-3">
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                    <Button variant="outline" className="w-full font-semibold">Log in</Button>
+                    <button className="w-full font-semibold py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">Log in</button>
                   </Link>
                   <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                    <Button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold">Register</Button>
+                    <button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold py-2.5 rounded-xl transition-all shadow-sm">Register</button>
                   </Link>
                 </div>
               </div>

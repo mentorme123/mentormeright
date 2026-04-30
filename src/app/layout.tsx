@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
 
 const poppins = Poppins({ 
   subsets: ['latin'], 
@@ -23,6 +24,7 @@ export default function RootLayout({
     <html lang="en" className={cn("font-sans", poppins.variable)}>
       <body className="antialiased min-h-screen flex flex-col font-sans">
         {children}
+        <AiCornerChatbot />
       </body>
     </html>
   );

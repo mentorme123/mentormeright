@@ -1,5 +1,18 @@
-import { createClient } from "@/lib/supabase";
-import { useEffect } from "react";
+"use client";
+
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { 
+  Video, 
+  CalendarDays, 
+  FileText, 
+  User, 
+  Loader2, 
+  ChevronRight,
+  TrendingUp,
+  Globe
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function CounselorDashboard() {
   const supabase = createClient();

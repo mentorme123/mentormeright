@@ -23,6 +23,7 @@ export function Navbar() {
         <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-muted-foreground">
           <Link href="/" className="hover:text-brand-blue transition-colors text-foreground">Home</Link>
           <Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link>
+          <Link href="/career-library" className="hover:text-brand-blue transition-colors font-bold text-brand-orange">Career Library</Link>
           <Link href="/services" className="hover:text-brand-blue transition-colors">Services</Link>
           <Link href="/blogs" className="hover:text-brand-blue transition-colors">Blogs</Link>
           <Link href="/contact" className="hover:text-brand-blue transition-colors">Contact Us</Link>

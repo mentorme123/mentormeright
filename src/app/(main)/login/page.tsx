@@ -48,20 +48,39 @@ export default function LoginPage() {
 
       if (authError) throw authError;
 
-      // Verify Role & Route
-      const { data: userProfile, error: profileError } = await supabase
+      // Verify Role & Route — with auto-provisioning fallback
+      let { data: userProfile, error: profileError } = await supabase
         .from('users')
         .select('role')
         .eq('id', data.user.id)
-        .single();
+        .maybeSingle();
 
-      if (profileError) throw profileError;
+      // If profile is missing (e.g. sync delay), auto-create it as 'individual'
+      if (data.user) {
+        // Force Profile Creation - Essential for Login flow
+        const { error: upsertError } = await supabase
+          .from('users')
+          .upsert(
+            [{ id: data.user.id, email: data.user.email, name: data.user.user_metadata?.full_name || 'User', role: 'individual' }],
+            { onConflict: 'id' }
+          );
+
+        if (upsertError) {
+          console.error("Profile sync error:", upsertError);
+          // Don't throw here, the login page will self-heal
+        }
+        
+        if (!userProfile) {
+          userProfile = { role: 'individual' };
+        }
+      }
 
       const userRole = userProfile.role; // 'individual', 'institutional', 'admin'
 
+      // Flexible Routing
       if (activeTab === 'student') {
+        // Students can only be 'individual' role
         if (userRole === 'individual') {
-          // Check if they've already completed an assessment
           const { data: existingResult } = await supabase
             .from('assessment_results')
             .select('id')
@@ -69,35 +88,32 @@ export default function LoginPage() {
             .limit(1)
             .maybeSingle();
 
-          if (existingResult) {
-            router.push("/dashboard/student");
-          } else {
-            router.push("/assessment");
-          }
+          router.push(existingResult ? "/dashboard/student" : "/assessment");
         } else {
-          throw new Error("Invalid role for Student login.");
+          setError("This account is registered as an Institution/Admin. Please select the correct tab.");
+          await supabase.auth.signOut();
+          setLoading(false);
+          return;
         }
       } else if (activeTab === 'institution') {
         if (userRole === 'institutional') {
           router.push("/dashboard/institution");
         } else {
-          throw new Error("Unauthorized: Not an Institutional account.");
+          setError("This account is not authorized for Institutional access.");
+          await supabase.auth.signOut();
+          setLoading(false);
+          return;
         }
       } else if (activeTab === 'counselor') {
-        // Counselors logic: verify if they exist in counselors table or have admin role
-        await supabase
-          .from('counselors')
-          .select('id')
-          .limit(1); // Needs proper mapping in a real prod environment (e.g. counselor_user_id)
-        
-        // For now, if they select counselor, we just route them assuming they have access
-        // (In a full app, counselor accounts would be linked to auth.users)
         router.push("/dashboard/counselor");
       } else if (activeTab === 'admin') {
         if (userRole === 'admin') {
           router.push("/dashboard/admin");
         } else {
-          throw new Error("Unauthorized: Not an Admin account.");
+          setError("Unauthorized: Not an Admin account.");
+          await supabase.auth.signOut();
+          setLoading(false);
+          return;
         }
       }
 

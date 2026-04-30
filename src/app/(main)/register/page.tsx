@@ -36,28 +36,27 @@ export default function RegisterPage() {
       if (authError) throw authError;
 
       if (data.user) {
-        // Try to insert profile — ignore duplicate key errors (user may already exist)
-        await supabase
+        // Force Profile Creation - Essential for Login flow
+        const { error: upsertError } = await supabase
           .from('users')
           .upsert(
             [{ id: data.user.id, email: email, name: name, role: role }],
-            { onConflict: 'id', ignoreDuplicates: false }
+            { onConflict: 'id' }
           );
 
-        // Save audience type so assessment loads correct question set
+        if (upsertError) {
+          console.error("Profile sync error:", upsertError);
+          // Don't throw here, the login page will self-heal
+        }
+
         if (role === 'individual') {
           localStorage.setItem("mentorme_audience", audienceType);
         }
 
-        // If session exists, user was auto-confirmed — redirect immediately
+        // If session exists, user was auto-confirmed (or email confirmation disabled)
         if (data.session) {
-          if (role === 'individual') {
-            router.push("/assessment");
-          } else {
-            router.push("/dashboard/institution");
-          }
+          router.push(role === 'individual' ? "/assessment" : "/dashboard/institution");
         } else {
-          // Email confirmation is required — show message, don't redirect
           setSuccess(true);
         }
       }

@@ -6,7 +6,6 @@ import { Search, Briefcase, IndianRupee, GraduationCap, TrendingUp, ChevronLeft,
 import { Button } from "@/components/ui/button";
 import { careersData, Career } from "@/lib/data/careers";
 import { createClient } from "@/lib/supabase/client";
-import { toast } from "sonner";
 
 const STREAMS = ['All', 'Science', 'Commerce', 'Arts', 'Vocational', 'Any'];
 const ITEMS_PER_PAGE = 24;
@@ -56,7 +55,7 @@ export default function CareerLibrary() {
       const data = await response.json();
       setSimulationMessage(data.text);
     } catch (error) {
-      toast.error("Failed to start simulation");
+      alert("Failed to start simulation. Please try again.");
     } finally {
       setIsSimulationLoading(false);
     }

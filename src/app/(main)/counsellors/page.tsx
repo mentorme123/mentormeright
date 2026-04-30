@@ -1,347 +1,156 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Search, Star, Clock, Users, Calendar, ArrowRight, Loader2, X, CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, MessageCircle, PhoneCall, Mail, CheckCircle2, Loader2, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
-type Counsellor = {
-  id: string;
-  name: string;
-  specialization: string;
-  bio: string;
-  experience_years: number;
-  rating: number;
-  price_per_session: number;
-  avatar_url: string | null;
-  is_active: boolean;
-};
+export default function CounsellorsLanding() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
-type Slot = {
-  id: string;
-  date: string;
-  start_time: string;
-  end_time: string;
-  is_booked: boolean;
-};
-
-export default function CounsellorMarketplace() {
-  const [counsellors, setCounsellors] = useState<Counsellor[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
-  const [selectedCounsellor, setSelectedCounsellor] = useState<Counsellor | null>(null);
-  const [slots, setSlots] = useState<Slot[]>([]);
-  const [slotsLoading, setSlotsLoading] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<Slot | null>(null);
-  const [booking, setBooking] = useState(false);
-  const [bookingSuccess, setBookingSuccess] = useState(false);
-  const [bookingError, setBookingError] = useState("");
-
-  const supabase = createClient();
-
-  useEffect(() => {
-    async function fetchCounsellors() {
-      const { data, error } = await supabase
-        .from("counsellors")
-        .select("*")
-        .eq("is_active", true)
-        .order("rating", { ascending: false });
-      if (!error && data) setCounsellors(data);
-      setLoading(false);
-    }
-    fetchCounsellors();
-  }, [supabase]);
-
-  async function openBookingModal(counsellor: Counsellor) {
-    setSelectedCounsellor(counsellor);
-    setSelectedSlot(null);
-    setBookingSuccess(false);
-    setBookingError("");
-    setSlotsLoading(true);
-
-    const today = new Date().toISOString().split("T")[0];
-    const { data } = await supabase
-      .from("slots")
-      .select("*")
-      .eq("counsellor_id", counsellor.id)
-      .eq("is_booked", false)
-      .gte("date", today)
-      .order("date")
-      .order("start_time");
-    setSlots(data || []);
-    setSlotsLoading(false);
-  }
-
-  async function confirmBooking() {
-    if (!selectedSlot || !selectedCounsellor) return;
-    setBooking(true);
-    setBookingError("");
-
+  const handleBookSession = async () => {
+    setLoading(true);
+    setErrorMsg("");
+    const supabase = createClient();
+    
+    // 1. Check Auth
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
-      setBookingError("Please log in to book a session.");
-      setBooking(false);
+      router.push("/login?redirect=/counsellors");
       return;
     }
 
-    const jitsiLink = `https://meet.jit.si/MentorMe-${selectedCounsellor.id.slice(0, 6)}-${selectedSlot.id.slice(0, 6)}`;
-
-    const { data: booking, error } = await supabase
-      .from("bookings")
-      .insert({
-        user_id: user.id,
-        counsellor_id: selectedCounsellor.id,
-        slot_id: selectedSlot.id,
-        status: "confirmed",
-        jitsi_link: jitsiLink,
-      })
+    // 2. Check if they have taken the Free Assessment
+    const { data: assessment } = await supabase
+      .from("assessments")
       .select("id")
+      .eq("user_id", user.id)
       .single();
 
-    if (error) {
-      setBookingError("Booking failed: " + error.message);
-      setBooking(false);
+    if (!assessment) {
+      setErrorMsg("You must complete the Free Career Assessment before booking a session. Redirecting...");
+      setTimeout(() => {
+        router.push("/assessment");
+      }, 3000);
       return;
     }
 
-    // Mark slot as booked
-    await supabase.from("slots").update({ is_booked: true }).eq("id", selectedSlot.id);
-
-    // Send confirmation emails with calendar invite
-    await fetch("/api/email/booking-confirmation", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        bookingId: booking.id,
-        userId: user.id,
-        counselorId: selectedCounsellor.id,
-        slotId: selectedSlot.id,
-      }),
-    });
-
-    setBookingSuccess(true);
-    setBooking(false);
-  }
-
-  const filtered = counsellors.filter(c =>
-    c.name.toLowerCase().includes(search.toLowerCase()) ||
-    c.specialization.toLowerCase().includes(search.toLowerCase())
-  );
-
-  const formatDate = (dateStr: string) =>
-    new Date(dateStr).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
-
-  const formatTime = (timeStr: string) => {
-    const [h, m] = timeStr.split(":");
-    const hour = parseInt(h);
-    return `${hour > 12 ? hour - 12 : hour}:${m} ${hour >= 12 ? "PM" : "AM"}`;
+    // 3. If passed, send to Booking Slot page
+    router.push("/counsellors/book");
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 pb-12">
-      {/* Header */}
-      <div className="bg-white border-b border-slate-200 py-16 px-4 mb-10">
-        <div className="max-w-7xl mx-auto text-center space-y-4">
-          <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="px-4 py-2 bg-brand-orange/10 text-brand-orange font-black text-xs uppercase tracking-widest rounded-full">World-Class Experts</span>
-            <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight mt-4">
-              Meet Your <span className="text-brand-blue">Career Counsellors</span>
-            </h1>
-            <p className="text-xl text-slate-500 max-w-2xl mx-auto mt-4">
-              Book a 1-on-1 session with our top-rated freelance counsellors. Real experts, real guidance, real results.
-            </p>
-          </motion.div>
-          <div className="max-w-xl mx-auto pt-4 relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
-            <input
-              type="text"
-              placeholder="Search by name or specialization..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue text-base"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4">
-        {loading ? (
-          <div className="flex items-center justify-center py-32">
-            <Loader2 className="w-12 h-12 text-brand-blue animate-spin" />
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-32 space-y-4">
-            <Users className="mx-auto text-slate-300" size={64} />
-            <h3 className="text-2xl font-black text-slate-700">No Counsellors Found</h3>
-            <p className="text-slate-500">
-              {counsellors.length === 0
-                ? "Our counsellors are being onboarded. Check back soon!"
-                : "No counsellors match your search. Try a different term."}
-            </p>
-          </div>
-        ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filtered.map((counsellor, i) => (
-              <motion.div
-                key={counsellor.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.06 }}
-                className="bg-white rounded-3xl border border-slate-200 overflow-hidden hover:shadow-2xl hover:shadow-brand-blue/10 transition-all group"
-              >
-                <div className="h-3 bg-gradient-to-r from-brand-blue to-brand-orange"></div>
-                <div className="p-8 space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-orange flex items-center justify-center text-white text-2xl font-black flex-shrink-0">
-                      {counsellor.name.charAt(0)}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-black text-xl text-slate-800 truncate group-hover:text-brand-blue transition-colors">{counsellor.name}</h3>
-                      <p className="text-brand-orange font-bold text-sm">{counsellor.specialization}</p>
-                    </div>
-                  </div>
-
-                  {counsellor.bio && (
-                    <p className="text-slate-500 text-sm leading-relaxed line-clamp-3">{counsellor.bio}</p>
-                  )}
-
-                  <div className="grid grid-cols-3 gap-3 py-4 border-y border-slate-100">
-                    <div className="text-center">
-                      <div className="flex items-center justify-center gap-1 text-amber-500">
-                        <Star size={14} fill="currentColor" />
-                        <span className="font-black text-slate-800">{counsellor.rating?.toFixed(1) ?? "New"}</span>
-                      </div>
-                      <p className="text-xs text-slate-400 mt-1">Rating</p>
-                    </div>
-                    <div className="text-center border-x border-slate-100">
-                      <div className="font-black text-slate-800 flex items-center justify-center gap-1">
-                        <Clock size={14} className="text-brand-blue" />
-                        {counsellor.experience_years ?? 0}yr
-                      </div>
-                      <p className="text-xs text-slate-400 mt-1">Experience</p>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-black text-brand-blue">
-                        {counsellor.price_per_session === 0 ? "Free" : `₹${counsellor.price_per_session}`}
-                      </div>
-                      <p className="text-xs text-slate-400 mt-1">Per session</p>
-                    </div>
-                  </div>
-
-                  <Button
-                    onClick={() => openBookingModal(counsellor)}
-                    className="w-full py-6 bg-brand-blue hover:bg-brand-blue/90 text-white font-black text-base rounded-2xl shadow-lg shadow-brand-blue/20 transition-all hover:scale-[1.02]"
-                  >
-                    Book a Session <ArrowRight size={18} className="ml-2" />
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Booking Modal */}
-      {selectedCounsellor && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl"
-          >
-            <div className="sticky top-0 bg-white border-b border-slate-100 p-6 flex items-center justify-between z-10 rounded-t-3xl">
-              <div>
-                <h2 className="text-2xl font-black text-slate-800">Book a Session</h2>
-                <p className="text-brand-blue font-bold">with {selectedCounsellor.name}</p>
+    <div className="min-h-screen bg-slate-50 pt-24 pb-20">
+      <div className="max-w-6xl mx-auto px-4">
+        
+        {/* Hero Section */}
+        <div className="bg-white rounded-[3rem] p-8 md:p-16 border border-slate-200 shadow-xl overflow-hidden relative mb-12">
+          {/* Decorative Background */}
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-blue/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3"></div>
+          
+          <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-blue/10 text-brand-blue font-black text-xs uppercase tracking-widest rounded-full">
+                <Video size={16} /> Live 1-on-1 Sessions
               </div>
-              <button
-                onClick={() => setSelectedCounsellor(null)}
-                className="p-2 bg-slate-100 hover:bg-red-100 hover:text-red-600 text-slate-500 rounded-full transition-colors"
-              >
-                <X size={24} />
-              </button>
-            </div>
+              
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-tight">
+                Transform Your Career with <span className="text-brand-orange">Expert Guidance</span>
+              </h1>
+              
+              <p className="text-lg text-slate-500 leading-relaxed max-w-lg">
+                Book a dedicated 60-minute session with our top-rated career experts. We&apos;ll analyze your assessment report and build a foolproof roadmap for your future.
+              </p>
 
-            <div className="p-8 space-y-8">
-              {bookingSuccess ? (
-                <div className="text-center py-12 space-y-6">
-                  <div className="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
-                    <CheckCircle className="w-12 h-12 text-emerald-600" />
-                  </div>
-                  <h3 className="text-3xl font-black text-slate-800">Booking Confirmed! 🎉</h3>
-                  <p className="text-slate-500 max-w-md mx-auto">
-                    A confirmation email with your Jitsi video call link and a <strong>calendar invite (.ics)</strong> has been sent to your email. Check your inbox!
-                  </p>
-                  <Button
-                    onClick={() => setSelectedCounsellor(null)}
-                    className="bg-brand-blue text-white font-black px-10 py-4 rounded-2xl shadow-lg"
-                  >
-                    Done
-                  </Button>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-slate-700 font-bold">
+                  <CheckCircle2 className="text-emerald-500" /> Deep Dive into your Psychometric Report
                 </div>
-              ) : (
-                <>
-                  <div>
-                    <h3 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2">
-                      <Calendar size={20} className="text-brand-orange" /> Select an Available Slot
-                    </h3>
-                    {slotsLoading ? (
-                      <div className="flex items-center justify-center py-12">
-                        <Loader2 className="w-8 h-8 text-brand-blue animate-spin" />
-                      </div>
-                    ) : slots.length === 0 ? (
-                      <div className="text-center py-12 bg-slate-50 rounded-2xl border border-slate-100">
-                        <Clock className="mx-auto text-slate-300 mb-4" size={48} />
-                        <p className="font-bold text-slate-600">No available slots right now.</p>
-                        <p className="text-slate-400 text-sm mt-1">Please check back later or contact us.</p>
-                      </div>
-                    ) : (
-                      <div className="grid grid-cols-2 gap-3">
-                        {slots.map(slot => (
-                          <button
-                            key={slot.id}
-                            onClick={() => setSelectedSlot(slot)}
-                            className={`p-4 rounded-2xl border-2 text-left transition-all ${
-                              selectedSlot?.id === slot.id
-                                ? "border-brand-blue bg-brand-blue/5 shadow-lg shadow-brand-blue/10"
-                                : "border-slate-200 hover:border-brand-blue/30 hover:bg-slate-50"
-                            }`}
-                          >
-                            <p className="font-black text-slate-800">{formatDate(slot.date)}</p>
-                            <p className="text-sm font-bold text-brand-orange mt-1">
-                              {formatTime(slot.start_time)} – {formatTime(slot.end_time)}
-                            </p>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {bookingError && (
-                    <div className="p-4 bg-red-50 text-red-600 text-sm font-bold rounded-xl border border-red-100">
-                      {bookingError}
-                    </div>
-                  )}
-
-                  <Button
-                    onClick={confirmBooking}
-                    disabled={!selectedSlot || booking}
-                    className="w-full py-6 bg-brand-orange hover:bg-brand-orange/90 text-white font-black text-lg rounded-2xl shadow-lg shadow-brand-orange/20 transition-all hover:scale-[1.02] disabled:opacity-50 disabled:scale-100"
-                  >
-                    {booking ? (
-                      <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Confirming...</>
-                    ) : (
-                      <>Confirm Booking & Get Jitsi Link <ArrowRight size={18} className="ml-2" /></>
-                    )}
-                  </Button>
-                  <p className="text-center text-sm text-slate-400">A calendar invite + video call link will be emailed to you instantly.</p>
-                </>
-              )}
+                <div className="flex items-center gap-3 text-slate-700 font-bold">
+                  <CheckCircle2 className="text-emerald-500" /> Personalized College & Course Shortlisting
+                </div>
+                <div className="flex items-center gap-3 text-slate-700 font-bold">
+                  <CheckCircle2 className="text-emerald-500" /> Actionable 1-Year Career Roadmap
+                </div>
+              </div>
             </div>
-          </motion.div>
+
+            <div className="bg-slate-50 rounded-3xl p-8 border border-slate-200 shadow-inner space-y-8">
+              <div className="text-center space-y-2">
+                <p className="text-slate-500 font-bold uppercase tracking-widest text-sm">Session Investment</p>
+                <div className="text-6xl font-black text-slate-900">₹4,999</div>
+                <p className="text-sm text-slate-400">for a comprehensive 60-minute consultation</p>
+              </div>
+
+              {errorMsg && (
+                <div className="p-4 bg-amber-50 text-amber-800 border border-amber-200 rounded-xl font-bold text-sm text-center animate-pulse">
+                  {errorMsg}
+                </div>
+              )}
+
+              <Button 
+                onClick={handleBookSession}
+                disabled={loading}
+                className="w-full h-16 bg-brand-blue hover:bg-brand-blue/90 text-white font-black text-xl rounded-2xl shadow-xl shadow-brand-blue/20 transition-all hover:scale-[1.02]"
+              >
+                {loading && !errorMsg ? (
+                  <><Loader2 className="w-6 h-6 mr-2 animate-spin" /> Verifying...</>
+                ) : (
+                  <>Book Your Session Now <ArrowRight className="ml-2" size={24} /></>
+                )}
+              </Button>
+              
+              <p className="text-center text-xs text-slate-400 font-medium">
+                Payments securely processed via Razorpay. Subject to terms & conditions.
+              </p>
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* Alternative Contact Options */}
+        <div className="text-center space-y-10">
+          <div className="space-y-4">
+            <h2 className="text-3xl font-black text-slate-900">Need immediate assistance?</h2>
+            <p className="text-slate-500 max-w-2xl mx-auto">
+              If you have quick questions or prefer to book your session manually, our support team is available via chat, email, or phone.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <a href="https://wa.me/919392707596" target="_blank" rel="noopener noreferrer" className="bg-white p-8 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all group block">
+              <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <MessageCircle className="text-emerald-500 w-8 h-8" />
+              </div>
+              <h3 className="font-black text-xl text-slate-800 mb-2">WhatsApp Us</h3>
+              <p className="text-emerald-600 font-bold mb-1">+91 93927 07596</p>
+              <p className="text-emerald-600 font-bold">+91 81888 24440</p>
+            </a>
+
+            <a href="tel:+919392707596" className="bg-white p-8 rounded-3xl border border-slate-200 hover:border-brand-blue hover:shadow-xl transition-all group block">
+              <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <PhoneCall className="text-brand-blue w-8 h-8" />
+              </div>
+              <h3 className="font-black text-xl text-slate-800 mb-2">Call Us directly</h3>
+              <p className="text-brand-blue font-bold mb-1">+91 93927 07596</p>
+              <p className="text-brand-blue font-bold">+91 81888 24440</p>
+            </a>
+
+            <a href="mailto:admin@mentormeright.in" className="bg-white p-8 rounded-3xl border border-slate-200 hover:border-brand-orange hover:shadow-xl transition-all group block">
+              <div className="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
+                <Mail className="text-brand-orange w-8 h-8" />
+              </div>
+              <h3 className="font-black text-xl text-slate-800 mb-2">Send an Email</h3>
+              <p className="text-brand-orange font-bold">admin@mentormeright.in</p>
+              <p className="text-slate-400 text-sm mt-2">We typically reply within 24 hours</p>
+            </a>
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

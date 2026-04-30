@@ -61,7 +61,18 @@ export default function LoginPage() {
 
       if (activeTab === 'student') {
         if (userRole === 'individual') {
-          router.push("/assessment");
+          // Check if they already took the assessment
+          const { data: assessmentData } = await supabase
+            .from('assessment_results')
+            .select('id')
+            .eq('user_id', data.user.id)
+            .limit(1);
+
+          if (assessmentData && assessmentData.length > 0) {
+            router.push("/dashboard/student");
+          } else {
+            router.push("/assessment");
+          }
         } else {
           throw new Error("Invalid role for Student login.");
         }

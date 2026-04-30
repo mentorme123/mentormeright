@@ -12,6 +12,13 @@ type DBUser = {
   email: string;
   name: string;
   role: string;
+  phone?: string;
+  country?: string;
+  state?: string;
+  gender?: string;
+  education_level?: string;
+  current_package?: string;
+  target_package?: string;
   created_at: string;
 };
 
@@ -410,6 +417,107 @@ export default function AdminDashboard() {
         </div>
 
       </div>
+
+      {/* User Details Modal */}
+      <AnimatePresence>
+        {selectedUser && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto"
+            onClick={() => setSelectedUser(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden my-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-slate-50 border-b border-slate-100 p-6 flex justify-between items-center">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-black text-xl">
+                    {selectedUser.name ? selectedUser.name.charAt(0) : selectedUser.email.charAt(0)}
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-black text-slate-800">{selectedUser.name || "N/A"}</h2>
+                    <p className="text-slate-500 font-medium text-sm">{selectedUser.email}</p>
+                  </div>
+                </div>
+                <button onClick={() => setSelectedUser(null)} className="p-2 bg-white rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors shadow-sm">
+                  <X size={20} />
+                </button>
+              </div>
+              
+              <div className="p-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Account Info</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-medium text-slate-500">Role</p>
+                        <p className="font-bold text-slate-800 capitalize">{selectedUser.role}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-500">Joined</p>
+                        <p className="font-bold text-slate-800">{new Date(selectedUser.created_at).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Personal Details</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <p className="text-sm font-medium text-slate-500">Phone</p>
+                        <p className="font-bold text-slate-800">{selectedUser.phone || "Not Provided"}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-500">Location</p>
+                        <p className="font-bold text-slate-800">
+                          {selectedUser.state && selectedUser.country ? `${selectedUser.state}, ${selectedUser.country}` : "Not Provided"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-slate-500">Gender</p>
+                        <p className="font-bold text-slate-800">{selectedUser.gender || "Not Provided"}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-8 border-t border-slate-100">
+                  <h3 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-4">Career Intelligence</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div>
+                      <p className="text-sm font-medium text-slate-500">Education Level</p>
+                      <p className="font-bold text-slate-800">{selectedUser.education_level || "Not Provided"}</p>
+                    </div>
+                    {selectedUser.education_level === "Working Professional" && (
+                      <>
+                        <div>
+                          <p className="text-sm font-medium text-slate-500">Current Package</p>
+                          <p className="font-bold text-slate-800">{selectedUser.current_package || "Not Provided"}</p>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-slate-500">Target Package</p>
+                          <p className="font-bold text-slate-800">{selectedUser.target_package || "Not Provided"}</p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                <div className="mt-8 pt-6 flex justify-end gap-3 border-t border-slate-100">
+                  <Button variant="outline" onClick={() => setSelectedUser(null)}>Close</Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }

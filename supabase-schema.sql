@@ -8,6 +8,12 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 -- 1. USERS TABLE (already exists, just ensure columns)
 -- ============================================
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS country TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS state TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS gender TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS education_level TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS current_package TEXT;
+ALTER TABLE public.users ADD COLUMN IF NOT EXISTS target_package TEXT;
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS audience_type TEXT DEFAULT 'ST';
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS institution_name TEXT;
 ALTER TABLE public.users ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();

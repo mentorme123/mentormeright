@@ -43,7 +43,17 @@ export async function GET(request: Request) {
       // If they already exist, redirect them based on their role, unless a specific 'next' was provided
       if (next === '/' && userProfile) {
         if (userProfile.role === 'individual') {
-          return NextResponse.redirect(`${origin}/assessment`);
+          const { data: assessmentData } = await supabase
+            .from('assessment_results')
+            .select('id')
+            .eq('user_id', session.user.id)
+            .limit(1);
+          
+          if (assessmentData && assessmentData.length > 0) {
+            return NextResponse.redirect(`${origin}/dashboard/student`);
+          } else {
+            return NextResponse.redirect(`${origin}/assessment`);
+          }
         } else if (userProfile.role === 'institutional') {
           return NextResponse.redirect(`${origin}/dashboard/institution`);
         } else if (userProfile.role === 'admin') {

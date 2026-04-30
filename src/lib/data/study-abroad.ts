@@ -49,7 +49,7 @@ export const destinations: Destination[] = [
   {
     id: "canada",
     name: "Canada",
-    image: "https://images.unsplash.com/photo-1503614472-8c97d4d46ad2?q=80&w=800&auto=format&fit=crop",
+    image: "https://images.unsplash.com/photo-1541604193435-22287d32c2c2?q=80&w=800&auto=format&fit=crop",
     description: "Known for its welcoming immigration policies, high quality of life, and affordable world-class education.",
     visa_type: "Study Permit",
     post_study_work: "Up to 3 years (PGWP)",

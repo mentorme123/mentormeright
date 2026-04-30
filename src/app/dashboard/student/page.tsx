@@ -34,16 +34,17 @@ export default function StudentDashboard() {
 
       // Check assessment status
       const { data: assessment } = await supabase
-        .from('assessments')
-        .select('status')
+        .from('assessment_results')
+        .select('id')
         .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
+        .order('completed_at', { ascending: false })
         .limit(1)
         .maybeSingle();
       
       if (assessment) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        setAssessmentStatus(assessment.status as any);
+        setAssessmentStatus('completed');
+      } else {
+        setAssessmentStatus('not_started');
       }
       setLoading(false);
     }

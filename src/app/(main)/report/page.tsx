@@ -48,18 +48,43 @@ const SectionHeader = ({ num, title }: { num: string, title: string }) => (
   </div>
 );
 
+import { createClient } from "@/lib/supabase";
+
 export default function ReportPage() {
   const [report, setReport] = useState<ReportData | null>(null);
 
   useEffect(() => {
-    const saved = localStorage.getItem("mentorme_ai_report");
-    if (saved) {
-      try {
-        setReport(JSON.parse(saved));
-      } catch (e) {
-        console.error("Failed to parse report", e);
+    async function fetchReport() {
+      // First try to load from local storage for immediate feel
+      const saved = localStorage.getItem("mentorme_ai_report");
+      if (saved) {
+        try {
+          setReport(JSON.parse(saved));
+        } catch (e) {
+          console.error("Failed to parse report", e);
+        }
+      }
+
+      // Then attempt to fetch the official one from the DB
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+         const { data: assessment } = await supabase
+           .from('assessment_results')
+           .select('report')
+           .eq('user_id', user.id)
+           .order('completed_at', { ascending: false })
+           .limit(1)
+           .maybeSingle();
+
+         if (assessment?.report) {
+           setReport(assessment.report as ReportData);
+           // Also sync back to local storage
+           localStorage.setItem("mentorme_ai_report", JSON.stringify(assessment.report));
+         }
       }
     }
+    fetchReport();
   }, []);
 
   const handlePrint = () => {

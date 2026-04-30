@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { getQuestions, Question, AudienceType } from "@/lib/mock-questions";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase";
 
 export default function AssessmentPage() {
   const router = useRouter();
@@ -72,10 +73,21 @@ export default function AssessmentPage() {
     setIsSubmitting(true);
     try {
       const audience = localStorage.getItem("mentorme_audience") || "ST";
+      
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      let userName = "Student";
+      let userId = null;
+      if (user) {
+        userId = user.id;
+        userName = user.user_metadata?.full_name || user.email?.split('@')[0] || "Student";
+      }
+
       const response = await fetch('/api/generate-report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers, audience })
+        body: JSON.stringify({ answers, audience, userName, userId })
       });
       
       const data = await response.json();
@@ -84,8 +96,9 @@ export default function AssessmentPage() {
         throw new Error(data.error || 'Failed to generate report');
       }
 
-      // Save report to localStorage for the report page to pick up
+      // Save report to localStorage for immediate display if needed, but it's also saved in DB now.
       localStorage.setItem("mentorme_ai_report", JSON.stringify(data.report));
+
       router.push("/report");
     } catch (error) {
       console.error("Error submitting assessment:", error);

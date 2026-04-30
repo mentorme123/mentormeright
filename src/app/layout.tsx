@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const poppins = Poppins({ 
   subsets: ['latin'], 
@@ -25,6 +26,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen flex flex-col font-sans">
         {children}
         <AiCornerChatbot />
+        <SpeedInsights />
       </body>
     </html>
   );

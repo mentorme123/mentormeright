@@ -16,30 +16,41 @@ export default function AssessmentPage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Load questions and previous answers
-    // Load audience-specific questions
-    const audience = (localStorage.getItem("mentorme_audience") || "ST") as AudienceType;
-    const q = getQuestions(audience);
-    setQuestions(q);
-    
-    const saved = localStorage.getItem("mentorme_assessment_progress");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setAnswers(parsed);
-        // Find first unanswered question
-        const firstUnanswered = q.findIndex(qn => !parsed[qn.id]);
-        if (firstUnanswered !== -1) {
-          setCurrentIndex(firstUnanswered);
-        } else {
-          setCurrentIndex(q.length - 1); // all answered
-        }
-      } catch (e) {
-        console.error("Failed to parse saved answers", e);
+    const checkAuth = async () => {
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        console.warn("Unauthorized assessment attempt. Redirecting to login.");
+        router.push("/login?redirect=/assessment");
+        return;
       }
-    }
-    setIsLoaded(true);
-  }, []);
+
+      // Load questions and previous answers
+      const audience = (localStorage.getItem("mentorme_audience") || "ST") as AudienceType;
+      const q = getQuestions(audience);
+      setQuestions(q);
+      
+      const saved = localStorage.getItem("mentorme_assessment_progress");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          setAnswers(parsed);
+          const firstUnanswered = q.findIndex(qn => !parsed[qn.id]);
+          if (firstUnanswered !== -1) {
+            setCurrentIndex(firstUnanswered);
+          } else {
+            setCurrentIndex(q.length - 1);
+          }
+        } catch (e) {
+          console.error("Failed to parse saved answers", e);
+        }
+      }
+      setIsLoaded(true);
+    };
+
+    checkAuth();
+  }, [router]);
 
   const handleSelectOption = (optionKey: string) => {
     const currentQ = questions[currentIndex];

@@ -25,7 +25,7 @@ export function Navbar() {
           <Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link>
           <Link href="/career-library" className="hover:text-brand-blue transition-colors font-bold text-brand-orange">Career Library</Link>
           <Link href="/ai-corner" className="hover:text-brand-blue transition-colors font-bold text-brand-blue flex items-center gap-1">AI Corner <span className="relative flex h-2 w-2"><span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-orange opacity-75"></span><span className="relative inline-flex rounded-full h-2 w-2 bg-brand-orange"></span></span></Link>
-          <Link href="/services" className="hover:text-brand-blue transition-colors">Services</Link>
+          <Link href="/counsellors" className="hover:text-brand-blue transition-colors">Counsellors</Link>
           <Link href="/blogs" className="hover:text-brand-blue transition-colors">Blogs</Link>
           <Link href="/contact" className="hover:text-brand-blue transition-colors">Contact Us</Link>
         </div>

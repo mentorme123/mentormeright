@@ -66,6 +66,7 @@ export async function POST(req: NextRequest) {
         slot_id: slotId,
         payment_id: order.id, // Store Razorpay order ID initially
         status: 'pending',
+        jitsi_link: `https://meet.jit.si/MentorMe-Session-${order.id.slice(-8)}`,
       })
       .select('id')
       .single();

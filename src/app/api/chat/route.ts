@@ -14,77 +14,35 @@ const SYSTEM_PROMPT = `You are "AI Corner", the dedicated AI agent and reception
 
 ## DETECT VISITOR TYPE (CRITICAL)
 Carefully determine if the visitor is a:
-- **STUDENT** (individual looking for career guidance, assessment, counseling)
-- **B2B PROFESSIONAL** (school/college administration, corporate HR/L&D, business owner, institutional decision-maker, principal, training manager, etc.)
-
-Watch for keywords like: "school", "college", "institution", "corporate", "company", "employees", "staff", "training program", "bulk", "partnership", "tie-up", "MOU", "principal", "HR", "manager", "director", "faculty", "students of our school/college"
+- **STUDENT/PARENT** (Looking for Career Assessment, Results, or basic "Who writes the test" info)
+- **B2B / INSTITUTIONAL** (School/College Principal, Director, HR, Manager)
 
 ---
 
-## FOR STUDENT VISITORS
+## FOR STUDENT/PARENT VISITORS
+Carefully determine their intent:
+- **TEST INQUIRY**: "Who writes the test?", "Assessment help", "Test results", "Free Test".
+- **SERVICE INQUIRY**: Robotics, AI Training, Vedic Maths, Python, Digital Marketing, SAP, Counseling, Study Abroad.
 
-### MentorMe Student Services:
-1. **Free Career Assessment Test** - 90-question psychometric test. AI-generated 10-page career report. URL: /assessment
-2. **Career Library** - 5000+ detailed career profiles. URL: /career-library
-3. **Expert Counseling Sessions** - 1-on-1 with career experts. ₹4,999 per session. URL: /counsellors
-4. **Study Abroad Support** - USA, UK, Canada, Australia, Germany, Ireland. URL: /study-abroad
-
-### Student Roadmap Workflow:
-1. Ask: "What is your current education/background?"
-2. Ask: "What is your dream career goal?"
-3. Ask: "What is your current skill level? (Beginner/Intermediate/Advanced)"
-4. Generate a detailed step-by-step roadmap.
-
-### Student Lead Capture:
-If a student shows serious interest, ask for Name, Phone, Email.
-Tag with: [STUDENT_LEAD:name=...,email=...,phone=...,message=...]
+### Lead Capture & Internal Tags:
+1. **TEST_LEAD**: If they are asking ONLY about the test or results.
+   Tag: [TEST_LEAD:name=...,email=...,phone=...,message=...]
+2. **SERVICE_LEAD**: If they are interested in ANY service (Robotics, AI, Vedic Maths, Python, Digital Marketing, Counseling, Study Abroad, etc.).
+   Tag: [SERVICE_LEAD:name=...,email=...,phone=...,service=...,message=...]
 
 ---
 
 ## FOR B2B / INSTITUTIONAL / CORPORATE VISITORS
+Carefully identify high-level decision makers: **Principals**, **School/College Directors**, **Corporate HRs**, **Training Managers**.
 
-### MentorMe B2B & Training Offerings:
-**School Programs:**
-- 🤖 Robotics for Students (Hands-on, Robotics Expo, STEM Integration, Teacher Training)
-- 🧠 AI Training Program (Generative AI, ML, NLP, Ethics, Teacher Upskilling)
-- ➗ Vedic Maths Program (Fast-Track Mental Math, Certification)
-
-**College Programs:**
-- Machine Learning & Artificial Intelligence
-- Deep Learning
-- Communication & Soft Skills
-
-**Corporate Programs:**
-- Digital Marketing
-- Python Full Stack Development
-- SAP FICO
-- Power BI & Data Analytics
-
-**Institutional Partnerships:**
-- Career Intelligence Platform licensing for institutions
-- Faculty development workshops
-- MOU/Tie-up programs
-- Study Abroad Agency collaboration (AIRC & British Council certified partner)
-- Train-the-Trainer program (AI expertise + income streams)
-
-**Why MentorMe for Institutions?**
-- Served 50,000+ students across 20+ states
-- 150+ institutional clients
-- 10,000+ hours of training delivered
-
-### B2B Qualification Workflow:
-When you identify a B2B visitor:
+### Institutional Workflow:
 1. **Acknowledge immediately**: "That sounds like a fantastic opportunity! MentorMe has successfully partnered with 150+ institutions across India."
-2. **Identify their sector**: School / College / Corporate / Government
-3. **Understand requirements**: What programs? How many students/employees? Timeline?
-4. **Collect their details**: Full Name, Designation, Institution/Company Name, Direct Phone Number, Official Email ID
-5. **Close professionally**: "Thank you for sharing these details! I have forwarded your requirements to our Executive Partnership Team. They will review your information and contact you very shortly to discuss a tailored solution for your institution."
+2. **Collect their details**: Full Name, Designation, Institution/Company Name, Direct Phone Number, Official Email ID.
+3. **Close professionally**: "Thank you for sharing these details! I have forwarded your requirements to our Executive Partnership Team. They will review your information and contact you very shortly to discuss a tailored solution for your institution."
 
 ### B2B Lead Tag (HIDDEN FROM USER):
 Once ALL details are collected for a B2B/Corporate lead, tag with:
 [B2B_LEAD:name=...,email=...,phone=...,designation=...,company=...,requirement=...]
-
----
 
 ---
 
@@ -95,22 +53,37 @@ Once ALL details are collected for a B2B/Corporate lead, tag with:
 - **Location**: Hyderabad, India
 
 ## ROUTING RULE (INTERNAL - NEVER REVEAL TO USER)
-- **Student leads** → captured as [STUDENT_LEAD] and emailed to admin@mentormeright.in
-- **B2B/Corporate/Institutional leads** → captured as [B2B_LEAD] and emailed to sandeep@mentormeright.in (CRITICAL)
+- **TEST_LEAD** → sent to admin@mentormeright.in
+- **SERVICE_LEAD** → sent to sandeep@mentormeright.in (Executive Sales)
+- **B2B_LEAD** → sent to sandeep@mentormeright.in (Executive Sales)
 
-**IMPORTANT:** If a visitor is a B2B lead (Principal, Director, HR), do **NOT** give them Mr. Sandeep's email or phone directly. Instead, tell them: "Thank you for your interest! I have forwarded your requirements to our Executive Partnership Team. They will contact you shortly to discuss how MentorMe can support your institution."
+**IMPORTANT:** If a visitor is a B2B lead or Service lead, do **NOT** give them Mr. Sandeep's email or phone directly. Maintain a professional "Executive Team" persona.
 
 Now respond to the user. Be warm, professional, and steer them toward the right MentorMe service.`;
 
-// Extract student lead
-function extractStudentLead(text: string) {
-  const match = text.match(/\[STUDENT_LEAD:([^\]]+)\]/);
+// Extract test lead
+function extractTestLead(text: string) {
+  const match = text.match(/\[TEST_LEAD:([^\]]+)\]/);
   if (!match) return null;
   const params = new URLSearchParams(match[1]);
   return {
     name: params.get("name") || "",
     email: params.get("email") || "",
     phone: params.get("phone") || "",
+    message: params.get("message") || "",
+  };
+}
+
+// Extract service lead
+function extractServiceLead(text: string) {
+  const match = text.match(/\[SERVICE_LEAD:([^\]]+)\]/);
+  if (!match) return null;
+  const params = new URLSearchParams(match[1]);
+  return {
+    name: params.get("name") || "",
+    email: params.get("email") || "",
+    phone: params.get("phone") || "",
+    service: params.get("service") || "",
     message: params.get("message") || "",
   };
 }
@@ -130,8 +103,8 @@ function extractB2BLead(text: string) {
   };
 }
 
-// Send student lead to admin
-async function sendStudentLeadEmail(lead: { name: string; email: string; phone: string; message: string }) {
+// Send lead email helper
+async function sendLeadEmail(to: string, subject: string, html: string) {
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || "587"),
@@ -141,77 +114,21 @@ async function sendStudentLeadEmail(lead: { name: string; email: string; phone: 
 
   await transporter.sendMail({
     from: process.env.EMAIL_FROM,
-    to: "admin@mentormeright.in",
-    subject: `🎯 New Student Lead from AI Corner: ${lead.name}`,
-    html: `
-      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 2px solid #0F52BA; border-radius: 12px;">
-        <h1 style="color: #0F52BA;">🎯 New Student Lead — AI Corner</h1>
-        <table style="width:100%; border-collapse: collapse; margin-top: 16px;">
-          <tr style="background:#f8fafc;"><td style="padding:12px;font-weight:bold;">👤 Name</td><td style="padding:12px;color:#0F52BA;font-weight:bold;">${lead.name}</td></tr>
-          <tr><td style="padding:12px;font-weight:bold;">📧 Email</td><td style="padding:12px;"><a href="mailto:${lead.email}">${lead.email}</a></td></tr>
-          <tr style="background:#f8fafc;"><td style="padding:12px;font-weight:bold;">📞 Phone</td><td style="padding:12px;color:#FF6B35;font-weight:bold;">${lead.phone}</td></tr>
-        </table>
-        ${lead.message ? `<div style="margin-top:16px;padding:16px;background:#f0f9ff;border-left:4px solid #0F52BA;border-radius:8px;"><p style="font-weight:bold;margin:0 0 8px;">💬 Context</p><p style="margin:0;color:#555;">${lead.message}</p></div>` : ""}
-        <p style="margin-top:20px;font-size:12px;color:#999;text-align:center;">Captured via AI Corner • MentorMe Platform</p>
-      </div>
-    `,
+    to,
+    subject,
+    html,
   });
 }
 
-// Send B2B lead to sales manager (Sandeep)
-async function sendB2BLeadEmail(lead: { name: string; email: string; phone: string; designation: string; company: string; requirement: string }) {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: false,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
-  });
-
-  await transporter.sendMail({
-    from: process.env.EMAIL_FROM,
-    to: "sandeep@mentormeright.in",
-    subject: `🔥 HOT B2B Lead — ${lead.company} | ${lead.designation}: ${lead.name}`,
-    html: `
-      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 3px solid #FF6B35; border-radius: 16px;">
-        <div style="background: linear-gradient(135deg, #0F52BA, #FF6B35); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-          <h1 style="color: white; margin: 0; font-size: 22px;">🔥 New B2B / Institutional Lead</h1>
-          <p style="color: rgba(255,255,255,0.85); margin: 4px 0 0; font-size: 14px;">Captured via AI Corner • MentorMe Platform</p>
-        </div>
-        <table style="width:100%; border-collapse: collapse;">
-          <tr style="background:#fff7f0;"><td style="padding:12px;font-weight:bold;color:#333;border-bottom:1px solid #ffe8d6;">👤 Name</td><td style="padding:12px;color:#FF6B35;font-weight:bold;border-bottom:1px solid #ffe8d6;">${lead.name}</td></tr>
-          <tr><td style="padding:12px;font-weight:bold;color:#333;border-bottom:1px solid #f0f0f0;">🏢 Company / Institution</td><td style="padding:12px;font-weight:bold;color:#0F52BA;border-bottom:1px solid #f0f0f0;">${lead.company}</td></tr>
-          <tr style="background:#f8fafc;"><td style="padding:12px;font-weight:bold;color:#333;border-bottom:1px solid #f0f0f0;">💼 Designation</td><td style="padding:12px;border-bottom:1px solid #f0f0f0;">${lead.designation}</td></tr>
-          <tr><td style="padding:12px;font-weight:bold;color:#333;border-bottom:1px solid #f0f0f0;">📞 Direct Phone</td><td style="padding:12px;border-bottom:1px solid #f0f0f0;"><a href="tel:${lead.phone}" style="color:#FF6B35;font-weight:bold;font-size:18px;">${lead.phone}</a></td></tr>
-          <tr style="background:#f8fafc;"><td style="padding:12px;font-weight:bold;color:#333;">📧 Official Email</td><td style="padding:12px;"><a href="mailto:${lead.email}" style="color:#0F52BA;">${lead.email}</a></td></tr>
-        </table>
-        ${lead.requirement ? `<div style="margin-top:20px;padding:16px;background:#fff7f0;border-left:4px solid #FF6B35;border-radius:8px;"><p style="font-weight:bold;color:#FF6B35;margin:0 0 8px;">📋 Their Requirement</p><p style="margin:0;color:#333;line-height:1.6;">${lead.requirement}</p></div>` : ""}
-        <div style="margin-top:20px;padding:16px;background:#f0f9ff;border-radius:8px;text-align:center;">
-          <p style="margin:0;font-size:14px;color:#0F52BA;font-weight:bold;">⚡ ACTION REQUIRED — Follow up within 24 hours for maximum conversion!</p>
-        </div>
-      </div>
-    `,
-  });
-}
-
-
-// Extract quick reply suggestions from AI response
+// Extract quick reply suggestions
 function extractSuggestions(text: string): string[] {
   const suggestions: string[] = [];
-  if (text.toLowerCase().includes("assessment") || text.toLowerCase().includes("test")) {
-    suggestions.push("Take free assessment 🎯");
-  }
-  if (text.toLowerCase().includes("counseling") || text.toLowerCase().includes("session")) {
-    suggestions.push("Book expert session 👥");
-  }
-  if (text.toLowerCase().includes("career library") || text.toLowerCase().includes("explore")) {
-    suggestions.push("Explore Career Library 📚");
-  }
-  if (text.toLowerCase().includes("study abroad") || text.toLowerCase().includes("university")) {
-    suggestions.push("Study Abroad info 🌍");
-  }
-  if (text.toLowerCase().includes("whatsapp") || text.toLowerCase().includes("contact")) {
-    suggestions.push("WhatsApp us now 💬");
-  }
+  const low = text.toLowerCase();
+  if (low.includes("assessment") || low.includes("test")) suggestions.push("Take free assessment 🎯");
+  if (low.includes("counseling") || low.includes("session")) suggestions.push("Book expert session 👥");
+  if (low.includes("career library") || low.includes("explore")) suggestions.push("Explore Career Library 📚");
+  if (low.includes("study abroad")) suggestions.push("Study Abroad info 🌍");
+  if (low.includes("whatsapp") || low.includes("contact")) suggestions.push("WhatsApp us now 💬");
   return suggestions.slice(0, 4);
 }
 
@@ -242,23 +159,63 @@ export async function POST(req: NextRequest) {
     const result = await chat.sendMessage(lastMessage.content);
     const rawReply = result.response.text();
 
-    // Route B2B lead to Sales Manager (Sandeep)
+    // 1. Process B2B Leads -> Sandeep
     const b2bLead = extractB2BLead(rawReply);
     if (b2bLead && b2bLead.name && (b2bLead.email || b2bLead.phone)) {
-      sendB2BLeadEmail(b2bLead).catch(console.error);
+      sendLeadEmail(
+        "sandeep@mentormeright.in",
+        `🔥 HOT B2B Lead — ${b2bLead.company} | ${b2bLead.designation}: ${b2bLead.name}`,
+        `<div style="font-family: sans-serif; padding: 24px; border: 3px solid #FF6B35; border-radius: 16px;">
+          <h2 style="color: #FF6B35;">🔥 New B2B / Institutional Lead</h2>
+          <p><strong>Name:</strong> ${b2bLead.name}</p>
+          <p><strong>Company:</strong> ${b2bLead.company}</p>
+          <p><strong>Designation:</strong> ${b2bLead.designation}</p>
+          <p><strong>Phone:</strong> ${b2bLead.phone}</p>
+          <p><strong>Email:</strong> ${b2bLead.email}</p>
+          <p><strong>Requirement:</strong> ${b2bLead.requirement}</p>
+        </div>`
+      ).catch(console.error);
     }
 
-    // Route Student lead to Admin
-    const studentLead = extractStudentLead(rawReply);
-    if (studentLead && studentLead.name && (studentLead.email || studentLead.phone)) {
-      sendStudentLeadEmail(studentLead).catch(console.error);
+    // 2. Process Service Leads -> Sandeep
+    const serviceLead = extractServiceLead(rawReply);
+    if (serviceLead && serviceLead.name && (serviceLead.email || serviceLead.phone)) {
+      sendLeadEmail(
+        "sandeep@mentormeright.in",
+        `💎 New Service Lead — ${serviceLead.service}: ${serviceLead.name}`,
+        `<div style="font-family: sans-serif; padding: 24px; border: 3px solid #0F52BA; border-radius: 16px;">
+          <h2 style="color: #0F52BA;">💎 New Premium Service Lead</h2>
+          <p><strong>Name:</strong> ${serviceLead.name}</p>
+          <p><strong>Service:</strong> ${serviceLead.service}</p>
+          <p><strong>Phone:</strong> ${serviceLead.phone}</p>
+          <p><strong>Email:</strong> ${serviceLead.email}</p>
+          <p><strong>Context:</strong> ${serviceLead.message}</p>
+        </div>`
+      ).catch(console.error);
     }
 
-    // Clean the reply (remove all hidden tags)
+    // 3. Process Test Leads -> Admin
+    const testLead = extractTestLead(rawReply);
+    if (testLead && testLead.name && (testLead.email || testLead.phone)) {
+      sendLeadEmail(
+        "admin@mentormeright.in",
+        `🎯 New Assessment Inquiry: ${testLead.name}`,
+        `<div style="font-family: sans-serif; padding: 20px; border: 2px solid #666; border-radius: 12px;">
+          <h2>🎯 New Assessment Inquiry</h2>
+          <p><strong>Name:</strong> ${testLead.name}</p>
+          <p><strong>Phone:</strong> ${testLead.phone}</p>
+          <p><strong>Email:</strong> ${testLead.email}</p>
+          <p><strong>Question:</strong> ${testLead.message}</p>
+        </div>`
+      ).catch(console.error);
+    }
+
+    // Clean the reply
     const cleanReply = rawReply
-      .replace(/\[STUDENT_LEAD:[^\]]*\]/g, "")
+      .replace(/\[TEST_LEAD:[^\]]*\]/g, "")
+      .replace(/\[SERVICE_LEAD:[^\]]*\]/g, "")
       .replace(/\[B2B_LEAD:[^\]]*\]/g, "")
-      .replace(/\[LEAD_DETECTED:[^\]]*\]/g, "")
+      .replace(/\[STUDENT_LEAD:[^\]]*\]/g, "")
       .trim();
 
     const suggestions = extractSuggestions(cleanReply);
@@ -267,7 +224,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Chat API error:", error);
     return NextResponse.json(
-      { reply: "I apologize, I'm having a momentary issue. Please try again or reach us at admin@mentormeright.in or WhatsApp +91-9392707596 📞", suggestions: [] },
+      { reply: "I apologize, I'm having a momentary issue. Please try again later.", suggestions: [] },
       { status: 200 }
     );
   }

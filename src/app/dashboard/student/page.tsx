@@ -405,7 +405,6 @@ export default function StudentDashboard() {
           </div>
         </div>
 
-        </div>
 
         {/* Global Toolkit - THE "WINNING" TOOLS */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4">

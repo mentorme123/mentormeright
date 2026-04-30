@@ -80,9 +80,8 @@ export function Footer() {
         <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
           <p>Copyright © {new Date().getFullYear()} Mentor Me | Website Managed by Jeh Advertising</p>
           <div className="flex gap-4">
-            <Link href="/disclaimer" className="hover:text-foreground">Disclaimer</Link>
             <Link href="/terms" className="hover:text-foreground">Terms of Use</Link>
-            <Link href="/privacy" className="hover:text-foreground">Privacy Practices</Link>
+            <Link href="/privacy" className="hover:text-foreground">Privacy Policy</Link>
           </div>
         </div>
 

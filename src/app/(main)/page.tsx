@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
 
 export default function Home() {
+  const [isSubmitted, setIsSubmitted] = useState(false);
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden">
       
@@ -96,6 +99,7 @@ export default function Home() {
               width={600} 
               height={500} 
               className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
+              priority
             />
           </motion.div>
         </div>
@@ -360,36 +364,58 @@ export default function Home() {
             className="bg-background p-8 rounded-3xl shadow-lg border relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-bl-full -z-10"></div>
-            <h3 className="text-2xl font-bold mb-6">Apply For</h3>
-            <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">First Name</label>
-                  <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
+            
+            {isSubmitted ? (
+              <div className="flex flex-col items-center justify-center h-full py-12 text-center space-y-6">
+                <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+                  <CheckCircle2 size={40} />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Last Name</label>
-                  <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
+                  <h3 className="text-2xl font-bold">Application Received!</h3>
+                  <p className="text-muted-foreground">Our Executive Partnership Team will review your profile and contact you within 24 hours.</p>
                 </div>
+                <Button variant="outline" onClick={() => setIsSubmitted(false)} className="rounded-xl">Submit another inquiry</Button>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Email ID</label>
-                  <input type="email" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Phone Number</label>
-                  <input type="tel" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Message</label>
-                <textarea rows={4} className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none"></textarea>
-              </div>
-              <Button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 py-6 text-lg font-bold rounded-xl mt-4">
-                Submit Application
-              </Button>
-            </form>
+            ) : (
+              <>
+                <h3 className="text-2xl font-bold mb-6">Apply For</h3>
+                <form 
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setIsSubmitted(true);
+                  }}
+                  className="space-y-4"
+                >
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">First Name</label>
+                      <input required type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Last Name</label>
+                      <input required type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Email ID</label>
+                      <input required type="email" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium">Phone Number</label>
+                      <input required type="tel" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Message</label>
+                    <textarea required rows={4} className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none"></textarea>
+                  </div>
+                  <Button type="submit" className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 py-6 text-lg font-bold rounded-xl mt-4">
+                    Submit Application
+                  </Button>
+                </form>
+              </>
+            )}
           </motion.div>
         </div>
       </section>

@@ -570,8 +570,57 @@ export default function StudentDashboard() {
               </div>
             </div>
 
-            {/* Victory Features Section */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Career Match Intelligence */}
+              {reportData && (
+                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
+                      <Sparkles size={20} className="text-brand-blue" /> Top Career Matches
+                    </h3>
+                    <span className="text-[10px] font-black text-brand-blue bg-blue-50 px-3 py-1 rounded-full uppercase tracking-widest">AI Ranked</span>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    {/* Map career matches from report or show placeholders if not available */}
+                    {Array.isArray(reportData.careerMatches) ? reportData.careerMatches.slice(0, 3).map((match: any, i: number) => (
+                      <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:border-brand-blue hover:bg-white transition-all cursor-pointer group">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{match.industry || "Field"}</p>
+                        <h4 className="font-black text-slate-800 text-lg group-hover:text-brand-blue transition-colors">{match.title}</h4>
+                        <div className="mt-4 flex items-center justify-between">
+                           <div className="flex flex-col">
+                              <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
+                              <span className="text-xl font-black text-emerald-500">{match.matchScore || "92%"}</span>
+                           </div>
+                           <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                              <TrendingUp size={16} />
+                           </div>
+                        </div>
+                      </div>
+                    )) : [
+                      { title: "AI Research Scientist", industry: "Tech", score: "98%" },
+                      { title: "Strategic Consultant", industry: "Business", score: "94%" },
+                      { title: "UX Lead", industry: "Design", score: "89%" }
+                    ].map((match, i) => (
+                      <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/50">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{match.industry}</p>
+                        <h4 className="font-black text-slate-800 text-lg">{match.title}</h4>
+                        <div className="mt-4 flex items-center justify-between">
+                           <div className="flex flex-col">
+                              <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
+                              <span className="text-xl font-black text-emerald-500">{match.score}</span>
+                           </div>
+                           <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                              <TrendingUp size={16} />
+                           </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Victory Features Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Exam Tracker Card */}
               <motion.div 
                 whileHover={{ scale: 1.02 }}

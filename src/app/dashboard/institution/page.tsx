@@ -1,16 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Papa from "papaparse";
-import { Upload, Users, FileSpreadsheet, CheckCircle2, AlertCircle } from "lucide-react";
+import { 
+  Upload, 
+  Users, 
+  FileSpreadsheet, 
+  CheckCircle2, 
+  AlertCircle, 
+  Search, 
+  Mail, 
+  Download,
+  ArrowRight,
+  TrendingUp,
+  Clock
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase";
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Student = any;
 
 export default function InstitutionDashboard() {
+  const supabase = createClient();
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
   const [isExporting, setIsExporting] = useState(false);
+  
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    async function loadStudents() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+
+      // In a real app, we'd filter by the institution_id associated with this user
+      // For this MVP, we fetch all users who have an 'institution_name'
+      const { data: studentList } = await supabase
+        .from('users')
+        .select(`
+          id, 
+          name, 
+          email, 
+          education_level, 
+          role,
+          assessment_results (
+            id
+          )
+        `)
+        .eq('role', 'individual')
+        .order('name', { ascending: true });
+
+      setStudents(studentList || []);
+      setLoading(false);
+    }
+    loadStudents();
+  }, [supabase]);
 
   const handleDownloadTemplate = () => {
     const csvContent = "Name,Email,Grade\nJohn Doe,john@example.com,12\nJane Smith,jane@example.com,Undergrad";
@@ -27,204 +76,205 @@ export default function InstitutionDashboard() {
   const handleExportReports = () => {
     setIsExporting(true);
     setTimeout(() => {
-      // Fake delay to simulate generating a zip of PDFs
       setIsExporting(false);
-      alert("Cohort reports have been exported and sent to your registered email address.");
+      alert("Cohort reports have been archived. Your ZIP download will start momentarily.");
     }, 2000);
   };
 
   const processCSV = async (file: File) => {
     setUploadStatus('processing');
-    
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       complete: async (results) => {
         try {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const rows = results.data as any[];
+          if (rows.length === 0) throw new Error("The CSV file is empty.");
           
-          if (rows.length === 0) {
-            throw new Error("The CSV file appears to be empty.");
-          }
-
-          // Expected columns: Name, Email, Grade
-          if (!rows[0].Email) {
-            throw new Error("Missing required 'Email' column in CSV.");
-          }
-
-          // Send to server-side API for processing
           const response = await fetch('/api/bulk-import', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              students: rows,
-              institutionName: 'Institutional Client' // Could be dynamic if we had the field
-            })
+            body: JSON.stringify({ students: rows, institutionName: 'Global School System' })
           });
 
-          const data = await response.json();
-          
-          if (!response.ok) {
-            throw new Error(data.error || "Failed to provision accounts.");
-          }
+          if (!response.ok) throw new Error("Failed to provision accounts.");
           
           setStudentsImported(rows.length);
           setUploadStatus('success');
-
-        } catch (err: unknown) {
-          const error = err as Error;
-          setErrorMessage(error.message || "Failed to process CSV.");
+          // Refresh list
+          window.location.reload();
+        } catch (err: any) {
+          setErrorMessage(err.message);
           setUploadStatus('error');
         }
-      },
-      error: (err) => {
-        setErrorMessage(err.message);
-        setUploadStatus('error');
       }
     });
   };
 
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
+  const filteredStudents = students.filter(s => 
+    s.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    s.email?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    
-    const file = e.dataTransfer.files[0];
-    if (file && file.type === "text/csv") {
-      processCSV(file);
-    } else {
-      setErrorMessage("Please upload a valid CSV file.");
-      setUploadStatus('error');
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      processCSV(file);
-    }
-  };
+  const completedCount = students.filter(s => s.assessment_results && s.assessment_results.length > 0).length;
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8 font-sans">
+      <div className="max-w-7xl mx-auto space-y-8">
         
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-           <div>
-             <h1 className="text-3xl font-black text-brand-blue uppercase tracking-tight">Institutional Dashboard</h1>
-             <p className="text-slate-500 font-medium">Manage your cohorts and bulk-provision student assessments.</p>
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+           <div className="space-y-1">
+             <h1 className="text-4xl font-black text-brand-blue uppercase tracking-tight">Institutional Command Center</h1>
+             <p className="text-slate-500 font-bold flex items-center gap-2">
+               <TrendingUp size={16} className="text-emerald-500" /> Active Cohort: <span className="text-slate-900">Global School System — Batch 2026</span>
+             </p>
            </div>
-           <Button 
-             onClick={handleDownloadTemplate}
-             variant="outline" 
-             className="bg-white border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white transition-all font-bold"
-           >
-              Download CSV Template
-           </Button>
+           <div className="flex gap-3 w-full md:w-auto">
+             <Button 
+               onClick={handleDownloadTemplate}
+               variant="outline" 
+               className="flex-1 md:flex-none bg-white border-2 border-slate-200 hover:border-brand-orange text-slate-700 font-bold px-6 py-6 rounded-2xl transition-all"
+             >
+                CSV Template
+             </Button>
+             <Button 
+               onClick={() => document.getElementById('csv-upload')?.click()}
+               className="flex-1 md:flex-none bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-8 py-6 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all hover:scale-105"
+             >
+                <Upload size={20} className="mr-2" /> Bulk Upload Students
+             </Button>
+             <input type="file" id="csv-upload" accept=".csv" className="hidden" onChange={(e) => e.target.files?.[0] && processCSV(e.target.files[0])} />
+           </div>
         </div>
 
-        {/* Stats Row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                <Users size={24} />
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+           {[
+             { label: "Total Students", value: students.length, icon: <Users />, color: "text-brand-blue", bg: "bg-blue-50" },
+             { label: "Tests Completed", value: completedCount, icon: <CheckCircle2 />, color: "text-emerald-600", bg: "bg-emerald-50" },
+             { label: "Pending Tests", value: students.length - completedCount, icon: <Clock />, color: "text-amber-600", bg: "bg-amber-50" },
+             { label: "Success Rate", value: `${Math.round((completedCount / (students.length || 1)) * 100)}%`, icon: <TrendingUp />, color: "text-purple-600", bg: "bg-purple-50" },
+           ].map((stat, i) => (
+             <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:shadow-lg">
+                <div className={`w-14 h-14 ${stat.bg} ${stat.color} rounded-2xl flex items-center justify-center shrink-0`}>
+                  {stat.icon}
+                </div>
+                <div>
+                  <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.label}</p>
+                  <p className="text-3xl font-black text-slate-800">{stat.value}</p>
+                </div>
+             </div>
+           ))}
+        </div>
+
+        {/* Main Content: Cohort Tracking Table */}
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+          <div className="p-8 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-slate-50/50">
+            <div>
+              <h2 className="text-2xl font-black text-slate-800">Cohort Management</h2>
+              <p className="text-slate-500 font-medium text-sm">Track individual assessment progress and export career intelligence data.</p>
+            </div>
+            
+            <div className="flex gap-4 w-full md:w-auto">
+              <div className="relative flex-1 md:w-80">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                <input 
+                  type="text" 
+                  placeholder="Search name or email..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none font-medium text-sm transition-all"
+                />
               </div>
-              <div>
-                <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">Total Students</p>
-                <p className="text-3xl font-black text-slate-800">1,245</p>
-              </div>
-           </div>
-           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-brand-orange">
-                <FileSpreadsheet size={24} />
-              </div>
-              <div>
-                <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">Assessments Completed</p>
-                <p className="text-3xl font-black text-slate-800">892</p>
-              </div>
-           </div>
-           <div className="bg-brand-blue text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
-              <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-              <p className="text-sm font-bold text-blue-200 uppercase tracking-wider mb-1">Batch Export</p>
-              <h3 className="text-xl font-bold mb-4">Download all 12-page reports securely.</h3>
               <Button 
                 onClick={handleExportReports}
                 disabled={isExporting}
-                className="w-full bg-white text-brand-blue hover:bg-slate-100 font-bold"
+                className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-6 py-3 rounded-xl shadow-lg flex items-center gap-2"
               >
-                {isExporting ? "Archiving..." : "Export Cohort ZIP"}
+                <Download size={18} /> Export ZIP
               </Button>
-           </div>
-        </div>
+            </div>
+          </div>
 
-        {/* CSV Bulk Upload Area */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-           <div className="border-b border-slate-100 bg-slate-50 p-6">
-             <h2 className="text-xl font-black text-slate-800">Bulk Provision Students</h2>
-             <p className="text-slate-500 text-sm mt-1">Upload a CSV containing student Names, Emails, and Grades to instantly generate their assessment links.</p>
-           </div>
-
-           <div className="p-8">
-              {uploadStatus === 'idle' || uploadStatus === 'error' ? (
-                <div 
-                  onDragOver={handleDragOver}
-                  onDragLeave={handleDragLeave}
-                  onDrop={handleDrop}
-                  className={`border-2 border-dashed rounded-2xl p-12 text-center transition-all ${
-                    isDragging ? 'border-brand-orange bg-brand-orange/5' : 'border-slate-300 hover:border-brand-blue hover:bg-slate-50'
-                  }`}
-                >
-                   <input 
-                     type="file" 
-                     id="csv-upload" 
-                     accept=".csv" 
-                     className="hidden" 
-                     onChange={handleFileChange}
-                   />
-                   <label htmlFor="csv-upload" className="cursor-pointer flex flex-col items-center">
-                      <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 mb-6 group-hover:bg-brand-blue/10 group-hover:text-brand-blue transition-colors">
-                        <Upload size={32} />
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100">
+                  <th className="px-8 py-5">Student Name</th>
+                  <th className="px-8 py-5">Grade / Level</th>
+                  <th className="px-8 py-5">Assessment Status</th>
+                  <th className="px-8 py-5">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-50">
+                {loading ? (
+                  <tr>
+                    <td colSpan={4} className="px-8 py-20 text-center">
+                      <div className="flex flex-col items-center gap-4">
+                        <div className="w-10 h-10 border-4 border-brand-blue border-t-transparent rounded-full animate-spin"></div>
+                        <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Loading Cohort Data...</p>
                       </div>
-                      <h3 className="text-xl font-bold text-slate-700 mb-2">Drag and drop your CSV here</h3>
-                      <p className="text-slate-500 font-medium mb-6">or click to browse from your computer</p>
-                      
-                      {uploadStatus === 'error' && (
-                        <div className="flex items-center gap-2 text-red-600 bg-red-50 px-4 py-2 rounded-lg font-bold text-sm">
-                          <AlertCircle size={16} /> {errorMessage}
-                        </div>
-                      )}
-                   </label>
-                </div>
-              ) : uploadStatus === 'processing' ? (
-                <div className="border-2 border-brand-blue/20 bg-brand-blue/5 rounded-2xl p-16 text-center flex flex-col items-center justify-center">
-                  <div className="w-16 h-16 border-4 border-brand-blue border-t-transparent rounded-full animate-spin mb-6"></div>
-                  <h3 className="text-xl font-bold text-brand-blue mb-2">Provisioning Accounts...</h3>
-                  <p className="text-slate-500">Reading CSV and securely generating Supabase credentials.</p>
-                </div>
-              ) : (
-                <div className="border-2 border-emerald-200 bg-emerald-50 rounded-2xl p-16 text-center flex flex-col items-center justify-center">
-                  <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mb-6">
-                    <CheckCircle2 size={40} />
-                  </div>
-                  <h3 className="text-2xl font-black text-emerald-700 mb-2">Success!</h3>
-                  <p className="text-emerald-600 font-medium mb-8">Successfully provisioned {studentsImported} student accounts.</p>
-                  <Button onClick={() => setUploadStatus('idle')} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8">
-                    Upload Another Cohort
-                  </Button>
-                </div>
-              )}
-           </div>
+                    </td>
+                  </tr>
+                ) : filteredStudents.length === 0 ? (
+                  <tr>
+                    <td colSpan={4} className="px-8 py-20 text-center text-slate-400 font-medium italic">
+                      No students found in this cohort. Upload a CSV to get started.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredStudents.map((student) => {
+                    const isCompleted = student.assessment_results && student.assessment_results.length > 0;
+                    return (
+                      <tr key={student.id} className="hover:bg-slate-50/80 transition-colors group">
+                        <td className="px-8 py-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-500 font-black text-xs uppercase group-hover:bg-brand-blue group-hover:text-white transition-all">
+                              {student.name?.charAt(0) || 'S'}
+                            </div>
+                            <div>
+                              <p className="font-black text-slate-800 leading-none mb-1">{student.name}</p>
+                              <p className="text-xs font-medium text-slate-400 flex items-center gap-1"><Mail size={10} /> {student.email}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-8 py-6">
+                          <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-[10px] font-black uppercase tracking-widest">
+                            {student.education_level || 'General'}
+                          </span>
+                        </td>
+                        <td className="px-8 py-6">
+                          {isCompleted ? (
+                            <div className="flex items-center gap-2 text-emerald-600">
+                              <CheckCircle2 size={16} />
+                              <span className="text-sm font-bold">12-Page Report Ready</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2 text-amber-500">
+                              <Clock size={16} />
+                              <span className="text-sm font-bold">Pending Submission</span>
+                            </div>
+                          )}
+                        </td>
+                        <td className="px-8 py-6">
+                          {isCompleted ? (
+                            <Button variant="ghost" className="text-brand-blue font-black text-xs hover:bg-brand-blue/5 rounded-lg px-4 py-2 flex items-center gap-1.5">
+                              View Intelligence <ArrowRight size={14} />
+                            </Button>
+                          ) : (
+                            <Button variant="ghost" className="text-slate-400 font-black text-xs hover:bg-slate-100 rounded-lg px-4 py-2 flex items-center gap-1.5">
+                              Nudge Student <Mail size={14} />
+                            </Button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </div>

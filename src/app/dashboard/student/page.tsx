@@ -22,10 +22,22 @@ import {
   Mail,
   X,
   ChevronRight,
-  Download
+  Download,
+  FileText,
+  LayoutDashboard,
+  Settings,
+  User as UserIcon,
+  BookOpen,
+  DollarSign,
+  Users,
+  Info,
+  Compass,
+  PieChart
 } from "lucide-react";
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { ParameterScores } from "@/lib/scoring";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type UserProfile = any;
@@ -40,8 +52,11 @@ export default function StudentDashboard() {
   const [authUser, setAuthUser] = useState<any>(null);
   const [profile, setProfile] = useState<UserProfile>(null);
   const [reportData, setReportData] = useState<ReportData>(null);
+  const [assessmentScores, setAssessmentScores] = useState<ParameterScores | null>(null);
   const [assessmentStatus, setAssessmentStatus] = useState<'not_started' | 'completed'>('not_started');
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [bookings, setBookings] = useState<any[]>([]);
+  const [bookingsLoading, setBookingsLoading] = useState(true);
 
   // Onboarding form state
   const [formPhone, setFormPhone] = useState("");
@@ -84,16 +99,31 @@ export default function StudentDashboard() {
       // Check assessment status and fetch report
       const { data: assessment } = await supabase
         .from('assessment_results')
-        .select('id, report, scores, completed_at')
+        .select('report, scores')
         .eq('user_id', user.id)
-        .order('completed_at', { ascending: false })
-        .limit(1)
         .maybeSingle();
       
       if (assessment) {
         setAssessmentStatus('completed');
         setReportData(assessment.report);
+        setAssessmentScores(assessment.scores as unknown as ParameterScores);
       }
+
+      // Fetch Bookings
+      const { data: userBookings } = await supabase
+        .from('bookings')
+        .select(`
+          *,
+          counsellors (
+            name,
+            specialization
+          )
+        `)
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false });
+      
+      setBookings(userBookings || []);
+      setBookingsLoading(false);
       setLoading(false);
     }
     loadData();
@@ -387,6 +417,94 @@ export default function StudentDashboard() {
                 </div>
               </div>
             )}
+
+            {/* Quick Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* RIASEC Chart Card */}
+              {assessmentScores && (
+                <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-black text-slate-800 flex items-center gap-2">
+                      <PieChart size={18} className="text-brand-orange" /> Psychometric Profile
+                    </h3>
+                    <div className="group relative">
+                      <Info size={14} className="text-slate-400 cursor-help" />
+                      <div className="absolute bottom-full right-0 mb-2 w-48 p-2 bg-slate-800 text-white text-[10px] rounded shadow-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                        RIASEC measures Passion: Realistic, Investigative, Artistic, Social, Enterprising, Conventional.
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex-1 min-h-[300px] w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <RadarChart cx="50%" cy="50%" outerRadius="70%" data={[
+                        { subject: 'Realistic', A: assessmentScores.Realistic, fullMark: 20 },
+                        { subject: 'Investigative', A: assessmentScores.Investigative, fullMark: 20 },
+                        { subject: 'Artistic', A: assessmentScores.Artistic, fullMark: 20 },
+                        { subject: 'Social', A: assessmentScores.Social, fullMark: 20 },
+                        { subject: 'Enterprising', A: assessmentScores.Enterprising, fullMark: 20 },
+                        { subject: 'Conventional', A: assessmentScores.Conventional, fullMark: 20 },
+                      ]}>
+                        <PolarGrid stroke="#e2e8f0" />
+                        <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 10, fontWeight: 700 }} />
+                        <Radar
+                          name="Passion"
+                          dataKey="A"
+                          stroke="#F97316"
+                          fill="#F97316"
+                          fillOpacity={0.6}
+                        />
+                        <Tooltip 
+                          contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontSize: '12px', fontWeight: 'bold' }}
+                        />
+                      </RadarChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <p className="text-[10px] text-slate-400 text-center italic mt-2">RIASEC Passion Mapping v2.1</p>
+                </div>
+              )}
+
+              {/* Summary / Status Card */}
+              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                  <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
+                    <BookOpen size={18} className="text-brand-blue" /> Executive Summary
+                  </h3>
+                  {reportData ? (
+                    <p className="text-slate-600 text-sm leading-relaxed">
+                      {reportData.executiveSummary}
+                    </p>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-slate-500 text-sm italic">Assessment not completed yet.</p>
+                      <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div className="w-0 h-full bg-brand-orange"></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {!reportData && (
+                  <Link href="/assessment">
+                    <Button className="w-full mt-6 bg-brand-orange hover:bg-brand-orange/90 text-white font-bold py-4 shadow-lg shadow-orange-600/10 transition-all hover:translate-y-[-2px]">
+                      Start Assessment <ChevronRight size={18} className="ml-1" />
+                    </Button>
+                  </Link>
+                )}
+                
+                {reportData && (
+                  <div className="mt-6 p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center gap-3">
+                    <div className="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center">
+                      <TrendingUp size={20} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-emerald-800 uppercase tracking-widest">Profile Status</p>
+                      <p className="text-sm font-black text-emerald-600">High Resolution Intelligence</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
              
             {/* Assessment Card */}
             <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
@@ -456,6 +574,60 @@ export default function StudentDashboard() {
                 )}
               </div>
             )}
+
+            {/* My Bookings Section */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+              <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2">
+                <Video size={20} className="text-brand-orange" /> My Counseling Sessions
+              </h3>
+              
+              {bookingsLoading ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="animate-spin text-slate-300" />
+                </div>
+              ) : bookings.length === 0 ? (
+                <div className="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                  <Video className="mx-auto text-slate-300 mb-3" size={32} />
+                  <p className="text-slate-500 font-medium">No sessions booked yet.</p>
+                  <Link href="/counsellors">
+                    <button className="text-brand-blue font-bold text-sm mt-2 hover:underline">Book your first session →</button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {bookings.map((booking) => (
+                    <div key={booking.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-5 bg-slate-50 rounded-2xl border border-slate-100 gap-4 group hover:bg-white hover:border-brand-blue/20 hover:shadow-md transition-all">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-brand-blue/10 rounded-xl flex items-center justify-center text-brand-blue font-black">
+                          {booking.counsellors?.name?.charAt(0) || 'C'}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-slate-800">{booking.counsellors?.name}</h4>
+                          <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">{booking.counsellors?.specialization}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex flex-col sm:items-end gap-1">
+                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
+                          booking.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'
+                        }`}>
+                          {booking.status}
+                        </span>
+                        <p className="text-sm font-bold text-slate-600">
+                          Session ID: <span className="font-mono">{booking.id.slice(0, 8).toUpperCase()}</span>
+                        </p>
+                      </div>
+
+                      <a href={booking.jitsi_link} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                        <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-5 px-6 rounded-xl shadow-lg shadow-brand-blue/10 transition-all hover:scale-105">
+                          Join Call <Video className="ml-2" size={16} />
+                        </Button>
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Sidebar */}

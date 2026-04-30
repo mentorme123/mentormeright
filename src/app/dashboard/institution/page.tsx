@@ -53,12 +53,21 @@ export default function InstitutionDashboard() {
             throw new Error("Missing required 'Email' column in CSV.");
           }
 
-          // In a real production app, this should be sent to an API route (e.g. /api/bulk-import)
-          // which securely uses the SUPABASE_SERVICE_ROLE_KEY to bypass email confirmation 
-          // and mass-insert users into auth.users and public.users.
+          // Send to server-side API for processing
+          const response = await fetch('/api/bulk-import', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              students: rows,
+              institutionName: 'Institutional Client' // Could be dynamic if we had the field
+            })
+          });
+
+          const data = await response.json();
           
-          // MOCK: Simulate server processing delay
-          await new Promise(r => setTimeout(r, 2000));
+          if (!response.ok) {
+            throw new Error(data.error || "Failed to provision accounts.");
+          }
           
           setStudentsImported(rows.length);
           setUploadStatus('success');

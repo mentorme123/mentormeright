@@ -24,10 +24,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { slotId, counselorId, amount } = await req.json();
+    const { slotId, counsellorId, amount } = await req.json();
 
-    if (!slotId || !counselorId || !amount) {
-      return NextResponse.json({ error: 'Missing required fields: slotId, counselorId, amount' }, { status: 400 });
+    if (!slotId || !counsellorId || !amount) {
+      return NextResponse.json({ error: 'Missing required fields: slotId, counsellorId, amount' }, { status: 400 });
     }
 
     // Verify slot is still available
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
       notes: {
         user_id: user.id,
         slot_id: slotId,
-        counselor_id: counselorId,
+        counsellor_id: counsellorId,
       },
     });
 
@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
       .from('bookings')
       .insert({
         user_id: user.id,
-        counselor_id: counselorId,
+        counsellor_id: counsellorId,
         slot_id: slotId,
         payment_id: order.id, // Store Razorpay order ID initially
         status: 'pending',

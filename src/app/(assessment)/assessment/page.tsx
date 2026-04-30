@@ -103,7 +103,7 @@ export default function AssessmentPage() {
     }
     
     loadAssessment();
-  }, [supabase]);
+  }, [supabase, router]);
 
   const handleSelectOption = async (optionKey: string) => {
     const currentQ = questions[currentIndex];
@@ -262,8 +262,10 @@ export default function AssessmentPage() {
                 </button>
               );
             })}
+          </div>
+
           {/* Navigation */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-slate-100 relative z-10">
             <Button 
               variant="ghost" 
               onClick={handlePrev}
@@ -283,7 +285,7 @@ export default function AssessmentPage() {
               </Button>
             ) : (
               <Button 
-                onClick={handleSubmitAssessment}
+                onClick={handleSubmit}
                 disabled={!isCurrentAnswered || isSubmitting}
                 className="w-full sm:w-auto bg-brand-orange text-white font-black px-12 shadow-lg shadow-brand-orange/20"
               >

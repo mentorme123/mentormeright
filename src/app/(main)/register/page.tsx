@@ -1,221 +1,220 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { createClient } from "@/lib/supabase";
+import { Loader2, User, Mail, Lock, Building2, Sparkles, GraduationCap, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-// ── Zod schema ───────────────────────────────────────────────────────────────
-const registerSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  password: z
-    .string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number"),
-  role: z.enum(["individual", "institutional"]),
-  audienceType: z.enum(["ST", "UG", "GR", "WP"]).optional(),
-});
-
-type RegisterForm = z.infer<typeof registerSchema>;
+import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function RegisterPage() {
   const router = useRouter();
   const supabase = createClient();
-  const [serverError, setServerError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState<'individual' | 'institutional' | 'counselor'>('individual');
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [institutionName, setInstitutionName] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm<RegisterForm>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: { role: "individual", audienceType: "ST" },
-  });
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-  const role = watch("role");
-
-  const onSubmit = async (values: RegisterForm) => {
-    setServerError("");
-    try {
-      const { data, error: authError } = await supabase.auth.signUp({
-        email: values.email,
-        password: values.password,
-      });
-      if (authError) throw authError;
-
-      if (data.user) {
-        const { error: profileError } = await supabase.from("users").insert([
-          { id: data.user.id, email: values.email, name: values.name, role: values.role },
-        ]);
-        if (profileError) throw profileError;
-
-        if (values.role === "individual") {
-          localStorage.setItem("mentorme_audience", values.audienceType || "ST");
-        }
-        setSuccess(true);
-        router.push(values.role === "individual" ? "/dashboard/student" : "/dashboard/institution");
-      }
-    } catch (err: unknown) {
-      setServerError((err as Error).message || "Failed to register. Please try again.");
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: { 
-          redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/auth/callback` 
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: fullName,
+          role,
+          institution_name: role === 'institutional' ? institutionName : null,
         },
-      });
-      if (error) throw error;
-    } catch (err: unknown) {
-      setServerError((err as Error).message || "Failed to sign up with Google.");
+      },
+    });
+
+    if (signUpError) {
+      setError(signUpError.message);
+      setLoading(false);
+      return;
+    }
+
+    if (data.user) {
+      // Direct redirect for now
+      if (role === 'institutional') {
+        router.push("/dashboard/institution");
+      } else {
+        router.push("/dashboard/student");
+      }
     }
   };
-
-  const inputClass =
-    "w-full p-3 rounded-xl border bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm";
-  const errorClass = "text-xs text-red-500 font-medium mt-1";
-  const inputError = "border-red-400";
-  const inputOk = "border-slate-200";
 
   return (
-    <div className="flex-1 flex items-center justify-center p-4 py-12 min-h-screen pt-24 bg-slate-50">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
-        <div className="text-center space-y-2 mb-8">
-          <h1 className="text-3xl font-black text-brand-blue uppercase tracking-tight">Create Account</h1>
-          <p className="text-slate-500 font-medium text-sm">Join MentorMe to unlock your career potential</p>
+    <div className="min-h-screen flex flex-col lg:flex-row bg-white overflow-hidden">
+      
+      {/* Left Column: Visuals */}
+      <motion.div 
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        className="hidden lg:flex lg:w-2/5 bg-brand-slate relative flex-col justify-between p-16 text-white overflow-hidden"
+      >
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-brand-indigo/40 to-transparent"></div>
+        
+        <div className="relative z-10 flex items-center gap-3">
+          <div className="w-10 h-10 bg-brand-indigo rounded-xl flex items-center justify-center font-black">M</div>
+          <span className="text-2xl font-black uppercase tracking-tighter">MentorMe</span>
         </div>
 
-        {serverError && (
-          <div className="mb-6 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg font-medium text-center">
-            {serverError}
-          </div>
-        )}
-        {success && (
-          <div className="mb-6 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-lg font-medium text-center">
-            Registration successful! Redirecting…
-          </div>
-        )}
+        <div className="relative z-10 space-y-12">
+           <div className="space-y-4">
+              <div className="inline-block px-4 py-1 rounded-full bg-brand-indigo/20 border border-brand-indigo/30 text-[10px] font-black uppercase tracking-widest text-brand-indigo">Account Initialization</div>
+              <h2 className="text-5xl font-black leading-tight tracking-tight uppercase">Join the <br /> <span className="text-brand-gold italic">Elite Network</span></h2>
+           </div>
+           
+           <div className="space-y-6">
+              {[
+                { icon: <Sparkles size={20} />, text: "90-Question Intelligence Assessment" },
+                { icon: <GraduationCap size={20} />, text: "AI-Powered Career Roadmaps" },
+                { icon: <Briefcase size={20} />, text: "B2B Institutional Infrastructure" }
+              ].map((item, i) => (
+                <div key={i} className="flex items-center gap-4 text-blue-100/80 font-medium">
+                   <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-brand-indigo">{item.icon}</div>
+                   {item.text}
+                </div>
+              ))}
+           </div>
+        </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-          {/* Name */}
-          <div className="space-y-1">
-            <label className="text-sm font-bold text-slate-700" htmlFor="name">Full Name</label>
-            <input
-              id="name"
-              type="text"
-              placeholder="John Doe"
-              className={`${inputClass} ${errors.name ? inputError : inputOk}`}
-              {...register("name")}
-            />
-            {errors.name && <p className={errorClass}>{errors.name.message}</p>}
-          </div>
+        <div className="relative z-10 text-xs font-black text-blue-100/20 uppercase tracking-widest">
+           MentorMe Intelligence Platform v2.0
+        </div>
+      </motion.div>
 
-          {/* Email */}
-          <div className="space-y-1">
-            <label className="text-sm font-bold text-slate-700" htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              className={`${inputClass} ${errors.email ? inputError : inputOk}`}
-              {...register("email")}
-            />
-            {errors.email && <p className={errorClass}>{errors.email.message}</p>}
-          </div>
-
-          {/* Role */}
-          <div className="space-y-1">
-            <label className="text-sm font-bold text-slate-700" htmlFor="role">I am a...</label>
-            <select
-              id="role"
-              className={`${inputClass} ${errors.role ? inputError : inputOk}`}
-              {...register("role")}
-            >
-              <option value="individual">Student / Professional</option>
-              <option value="institutional">Institution / College</option>
-            </select>
+      {/* Right Column: Form */}
+      <div className="flex-1 flex items-center justify-center p-8 lg:p-24 relative overflow-y-auto">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-indigo/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
+        
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="w-full max-w-xl space-y-10 relative z-10 py-12"
+        >
+          <div className="space-y-2">
+            <h1 className="text-4xl font-black text-brand-slate tracking-tight">Create Identity</h1>
+            <p className="text-slate-500 font-medium text-lg">Select your role and initialize your professional account.</p>
           </div>
 
-          {/* Audience – only for individuals */}
-          {role === "individual" && (
-            <div className="space-y-1">
-              <label className="text-sm font-bold text-slate-700" htmlFor="audienceType">
-                My current status is…
-              </label>
-              <select
-                id="audienceType"
-                className={`${inputClass} ${errors.audienceType ? inputError : inputOk}`}
-                {...register("audienceType")}
+          {/* Role Switcher */}
+          <div className="flex p-2 bg-slate-50 rounded-[32px] border-2 border-slate-50">
+             {[
+               { id: 'individual', label: 'Student', icon: <User size={16} /> },
+               { id: 'institutional', label: 'Institution', icon: <Building2 size={16} /> },
+               { id: 'counselor', label: 'Counselor', icon: <Sparkles size={16} /> }
+             ].map((r) => (
+               <button
+                 key={r.id}
+                 onClick={() => setRole(r.id as any)} // eslint-disable-line @typescript-eslint/no-explicit-any
+                 className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-[24px] text-sm font-black uppercase tracking-widest transition-all ${
+                   role === r.id ? 'bg-white text-brand-indigo shadow-xl shadow-slate-200/50' : 'text-slate-400 hover:text-slate-600'
+                 }`}
+               >
+                 {r.icon} {r.label}
+               </button>
+             ))}
+          </div>
+
+          <form onSubmit={handleRegister} className="space-y-8">
+            {error && (
+              <div className="p-4 rounded-2xl bg-red-50 border border-red-100 text-red-600 text-sm font-bold">
+                {error}
+              </div>
+            )}
+
+            <div className="grid md:grid-cols-2 gap-8">
+               <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-2">Full Legal Name</label>
+                  <div className="relative group">
+                    <User className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-indigo" size={20} />
+                    <input 
+                      type="text"
+                      required
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="w-full pl-14 pr-6 py-5 rounded-3xl border-2 border-slate-50 focus:border-brand-indigo focus:outline-none transition-all font-medium bg-slate-50/50"
+                      placeholder="Jane Doe"
+                    />
+                  </div>
+               </div>
+
+               <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-2">Official Email</label>
+                  <div className="relative group">
+                    <Mail className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-indigo" size={20} />
+                    <input 
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full pl-14 pr-6 py-5 rounded-3xl border-2 border-slate-50 focus:border-brand-indigo focus:outline-none transition-all font-medium bg-slate-50/50"
+                      placeholder="name@company.com"
+                    />
+                  </div>
+               </div>
+            </div>
+
+            {role === 'institutional' && (
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                className="space-y-2"
               >
-                <option value="ST">School Student (Grade 5–12)</option>
-                <option value="UG">University / College Student</option>
-                <option value="GR">Graduate / Post-Graduate</option>
-                <option value="WP">Working Professional</option>
-              </select>
+                <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-2">Institution / School Name</label>
+                <div className="relative group">
+                  <Building2 className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-indigo" size={20} />
+                  <input 
+                    type="text"
+                    required
+                    value={institutionName}
+                    onChange={(e) => setInstitutionName(e.target.value)}
+                    className="w-full pl-14 pr-6 py-5 rounded-3xl border-2 border-slate-50 focus:border-brand-indigo focus:outline-none transition-all font-medium bg-slate-50/50"
+                    placeholder="Harvard University"
+                  />
+                </div>
+              </motion.div>
+            )}
+
+            <div className="space-y-2">
+              <label className="text-xs font-black uppercase tracking-widest text-slate-400 pl-2">Security Password</label>
+              <div className="relative group">
+                <Lock className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-brand-indigo" size={20} />
+                <input 
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-14 pr-6 py-5 rounded-3xl border-2 border-slate-50 focus:border-brand-indigo focus:outline-none transition-all font-medium bg-slate-50/50"
+                  placeholder="••••••••"
+                />
+              </div>
             </div>
-          )}
 
-          {/* Password */}
-          <div className="space-y-1">
-            <label className="text-sm font-bold text-slate-700" htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Min. 8 chars, 1 uppercase, 1 number"
-              className={`${inputClass} ${errors.password ? inputError : inputOk}`}
-              {...register("password")}
-            />
-            {errors.password && <p className={errorClass}>{errors.password.message}</p>}
-          </div>
+            <Button 
+              type="submit" 
+              disabled={loading}
+              className="w-full bg-brand-indigo hover:bg-brand-indigo/90 text-white font-black py-8 rounded-[32px] text-xl shadow-2xl shadow-brand-indigo/20 transition-all hover:scale-105"
+            >
+              {loading ? <Loader2 className="animate-spin" /> : "Initialize Identity"}
+            </Button>
+          </form>
 
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-6 text-lg font-bold rounded-xl text-white shadow-md bg-brand-orange hover:bg-brand-orange/90 mt-2"
-          >
-            {isSubmitting ? "Creating…" : "Create Account"}
-          </Button>
-
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-slate-200" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-slate-500">Or sign up with</span>
-            </div>
-          </div>
-
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleGoogleLogin}
-            className="w-full py-6 text-lg font-bold rounded-xl border-slate-200 bg-white text-slate-700 hover:bg-slate-50 shadow-sm"
-          >
-            <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
-            </svg>
-            Google
-          </Button>
-        </form>
-
-        <div className="mt-8 text-center text-sm font-medium border-t border-slate-100 pt-6">
-          <span className="text-slate-500">Already have an account? </span>
-          <Link href="/login" className="text-brand-blue font-bold hover:underline">Log in here</Link>
-        </div>
+          <p className="text-center text-slate-400 font-bold">
+            Already have an identity? <Link href="/login" className="text-brand-indigo hover:underline">Access Dashboard</Link>
+          </p>
+        </motion.div>
       </div>
     </div>
   );

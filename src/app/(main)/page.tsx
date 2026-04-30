@@ -1,450 +1,162 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Sparkles, Globe, Zap, Calendar } from "lucide-react";
+import { Sparkles, Zap, Calendar } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden bg-white">
       
       {/* Hero Section */}
-      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 py-20 lg:py-32">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-blue/10 via-background to-background"></div>
-        <div className="max-w-5xl space-y-8 relative z-10">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground leading-tight"
+      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 py-24 lg:py-40 overflow-hidden">
+        {/* Animated Background Mesh */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 -left-1/4 w-[800px] h-[800px] bg-brand-indigo/10 rounded-full blur-[120px] animate-pulse"></div>
+          <div className="absolute bottom-0 -right-1/4 w-[600px] h-[600px] bg-brand-gold/10 rounded-full blur-[100px] animate-pulse delay-1000"></div>
+        </div>
+
+        <div className="max-w-5xl space-y-10 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="inline-block px-4 py-1.5 rounded-full bg-brand-indigo/5 border border-brand-indigo/10 text-brand-indigo text-sm font-bold tracking-wide uppercase mb-4"
           >
-            Transform Your Career with <br className="hidden md:block" />
-            <span className="text-brand-blue">MentorMe</span>
+            ✨ The Future of Career Intelligence
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-6xl md:text-8xl font-black tracking-tight text-brand-slate leading-[1.05]"
+          >
+            Design Your <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-indigo to-brand-emerald">Elite Career</span>
           </motion.h1>
           
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-xl md:text-2xl text-slate-500 max-w-3xl mx-auto leading-relaxed font-medium"
           >
-            We provide a comprehensive range of services, spanning from self-discovery to enhancing employability, serving as a one-stop destination for all the support students require beyond their academic institution.
+            Propelling students beyond academics through science-backed psychometrics and AI-driven career roadmaps.
           </motion.p>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8"
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-10"
           >
             <Link href="/register">
-              <Button size="lg" className="w-full sm:w-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-xl px-12 py-8 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-4 border-white/20">
-                Register & Start Your Free Career Test
+              <Button size="lg" className="w-full sm:w-auto bg-brand-indigo hover:bg-brand-indigo/90 text-white font-bold text-xl px-12 py-8 rounded-2xl shadow-2xl shadow-brand-indigo/20 transition-all hover:scale-105 active:scale-95">
+                Register Now
               </Button>
             </Link>
             <Link href="/login">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-10 py-6 rounded-full border-2 hover:bg-muted transition-all">
-                Login to Your Dashboard
+              <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-10 py-8 rounded-2xl border-2 border-slate-200 hover:border-brand-indigo hover:text-brand-indigo transition-all bg-white/50 backdrop-blur-sm">
+                Login to Dashboard
               </Button>
             </Link>
           </motion.div>
         </div>
-      </section>
 
-      {/* What is MentorMe? (Deep Dive + Image) */}
-      <section className="py-24 px-4 bg-background relative z-10">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-6"
-          >
-            <h2 className="text-4xl font-bold">What is MentorMe?</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              MentorMe is an elite career intelligence platform powered by advanced AI. We help students and professionals discover their true potential through deep psychometric evaluations. 
-            </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              After taking our 90-question assessment, our proprietary AI engine instantly generates a hyper-personalized, 10-page career roadmap outlining your dominant strengths, blind spots, and ideal job matches.
-            </p>
-            <ul className="space-y-4 pt-4">
-              {[
-                "Science-backed Psychometric Analysis",
-                "Proprietary AI-Powered Career Reports",
-                "1-on-1 Sessions with Elite Counselors",
-              ].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-foreground font-medium">
-                  <div className="h-6 w-6 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center text-sm">✓</div>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/20 to-brand-orange/20 rounded-3xl blur-3xl transform scale-105"></div>
-            <Image 
-              src="/images/student.png" 
-              alt="Student taking assessment" 
-              width={600} 
-              height={500} 
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
-            />
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Platform Superpowers Section */}
-      <section className="py-24 px-4 bg-slate-900 text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-blue/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-black uppercase tracking-tight">Platform Superpowers</h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">Built for scale, powered by intelligence. Experience the future of career guidance.</p>
+        {/* Scroll Indicator */}
+        <motion.div 
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 hidden lg:block"
+        >
+          <div className="w-6 h-10 border-2 border-slate-300 rounded-full flex justify-center p-1">
+            <div className="w-1.5 h-1.5 bg-slate-400 rounded-full"></div>
           </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        </motion.div>
+      </section>
+
+      {/* Feature Section: Glass Cards */}
+      <section className="py-32 px-4 bg-slate-50/50 relative">
+        <div className="max-w-6xl mx-auto space-y-24">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl md:text-5xl font-black text-brand-slate uppercase tracking-tighter">Unrivaled Intelligence</h2>
+            <div className="w-24 h-1.5 bg-brand-gold mx-auto rounded-full"></div>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               { 
-                title: "AI Trajectory Engine", 
-                desc: "Instant 10-page reports mapping your psychometric data to global job markets.",
-                icon: <Sparkles className="text-brand-orange" size={28} />
+                title: "Psychometric Depth", 
+                desc: "90-question professional evaluation mapping your DNA to 500+ global career paths.",
+                icon: <Sparkles className="text-brand-indigo" size={32} />
               },
               { 
-                title: "Global Search", 
-                desc: "Access a real-time database of 1,000+ universities and 500+ career paths.",
-                icon: <Globe className="text-brand-blue" size={28} />
+                title: "AI Roadmaps", 
+                desc: "Instant 10-page hyper-personalised reports covering strengths, blindspots, and stream selection.",
+                icon: <Zap className="text-brand-gold" size={32} />
               },
               { 
-                title: "Enterprise Bulk Import", 
-                desc: "Schools can provision thousands of student accounts in seconds via CSV.",
-                icon: <Zap className="text-emerald-500" size={28} />
-              },
-              { 
-                title: "Smart Scheduling", 
-                desc: "1-click sync with Google Calendar for expert video consultations.",
-                icon: <Calendar className="text-purple-500" size={28} />
+                title: "Expert Mentors", 
+                desc: "1-on-1 sessions with elite counselors using our secure, unlimited video infrastructure.",
+                icon: <Calendar className="text-brand-emerald" size={32} />
               },
             ].map((feature, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-sm hover:bg-white/10 transition-all hover:-translate-y-2 group"
+                whileHover={{ y: -10 }}
+                className="glass p-10 rounded-[32px] space-y-6 group transition-all"
               >
-                <div className="mb-6 p-4 bg-white/5 rounded-2xl inline-block group-hover:scale-110 transition-transform">{feature.icon}</div>
-                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed font-medium">{feature.desc}</p>
+                <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center group-hover:bg-brand-indigo/10 transition-colors">
+                  {feature.icon}
+                </div>
+                <h3 className="text-2xl font-bold text-brand-slate">{feature.title}</h3>
+                <p className="text-slate-500 leading-relaxed font-medium">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Career Assessments Section */}
-      <section className="py-24 px-4 bg-muted/20 overflow-hidden">
-        <div className="max-w-6xl mx-auto space-y-16">
-          <motion.div 
-             initial={{ opacity: 0, y: 20 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             className="text-center space-y-4 max-w-3xl mx-auto"
-          >
-            <h2 className="text-4xl font-bold">Career Assessments for All Ages</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Unlock your full potential with our scientifically validated career assessments. Whether you’re a 6th grader just starting to explore, a college student, or a working professional, our tools provide deep insights into your strengths, preferences, and ideal career paths.
+      {/* CTA Section */}
+      <section className="py-24 px-4">
+        <div className="max-w-5xl mx-auto bg-brand-slate rounded-[40px] p-12 lg:p-24 relative overflow-hidden text-center space-y-10">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-brand-indigo/20 to-transparent"></div>
+          <div className="relative z-10 space-y-6">
+            <h2 className="text-4xl md:text-6xl font-black text-white leading-tight">Ready to unlock your <br /> true potential?</h2>
+            <p className="text-blue-100/60 text-lg md:text-xl max-w-2xl mx-auto font-medium">
+              Join 50,000+ students already using MentorMe to navigate their academic and professional journeys.
             </p>
-          </motion.div>
-          
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <motion.div 
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="lg:col-span-5 relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
-              <Image 
-                src="/images/school.png" 
-                alt="School student taking assessment" 
-                width={600} 
-                height={600} 
-                className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
-              />
-            </motion.div>
-            
-            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-6">
-              {[
-                { title: "College Students", desc: "Career assessment test for college students" },
-                { title: "11th-12th Grade", desc: "Psychometric assessment test for class 11-12th students" },
-                { title: "8th-10th Grade", desc: "Psychometric assessment test for class 8-10th students" },
-                { title: "6th-7th Grade", desc: "Psychometric Assessment test for class 6 & 7 students" },
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="bg-background p-6 rounded-2xl border hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden group"
-                >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-brand-blue/5 rounded-bl-full -z-10 group-hover:scale-110 transition-transform"></div>
-                  <h3 className="text-xl font-bold mb-2 text-brand-blue">{item.title}</h3>
-                  <p className="text-muted-foreground mb-4 h-16">{item.desc}</p>
-                  <div className="flex justify-between items-center mt-4 pt-4 border-t">
-                    <Link href="/assessment" className="text-sm font-bold text-brand-orange hover:underline bg-brand-orange/10 px-3 py-1.5 rounded-full">Take Free Assessment</Link>
-                    <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">Contact us</Link>
-                  </div>
-                </motion.div>
-              ))}
+            <div className="pt-6">
+              <Link href="/register">
+                <Button size="lg" className="bg-brand-gold hover:bg-brand-gold/90 text-brand-slate font-black text-xl px-16 py-8 rounded-2xl shadow-xl transition-all hover:scale-105">
+                  Get Started Free
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Career Guidance + Working Professional Image */}
-      <section className="py-24 px-4 bg-background">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="order-2 lg:order-1 relative"
-          >
-             <div className="absolute inset-0 bg-gradient-to-tl from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
-             <Image 
-              src="/images/professional.png" 
-              alt="Working Professional" 
-              width={600} 
-              height={500} 
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
-            />
-          </motion.div>
-          <motion.div 
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="space-y-6 order-1 lg:order-2"
-          >
-            <h2 className="text-4xl font-bold">Career Guidance for All Stages</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Expert advice tailored to your specific academic phase or career transition.
-            </p>
-            <div className="space-y-4 pt-4">
-              {[
-                { title: "6th-7th Class Students", desc: "Discover strengths early and guide young minds toward the right path." },
-                { title: "8th-10th Class Students", desc: "Pick subjects & careers with science-backed assessments & expert advice." },
-                { title: "11th-12th Class Students", desc: "Decide your future confidently—exams, colleges, careers." },
-                { title: "College Students & Pros", desc: "Strategize, skill up, and land your dream roles with our mentors." },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-4 p-4 bg-muted/30 rounded-2xl border">
-                  <div className="h-10 w-10 shrink-0 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold">{i+1}</div>
-                  <div>
-                    <h3 className="font-bold">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Skill Training */}
-      <section className="py-24 px-4 bg-muted/20">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl font-bold text-center"
-          >
-            Skill Training Programs
-          </motion.h2>
-          <div className="grid lg:grid-cols-3 gap-8">
-            {[
-              { 
-                title: "AI for School Students", 
-                subtitle: "AI Training Program",
-                highlights: "Hands‑on projects | Generative AI ML & NLP | Ethics & responsible AI | Teacher upskilling"
-              },
-              { 
-                title: "Robotics for Students", 
-                subtitle: "Robotics Training Program",
-                highlights: "Hands‑on training | No lab investment | Robotics Expo | STEM Integration | Robotics Lab Upgrade | Teacher Training"
-              },
-              { 
-                title: "Vedic Maths Program", 
-                subtitle: "Vedic Maths Training Program",
-                highlights: "Fast‑Track Mental Math | No Tools Needed | Expert‑Led Sessions | Certification"
-              },
-            ].map((item, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-8 rounded-3xl border bg-background hover:shadow-xl transition-all duration-300"
-              >
-                <h3 className="text-2xl font-bold mb-1 text-brand-blue">{item.title}</h3>
-                <p className="font-medium text-brand-orange mb-6">{item.subtitle}</p>
-                <h4 className="font-semibold text-sm uppercase tracking-wider mb-2">Key Highlights</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-8">{item.highlights}</p>
-                <div className="flex gap-4">
-                  <Button variant="outline" className="flex-1">Know more</Button>
-                  <Button className="flex-1 bg-brand-blue text-white hover:bg-brand-blue/90">Contact us</Button>
-                </div>
-              </motion.div>
-            ))}
+      {/* Footer */}
+      <footer className="py-12 px-4 border-t border-slate-100 bg-white">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-brand-indigo rounded-lg flex items-center justify-center text-white font-black text-sm">M</div>
+            <span className="text-xl font-black tracking-tight text-brand-slate uppercase">MentorMe</span>
           </div>
-        </div>
-      </section>
-
-      {/* Study Abroad Collaboration */}
-      <section className="py-24 px-4 bg-brand-blue text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 bg-center"></div>
-        <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-4xl font-bold"
-          >
-            Study Abroad Support
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-xl leading-relaxed text-white/90"
-          >
-            MentorMe announces a strategic collaboration with <strong>United Educational Services</strong>, an AIRC, British Council, and British High Commission certified agency. We provide students with a seamless journey to top international destinations, including the US, UK, Australia, Canada, Ireland, and New Zealand.
-          </motion.p>
-          <motion.div
-             initial={{ opacity: 0, y: 20 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             transition={{ delay: 0.4 }}
-          >
-            <Button size="lg" className="bg-brand-orange hover:bg-brand-orange/90 text-white text-lg font-bold px-8 shadow-xl">
-              Learn more
-            </Button>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-24 px-4 bg-background border-b">
-        <div className="max-w-6xl mx-auto text-center space-y-12">
-          <h2 className="text-3xl font-bold">Why Choose MentorMe?</h2>
-          <p className="text-lg text-muted-foreground">We are proud to present the success of our Programs</p>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { label: "States", value: "20+" },
-              { label: "Clients", value: "150+" },
-              { label: "Students", value: "50k+" },
-              { label: "Hours", value: "10k+" },
-            ].map((stat, i) => (
-              <motion.div 
-                key={i}
-                initial={{ scale: 0.5, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ type: "spring", stiffness: 100, delay: i * 0.1 }}
-                className="space-y-2"
-              >
-                <div className="text-5xl font-extrabold text-brand-orange">{stat.value}</div>
-                <div className="text-lg font-medium text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
+          <div className="flex gap-8 text-sm font-bold text-slate-400">
+            <Link href="/privacy" className="hover:text-brand-indigo transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-brand-indigo transition-colors">Terms of Service</Link>
+            <Link href="/contact" className="hover:text-brand-indigo transition-colors">Contact Us</Link>
           </div>
+          <p className="text-sm font-bold text-slate-400">
+            © {new Date().getFullYear()} MentorMe. Hyderabad, India.
+          </p>
         </div>
-      </section>
-
-      {/* Contact Form Section */}
-      <section className="py-24 px-4 bg-muted/20">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
-          <motion.div 
-            initial={{ opacity: 0, x: -40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="space-y-8"
-          >
-            <h2 className="text-4xl font-bold">Connect with us</h2>
-            <p className="text-lg text-muted-foreground">
-              Create a win-win opportunity: gain practical AI expertise and unlock new income streams with our innovative Train-the-Trainer program!
-            </p>
-            <div className="space-y-4">
-              <p><strong>Call us at:</strong><br/> +91-9392707596, +91-8188824440</p>
-              <p><strong>Mail us at:</strong><br/> admin@mentormeright.in</p>
-              <p><strong>Location:</strong><br/> Hyderabad, India</p>
-            </div>
-          </motion.div>
-          
-          <motion.div 
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="bg-background p-8 rounded-3xl shadow-lg border relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-bl-full -z-10"></div>
-            <h3 className="text-2xl font-bold mb-6">Apply For</h3>
-            <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">First Name</label>
-                  <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Last Name</label>
-                  <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Email ID</label>
-                  <input type="email" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Phone Number</label>
-                  <input type="tel" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Message</label>
-                <textarea rows={4} className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none"></textarea>
-              </div>
-              <Button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 py-6 text-lg font-bold rounded-xl mt-4">
-                Submit Application
-              </Button>
-            </form>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Back to Top Floating Button */}
-      <Button 
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-8 right-8 z-50 rounded-full h-14 w-14 p-0 bg-white/80 backdrop-blur border border-slate-200 text-slate-800 shadow-xl hover:bg-white lg:hidden"
-      >
-        ↑
-      </Button>
+      </footer>
     </div>
   );
 }
+

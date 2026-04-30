@@ -28,7 +28,7 @@ export function UniversitySearch() {
       const data = await res.json();
       setResults(data.slice(0, 10)); // Limit to top 10 for UX
       if (data.length === 0) setError("No universities found for this search.");
-    } catch (err) {
+    } catch {
       setError("Failed to fetch university data. Please try again later.");
     } finally {
       setLoading(false);

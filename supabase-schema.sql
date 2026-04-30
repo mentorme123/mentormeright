@@ -151,5 +151,75 @@ DROP POLICY IF EXISTS "Service role blogs" ON public.blogs;
 CREATE POLICY "Service role blogs" ON public.blogs FOR ALL USING (auth.role() = 'service_role');
 
 -- ============================================
+-- 8. PARENT PROFILES TABLE
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.parent_profiles (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE, -- Parent's Auth ID
+  student_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE, -- Linked Student
+  is_verified BOOLEAN DEFAULT false,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.parent_profiles ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Parents view own profile" ON public.parent_profiles;
+CREATE POLICY "Parents view own profile" ON public.parent_profiles FOR SELECT USING (auth.uid() = user_id);
+
+-- ============================================
+-- 9. EXAM ALERTS TABLE (Indian Competitive Exams)
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.exam_alerts (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  category TEXT NOT NULL, -- e.g., 'Engineering', 'Medical'
+  application_deadline DATE,
+  exam_date DATE,
+  official_link TEXT,
+  description TEXT,
+  is_active BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.exam_alerts ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Anyone can view exams" ON public.exam_alerts;
+CREATE POLICY "Anyone can view exams" ON public.exam_alerts FOR SELECT USING (true);
+
+-- ============================================
+-- 10. CERTIFICATES TABLE (NEP 2020 Compliance)
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.certificates (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+  certificate_type TEXT NOT NULL DEFAULT 'Career Readiness',
+  issue_date TIMESTAMPTZ DEFAULT NOW(),
+  skills_verified TEXT[],
+  metadata JSONB, -- Stores report scores for the PDF
+  is_public BOOLEAN DEFAULT true
+);
+
+ALTER TABLE public.certificates ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Users view own certificates" ON public.certificates;
+CREATE POLICY "Users view own certificates" ON public.certificates FOR SELECT USING (auth.uid() = user_id OR is_public = true);
+
+-- ============================================
+-- 11. REVIEWS TABLE (Counsellor Marketplace)
+-- ============================================
+CREATE TABLE IF NOT EXISTS public.reviews (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  booking_id UUID REFERENCES public.bookings(id) ON DELETE CASCADE,
+  counsellor_id UUID REFERENCES public.counsellors(id) ON DELETE CASCADE,
+  user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+  rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+  comment TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Anyone can view reviews" ON public.reviews;
+CREATE POLICY "Anyone can view reviews" ON public.reviews FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Users insert own reviews" ON public.reviews;
+CREATE POLICY "Users insert own reviews" ON public.reviews FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- ============================================
 -- DONE!
 -- ============================================

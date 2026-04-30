@@ -32,7 +32,15 @@ import {
   Users,
   Info,
   Compass,
-  PieChart
+  PieChart,
+  Bell,
+  Award,
+  ShieldCheck,
+  Search,
+  MessageSquare,
+  Timer,
+  Sparkles,
+  IndianRupee
 } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { Button } from "@/components/ui/button";
@@ -347,7 +355,27 @@ export default function StudentDashboard() {
         )}
       </AnimatePresence>
 
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        
+        {/* Live Alert Ticker */}
+        <div className="bg-slate-900 text-white py-3 px-6 rounded-2xl flex items-center gap-4 overflow-hidden shadow-xl border border-white/10">
+          <div className="flex items-center gap-2 shrink-0">
+            <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+            <span className="text-[10px] font-black uppercase tracking-widest text-red-400">Live Alerts</span>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <motion.div 
+              animate={{ x: [1000, -2000] }}
+              transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+              className="flex items-center gap-12 whitespace-nowrap text-xs font-bold"
+            >
+              <span className="flex items-center gap-2"><Bell size={14} className="text-brand-orange" /> JEE Main 2026 Registration is now LIVE! Deadline: Nov 30.</span>
+              <span className="flex items-center gap-2"><Sparkles size={14} className="text-brand-blue" /> AI Simulator updated with 120 new Corporate Roles.</span>
+              <span className="flex items-center gap-2"><Award size={14} className="text-emerald-400" /> 1,240 NEP Certificates issued this week.</span>
+              <span className="flex items-center gap-2"><TrendingUp size={14} className="text-brand-orange" /> Data Science is the #1 trending career in Hyderabad today.</span>
+            </motion.div>
+          </div>
+        </div>
         
         {/* Header */}
         <div className="relative p-8 sm:p-10 rounded-3xl overflow-hidden bg-gradient-to-br from-brand-blue to-blue-900 text-white shadow-2xl">
@@ -376,6 +404,39 @@ export default function StudentDashboard() {
             )}
           </div>
         </div>
+
+        </div>
+
+        {/* Global Toolkit - THE "WINNING" TOOLS */}
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {[
+            { label: "AI Simulator", icon: <MessageSquare className="text-brand-blue" />, sub: "Talk to Pros", link: "/career-library", badge: "NEW" },
+            { label: "Exam War Room", icon: <Timer className="text-brand-orange" />, sub: "JEE/NEET/CUET", link: "/dashboard/student/exams", badge: "LIVE" },
+            { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", action: () => setActiveTab("overview"), badge: "HOT" },
+            { label: "Career ROI", icon: <IndianRupee className="text-purple-500" />, sub: "Salary Insights", link: "/career-library" }
+          ].map((tool, i) => (
+            <motion.div 
+              whileHover={{ y: -5 }}
+              key={i}
+              className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm hover:border-brand-blue hover:shadow-xl transition-all cursor-pointer group relative overflow-hidden"
+            >
+              {tool.badge && (
+                <div className="absolute top-0 right-0 px-2 py-1 bg-brand-orange text-[8px] font-black text-white rounded-bl-lg">
+                  {tool.badge}
+                </div>
+              )}
+              <Link href={tool.link || "#"} className="space-y-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-brand-blue/10 transition-colors">
+                  {tool.icon}
+                </div>
+                <div>
+                  <p className="text-sm font-black text-slate-800">{tool.label}</p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">{tool.sub}</p>
+                </div>
+              </Link>
+            </motion.div>
+          ))}
+        </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
@@ -504,6 +565,71 @@ export default function StudentDashboard() {
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Victory Features Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Exam Tracker Card */}
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group cursor-pointer"
+              >
+                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <Bell size={100} />
+                </div>
+                <div className="relative z-10 space-y-4">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange border border-brand-orange/20">
+                    <Bell size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-slate-800">Exam Tracker</h3>
+                    <p className="text-slate-500 text-xs font-medium mt-1">JEE, NEET, CUET & 50+ other Indian exams.</p>
+                  </div>
+                  <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                    Live Deadlines & Alerts
+                  </div>
+                  <Link href="/dashboard/student/exams" className="block">
+                    <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-5 rounded-xl text-sm">
+                      Open War Room <ChevronRight size={16} className="ml-1" />
+                    </Button>
+                  </Link>
+                </div>
+              </motion.div>
+
+              {/* Certification Card */}
+              <motion.div 
+                whileHover={{ scale: 1.02 }}
+                className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group"
+              >
+                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+                  <Award size={100} />
+                </div>
+                <div className="relative z-10 space-y-4">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-blue/10 flex items-center justify-center text-brand-blue border border-brand-blue/20">
+                    <Award size={24} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black text-slate-800">NEP Certificate</h3>
+                    <p className="text-slate-500 text-xs font-medium mt-1">Official Career Readiness Certificate (NEP 2020).</p>
+                  </div>
+                  {assessmentStatus === 'completed' ? (
+                    <div className="flex items-center gap-2 text-[10px] font-bold text-emerald-600">
+                      <ShieldCheck size={12} /> Eligible for Download
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 text-[10px] font-bold text-amber-600">
+                      <Info size={12} /> Complete Assessment to Unlock
+                    </div>
+                  )}
+                  <Button 
+                    disabled={assessmentStatus !== 'completed'}
+                    className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-5 rounded-xl text-sm disabled:opacity-50"
+                  >
+                    Download PDF <Download size={16} className="ml-1" />
+                  </Button>
+                </div>
+              </motion.div>
             </div>
              
             {/* Assessment Card */}

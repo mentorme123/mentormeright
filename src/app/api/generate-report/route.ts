@@ -96,7 +96,7 @@ Do not return any markdown. Return strictly valid JSON only.
     try {
       reportData = JSON.parse(cleanJson);
     } catch (parseError) {
-      console.error("Failed to parse JSON from Gemini:", text);
+      console.error("Failed to parse JSON from Gemini:", parseError, text);
       return NextResponse.json({ error: 'AI generated invalid data. Please try again.' }, { status: 500 });
     }
 

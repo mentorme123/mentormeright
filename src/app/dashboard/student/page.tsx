@@ -404,14 +404,12 @@ export default function StudentDashboard() {
             )}
           </div>
         </div>
-
-
         {/* Global Toolkit - THE "WINNING" TOOLS */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: "AI Simulator", icon: <MessageSquare className="text-brand-blue" />, sub: "Talk to Pros", link: "/career-library", badge: "NEW" },
             { label: "Exam War Room", icon: <Timer className="text-brand-orange" />, sub: "JEE/NEET/CUET", link: "/dashboard/student/exams", badge: "LIVE" },
-            { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", action: () => setActiveTab("overview"), badge: "HOT" },
+            { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", badge: "HOT" },
             { label: "Career ROI", icon: <IndianRupee className="text-purple-500" />, sub: "Salary Insights", link: "/career-library" }
           ].map((tool, i) => (
             <motion.div 

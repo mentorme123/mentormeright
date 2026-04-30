@@ -162,6 +162,20 @@ export default function StudentDashboard() {
         .single();
       setProfile(updatedProfile);
       setShowOnboarding(false);
+
+      // Send Welcome Email (Automatic on first-time profile completion)
+      try {
+        fetch('/api/email/welcome', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: authUser.user_metadata?.full_name || authUser.email.split('@')[0],
+            email: authUser.email
+          })
+        });
+      } catch (e) {
+        console.error("Welcome email trigger failed:", e);
+      }
     }
     setSaving(false);
   };

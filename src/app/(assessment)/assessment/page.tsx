@@ -102,7 +102,7 @@ export default function AssessmentPage() {
       router.push("/report");
     } catch (error) {
       console.error("Error submitting assessment:", error);
-      alert("There was an error generating your report. Please try again.");
+      alert(error instanceof Error ? error.message : "There was an error generating your report. Please try again.");
       setIsSubmitting(false);
     }
   };

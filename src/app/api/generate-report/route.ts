@@ -3,6 +3,9 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { scoreAnswers, buildScoreSummary } from '@/lib/scoring';
 import { createClient } from '@supabase/supabase-js';
 
+export const maxDuration = 60; // Attempt to increase duration if they are on Pro
+// export const runtime = 'edge'; // Optional: Use edge if needed, but standard usually works best with large libraries unless timeout is hit
+
 export async function POST(req: NextRequest) {
   try {
     const { answers, audience, userName, userId } = await req.json();
@@ -87,8 +90,15 @@ Do not return any markdown. Return strictly valid JSON only.
     const text = response.text();
     
     // Clean up potential markdown blocks if the model wrapped it
-    const cleanJson = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    const reportData = JSON.parse(cleanJson);
+    const cleanJson = text.replace(/```json\n?/gi, '').replace(/```\n?/g, '').trim();
+    
+    let reportData;
+    try {
+      reportData = JSON.parse(cleanJson);
+    } catch (parseError) {
+      console.error("Failed to parse JSON from Gemini:", text);
+      return NextResponse.json({ error: 'AI generated invalid data. Please try again.' }, { status: 500 });
+    }
 
     // Save report to database securely
     if (userId) {

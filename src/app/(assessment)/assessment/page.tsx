@@ -207,7 +207,7 @@ export default function AssessmentPage() {
   const sectionIndex = sectionQuestions.findIndex(q => q.id === currentQ.id) + 1;
 
   const isLastQuestion = currentIndex === questions.length - 1;
-  const isCurrentAnswered = !!answers[currentQ.id];
+  const isCurrentAnswered = answers[currentQ.id] !== undefined;
 
   return (
     <div className="flex-1 flex flex-col items-center p-4 py-8 sm:py-16">

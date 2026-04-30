@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Force Client Component
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";

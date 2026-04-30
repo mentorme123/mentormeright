@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { getQuestions, Question, AudienceType } from "@/lib/mock-questions";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
-import { Loader2, BrainCircuit } from "lucide-react";
+import { Loader2, BrainCircuit, X, Phone, MapPin, User, GraduationCap, Briefcase, TrendingUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function AssessmentPage() {
@@ -14,6 +14,17 @@ export default function AssessmentPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [isLoaded, setIsLoaded] = useState(false);
+  
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [profile, setProfile] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+
+  // Onboarding form state
+  const [formPhone, setFormPhone] = useState("");
+  const [formGender, setFormGender] = useState("");
+  const [formCountry, setFormCountry] = useState("");
+  const [formState, setFormState] = useState("");
+  const [formEducation, setFormEducation] = useState("");
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -26,8 +37,22 @@ export default function AssessmentPage() {
         return;
       }
 
+      // Fetch Profile to ensure it's complete
+      const { data: userProfile } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+      
+      setProfile(userProfile);
+
+      // If profile is missing phone, show onboarding first
+      if (!userProfile?.phone) {
+        setShowOnboarding(true);
+      }
+
       // Load questions and previous answers
-      const audience = (localStorage.getItem("mentorme_audience") || "ST") as AudienceType;
+      const audience = (localStorage.getItem("mentorme_audience") || userProfile?.audience_type || "ST") as AudienceType;
       const q = getQuestions(audience);
       setQuestions(q);
       
@@ -52,15 +77,38 @@ export default function AssessmentPage() {
     checkAuth();
   }, [router]);
 
+  const handleSaveProfile = async () => {
+    if (!formPhone || !formGender || !formCountry || !formState || !formEducation) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    setSaving(true);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from('users')
+      .update({
+        phone: formPhone,
+        gender: formGender,
+        country: formCountry,
+        state: formState,
+        education_level: formEducation,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', profile.id);
+
+    if (error) {
+      alert("Failed to save details. Please try again.");
+    } else {
+      setShowOnboarding(false);
+    }
+    setSaving(false);
+  };
+
   const handleSelectOption = (optionKey: string) => {
     const currentQ = questions[currentIndex];
     const newAnswers = { ...answers, [currentQ.id]: optionKey };
     setAnswers(newAnswers);
-    
-    // Save to local storage (mocking real-time save to Supabase)
     localStorage.setItem("mentorme_assessment_progress", JSON.stringify(newAnswers));
-
-    // Auto advance after short delay
     setTimeout(() => {
       if (currentIndex < questions.length - 1) {
         setCurrentIndex(prev => prev + 1);
@@ -98,125 +146,197 @@ export default function AssessmentPage() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const audience = localStorage.getItem("mentorme_audience") || "ST";
-      
+      const audience = localStorage.getItem("mentorme_audience") || profile?.audience_type || "ST";
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      
-      let userName = "Student";
-      let userId = null;
-      if (user) {
-        userId = user.id;
-        userName = user.user_metadata?.full_name || user.email?.split('@')[0] || "Student";
-      }
-
       const response = await fetch('/api/generate-report', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ answers, audience, userName, userId })
+        body: JSON.stringify({ 
+          answers, 
+          audience, 
+          userName: profile?.name || user?.email?.split('@')[0], 
+          userId: user?.id 
+        })
       });
-      
       const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate report');
-      }
-
-      // Save report to localStorage for immediate display if needed, but it's also saved in DB now.
+      if (!response.ok) throw new Error(data.error || 'Failed to generate report');
       localStorage.setItem("mentorme_ai_report", JSON.stringify(data.report));
-
       router.push("/report");
     } catch (error) {
       console.error("Error submitting assessment:", error);
-      alert(error instanceof Error ? error.message : "There was an error generating your report. Please try again.");
+      alert(error instanceof Error ? error.message : "Error generating report.");
       setIsSubmitting(false);
     }
   };
 
   if (!isLoaded || questions.length === 0) {
-    return <div className="flex-1 flex items-center justify-center">Loading...</div>;
+    return <div className="flex-1 flex items-center justify-center min-h-screen bg-slate-50">
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 className="animate-spin text-brand-blue" size={40} />
+        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Authenticating...</p>
+      </div>
+    </div>;
   }
 
   const currentQ = questions[currentIndex];
   const progressPercent = Math.round(((currentIndex) / questions.length) * 100);
   const sectionQuestions = questions.filter(q => q.section === currentQ.section);
   const sectionIndex = sectionQuestions.findIndex(q => q.id === currentQ.id) + 1;
-
   const isLastQuestion = currentIndex === questions.length - 1;
   const isCurrentAnswered = !!answers[currentQ.id];
 
   return (
-    <div className="flex-1 flex flex-col items-center p-4 py-8 sm:py-16 relative">
+    <div className="flex-1 flex flex-col items-center p-4 py-8 sm:py-16 relative bg-slate-50 min-h-screen">
       
-      {/* Processing Overlay */}
+      {/* Onboarding Modal Overlay - BLOCKS THE TEST */}
+      <AnimatePresence>
+        {showOnboarding && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/80 backdrop-blur-xl p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              className="bg-white rounded-[32px] p-8 max-w-lg w-full shadow-2xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 p-8 opacity-5">
+                <User size={120} />
+              </div>
+              <div className="relative z-10 space-y-6">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-brand-orange/10 text-brand-orange rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <User size={32} />
+                  </div>
+                  <h2 className="text-3xl font-black text-slate-800 uppercase tracking-tight">Wait! One Step Left</h2>
+                  <p className="text-slate-500 font-medium text-sm mt-2">To generate an accurate 12-page AI Career Report, we need your contact details.</p>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Phone Number</label>
+                      <input 
+                        type="tel" 
+                        value={formPhone}
+                        onChange={(e) => setFormPhone(e.target.value)}
+                        placeholder="+91 98765 43210"
+                        className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-blue outline-none font-bold text-sm bg-slate-50"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Gender</label>
+                      <select 
+                        value={formGender}
+                        onChange={(e) => setFormGender(e.target.value)}
+                        className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-blue outline-none font-bold text-sm bg-slate-50"
+                      >
+                        <option value="">Select</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Country</label>
+                      <input 
+                        type="text" 
+                        value={formCountry}
+                        onChange={(e) => setFormCountry(e.target.value)}
+                        placeholder="India"
+                        className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-blue outline-none font-bold text-sm bg-slate-50"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">State</label>
+                      <input 
+                        type="text" 
+                        value={formState}
+                        onChange={(e) => setFormState(e.target.value)}
+                        placeholder="Karnataka"
+                        className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-blue outline-none font-bold text-sm bg-slate-50"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Education Level</label>
+                    <select 
+                      value={formEducation}
+                      onChange={(e) => setFormEducation(e.target.value)}
+                      className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-blue outline-none font-bold text-sm bg-slate-50"
+                    >
+                      <option value="">Select Level</option>
+                      <option value="School Student">School Student (8th - 12th)</option>
+                      <option value="College/Undergraduate">College Student</option>
+                      <option value="Graduate">Graduate</option>
+                      <option value="Working Professional">Working Professional</option>
+                    </select>
+                  </div>
+
+                  <Button 
+                    onClick={handleSaveProfile}
+                    disabled={saving}
+                    className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-black py-6 rounded-2xl shadow-xl mt-4"
+                  >
+                    {saving ? "SAVING..." : "SAVE & START TEST"}
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {isSubmitting && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4"
+            className="fixed inset-0 z-[300] flex items-center justify-center bg-slate-900/80 backdrop-blur-md p-4"
           >
             <motion.div 
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center flex flex-col items-center"
             >
-              <div className="relative mb-6">
-                <div className="absolute inset-0 bg-brand-blue/20 rounded-full animate-ping"></div>
-                <div className="w-20 h-20 bg-brand-blue text-white rounded-full flex items-center justify-center relative z-10">
-                  <BrainCircuit size={40} className="animate-pulse" />
-                </div>
+              <div className="w-20 h-20 bg-brand-blue text-white rounded-full flex items-center justify-center mb-6">
+                <BrainCircuit size={40} className="animate-pulse" />
               </div>
-              
               <h2 className="text-2xl font-black text-slate-800 mb-2">Analyzing Profile</h2>
-              <p className="text-slate-500 mb-6">
-                Our AI is currently mapping your 90 responses across 17 parameters to generate your 12-page Career Intelligence Report.
-              </p>
-              
-              <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden mb-4 relative">
-                <motion.div 
-                  className="h-full bg-gradient-to-r from-brand-blue to-purple-600 rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 45, ease: "linear" }}
-                />
+              <p className="text-slate-500 mb-6 text-sm">Generating your 12-page Career Intelligence Report across 17 AI parameters.</p>
+              <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden mb-4">
+                <motion.div className="h-full bg-brand-blue" initial={{ width: "0%" }} animate={{ width: "100%" }} transition={{ duration: 45 }} />
               </div>
-              
-              <div className="flex items-center justify-center gap-2 text-sm font-bold text-brand-blue">
-                <Loader2 size={16} className="animate-spin" />
-                <span>Processing... {processingTime}s elapsed</span>
-              </div>
-              <p className="text-xs text-slate-400 mt-4">
-                This process usually takes 30-60 seconds. Please do not close or refresh this page.
-              </p>
+              <div className="text-sm font-bold text-brand-blue">Processing... {processingTime}s</div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="w-full max-w-3xl space-y-8">
-        
-        {/* Progress Header */}
+      <div className="w-full max-w-3xl space-y-8 relative z-10">
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-sm font-medium">
-            <span className="text-muted-foreground uppercase tracking-wider text-xs">Section {currentQ.section}</span>
-            <span className="text-brand-blue">Question {sectionIndex} of {sectionQuestions.length}</span>
+          <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
+            <span>Section {currentQ.section}</span>
+            <span className="text-brand-blue">Question {sectionIndex} / {sectionQuestions.length}</span>
           </div>
-          <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-brand-orange transition-all duration-300 ease-in-out" 
-              style={{ width: `${progressPercent}%` }}
+          <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+            <motion.div 
+              className="h-full bg-brand-orange" 
+              initial={{ width: 0 }}
+              animate={{ width: `${progressPercent}%` }}
             />
-          </div>
-          <div className="text-xs text-right text-muted-foreground">
-            Overall Progress: {progressPercent}%
           </div>
         </div>
 
-        {/* Question Card */}
-        <div className="bg-card border shadow-sm rounded-2xl p-6 sm:p-10 space-y-8">
-          <h2 className="text-2xl sm:text-3xl font-semibold leading-tight text-foreground">
+        <div className="bg-white border-2 border-slate-100 shadow-xl rounded-[32px] p-8 sm:p-12 space-y-10">
+          <h2 className="text-2xl sm:text-3xl font-black leading-tight text-slate-800">
             {currentQ.text}
           </h2>
 
@@ -227,20 +347,16 @@ export default function AssessmentPage() {
                 <button
                   key={key}
                   onClick={() => handleSelectOption(key)}
-                  className={`w-full text-left p-4 rounded-xl border-2 transition-all duration-200 flex items-center gap-4 group ${
-                    isSelected 
-                      ? 'border-brand-blue bg-brand-blue/5' 
-                      : 'border-muted hover:border-brand-blue/50 hover:bg-muted/50'
+                  className={`w-full text-left p-6 rounded-2xl border-2 transition-all flex items-center gap-4 group ${
+                    isSelected ? 'border-brand-blue bg-blue-50/50' : 'border-slate-100 hover:border-brand-blue/30'
                   }`}
                 >
-                  <div className={`h-8 w-8 rounded-full border flex items-center justify-center font-semibold text-sm ${
-                    isSelected
-                      ? 'border-brand-blue bg-brand-blue text-white'
-                      : 'border-muted-foreground/30 text-muted-foreground group-hover:border-brand-blue/50'
+                  <div className={`h-10 w-10 rounded-xl border-2 flex items-center justify-center font-black text-sm ${
+                    isSelected ? 'border-brand-blue bg-brand-blue text-white' : 'border-slate-200 text-slate-400'
                   }`}>
                     {key}
                   </div>
-                  <span className={`text-lg ${isSelected ? 'font-medium text-brand-blue' : 'text-foreground'}`}>
+                  <span className={`text-lg font-bold ${isSelected ? 'text-brand-blue' : 'text-slate-700'}`}>
                     {value}
                   </span>
                 </button>
@@ -249,36 +365,14 @@ export default function AssessmentPage() {
           </div>
         </div>
 
-        {/* Navigation */}
         <div className="flex items-center justify-between pt-4">
-          <Button 
-            variant="outline" 
-            onClick={handlePrev} 
-            disabled={currentIndex === 0}
-            className="w-24"
-          >
-            Previous
-          </Button>
-          
+          <Button variant="ghost" onClick={handlePrev} disabled={currentIndex === 0} className="font-bold text-slate-400">Previous</Button>
           {isLastQuestion ? (
-            <Button 
-              onClick={handleSubmit} 
-              disabled={!isCurrentAnswered || isSubmitting}
-              className="w-32 bg-brand-orange hover:bg-brand-orange/90 text-white"
-            >
-              {isSubmitting ? "Processing..." : "Submit"}
-            </Button>
+            <Button onClick={handleSubmit} disabled={!isCurrentAnswered || isSubmitting} className="bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-10 py-6 rounded-2xl shadow-xl">SUBMIT TEST</Button>
           ) : (
-            <Button 
-              onClick={handleNext} 
-              disabled={!isCurrentAnswered}
-              className="w-24 bg-brand-blue hover:bg-brand-blue/90 text-white"
-            >
-              Next
-            </Button>
+            <Button onClick={handleNext} disabled={!isCurrentAnswered} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-black px-10 py-6 rounded-2xl shadow-xl">NEXT</Button>
           )}
         </div>
-
       </div>
     </div>
   );

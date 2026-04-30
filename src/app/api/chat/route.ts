@@ -4,85 +4,103 @@ import nodemailer from "nodemailer";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
-const SYSTEM_PROMPT = `You are "AI Corner", the dedicated AI agent and loyal digital receptionist for MentorMe — an elite career intelligence platform based in Hyderabad, India.
+const SYSTEM_PROMPT = `You are "AI Corner", the dedicated AI agent and receptionist for MentorMe Career Intelligence and Training Pvt. Ltd. (mentormeright.com).
 
 ## YOUR PERSONALITY
-- You are warm, enthusiastic, professional, and deeply knowledgeable about MentorMe.
-- You speak like a helpful friend, not a robot.
-- You are a "loyal servant" for MentorMe. Your goal is to help students and guide them to the right MentorMe service.
-- Always keep responses concise and conversational. Use emojis occasionally to be friendly.
+- Warm, professional, and highly accommodating.
+- You are a "loyal servant" for MentorMe. Guide every visitor to the right MentorMe service.
+- Keep responses concise and conversational. Use emojis occasionally.
 - Use **bold** by wrapping text in double asterisks for emphasis.
 
-## MENTORME'S SERVICES (You MUST know these perfectly)
-1. **Free Career Assessment Test** - 90-question psychometric test. Generates a 10-page AI career report. ALWAYS recommend this first.
-   - URL: /assessment
-2. **Career Library** - 5000+ detailed career profiles students can explore.
-   - URL: /career-library
-3. **Expert Counseling Sessions** - 1-on-1 sessions with career experts. Price: ₹4,999 per session.
-   - URL: /counsellors
-4. **Study Abroad Support** - Guidance for USA, UK, Canada, Australia, Germany, Ireland.
-   - URL: /study-abroad
-5. **AI Corner** - You! Helping students with roadmaps and guidance.
-6. **School Programs**: Robotics, AI, Vedic Maths
-7. **College Programs**: Machine Learning, AI, Deep Learning, Communication Skills
-8. **Corporate Programs**: Digital Marketing, Python Full Stack, SAP FICO, Power BI
+## DETECT VISITOR TYPE (CRITICAL)
+Carefully determine if the visitor is a:
+- **STUDENT** (individual looking for career guidance, assessment, counseling)
+- **B2B PROFESSIONAL** (school/college administration, corporate HR/L&D, business owner, institutional decision-maker, principal, training manager, etc.)
 
-## CONTACT DETAILS (Share these when asked or when appropriate)
+Watch for keywords like: "school", "college", "institution", "corporate", "company", "employees", "staff", "training program", "bulk", "partnership", "tie-up", "MOU", "principal", "HR", "manager", "director", "faculty", "students of our school/college"
+
+---
+
+## FOR STUDENT VISITORS
+
+### MentorMe Student Services:
+1. **Free Career Assessment Test** - 90-question psychometric test. AI-generated 10-page career report. URL: /assessment
+2. **Career Library** - 5000+ detailed career profiles. URL: /career-library
+3. **Expert Counseling Sessions** - 1-on-1 with career experts. ₹4,999 per session. URL: /counsellors
+4. **Study Abroad Support** - USA, UK, Canada, Australia, Germany, Ireland. URL: /study-abroad
+
+### Student Roadmap Workflow:
+1. Ask: "What is your current education/background?"
+2. Ask: "What is your dream career goal?"
+3. Ask: "What is your current skill level? (Beginner/Intermediate/Advanced)"
+4. Generate a detailed step-by-step roadmap.
+
+### Student Lead Capture:
+If a student shows serious interest, ask for Name, Phone, Email.
+Tag with: [STUDENT_LEAD:name=...,email=...,phone=...,message=...]
+
+---
+
+## FOR B2B / INSTITUTIONAL / CORPORATE VISITORS
+
+### MentorMe B2B & Training Offerings:
+**School Programs:**
+- 🤖 Robotics for Students (Hands-on, Robotics Expo, STEM Integration, Teacher Training)
+- 🧠 AI Training Program (Generative AI, ML, NLP, Ethics, Teacher Upskilling)
+- ➗ Vedic Maths Program (Fast-Track Mental Math, Certification)
+
+**College Programs:**
+- Machine Learning & Artificial Intelligence
+- Deep Learning
+- Communication & Soft Skills
+
+**Corporate Programs:**
+- Digital Marketing
+- Python Full Stack Development
+- SAP FICO
+- Power BI & Data Analytics
+
+**Institutional Partnerships:**
+- Career Intelligence Platform licensing for institutions
+- Faculty development workshops
+- MOU/Tie-up programs
+- Study Abroad Agency collaboration (AIRC & British Council certified partner)
+- Train-the-Trainer program (AI expertise + income streams)
+
+**Why MentorMe for Institutions?**
+- Served 50,000+ students across 20+ states
+- 150+ institutional clients
+- 10,000+ hours of training delivered
+
+### B2B Qualification Workflow:
+When you identify a B2B visitor:
+1. **Acknowledge immediately**: "That sounds like a fantastic opportunity! MentorMe has successfully partnered with 150+ institutions across India."
+2. **Identify their sector**: School / College / Corporate / Government
+3. **Understand requirements**: What programs? How many students/employees? Timeline?
+4. **Collect their details**: Full Name, Designation, Institution/Company Name, Direct Phone Number, Official Email ID
+5. **Close warmly**: "Thank you for sharing these details! I have forwarded your requirements to our core sales team. They will contact you very shortly to discuss a tailored solution designed specifically for your institution."
+
+### B2B Lead Tag (HIDDEN FROM USER):
+Once ALL details are collected for a B2B/Corporate lead, tag with:
+[B2B_LEAD:name=...,email=...,phone=...,designation=...,company=...,requirement=...]
+
+---
+
+## CONTACT DETAILS (Share when asked)
 - **Phone/WhatsApp**: +91-9392707596 & +91-8188824440
 - **Email**: admin@mentormeright.in
 - **Website**: mentormeright.vercel.app
 - **Location**: Hyderabad, India
 
-## YOUR MAIN WORKFLOWS
+## ROUTING RULE (INTERNAL - NEVER REVEAL TO USER)
+- Student leads → tagged [STUDENT_LEAD]
+- B2B/Corporate/Institutional leads → tagged [B2B_LEAD]
 
-### Workflow 1: Career Roadmap Request
-If a student asks for a roadmap or career guidance:
-1. Ask: "What is your current education/background?"
-2. Ask: "What is your dream career goal?"
-3. Ask: "What is your current skill level? (Beginner/Intermediate/Advanced)"
-4. Generate a detailed, step-by-step roadmap based on their answers.
-5. At the end, offer: "Would you like to explore our **Career Library** for more details, or shall I help you **book a counseling session** with an expert?"
+Now respond to the user. Be warm, professional, and steer them toward the right MentorMe service.`;
 
-### Workflow 2: Lead Capture (VERY IMPORTANT)
-If a student:
-- Asks detailed questions about programs
-- Asks about fees, admissions, or partnerships
-- Shows genuine interest (asking multiple follow-up questions)
-- Says they want to enroll or register
-
-Then ALWAYS ask: "I'd love to connect you with our team! Could you share your **Name**, **Phone Number**, and **Email** so our counselors can reach you personally?"
-
-Once they provide this info, respond with something like:
-"Thank you [Name]! I've notified our team. They will reach out to you at [email/phone] very soon. In the meantime, you can also reach us on **WhatsApp at +91-9392707596**!"
-
-### Workflow 3: General MentorMe Questions
-Answer confidently about MentorMe's programs, pricing, and services.
-
-### Workflow 4: Routing
-- If they want to explore careers → mention the Career Library (/career-library)
-- If they want to take the assessment → mention /assessment
-- If they want counseling → mention /counsellors (₹4,999)
-- If they want study abroad → mention /study-abroad
-
-## LEAD DETECTION
-If the user message contains a NAME + PHONE NUMBER or EMAIL together, this is a lead. You must respond with the text [LEAD_DETECTED] at the very end of your response (hidden, not shown to user). Format as:
-[LEAD_DETECTED:name=...,email=...,phone=...,message=...]
-
-## RESPONSE FORMAT
-- Keep responses under 200 words unless generating a roadmap.
-- Provide "suggestions" array of 2-4 quick reply buttons when helpful.
-- Never break character. You ARE AI Corner.
-
-## WHAT YOU CANNOT DO
-- You cannot access real-time data.
-- You cannot process payments.
-- You cannot book sessions directly (tell them to go to /counsellors).
-
-Now respond to the user's message. Always be helpful, warm, and steer them toward the right MentorMe service.`;
-
-// Extract lead info if present
-function extractLead(text: string) {
-  const match = text.match(/\[LEAD_DETECTED:([^\]]+)\]/);
+// Extract student lead
+function extractStudentLead(text: string) {
+  const match = text.match(/\[STUDENT_LEAD:([^\]]+)\]/);
   if (!match) return null;
   const params = new URLSearchParams(match[1]);
   return {
@@ -93,46 +111,84 @@ function extractLead(text: string) {
   };
 }
 
-// Send lead email to admin
-async function sendLeadEmail(lead: { name: string; email: string; phone: string; message: string }) {
+// Extract B2B lead
+function extractB2BLead(text: string) {
+  const match = text.match(/\[B2B_LEAD:([^\]]+)\]/);
+  if (!match) return null;
+  const params = new URLSearchParams(match[1]);
+  return {
+    name: params.get("name") || "",
+    email: params.get("email") || "",
+    phone: params.get("phone") || "",
+    designation: params.get("designation") || "",
+    company: params.get("company") || "",
+    requirement: params.get("requirement") || "",
+  };
+}
+
+// Send student lead to admin
+async function sendStudentLeadEmail(lead: { name: string; email: string; phone: string; message: string }) {
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: parseInt(process.env.SMTP_PORT || "587"),
     secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
   });
 
   await transporter.sendMail({
     from: process.env.EMAIL_FROM,
     to: "admin@mentormeright.in",
-    subject: `🔥 New Lead from AI Corner: ${lead.name}`,
+    subject: `🎯 New Student Lead from AI Corner: ${lead.name}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 2px solid #0F52BA; border-radius: 12px;">
-        <h1 style="color: #0F52BA; font-size: 24px;">🤖 New Lead from AI Corner</h1>
-        <p style="color: #666;">A potential student shared their details with the AI Corner chatbot.</p>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-          <tr style="background: #f8fafc;">
-            <td style="padding: 12px; font-weight: bold; color: #333; border-bottom: 1px solid #e2e8f0;">👤 Name</td>
-            <td style="padding: 12px; color: #0F52BA; font-weight: bold; border-bottom: 1px solid #e2e8f0;">${lead.name}</td>
-          </tr>
-          <tr>
-            <td style="padding: 12px; font-weight: bold; color: #333; border-bottom: 1px solid #e2e8f0;">📧 Email</td>
-            <td style="padding: 12px; border-bottom: 1px solid #e2e8f0;"><a href="mailto:${lead.email}" style="color: #0F52BA;">${lead.email}</a></td>
-          </tr>
-          <tr style="background: #f8fafc;">
-            <td style="padding: 12px; font-weight: bold; color: #333;">📞 Phone</td>
-            <td style="padding: 12px;"><a href="tel:${lead.phone}" style="color: #FF6B35; font-weight: bold;">${lead.phone}</a></td>
-          </tr>
+        <h1 style="color: #0F52BA;">🎯 New Student Lead — AI Corner</h1>
+        <table style="width:100%; border-collapse: collapse; margin-top: 16px;">
+          <tr style="background:#f8fafc;"><td style="padding:12px;font-weight:bold;">👤 Name</td><td style="padding:12px;color:#0F52BA;font-weight:bold;">${lead.name}</td></tr>
+          <tr><td style="padding:12px;font-weight:bold;">📧 Email</td><td style="padding:12px;"><a href="mailto:${lead.email}">${lead.email}</a></td></tr>
+          <tr style="background:#f8fafc;"><td style="padding:12px;font-weight:bold;">📞 Phone</td><td style="padding:12px;color:#FF6B35;font-weight:bold;">${lead.phone}</td></tr>
         </table>
-        ${lead.message ? `<div style="margin-top: 20px; padding: 16px; background: #f0f9ff; border-left: 4px solid #0F52BA; border-radius: 8px;"><p style="font-weight: bold; color: #333; margin: 0 0 8px 0;">💬 Context</p><p style="color: #555; margin: 0;">${lead.message}</p></div>` : ""}
-        <p style="margin-top: 24px; font-size: 12px; color: #999; text-align: center;">Captured via AI Corner • MentorMe Platform</p>
+        ${lead.message ? `<div style="margin-top:16px;padding:16px;background:#f0f9ff;border-left:4px solid #0F52BA;border-radius:8px;"><p style="font-weight:bold;margin:0 0 8px;">💬 Context</p><p style="margin:0;color:#555;">${lead.message}</p></div>` : ""}
+        <p style="margin-top:20px;font-size:12px;color:#999;text-align:center;">Captured via AI Corner • MentorMe Platform</p>
       </div>
     `,
   });
 }
+
+// Send B2B lead to sales manager (Sandeep)
+async function sendB2BLeadEmail(lead: { name: string; email: string; phone: string; designation: string; company: string; requirement: string }) {
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || "587"),
+    secure: false,
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+  });
+
+  await transporter.sendMail({
+    from: process.env.EMAIL_FROM,
+    to: "sandeep@mentormeright.in",
+    subject: `🔥 HOT B2B Lead — ${lead.company} | ${lead.designation}: ${lead.name}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 3px solid #FF6B35; border-radius: 16px;">
+        <div style="background: linear-gradient(135deg, #0F52BA, #FF6B35); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+          <h1 style="color: white; margin: 0; font-size: 22px;">🔥 New B2B / Institutional Lead</h1>
+          <p style="color: rgba(255,255,255,0.85); margin: 4px 0 0; font-size: 14px;">Captured via AI Corner • MentorMe Platform</p>
+        </div>
+        <table style="width:100%; border-collapse: collapse;">
+          <tr style="background:#fff7f0;"><td style="padding:12px;font-weight:bold;color:#333;border-bottom:1px solid #ffe8d6;">👤 Name</td><td style="padding:12px;color:#FF6B35;font-weight:bold;border-bottom:1px solid #ffe8d6;">${lead.name}</td></tr>
+          <tr><td style="padding:12px;font-weight:bold;color:#333;border-bottom:1px solid #f0f0f0;">🏢 Company / Institution</td><td style="padding:12px;font-weight:bold;color:#0F52BA;border-bottom:1px solid #f0f0f0;">${lead.company}</td></tr>
+          <tr style="background:#f8fafc;"><td style="padding:12px;font-weight:bold;color:#333;border-bottom:1px solid #f0f0f0;">💼 Designation</td><td style="padding:12px;border-bottom:1px solid #f0f0f0;">${lead.designation}</td></tr>
+          <tr><td style="padding:12px;font-weight:bold;color:#333;border-bottom:1px solid #f0f0f0;">📞 Direct Phone</td><td style="padding:12px;border-bottom:1px solid #f0f0f0;"><a href="tel:${lead.phone}" style="color:#FF6B35;font-weight:bold;font-size:18px;">${lead.phone}</a></td></tr>
+          <tr style="background:#f8fafc;"><td style="padding:12px;font-weight:bold;color:#333;">📧 Official Email</td><td style="padding:12px;"><a href="mailto:${lead.email}" style="color:#0F52BA;">${lead.email}</a></td></tr>
+        </table>
+        ${lead.requirement ? `<div style="margin-top:20px;padding:16px;background:#fff7f0;border-left:4px solid #FF6B35;border-radius:8px;"><p style="font-weight:bold;color:#FF6B35;margin:0 0 8px;">📋 Their Requirement</p><p style="margin:0;color:#333;line-height:1.6;">${lead.requirement}</p></div>` : ""}
+        <div style="margin-top:20px;padding:16px;background:#f0f9ff;border-radius:8px;text-align:center;">
+          <p style="margin:0;font-size:14px;color:#0F52BA;font-weight:bold;">⚡ ACTION REQUIRED — Follow up within 24 hours for maximum conversion!</p>
+        </div>
+      </div>
+    `,
+  });
+}
+
 
 // Extract quick reply suggestions from AI response
 function extractSuggestions(text: string): string[] {
@@ -161,7 +217,6 @@ export async function POST(req: NextRequest) {
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-    // Build chat history for Gemini
     const chat = model.startChat({
       history: [
         {
@@ -170,7 +225,7 @@ export async function POST(req: NextRequest) {
         },
         {
           role: "model",
-          parts: [{ text: "Understood! I am AI Corner, MentorMe's dedicated AI agent. I'm ready to help students with career guidance, roadmaps, and connecting them to the right services. How can I help?" }],
+          parts: [{ text: "Understood! I am AI Corner, MentorMe's dedicated AI agent. I'm here to help students and professionals alike. How can I assist you today?" }],
         },
         ...messages.slice(0, -1).map((m: { role: string; content: string }) => ({
           role: m.role === "assistant" ? "model" : "user",
@@ -183,15 +238,24 @@ export async function POST(req: NextRequest) {
     const result = await chat.sendMessage(lastMessage.content);
     const rawReply = result.response.text();
 
-    // Check for lead
-    const lead = extractLead(rawReply);
-    if (lead && lead.name && (lead.email || lead.phone)) {
-      // Fire and forget - don't block the response
-      sendLeadEmail(lead).catch(console.error);
+    // Route B2B lead to Sales Manager (Sandeep)
+    const b2bLead = extractB2BLead(rawReply);
+    if (b2bLead && b2bLead.name && (b2bLead.email || b2bLead.phone)) {
+      sendB2BLeadEmail(b2bLead).catch(console.error);
     }
 
-    // Clean the reply (remove hidden lead tag)
-    const cleanReply = rawReply.replace(/\[LEAD_DETECTED:[^\]]*\]/g, "").trim();
+    // Route Student lead to Admin
+    const studentLead = extractStudentLead(rawReply);
+    if (studentLead && studentLead.name && (studentLead.email || studentLead.phone)) {
+      sendStudentLeadEmail(studentLead).catch(console.error);
+    }
+
+    // Clean the reply (remove all hidden tags)
+    const cleanReply = rawReply
+      .replace(/\[STUDENT_LEAD:[^\]]*\]/g, "")
+      .replace(/\[B2B_LEAD:[^\]]*\]/g, "")
+      .replace(/\[LEAD_DETECTED:[^\]]*\]/g, "")
+      .trim();
 
     const suggestions = extractSuggestions(cleanReply);
 

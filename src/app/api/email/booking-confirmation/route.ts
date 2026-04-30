@@ -163,7 +163,7 @@ END:VCALENDAR`;
     });
 
     // Send to Counselor
-    if (counselor.email) {
+    if (counselor?.email) {
       await transporter.sendMail({
         from: process.env.EMAIL_FROM,
         to: counselor.email,

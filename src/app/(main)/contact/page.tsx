@@ -1,8 +1,71 @@
 "use client";
 
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { MessageCircle, Mail, MapPin, Phone } from "lucide-react";
+
+function ContactForm() {
+  const searchParams = useSearchParams();
+  const [message, setMessage] = useState("");
+  const [subject, setSubject] = useState("");
+
+  useEffect(() => {
+    const msg = searchParams.get("message");
+    const university = searchParams.get("university");
+    const country = searchParams.get("country");
+    
+    if (msg) {
+      setMessage(msg);
+    }
+    if (university && country) {
+      setSubject(`Study Abroad: ${university} (${country})`);
+    }
+  }, [searchParams]);
+
+  return (
+    <form className="space-y-6">
+      <div className="grid sm:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium">First Name</label>
+          <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="John" />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium">Last Name</label>
+          <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="Doe" />
+        </div>
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Email Address</label>
+        <input type="email" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="you@example.com" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Subject</label>
+        <input 
+          type="text" 
+          value={subject}
+          onChange={(e) => setSubject(e.target.value)}
+          className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" 
+          placeholder="How can we help?" 
+        />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Your Message</label>
+        <textarea 
+          rows={5} 
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" 
+          placeholder="Tell us more about your inquiry..."
+        ></textarea>
+      </div>
+      <Button type="button" className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 py-6 text-lg font-bold rounded-xl mt-4">
+        Send Message
+      </Button>
+    </form>
+  );
+}
 
 export default function ContactPage() {
   return (
@@ -108,7 +171,7 @@ export default function ContactPage() {
             </div>
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Contact Form Container */}
           <motion.div 
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -117,33 +180,9 @@ export default function ContactPage() {
           >
             <div className="absolute top-0 right-0 w-40 h-40 bg-brand-orange/5 rounded-bl-full -z-10"></div>
             <h3 className="text-2xl font-bold mb-6 text-foreground">Send a Message</h3>
-            <form className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">First Name</label>
-                  <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="John" />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Last Name</label>
-                  <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="Doe" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Email Address</label>
-                <input type="email" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="you@example.com" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Phone Number</label>
-                <input type="tel" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="+91 98765 43210" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Your Message</label>
-                <textarea rows={5} className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="How can we help you?"></textarea>
-              </div>
-              <Button type="button" className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 py-6 text-lg font-bold rounded-xl mt-4">
-                Send Message
-              </Button>
-            </form>
+            <Suspense fallback={<div className="h-96 flex items-center justify-center"><p className="text-muted-foreground">Loading form...</p></div>}>
+              <ContactForm />
+            </Suspense>
           </motion.div>
           
         </div>

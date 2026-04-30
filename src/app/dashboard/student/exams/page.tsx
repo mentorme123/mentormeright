@@ -2,14 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Bell, ExternalLink, Timer, Search, Filter, Bookmark, GraduationCap, ChevronRight } from "lucide-react";
+import { Calendar, Bell, ExternalLink, Timer, Search, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 
 export default function ExamTracker() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [exams, setExams] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loading, setLoading] = useState(true);
 
   const supabase = createClient();
@@ -63,7 +65,7 @@ export default function ExamTracker() {
       setLoading(false);
     }
     fetchExams();
-  }, []);
+  }, [supabase]);
 
   const filteredExams = exams.filter(exam => {
     const matchesSearch = exam.name.toLowerCase().includes(searchTerm.toLowerCase());

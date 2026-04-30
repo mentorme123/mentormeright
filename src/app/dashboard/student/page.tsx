@@ -23,20 +23,12 @@ import {
   X,
   ChevronRight,
   Download,
-  FileText,
-  LayoutDashboard,
-  Settings,
-  User as UserIcon,
   BookOpen,
-  DollarSign,
-  Users,
   Info,
-  Compass,
   PieChart,
   Bell,
   Award,
   ShieldCheck,
-  Search,
   MessageSquare,
   Timer,
   Sparkles,
@@ -63,6 +55,7 @@ export default function StudentDashboard() {
   const [assessmentScores, setAssessmentScores] = useState<ParameterScores | null>(null);
   const [assessmentStatus, setAssessmentStatus] = useState<'not_started' | 'completed'>('not_started');
   const [showOnboarding, setShowOnboarding] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [bookings, setBookings] = useState<any[]>([]);
   const [bookingsLoading, setBookingsLoading] = useState(true);
 

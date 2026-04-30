@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Users, GraduationCap, TrendingUp, Calendar, CheckCircle2, ShieldCheck, ArrowRight, IndianRupee, Star } from "lucide-react";
+import { GraduationCap, TrendingUp, Calendar, CheckCircle2, ShieldCheck, ArrowRight, IndianRupee, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
-import { toast } from "sonner";
 
 export default function ParentDashboard() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [student, setStudent] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [bookings, setBookings] = useState<any[]>([]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [assessment, setAssessment] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -183,7 +184,7 @@ export default function ParentDashboard() {
                   Career ROI Insight
                 </h3>
                 <p className="text-slate-400 text-sm leading-relaxed">
-                  Based on {student?.full_name.split(' ')[0]}'s current skills and target career, the expected ROI for higher education is <span className="text-white font-bold">2.4x</span> within the first 3 years of graduation.
+                  Based on {student?.full_name.split(&apos; &apos;)[0]}&apos;s current skills and target career, the expected ROI for higher education is <span className="text-white font-bold">2.4x</span> within the first 3 years of graduation.
                 </p>
                 <div className="p-4 bg-white/5 border border-white/10 rounded-2xl">
                   <span className="block text-xs font-bold text-slate-500 uppercase mb-2">Projected Starting Salary</span>

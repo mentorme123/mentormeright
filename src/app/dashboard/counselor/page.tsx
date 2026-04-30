@@ -7,16 +7,14 @@ import {
   CalendarDays, 
   FileText, 
   User, 
-  Loader2, 
-  ChevronRight,
-  TrendingUp,
-  Globe
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function CounselorDashboard() {
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [sessions, setSessions] = useState<any[]>([]);
   const [isJoining, setIsJoining] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState<string | null>(null);

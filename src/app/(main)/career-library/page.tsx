@@ -17,6 +17,7 @@ export default function CareerLibrary() {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCareer, setSelectedCareer] = useState<Career | null>(null);
   const [userResults, setUserResults] = useState<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [activeTab, setActiveTab] = useState("overview");
   const [isSimulationLoading, setIsSimulationLoading] = useState(false);
   const [simulationMessage, setSimulationMessage] = useState("");
@@ -54,7 +55,7 @@ export default function CareerLibrary() {
       });
       const data = await response.json();
       setSimulationMessage(data.text);
-    } catch (error) {
+    } catch (_error) {
       alert("Failed to start simulation. Please try again.");
     } finally {
       setIsSimulationLoading(false);
@@ -576,7 +577,7 @@ export default function CareerLibrary() {
                           ) : simulationMessage ? (
                             <div className="space-y-6">
                               <div className="p-5 bg-white/5 border border-white/10 rounded-2xl italic text-slate-300 text-lg leading-relaxed">
-                                "{simulationMessage}"
+                                &quot;{simulationMessage}&quot;
                               </div>
                               <Button 
                                 onClick={handleSimulation}
@@ -587,7 +588,7 @@ export default function CareerLibrary() {
                             </div>
                           ) : (
                             <div className="py-12 text-center space-y-4">
-                              <p className="text-slate-400">Click below to start a "Day in the Life" simulation with our AI expert.</p>
+                              <p className="text-slate-400">Click below to start a &quot;Day in the Life&quot; simulation with our AI expert.</p>
                               <Button 
                                 onClick={handleSimulation}
                                 className="bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-8 py-6 rounded-xl"

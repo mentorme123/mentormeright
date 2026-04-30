@@ -36,14 +36,14 @@ export async function GET(request: Request) {
             }
           ]);
         
-        // Redirect new students to the dashboard
-        return NextResponse.redirect(`${origin}/dashboard/student`);
+        // Redirect new students to the assessment page
+        return NextResponse.redirect(`${origin}/assessment`);
       }
 
       // If they already exist, redirect them based on their role, unless a specific 'next' was provided
       if (next === '/' && userProfile) {
         if (userProfile.role === 'individual') {
-          return NextResponse.redirect(`${origin}/dashboard/student`);
+          return NextResponse.redirect(`${origin}/assessment`);
         } else if (userProfile.role === 'institutional') {
           return NextResponse.redirect(`${origin}/dashboard/institution`);
         } else if (userProfile.role === 'admin') {

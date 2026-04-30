@@ -71,9 +71,6 @@ export function Navbar() {
               {link.name}
             </Link>
           ))}
-          <div className="flex items-center gap-1.5 bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-100">
-            <Sparkles size={10} /> New Features
-          </div>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-4">

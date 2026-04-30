@@ -73,7 +73,7 @@ export default function BlogsPage() {
           <h2 className="text-3xl md:text-5xl font-black text-white">Ready to start your journey?</h2>
           <p className="text-slate-300 text-lg">Take our free psychometric assessment to find out which program is the perfect fit for your career trajectory.</p>
           <div className="pt-4">
-            <Link href="/register">
+            <Link href="/assessment">
               <Button size="lg" className="bg-brand-orange text-white hover:bg-brand-orange/90 font-bold text-lg px-8 py-6 rounded-full shadow-lg shadow-brand-orange/20">
                 Get Free Assessment
               </Button>

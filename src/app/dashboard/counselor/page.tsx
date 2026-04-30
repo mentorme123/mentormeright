@@ -1,82 +1,46 @@
-"use client"; // Force Client Component
+"use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase";
-import { 
-  Video, 
-  FileText, 
-  User, 
-  Loader2, 
-  ShieldCheck, 
-  Clock,
-  Sparkles
-} from "lucide-react";
+import { useState } from "react";
+import { CalendarDays, Video, FileText, User, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { motion } from "framer-motion";
 
 export default function CounselorDashboard() {
-  const router = useRouter();
-  const supabase = createClient();
-  const [loading, setLoading] = useState(true);
-  const [counselor, setCounselor] = useState<any>(null); // eslint-disable-line @typescript-eslint/no-explicit-any
   const [isJoining, setIsJoining] = useState<number | null>(null);
   const [isDownloading, setIsDownloading] = useState<number | null>(null);
 
-  useEffect(() => {
-    async function verifyRole() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/login");
-        return;
-      }
-      const { data: profile } = await supabase
-        .from('users')
-        .select('role')
-        .eq('id', user.id)
-        .single();
-      
-      if (profile?.role === 'individual' || profile?.role === 'institutional') {
-        router.push("/");
-      } else {
-        setCounselor(user);
-        setLoading(false);
-      }
-    }
-    verifyRole();
-  }, [router, supabase]);
-
   const upcomingSessions = [
-    { id: 1, name: "Syed Basim Ahmed", time: "10:00 AM", date: "Today", grade: "12", isPaid: true, status: 'confirmed' },
-    { id: 2, name: "Zainab Imran", time: "02:30 PM", date: "Today", grade: "Graduate", isPaid: true, status: 'pending' },
-    { id: 3, name: "Taaha", time: "11:00 AM", date: "Tomorrow", grade: "Working Professional", isPaid: true, status: 'confirmed' },
+    { id: 1, name: "Syed Basim Ahmed", time: "10:00 AM", date: "Today", grade: "12", isPaid: true },
+    { id: 2, name: "Zainab Imran", time: "02:30 PM", date: "Today", grade: "Graduate", isPaid: true },
+    { id: 3, name: "Taaha", time: "11:00 AM", date: "Tomorrow", grade: "Working Professional", isPaid: true },
   ];
 
-  const handleJoinVideo = async (sessionId: number | string) => { // eslint-disable-line @typescript-eslint/no-explicit-any
-    setIsJoining(Number(sessionId));
+  const handleJoinVideo = async (sessionId: number) => {
+    setIsJoining(sessionId);
     try {
+      // Jitsi Meet is completely free and requires no API key.
+      // We generate a unique, secure room name for the session.
       const roomName = `MentorMe-Session-${sessionId}-${Math.random().toString(36).substring(7)}`;
       const jitsiUrl = `https://meet.jit.si/${roomName}`;
-      setTimeout(() => {
-        window.open(jitsiUrl, "_blank");
-        setIsJoining(null);
-      }, 1000);
+      
+      window.open(jitsiUrl, "_blank"); // Open the free video call securely in a new tab
+      
     } catch (err) {
+      alert("Error starting video call. Please try again.");
       console.error(err);
+    } finally {
       setIsJoining(null);
     }
   };
 
-  const handleDownloadReport = (session: any) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+  const handleDownloadReport = (session: { id: number; name: string; grade: string }) => {
     setIsDownloading(session.id);
     setTimeout(() => {
-      const reportContent = `MentorMe Career Report\n\nStudent: ${session.name}\nGrade: ${session.grade}`;
-      const blob = new Blob([reportContent], { type: 'text/plain' });
+      const reportContent = `MentorMe Career Report\n\nStudent: ${session.name}\nGrade: ${session.grade}\n\nThis is a securely generated psychometric report for the counselor to review before the video session.`;
+      const blob = new Blob([reportContent], { type: 'text/plain;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${session.name}_Report.txt`);
+      link.setAttribute('download', `${session.name.replace(/\s+/g, '_')}_Career_Report.txt`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -84,151 +48,109 @@ export default function CounselorDashboard() {
     }, 1000);
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-indigo" />
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-slate-50/30 pt-24 pb-12 px-4 sm:px-8">
-      <div className="max-w-6xl mx-auto space-y-10">
+    <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8">
+      <div className="max-w-6xl mx-auto space-y-8">
         
-        {/* Premium Counselor Header */}
-        <div className="relative p-12 rounded-[40px] overflow-hidden bg-brand-slate text-white shadow-2xl">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-indigo/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"></div>
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-8">
-              <div className="relative h-24 w-24 rounded-3xl border-4 border-white/10 overflow-hidden shadow-2xl">
-                <Image 
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${counselor?.email}&backgroundColor=0D7377`}
-                  alt="Avatar"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                  <h1 className="text-4xl font-black tracking-tight">Expert Control Center</h1>
-                  <span className="px-3 py-1 rounded-full bg-brand-emerald/20 text-brand-emerald text-[10px] font-black uppercase tracking-widest border border-brand-emerald/30">Active Status</span>
-                </div>
-                <p className="text-blue-100/60 font-medium text-lg">Lead Counselor: <span className="text-white font-bold">{counselor?.user_metadata?.full_name || counselor?.email}</span></p>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="glass-dark px-8 py-4 rounded-3xl text-center border-white/5">
-                 <p className="text-[10px] font-black uppercase text-blue-200/50 mb-1 tracking-widest">Sessions</p>
-                 <p className="text-2xl font-black">{upcomingSessions.length}</p>
-              </div>
-              <div className="glass-dark px-8 py-4 rounded-3xl text-center border-brand-indigo/30">
-                 <p className="text-[10px] font-black uppercase text-blue-200/50 mb-1 tracking-widest">Global Rank</p>
-                 <p className="text-2xl font-black text-brand-gold">TOP 1%</p>
-              </div>
-            </div>
-          </div>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+           <div>
+             <h1 className="text-3xl font-black text-emerald-700 uppercase tracking-tight">Counselor Portal</h1>
+             <p className="text-slate-500 font-medium">Welcome back. You have {upcomingSessions.filter(s => s.date === 'Today').length} sessions scheduled for today.</p>
+           </div>
+           <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md">
+              <CalendarDays size={18} className="mr-2" /> Sync with Google Calendar
+           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          
-          {/* Active Sessions */}
-          <div className="lg:col-span-2 space-y-8">
-             <div className="bg-white rounded-[40px] border border-slate-100 p-10 shadow-xl shadow-slate-200/40">
-                <div className="flex justify-between items-center mb-10">
-                   <h2 className="text-2xl font-black text-brand-slate flex items-center gap-3">
-                     <Video size={24} className="text-brand-indigo" /> Live Consultations
-                   </h2>
-                   <div className="flex items-center gap-2 text-sm font-bold text-brand-indigo">
-                      <div className="w-2 h-2 bg-brand-indigo rounded-full animate-pulse"></div>
-                      Real-time Sync
-                   </div>
-                </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+           
+           {/* Schedule Column */}
+           <div className="lg:col-span-2 space-y-6">
+              <h2 className="text-xl font-bold text-slate-800">Upcoming Sessions</h2>
+              
+              <div className="space-y-4">
+                 {upcomingSessions.map((session) => (
+                    <div key={session.id} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
+                       
+                       <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center text-slate-400 shrink-0">
+                             <User size={24} />
+                          </div>
+                          <div>
+                             <h3 className="text-lg font-black text-slate-800">{session.name}</h3>
+                             <div className="flex flex-wrap items-center gap-3 mt-1 text-sm text-slate-500 font-medium">
+                                <span className="flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
+                                  <CalendarDays size={14} /> {session.date} at {session.time}
+                                </span>
+                                <span className="bg-slate-100 px-2 py-0.5 rounded-md">Grade: {session.grade}</span>
+                                {session.isPaid && <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-md text-xs font-bold uppercase">₹4,999 Paid</span>}
+                             </div>
+                          </div>
+                       </div>
 
-                <div className="space-y-6">
-                  {upcomingSessions.map((session) => (
-                    <motion.div 
-                      key={session.id} 
-                      whileHover={{ scale: 1.01 }}
-                      className="p-8 rounded-[32px] border border-slate-50 hover:border-brand-indigo/20 hover:bg-slate-50/30 transition-all group relative overflow-hidden"
-                    >
-                      <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
-                        <div className="flex items-center gap-6">
-                           <div className="w-14 h-14 bg-brand-indigo/5 rounded-2xl flex items-center justify-center text-brand-indigo group-hover:bg-brand-indigo group-hover:text-white transition-all">
-                              <User size={28} />
-                           </div>
-                           <div>
-                              <h4 className="text-xl font-black text-brand-slate">{session.name}</h4>
-                              <p className="text-slate-400 font-medium flex items-center gap-2 text-sm">
-                                 <Clock size={14} className="text-brand-indigo" /> {session.date} • {session.time}
-                              </p>
-                           </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                           <Button 
-                             variant="outline"
-                             onClick={() => handleDownloadReport(session)}
-                             disabled={isDownloading === session.id}
-                             className="border-2 border-slate-100 hover:border-brand-indigo hover:text-brand-indigo rounded-2xl px-6 py-6 font-bold"
-                           >
-                             {isDownloading === session.id ? <Loader2 className="animate-spin" /> : <><FileText size={18} className="mr-2" /> Report</>}
-                           </Button>
-                           <Button 
-                             onClick={() => handleJoinVideo(session.id)}
-                             disabled={isJoining === session.id}
-                             className="bg-brand-indigo hover:bg-brand-indigo/90 text-white font-black px-8 py-6 rounded-2xl shadow-lg shadow-brand-indigo/20 transition-all"
-                           >
-                             {isJoining === session.id ? <Loader2 className="animate-spin" /> : "Join Call"}
-                           </Button>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-             </div>
-          </div>
+                       <div className="flex items-center gap-3 w-full sm:w-auto">
+                          <Button 
+                            variant="outline" 
+                            onClick={() => handleDownloadReport(session)}
+                            disabled={isDownloading === session.id}
+                            className="flex-1 sm:flex-none border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white font-bold transition-all"
+                          >
+                             {isDownloading === session.id ? (
+                               <><Loader2 size={16} className="mr-2 animate-spin" /> Fetching...</>
+                             ) : (
+                               <><FileText size={16} className="mr-2" /> Download Report</>
+                             )}
+                          </Button>
+                          <Button 
+                            onClick={() => handleJoinVideo(session.id)}
+                            disabled={isJoining === session.id}
+                            className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-sm"
+                          >
+                             {isJoining === session.id ? (
+                               <><Loader2 size={16} className="mr-2 animate-spin" /> Connecting...</>
+                             ) : (
+                               <><Video size={16} className="mr-2" /> Join Call</>
+                             )}
+                          </Button>
+                       </div>
 
-          {/* Tools & Resources */}
-          <div className="space-y-10">
-             <div className="bg-brand-slate text-white rounded-[40px] p-10 shadow-2xl relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl translate-x-1/2 -translate-y-1/2"></div>
-                <h3 className="text-xl font-black mb-8 flex items-center gap-3">
-                   <ShieldCheck size={24} className="text-brand-emerald" /> Security Protocol
-                </h3>
-                <div className="space-y-4">
-                   <div className="p-5 glass-dark rounded-2xl flex items-center gap-4 border-white/5">
-                      <div className="w-10 h-10 bg-brand-indigo/20 text-brand-indigo rounded-xl flex items-center justify-center">
-                        <Video size={20} />
-                      </div>
-                      <p className="text-sm font-bold text-blue-100/80">Encrypted Jitsi Stream</p>
-                   </div>
-                   <div className="p-5 glass-dark rounded-2xl flex items-center gap-4 border-white/5">
-                      <div className="w-10 h-10 bg-brand-gold/20 text-brand-gold rounded-xl flex items-center justify-center">
-                        <User size={20} />
-                      </div>
-                      <p className="text-sm font-bold text-blue-100/80">Private Consultation</p>
-                   </div>
-                </div>
-                <div className="pt-10">
-                  <Button 
-                    onClick={() => handleJoinVideo('test')}
-                    className="w-full bg-white text-brand-slate font-black py-7 rounded-2xl hover:bg-slate-50 transition-all text-lg shadow-xl"
-                  >
-                     Instant Video Test
-                  </Button>
-                </div>
-             </div>
+                    </div>
+                 ))}
+              </div>
+           </div>
 
-             <div className="bg-white border border-slate-100 rounded-[40px] p-10 shadow-xl shadow-slate-200/40">
-                <h3 className="font-black text-brand-slate mb-6 flex items-center gap-3 text-xl">
-                   <Sparkles size={24} className="text-brand-gold" /> Counselor IQ
-                </h3>
-                <div className="italic text-slate-500 border-l-4 border-brand-gold pl-6 py-2 text-sm leading-relaxed font-medium">
-                   &quot;Your career is a marathon, not a sprint. Every session you lead today builds a legacy for tomorrow.&quot;
-                   <p className="not-italic font-black text-slate-300 mt-4 uppercase tracking-widest text-[10px]">MentorMe Intelligence</p>
-                </div>
-             </div>
-          </div>
+           {/* Insights / Sidebar */}
+           <div className="space-y-6">
+              <div className="bg-brand-blue text-white rounded-3xl p-8 shadow-lg relative overflow-hidden">
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
+                 <h3 className="text-xl font-bold mb-2">Jitsi Meet Video Rooms</h3>
+                 <p className="text-blue-100 text-sm leading-relaxed mb-6">
+                   Your consultation video rooms are fully secure, unlimited, and 100% free. Rooms open 5 minutes before the scheduled time.
+                 </p>
+                 <Button onClick={() => handleJoinVideo(0)} className="w-full bg-white text-brand-blue font-bold hover:bg-slate-50">
+                    {isJoining === 0 ? "Creating Test Room..." : "Test Video & Mic"}
+                 </Button>
+              </div>
+
+              <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                 <h3 className="font-bold text-slate-800 mb-4">Quick Analytics</h3>
+                 <div className="space-y-4">
+                    <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                       <span className="text-slate-500 font-medium">Sessions This Month</span>
+                       <span className="font-black text-slate-800">24</span>
+                    </div>
+                    <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                       <span className="text-slate-500 font-medium">Avg. Student Rating</span>
+                       <span className="font-black text-brand-orange">4.9/5.0</span>
+                    </div>
+                    <div className="flex justify-between items-center pb-1">
+                       <span className="text-slate-500 font-medium">Earnings (Pending Payout)</span>
+                       <span className="font-black text-emerald-600">₹85,000</span>
+                    </div>
+                 </div>
+              </div>
+           </div>
 
         </div>
 

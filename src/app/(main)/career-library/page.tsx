@@ -44,7 +44,7 @@ export default function CareerLibrary() {
   );
 
   // Reset pagination when filters change
-  const handleFilterChange = (setter: any, value: any) => {
+  const handleFilterChange = (setter: React.Dispatch<React.SetStateAction<string>>, value: string) => {
     setter(value);
     setCurrentPage(1);
   };

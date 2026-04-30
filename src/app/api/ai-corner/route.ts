@@ -37,7 +37,8 @@ Keep the tone professional, motivating, and highly practical. Do not use generic
     const text = response.text();
 
     return NextResponse.json({ roadmap: text });
-  } catch (error: any) {
+  } catch (err: unknown) {
+    const error = err as Error;
     console.error("AI Corner Error:", error);
     return NextResponse.json({ error: error.message || 'Failed to generate roadmap' }, { status: 500 });
   }

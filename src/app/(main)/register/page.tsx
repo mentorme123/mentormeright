@@ -27,28 +27,38 @@ export default function RegisterPage() {
       const { data, error: authError } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          // Tell Supabase to send the confirmation email to the production URL
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || window.location.origin}/auth/callback`,
+        },
       });
 
       if (authError) throw authError;
 
       if (data.user) {
-        // Insert user into the users table
-        const { error: profileError } = await supabase
+        // Try to insert profile — ignore duplicate key errors (user may already exist)
+        await supabase
           .from('users')
-          .insert([
-            { id: data.user.id, email: email, name: name, role: role }
-          ]);
+          .upsert(
+            [{ id: data.user.id, email: email, name: name, role: role }],
+            { onConflict: 'id', ignoreDuplicates: false }
+          );
 
-        if (profileError) throw profileError;
         // Save audience type so assessment loads correct question set
         if (role === 'individual') {
           localStorage.setItem("mentorme_audience", audienceType);
         }
-        setSuccess(true);
-        if (role === 'individual') {
-          router.push("/assessment");
+
+        // If session exists, user was auto-confirmed — redirect immediately
+        if (data.session) {
+          if (role === 'individual') {
+            router.push("/assessment");
+          } else {
+            router.push("/dashboard/institution");
+          }
         } else {
-          router.push("/dashboard/institution");
+          // Email confirmation is required — show message, don't redirect
+          setSuccess(true);
         }
       }
     } catch (err: unknown) {
@@ -63,10 +73,12 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
     try {
+      // Always use the production URL for OAuth — never localhost
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${siteUrl}/auth/callback`,
         },
       });
       if (error) throw error;
@@ -92,8 +104,10 @@ export default function RegisterPage() {
         )}
         
         {success && (
-          <div className="mb-6 p-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-lg font-medium text-center">
-            Registration successful! Redirecting to login...
+          <div className="mb-6 p-4 bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded-lg font-medium text-center space-y-1">
+            <p className="font-black text-base">✅ Account Created!</p>
+            <p>Please check your email <strong>{email}</strong> and click the confirmation link to activate your account.</p>
+            <p className="text-xs text-emerald-600">After confirming, you can log in below.</p>
           </div>
         )}
 

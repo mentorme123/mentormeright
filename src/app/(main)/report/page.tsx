@@ -110,8 +110,14 @@ export default function ReportPage() {
       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           @page { size: A4; margin: 0; }
-          body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-          nav, footer { display: none !important; }
+          body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
+          nav, footer, .print-hidden, #ai-chatbot-root, [data-print-ignore="true"] { 
+            display: none !important; 
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+          }
+          .A4Page { margin: 0 !important; shadow: none !important; }
         }
       `}} />
 

@@ -28,6 +28,10 @@ export default function AssessmentPage() {
 
   const [globalTime, setGlobalTime] = useState(5400); // 90 minutes
   const [questionTime, setQuestionTime] = useState(60); // 60 seconds per question
+  
+  // Ref-Persistent Timers to prevent drift and overlaps
+  const globalIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const questionIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -61,29 +65,47 @@ export default function AssessmentPage() {
       setIsLoaded(true);
     };
     checkAuth();
+
+    return () => {
+      if (globalIntervalRef.current) clearInterval(globalIntervalRef.current);
+      if (questionIntervalRef.current) clearInterval(questionIntervalRef.current);
+    };
   }, [router]);
 
-  // Global Session Timer
+  // Global Session Timer Handler
   useEffect(() => {
-    if (!isLoaded || isSubmitting || showOnboarding) return;
-    const timer = setInterval(() => {
+    if (!isLoaded || isSubmitting || showOnboarding) {
+      if (globalIntervalRef.current) clearInterval(globalIntervalRef.current);
+      return;
+    }
+
+    globalIntervalRef.current = setInterval(() => {
       setGlobalTime(prev => {
         if (prev <= 1) {
-          clearInterval(timer);
-          handleSubmit(); // Auto-submit on global timeout
+          if (globalIntervalRef.current) clearInterval(globalIntervalRef.current);
+          handleSubmit(); 
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-    return () => clearInterval(timer);
+
+    return () => {
+      if (globalIntervalRef.current) clearInterval(globalIntervalRef.current);
+    };
   }, [isLoaded, isSubmitting, showOnboarding]);
 
-  // Per-Question Timer
+  // Per-Question Timer Handler
   useEffect(() => {
-    if (!isLoaded || isSubmitting || showOnboarding) return;
-    setQuestionTime(60); // Reset for new question
-    const timer = setInterval(() => {
+    if (!isLoaded || isSubmitting || showOnboarding) {
+      if (questionIntervalRef.current) clearInterval(questionIntervalRef.current);
+      return;
+    }
+
+    setQuestionTime(60); // Reset clock for new question
+    if (questionIntervalRef.current) clearInterval(questionIntervalRef.current);
+
+    questionIntervalRef.current = setInterval(() => {
       setQuestionTime(prev => {
         if (prev <= 1) {
           handleNext(); // Auto-advance on question timeout
@@ -92,8 +114,25 @@ export default function AssessmentPage() {
         return prev - 1;
       });
     }, 1000);
-    return () => clearInterval(timer);
+
+    return () => {
+      if (questionIntervalRef.current) clearInterval(questionIntervalRef.current);
+    };
   }, [currentIndex, isLoaded, isSubmitting, showOnboarding]);
+
+  const handleSelectOption = (optionKey: string) => {
+    const currentQ = questions[currentIndex];
+    const newAnswers = { ...answers, [currentQ.id]: optionKey };
+    setAnswers(newAnswers);
+    localStorage.setItem("mentorme_assessment_progress", JSON.stringify(newAnswers));
+    
+    // Smooth transition
+    setTimeout(() => {
+      if (currentIndex < questions.length - 1) {
+        setCurrentIndex(prev => prev + 1);
+      }
+    }, 300);
+  };
 
   const handleSaveProfile = async () => {
     if (!formPhone || !formGender || !formCountry || !formState || !formEducation) {
@@ -121,19 +160,6 @@ export default function AssessmentPage() {
     }
     setSaving(false);
   };
-
-  const handleSelectOption = (optionKey: string) => {
-    const currentQ = questions[currentIndex];
-    const newAnswers = { ...answers, [currentQ.id]: optionKey };
-    setAnswers(newAnswers);
-    localStorage.setItem("mentorme_assessment_progress", JSON.stringify(newAnswers));
-    setTimeout(() => {
-      if (currentIndex < questions.length - 1) {
-        setCurrentIndex(prev => prev + 1);
-      }
-    }, 400);
-  };
-
   const handleNext = () => {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(prev => prev + 1);

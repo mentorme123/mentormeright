@@ -26,32 +26,24 @@ export default function AssessmentPage() {
   const [formState, setFormState] = useState("");
   const [formEducation, setFormEducation] = useState("");
 
+  const [globalTime, setGlobalTime] = useState(5400); // 90 minutes
+  const [questionTime, setQuestionTime] = useState(60); // 60 seconds per question
+
   useEffect(() => {
     const checkAuth = async () => {
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
       
       if (!session) {
-        console.warn("Unauthorized assessment attempt. Redirecting to login.");
         router.push("/login?redirect=/assessment");
         return;
       }
 
-      // Fetch Profile to ensure it's complete
-      const { data: userProfile } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', session.user.id)
-        .single();
-      
+      const { data: userProfile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
       setProfile(userProfile);
 
-      // If profile is missing phone, show onboarding first
-      if (!userProfile?.phone) {
-        setShowOnboarding(true);
-      }
+      if (!userProfile?.phone) setShowOnboarding(true);
 
-      // Load questions and previous answers
       const audience = (localStorage.getItem("mentorme_audience") || userProfile?.audience_type || "ST") as AudienceType;
       const q = getQuestions(audience);
       setQuestions(q);
@@ -62,20 +54,46 @@ export default function AssessmentPage() {
           const parsed = JSON.parse(saved);
           setAnswers(parsed);
           const firstUnanswered = q.findIndex(qn => !parsed[qn.id]);
-          if (firstUnanswered !== -1) {
-            setCurrentIndex(firstUnanswered);
-          } else {
-            setCurrentIndex(q.length - 1);
-          }
-        } catch (e) {
-          console.error("Failed to parse saved answers", e);
-        }
+          if (firstUnanswered !== -1) setCurrentIndex(firstUnanswered);
+          else setCurrentIndex(q.length - 1);
+        } catch (e) { console.error(e); }
       }
       setIsLoaded(true);
     };
-
     checkAuth();
   }, [router]);
+
+  // Global Session Timer
+  useEffect(() => {
+    if (!isLoaded || isSubmitting || showOnboarding) return;
+    const timer = setInterval(() => {
+      setGlobalTime(prev => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          handleSubmit(); // Auto-submit on global timeout
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [isLoaded, isSubmitting, showOnboarding]);
+
+  // Per-Question Timer
+  useEffect(() => {
+    if (!isLoaded || isSubmitting || showOnboarding) return;
+    setQuestionTime(60); // Reset for new question
+    const timer = setInterval(() => {
+      setQuestionTime(prev => {
+        if (prev <= 1) {
+          handleNext(); // Auto-advance on question timeout
+          return 60;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [currentIndex, isLoaded, isSubmitting, showOnboarding]);
 
   const handleSaveProfile = async () => {
     if (!formPhone || !formGender || !formCountry || !formState || !formEducation) {
@@ -322,9 +340,21 @@ export default function AssessmentPage() {
 
       <div className="w-full max-w-3xl space-y-8 relative z-10">
         <div className="space-y-4">
-          <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
-            <span>Section {currentQ.section}</span>
-            <span className="text-brand-blue">Question {sectionIndex} / {sectionQuestions.length}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm font-bold">
+            <div className="flex items-center gap-4">
+              <span className="text-slate-400 uppercase tracking-widest text-xs">Section {currentQ.section}</span>
+              <span className="text-brand-blue bg-blue-50 px-3 py-1 rounded-lg">Question {currentIndex + 1} of {questions.length}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-3 py-1 rounded-lg">
+                <Clock size={16} />
+                <span>Q: {questionTime}s</span>
+              </div>
+              <div className="flex items-center gap-2 text-brand-orange bg-brand-orange/5 px-3 py-1 rounded-lg">
+                <Timer size={16} />
+                <span>Total: {Math.floor(globalTime / 60)}m {globalTime % 60}s</span>
+              </div>
+            </div>
           </div>
           <div className="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
             <motion.div 

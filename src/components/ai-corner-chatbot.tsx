@@ -138,7 +138,7 @@ export function AiCornerChatbot() {
   return (
     <>
       {/* Floating Button */}
-      <div className="fixed bottom-6 right-6 z-[200]">
+      <div className={`fixed bottom-6 right-6 z-[999] print:hidden ${isOpen ? 'w-full max-w-[400px] h-[600px]' : 'w-auto h-auto'}`}>
         <AnimatePresence>
           {!isOpen && hasShownPing && (
             <motion.div

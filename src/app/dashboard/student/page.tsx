@@ -388,13 +388,19 @@ export default function StudentDashboard() {
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             <div className="flex items-center gap-5">
-              <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-2xl border-4 border-white/10 overflow-hidden shadow-2xl shrink-0">
-                <Image 
-                  src={`https://api.dicebear.com/7.x/initials/svg?seed=${authUser?.email}&backgroundColor=1B3A6B,0D7377,F0A500`}
-                  alt="Avatar"
-                  fill
-                  className="object-cover"
-                />
+              <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-2xl border-4 border-white/10 overflow-hidden shadow-2xl shrink-0 bg-brand-orange flex items-center justify-center">
+                {profile?.profile_image ? (
+                  <Image 
+                    src={profile.profile_image}
+                    alt="Avatar"
+                    fill
+                    className="object-cover"
+                  />
+                ) : (
+                  <span className="text-2xl sm:text-3xl font-black text-white uppercase">
+                    {(profile?.name || authUser?.email || "S").charAt(0)}
+                  </span>
+                )}
               </div>
               <div className="space-y-1 min-w-0">
                 <h1 className="text-2xl sm:text-3xl font-black tracking-tight truncate">Welcome, {authUser?.user_metadata?.full_name || authUser?.email?.split('@')[0]}</h1>

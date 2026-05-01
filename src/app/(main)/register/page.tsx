@@ -53,7 +53,7 @@ export default function RegisterPage() {
       }
 
       if (data.session) {
-        console.log("Session active, redirecting...");
+        console.log("Registration complete, routing to assessment...");
         router.push(role === 'individual' ? "/assessment" : "/dashboard/institution");
       } else {
         console.log("Confirmation required.");

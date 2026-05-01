@@ -58,26 +58,24 @@ export async function middleware(request: NextRequest) {
 
   // ── Protection Logic ───────────────────────────────────────────────────────
   
-  const isAuthPage = request.nextUrl.pathname.startsWith('/login') || 
-                     request.nextUrl.pathname.startsWith('/register')
+  const pathname = request.nextUrl.pathname;
+  const isAuthPage = pathname.startsWith('/login') || pathname.startsWith('/register');
   
-  const isProtectedPage = request.nextUrl.pathname.startsWith('/dashboard') || 
-                          request.nextUrl.pathname.startsWith('/assessment') ||
-                          request.nextUrl.pathname.startsWith('/report')
+  // Strict Protection for Assessment/Test routes
+  const isTestRoute = pathname.startsWith('/assessment') || pathname.startsWith('/test');
+  const isDashboardRoute = pathname.startsWith('/dashboard');
+  const isProtectedPage = isTestRoute || isDashboardRoute || pathname.startsWith('/report');
 
   // If user is NOT logged in and trying to access a protected page
   if (!user && isProtectedPage) {
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    url.pathname = '/register'
     return NextResponse.redirect(url)
   }
 
   // If user IS logged in and trying to access login/register
   if (user && isAuthPage) {
     const url = request.nextUrl.clone()
-    // Redirect to home or their specific dashboard based on role
-    // (Role check usually requires a DB query, which is expensive in middleware, 
-    // so we just redirect to home and let the client-side handle final routing)
     url.pathname = '/' 
     return NextResponse.redirect(url)
   }

@@ -76,23 +76,31 @@ export default function LoginPage() {
       const userRole = userProfile.role;
       console.log("User Role:", userRole, "Active Tab:", activeTab);
 
-      // 2. Route Based on Tab & Role
-      if (activeTab === 'student') {
-        if (userRole === 'individual' || userRole === 'admin') {
-          const { data: result } = await supabase.from('assessment_results').select('id').eq('user_id', data.user.id).limit(1).maybeSingle();
-          router.push(result ? "/dashboard/student" : "/assessment");
+      // 2. Authentication Traffic Controller: Check Test Status
+      if (userRole === 'individual' || userRole === 'admin') {
+        const { data: assessmentResult, error: assessmentError } = await supabase
+          .from('assessment_results')
+          .select('id')
+          .eq('user_id', data.user.id)
+          .maybeSingle();
+
+        if (assessmentError) console.error("Traffic Controller DB Error:", assessmentError);
+
+        if (activeTab === 'student') {
+          // Condition A: If New or No Test -> /assessment
+          // Condition B: If Has Test -> /dashboard
+          const destination = assessmentResult ? "/dashboard/student" : "/assessment";
+          console.log(`Routing ${userRole} to: ${destination}`);
+          router.push(destination);
+        } else if (activeTab === 'admin' && userRole === 'admin') {
+          router.push("/dashboard/admin");
         } else {
-          throw new Error("This account is an Institution. Please use the Institution tab.");
+          throw new Error("Role mismatch. Please select the correct login portal.");
         }
-      } else if (activeTab === 'institution') {
-        if (userRole === 'institutional' || userRole === 'admin') {
-          router.push("/dashboard/institution");
-        } else {
-          throw new Error("This account is not an Institution.");
-        }
+      } else if (activeTab === 'institution' && (userRole === 'institutional' || userRole === 'admin')) {
+        router.push("/dashboard/institution");
       } else {
-        // Counselors/Admin
-        router.push(activeTab === 'admin' ? "/dashboard/admin" : "/dashboard/counselor");
+        router.push(activeTab === 'counselor' ? "/dashboard/counselor" : "/");
       }
 
     } catch (err: any) {

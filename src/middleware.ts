@@ -76,8 +76,8 @@ export async function middleware(request: NextRequest) {
   // If user IS logged in and trying to access login/register
   if (user && isAuthPage) {
     const url = request.nextUrl.clone()
-    // We send them to a resolver route that will handle DB-based redirection
-    url.pathname = '/auth/resolve' 
+    // Handover to the Smart Router
+    url.pathname = '/auth/route-director' 
     return NextResponse.redirect(url)
   }
 

@@ -76,32 +76,9 @@ export default function LoginPage() {
       const userRole = userProfile.role;
       console.log("User Role:", userRole, "Active Tab:", activeTab);
 
-      // 2. Authentication Traffic Controller: Check Test Status
-      if (userRole === 'individual' || userRole === 'admin') {
-        const { data: assessmentResult, error: assessmentError } = await supabase
-          .from('assessment_results')
-          .select('id')
-          .eq('user_id', data.user.id)
-          .maybeSingle();
-
-        if (assessmentError) console.error("Traffic Controller DB Error:", assessmentError);
-
-        if (activeTab === 'student') {
-          // Condition A: If New or No Test -> /assessment
-          // Condition B: If Has Test -> /dashboard
-          const destination = assessmentResult ? "/dashboard/student" : "/assessment";
-          console.log(`Routing ${userRole} to: ${destination}`);
-          router.push(destination);
-        } else if (activeTab === 'admin' && userRole === 'admin') {
-          router.push("/dashboard/admin");
-        } else {
-          throw new Error("Role mismatch. Please select the correct login portal.");
-        }
-      } else if (activeTab === 'institution' && (userRole === 'institutional' || userRole === 'admin')) {
-        router.push("/dashboard/institution");
-      } else {
-        router.push(activeTab === 'counselor' ? "/dashboard/counselor" : "/");
-      }
+      // 2. Pure Handover to Route Director
+      console.log("Authentication successful. Handing over to Route Director...");
+      router.push("/auth/route-director");
 
     } catch (err: any) {
       console.error("Login Error:", err);

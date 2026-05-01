@@ -32,6 +32,8 @@ export default function InstitutionDashboard() {
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  const [misalignmentData, setMisalignmentData] = useState<{misaligned_percentage: number} | null>(null);
+  const [realityGapData, setRealityGapData] = useState<{danger_zone_percentage: number} | null>(null);
 
   useEffect(() => {
     async function loadStudents() {
@@ -56,6 +58,18 @@ export default function InstitutionDashboard() {
         .order('name', { ascending: true });
 
       setStudents(studentList || []);
+
+      // Fetch advanced B2B analytics via Postgres RPCs
+      try {
+        const { data: misData } = await supabase.rpc('get_cohort_misalignment_rate', { inst_name: 'Global School System' });
+        if (misData) setMisalignmentData(misData as any);
+
+        const { data: gapData } = await supabase.rpc('get_cohort_reality_gap', { inst_name: 'Global School System' });
+        if (gapData) setRealityGapData(gapData as any);
+      } catch (err) {
+        console.error("Failed to fetch advanced metrics:", err);
+      }
+
       setLoading(false);
     }
     loadStudents();
@@ -153,8 +167,8 @@ export default function InstitutionDashboard() {
            {[
              { label: "Total Students", value: students.length, icon: <Users />, color: "text-brand-blue", bg: "bg-blue-50" },
              { label: "Tests Completed", value: completedCount, icon: <CheckCircle2 />, color: "text-emerald-600", bg: "bg-emerald-50" },
-             { label: "Pending Tests", value: students.length - completedCount, icon: <Clock />, color: "text-amber-600", bg: "bg-amber-50" },
-             { label: "Success Rate", value: `${Math.round((completedCount / (students.length || 1)) * 100)}%`, icon: <TrendingUp />, color: "text-purple-600", bg: "bg-purple-50" },
+             { label: "Skill Misalignment", value: misalignmentData ? `${misalignmentData.misaligned_percentage}%` : "Calculating...", icon: <AlertCircle />, color: "text-rose-600", bg: "bg-rose-50" },
+             { label: "The Reality Gap", value: realityGapData ? `${realityGapData.danger_zone_percentage}%` : "Calculating...", icon: <TrendingUp />, color: "text-purple-600", bg: "bg-purple-50" },
            ].map((stat, i) => (
              <div key={i} className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center gap-4 transition-all hover:shadow-lg">
                 <div className={`w-14 h-14 ${stat.bg} ${stat.color} rounded-2xl flex items-center justify-center shrink-0`}>

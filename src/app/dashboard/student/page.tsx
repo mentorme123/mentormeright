@@ -67,6 +67,7 @@ export default function StudentDashboard() {
   const [formEducation, setFormEducation] = useState("");
   const [formCurrentPackage, setFormCurrentPackage] = useState("");
   const [formTargetPackage, setFormTargetPackage] = useState("");
+  const [formTargetCareer, setFormTargetCareer] = useState("");
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -146,6 +147,7 @@ export default function StudentDashboard() {
         education_level: formEducation,
         current_package: formCurrentPackage || null,
         target_package: formTargetPackage || null,
+        target_career: formTargetCareer || null,
         updated_at: new Date().toISOString()
       })
       .eq('id', authUser.id);
@@ -312,6 +314,28 @@ export default function StudentDashboard() {
                     <option value="College/Undergraduate">College / Undergraduate</option>
                     <option value="Graduate">Graduate / Post Graduate</option>
                     <option value="Working Professional">Working Professional</option>
+                  </select>
+                </div>
+
+                {/* Target Career (Required for Misalignment RPC) */}
+                <div>
+                  <label className="text-sm font-bold text-slate-700 mb-1 block">Target Career Path *</label>
+                  <select
+                    value={formTargetCareer}
+                    onChange={(e) => setFormTargetCareer(e.target.value)}
+                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                    required
+                  >
+                    <option value="">Select Target Career</option>
+                    <option value="Engineering / Hardware">Engineering / Hardware</option>
+                    <option value="Technology / Software">Technology / Software</option>
+                    <option value="Medicine / Healthcare">Medicine / Healthcare</option>
+                    <option value="Finance / Accounting">Finance / Accounting</option>
+                    <option value="Business / Management">Business / Management</option>
+                    <option value="Arts / Design / Media">Arts / Design / Media</option>
+                    <option value="Law / Public Policy">Law / Public Policy</option>
+                    <option value="Science / Research">Science / Research</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
 

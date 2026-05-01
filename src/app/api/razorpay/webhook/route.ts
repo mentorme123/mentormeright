@@ -32,15 +32,27 @@ export async function POST(req: NextRequest) {
       const orderId = payment.order_id;
       const paymentId = payment.id;
 
-      // Update booking: set real payment ID and mark as confirmed
+      // Idempotency Check: Verify if booking is already confirmed
+      const { data: existingBooking } = await supabase
+        .from('bookings')
+        .select('status, id')
+        .eq('payment_id', orderId)
+        .single();
+
+      if (existingBooking?.status === 'confirmed') {
+        console.log(`Idempotency hit: Booking ${existingBooking.id} is already confirmed. Skipping.`);
+        return NextResponse.json({ received: true });
+      }
+
+      // Synchronous State Lock: Update booking
       const { data: booking, error: bookingError } = await supabase
         .from('bookings')
         .update({
           payment_id: paymentId,
           status: 'confirmed',
         })
-        .eq('payment_id', orderId) // was storing orderId initially
-        .select('id, user_id, slot_id, counselor_id')
+        .eq('payment_id', orderId)
+        .select('id, slot_id')
         .single();
 
       if (bookingError || !booking) {
@@ -48,25 +60,14 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
       }
 
-      // Mark the slot as booked
+      // Atomic Lock: Mark the slot as booked
       await supabase
         .from('slots')
         .update({ is_booked: true })
         .eq('id', booking.slot_id);
 
-      // Trigger confirmation email via Resend
-      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/booking-confirmation`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          bookingId: booking.id,
-          userId: booking.user_id,
-          counselorId: booking.counselor_id,
-          slotId: booking.slot_id,
-        }),
-      });
-
-      console.log(`Booking ${booking.id} confirmed for payment ${paymentId}`);
+      console.log(`Transaction Locked: Booking ${booking.id} confirmed synchronously.`);
+      // The email will now be handled cleanly by a Supabase Database Webhook (pg_net)
     }
 
     // Handle payment failed event

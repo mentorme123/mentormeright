@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
+import { BackButton } from "@/components/back-button";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const poppins = Poppins({ 
@@ -24,6 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", poppins.variable)}>
       <body className="antialiased min-h-screen flex flex-col font-sans">
+        <BackButton />
         {children}
         
         {/* WhatsApp Floating Button */}

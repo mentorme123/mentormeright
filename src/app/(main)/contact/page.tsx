@@ -4,10 +4,12 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { MessageCircle, Mail, MapPin, Phone, Loader2, CheckCircle2 } from "lucide-react";
+import { MessageCircle, Mail, MapPin, Phone, Loader2, CheckCircle2, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 function ContactForm() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -125,9 +127,19 @@ function ContactForm() {
           placeholder="Tell us more about your inquiry..."
         ></textarea>
       </div>
-      <Button type="submit" disabled={isSubmitting} className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 py-6 text-lg font-bold rounded-xl mt-4 transition-all">
-        {isSubmitting ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Sending...</> : "Send Message"}
-      </Button>
+      <div className="flex gap-3 mt-4">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => router.back()}
+          className="flex-1 py-6 text-lg font-bold rounded-xl border-2 border-slate-200 text-slate-600 hover:bg-slate-50 transition-all"
+        >
+          <X className="w-5 h-5 mr-2" /> Cancel
+        </Button>
+        <Button type="submit" disabled={isSubmitting} className="flex-1 bg-brand-blue text-white hover:bg-brand-blue/90 py-6 text-lg font-bold rounded-xl transition-all">
+          {isSubmitting ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Sending...</> : "Send Message"}
+        </Button>
+      </div>
     </form>
   );
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import { X } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -93,7 +94,14 @@ export default function LoginPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 pt-20">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
         
-        <div className="bg-brand-blue p-8 text-center text-white">
+        <div className="bg-brand-blue p-8 text-center text-white relative">
+          <button
+            onClick={() => router.push('/')}
+            className="absolute top-4 right-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition-all"
+            aria-label="Cancel and go home"
+          >
+            <X size={18} />
+          </button>
           <h1 className="text-3xl font-black uppercase">MentorMe Portal</h1>
           <p className="text-white/80 text-sm mt-2 font-medium">Access your career intelligence dashboard</p>
         </div>

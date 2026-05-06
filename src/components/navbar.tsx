@@ -79,11 +79,11 @@ export function Navbar() {
               Free Career Assessment Test
             </button>
           </Link>
-          <Link href="/login">
-            <button className="hidden sm:inline-flex font-semibold px-4 py-2 hover:bg-muted rounded-lg transition-colors text-slate-700">Log in</button>
-          </Link>
           <Link href="/register" className="hidden sm:block">
             <button className="bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold px-6 py-2.5 rounded-lg transition-all shadow-md">Register</button>
+          </Link>
+          <Link href="/login">
+            <button className="hidden sm:inline-flex font-semibold px-4 py-2 hover:bg-muted rounded-lg transition-colors text-slate-700">Log in</button>
           </Link>
 
           {/* Mobile Hamburger Button */}

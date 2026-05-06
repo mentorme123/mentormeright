@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { getQuestions, Question, AudienceType } from "@/lib/mock-questions";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
-import { Loader2, BrainCircuit, X, Phone, MapPin, User, GraduationCap, Briefcase, TrendingUp } from "lucide-react";
+import { Loader2, BrainCircuit, X, Phone, MapPin, User, GraduationCap, Briefcase, TrendingUp, Clock, Timer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function AssessmentPage() {

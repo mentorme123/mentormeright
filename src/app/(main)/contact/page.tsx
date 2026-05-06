@@ -4,12 +4,18 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { MessageCircle, Mail, MapPin, Phone } from "lucide-react";
+import { MessageCircle, Mail, MapPin, Phone, Loader2, CheckCircle2 } from "lucide-react";
 
 function ContactForm() {
   const searchParams = useSearchParams();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [subject, setSubject] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const msg = searchParams.get("message");
@@ -24,21 +30,79 @@ function ContactForm() {
     }
   }, [searchParams]);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!firstName || !email || !message) {
+      setStatus("error");
+      setErrorMsg("Please fill in all required fields.");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setStatus("idle");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email, subject, message }),
+      });
+
+      const data = await res.json();
+      
+      if (!res.ok) throw new Error(data.error || "Failed to send message");
+      
+      setStatus("success");
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    } catch (err: any) {
+      console.error(err);
+      setStatus("error");
+      setErrorMsg(err.message || "An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <div className="flex flex-col items-center justify-center h-full py-12 text-center space-y-6">
+        <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
+          <CheckCircle2 size={40} />
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-2xl font-bold">Message Sent!</h3>
+          <p className="text-muted-foreground">Thank you for reaching out. Our team will get back to you shortly.</p>
+        </div>
+        <Button variant="outline" onClick={() => setStatus("idle")} className="rounded-xl mt-4">Send another message</Button>
+      </div>
+    );
+  }
+
   return (
-    <form className="space-y-6">
+    <form className="space-y-6" onSubmit={handleSubmit}>
+      {status === "error" && (
+        <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl text-sm font-medium">
+          {errorMsg}
+        </div>
+      )}
       <div className="grid sm:grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium">First Name</label>
-          <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="John" />
+          <label className="text-sm font-medium">First Name <span className="text-red-500">*</span></label>
+          <input required value={firstName} onChange={(e) => setFirstName(e.target.value)} type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="John" />
         </div>
         <div className="space-y-2">
           <label className="text-sm font-medium">Last Name</label>
-          <input type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="Doe" />
+          <input value={lastName} onChange={(e) => setLastName(e.target.value)} type="text" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="Doe" />
         </div>
       </div>
       <div className="space-y-2">
-        <label className="text-sm font-medium">Email Address</label>
-        <input type="email" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="you@example.com" />
+        <label className="text-sm font-medium">Email Address <span className="text-red-500">*</span></label>
+        <input required value={email} onChange={(e) => setEmail(e.target.value)} type="email" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" placeholder="you@example.com" />
       </div>
       <div className="space-y-2">
         <label className="text-sm font-medium">Subject</label>
@@ -51,8 +115,9 @@ function ContactForm() {
         />
       </div>
       <div className="space-y-2">
-        <label className="text-sm font-medium">Your Message</label>
+        <label className="text-sm font-medium">Your Message <span className="text-red-500">*</span></label>
         <textarea 
+          required
           rows={5} 
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -60,8 +125,8 @@ function ContactForm() {
           placeholder="Tell us more about your inquiry..."
         ></textarea>
       </div>
-      <Button type="button" className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 py-6 text-lg font-bold rounded-xl mt-4">
-        Send Message
+      <Button type="submit" disabled={isSubmitting} className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 py-6 text-lg font-bold rounded-xl mt-4 transition-all">
+        {isSubmitting ? <><Loader2 className="w-5 h-5 animate-spin mr-2" /> Sending...</> : "Send Message"}
       </Button>
     </form>
   );

@@ -7,9 +7,6 @@ export function BackButton() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // Don't show on homepage
-  if (pathname === "/") return null;
-
   const handleBack = () => {
     // Fire-and-forget analytics
     fetch("/api/analytics", {

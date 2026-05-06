@@ -18,6 +18,8 @@ export default function AssessmentPage() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [saving, setSaving] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [processingTime, setProcessingTime] = useState(0);
 
   // Onboarding form state
   const [formPhone, setFormPhone] = useState("");
@@ -172,8 +174,6 @@ export default function AssessmentPage() {
     }
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [processingTime, setProcessingTime] = useState(0);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;

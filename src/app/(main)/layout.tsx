@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
+import { BackButton } from "@/components/back-button";
 
 export default function MainLayout({
   children,
@@ -9,6 +10,7 @@ export default function MainLayout({
   return (
     <>
       <Navbar />
+      <BackButton />
       <main className="flex-1 flex flex-col">
         {children}
       </main>

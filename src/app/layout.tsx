@@ -6,10 +6,10 @@ import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
 import { BackButton } from "@/components/back-button";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-const poppins = Poppins({ 
-  subsets: ['latin'], 
+const poppins = Poppins({
+  subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-sans' 
+  variable: '--font-sans'
 });
 
 export const metadata: Metadata = {
@@ -25,13 +25,13 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", poppins.variable)}>
       <body className="antialiased min-h-screen flex flex-col font-sans">
-        <BackButton />
+        {/* BackButton is handled in sub-layouts to allow for variant control */}
         {children}
-        
+
         {/* WhatsApp Floating Button */}
-        <a 
-          href="https://wa.me/919392707596" 
-          target="_blank" 
+        <a
+          href="https://wa.me/919392707596"
+          target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-6 left-6 z-[200] w-14 h-14 bg-[#25D366] rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group"
           title="Chat on WhatsApp"

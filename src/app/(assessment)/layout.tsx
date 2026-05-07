@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BackButtonCompact } from "@/components/back-button";
 
 export default function AssessmentLayout({
   children,
@@ -20,6 +21,7 @@ export default function AssessmentLayout({
           </div>
         </div>
       </header>
+      <BackButtonCompact />
       <main className="flex-1 flex flex-col">
         {children}
       </main>

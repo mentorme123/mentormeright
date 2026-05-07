@@ -24,7 +24,8 @@ export function UniversitySearch() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`http://universities.hipolabs.com/search?name=${encodeURIComponent(query)}`);
+      // Use HTTPS for security
+      const res = await fetch(`https://universities.hipolabs.com/search?name=${encodeURIComponent(query)}`);
       const data = await res.json();
       setResults(data.slice(0, 10)); // Limit to top 10 for UX
       if (data.length === 0) setError("No universities found for this search.");
@@ -32,6 +33,16 @@ export function UniversitySearch() {
       setError("Failed to fetch university data. Please try again later.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Validate URL to prevent javascript: and other dangerous protocols
+  const isValidUrl = (url: string) => {
+    try {
+      const parsed = new URL(url);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
     }
   };
 
@@ -75,14 +86,18 @@ export function UniversitySearch() {
               <span className="flex items-center gap-1.5 text-xs font-bold text-slate-500 uppercase tracking-wider">
                 <Globe size={12} /> {uni.country}
               </span>
-              <a 
-                href={uni.web_pages[0]} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-xs font-bold text-brand-orange hover:underline"
-              >
-                Visit Website
-              </a>
+              {uni.web_pages[0] && isValidUrl(uni.web_pages[0]) ? (
+                <a
+                  href={uni.web_pages[0]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-bold text-brand-orange hover:underline"
+                >
+                  Visit Website
+                </a>
+              ) : (
+                <span className="text-xs font-bold text-slate-400">No valid website</span>
+              )}
             </div>
           </div>
         ))}

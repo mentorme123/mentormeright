@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
-    const clientName = userName || 'Student';
+    const clientName = userName ? String(userName).slice(0, 100).replace(/[<>]/g, '') : 'Student';
 
     const prompt = `
 You are an elite career intelligence counselor at MentorMe (mentormeright.in).
@@ -104,8 +104,14 @@ Do not return any markdown. Return strictly valid JSON only.
     if (userId) {
        // We must use service role key to bypass RLS if doing it server-side, or use the client's token
        // Since this is an API route, we can initialize a server client.
-       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-       const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
+       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+       const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+       if (!supabaseUrl || !supabaseKey) {
+         console.error('Supabase environment variables missing');
+         return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+       }
+
        const supabase = createClient(supabaseUrl, supabaseKey);
 
        await supabase.from('assessment_results').insert({

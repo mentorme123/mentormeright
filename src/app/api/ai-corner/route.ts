@@ -4,6 +4,11 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 // Initialize Gemini API
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
 
+// Validate API key
+if (!process.env.GEMINI_API_KEY && !process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+  console.error('GEMINI_API_KEY is missing');
+}
+
 export async function POST(req: Request) {
   try {
     const { profile, goal, currentLevel } = await req.json();
@@ -12,14 +17,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Sanitize inputs to prevent prompt injection
+    const sanitizedProfile = String(profile).slice(0, 2000).replace(/[<>]/g, '');
+    const sanitizedGoal = String(goal).slice(0, 1000).replace(/[<>]/g, '');
+    const sanitizedCurrentLevel = currentLevel ? String(currentLevel).slice(0, 500).replace(/[<>]/g, '') : 'Not specified';
+
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
 You are an expert career counsellor and skill-development coach for MentorMe, a premium career guidance platform in India.
 A user has provided the following information:
-- Current Profile/Background: ${profile}
-- Career Goal: ${goal}
-- Current Level: ${currentLevel}
+- Current Profile/Background: ${sanitizedProfile}
+- Career Goal: ${sanitizedGoal}
+- Current Level: ${sanitizedCurrentLevel}
 
 Please generate a highly personalized, step-by-step skill development roadmap for them.
 Format the response in Markdown with the following sections:

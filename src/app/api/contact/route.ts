@@ -21,6 +21,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+
+    // Sanitize message to prevent XSS
+    const sanitizedMessage = message
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+
     const info = await transporter.sendMail({
       from: process.env.EMAIL_FROM,
       to: 'admin@mentormeright.in', // Sending to admin email
@@ -48,7 +61,7 @@ export async function POST(req: NextRequest) {
           
           <h3 style="color: #1B3A6B; margin-top: 20px;">Message:</h3>
           <div style="background-color: #f9f9f9; padding: 15px; border-radius: 4px; border-left: 4px solid #F0A500;">
-            <p style="white-space: pre-wrap; margin: 0;">${message}</p>
+            <p style="white-space: pre-wrap; margin: 0;">${sanitizedMessage}</p>
           </div>
         </div>
       `,

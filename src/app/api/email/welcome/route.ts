@@ -5,6 +5,12 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
+    // Validate environment variables
+    if (!process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error('SMTP environment variables missing');
+      return NextResponse.json({ error: 'Email service not configured' }, { status: 500 });
+    }
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
@@ -20,6 +26,17 @@ export async function POST(req: NextRequest) {
     if (!name || !email) {
       return NextResponse.json({ error: 'Missing name or email' }, { status: 400 });
     }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+    }
+
+    // Sanitize inputs to prevent XSS
+    const sanitizedName = String(name).slice(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const sanitizedEmail = String(email).slice(0, 255).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const sanitizedTempPassword = tempPassword ? String(tempPassword).slice(0, 100).replace(/</g, '&lt;').replace(/>/g, '&gt;') : null;
 
     const info = await transporter.sendMail({
       from: process.env.EMAIL_FROM,
@@ -43,17 +60,17 @@ export async function POST(req: NextRequest) {
 
               <!-- Body -->
               <div style="padding: 40px 32px;">
-                <h2 style="color: #1B3A6B; font-size: 22px; font-weight: 700; margin: 0 0 16px;">Welcome, ${name}! 🚀</h2>
+                <h2 style="color: #1B3A6B; font-size: 22px; font-weight: 700; margin: 0 0 16px;">Welcome, ${sanitizedName}! 🚀</h2>
                 <p style="color: #475569; font-size: 15px; line-height: 1.7; margin: 0 0 24px;">
-                  Your institution has enrolled you on the MentorMe Career Intelligence Platform. 
+                  Your institution has enrolled you on the MentorMe Career Intelligence Platform.
                   You can now take your personalised 90-question career assessment and receive an AI-powered report.
                 </p>
 
-                ${tempPassword ? `
+                ${sanitizedTempPassword ? `
                 <div style="background: #f1f5f9; border-left: 4px solid #F0A500; border-radius: 8px; padding: 20px; margin: 24px 0;">
                   <p style="color: #1B3A6B; font-weight: 700; font-size: 14px; margin: 0 0 8px;">YOUR LOGIN CREDENTIALS</p>
-                  <p style="color: #475569; font-size: 14px; margin: 4px 0;"><strong>Email:</strong> ${email}</p>
-                  <p style="color: #475569; font-size: 14px; margin: 4px 0;"><strong>Temporary Password:</strong> <code style="background:#e2e8f0; padding: 2px 8px; border-radius: 4px; font-family: monospace;">${tempPassword}</code></p>
+                  <p style="color: #475569; font-size: 14px; margin: 4px 0;"><strong>Email:</strong> ${sanitizedEmail}</p>
+                  <p style="color: #475569; font-size: 14px; margin: 4px 0;"><strong>Temporary Password:</strong> <code style="background:#e2e8f0; padding: 2px 8px; border-radius: 4px; font-family: monospace;">${sanitizedTempPassword}</code></p>
                   <p style="color: #94a3b8; font-size: 12px; margin: 12px 0 0;">⚠️ Please change your password after first login.</p>
                 </div>
                 ` : ''}

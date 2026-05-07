@@ -125,9 +125,15 @@ export function AiCornerChatbot() {
     }
   };
 
-  // Parse markdown-like bold text
+  // Parse markdown-like bold text with XSS protection
   const parseContent = (content: string) => {
-    return content.split(/(\*\*.*?\*\*)/g).map((part, i) => {
+    // Basic sanitization - remove script tags and dangerous attributes
+    const sanitized = content
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+      .replace(/on\w+="[^"]*"/g, '')
+      .replace(/on\w+='[^']*'/g, '');
+
+    return sanitized.split(/(\*\*.*?\*\*)/g).map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {
         return <strong key={i} className="font-black text-slate-900">{part.slice(2, -2)}</strong>;
       }

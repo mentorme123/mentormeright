@@ -23,6 +23,12 @@ type DBUser = {
   created_at: string;
 };
 
+// Sanitize text to prevent XSS
+const sanitizeText = (text: string | null) => {
+  if (!text) return '';
+  return String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+};
+
 export default function AdminDashboard() {
   const supabase = createClient();
   const [users, setUsers] = useState<DBUser[]>([]);
@@ -84,7 +90,14 @@ export default function AdminDashboard() {
     setIsExporting(true);
     setTimeout(() => {
       const headers = "ID,Name,Email,Role,JoinedDate\n";
-      const rows = users.map(u => `${u.id},${u.name || 'N/A'},${u.email},${u.role},${new Date(u.created_at).toLocaleDateString()}`).join("\n");
+      // Sanitize CSV data to prevent CSV injection
+      const sanitizeCsv = (value: string) => {
+        if (value.includes(',') || value.includes('\n') || value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@')) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+        return value;
+      };
+      const rows = users.map(u => `${sanitizeCsv(u.id)},${sanitizeCsv(u.name || 'N/A')},${sanitizeCsv(u.email)},${sanitizeCsv(u.role)},${sanitizeCsv(new Date(u.created_at).toLocaleDateString())}`).join("\n");
       const csvData = headers + rows;
 
       const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
@@ -205,10 +218,10 @@ export default function AdminDashboard() {
                     <UserCircle size={32} />
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-slate-800">{selectedUser.name || "Unnamed User"}</h3>
-                    <p className="text-slate-500">{selectedUser.email}</p>
+                    <h3 className="text-xl font-bold text-slate-800">{sanitizeText(selectedUser.name) || "Unnamed User"}</h3>
+                    <p className="text-slate-500">{sanitizeText(selectedUser.email)}</p>
                     <span className="inline-block mt-2 px-2 py-1 bg-slate-100 text-xs font-bold text-slate-600 rounded uppercase tracking-wider">
-                      Role: {selectedUser.role}
+                      Role: {sanitizeText(selectedUser.role)}
                     </span>
                   </div>
                 </div>
@@ -226,30 +239,30 @@ export default function AdminDashboard() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Phone</span>
-                      <span className="font-medium text-slate-700">{selectedUser.phone || 'Not provided'}</span>
+                      <span className="font-medium text-slate-700">{sanitizeText(selectedUser.phone) || 'Not provided'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Gender</span>
-                      <span className="font-medium text-slate-700">{selectedUser.gender || 'Not provided'}</span>
+                      <span className="font-medium text-slate-700">{sanitizeText(selectedUser.gender) || 'Not provided'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Location</span>
-                      <span className="font-medium text-slate-700">{selectedUser.state && selectedUser.country ? `${selectedUser.state}, ${selectedUser.country}` : 'Not provided'}</span>
+                      <span className="font-medium text-slate-700">{selectedUser.state && selectedUser.country ? `${sanitizeText(selectedUser.state)}, ${sanitizeText(selectedUser.country)}` : 'Not provided'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-500">Education</span>
-                      <span className="font-medium text-slate-700">{selectedUser.education_level || 'Not provided'}</span>
+                      <span className="font-medium text-slate-700">{sanitizeText(selectedUser.education_level) || 'Not provided'}</span>
                     </div>
                     {selectedUser.current_package && (
                       <div className="flex justify-between">
                         <span className="text-slate-500">Current CTC</span>
-                        <span className="font-medium text-slate-700">{selectedUser.current_package}</span>
+                        <span className="font-medium text-slate-700">{sanitizeText(selectedUser.current_package)}</span>
                       </div>
                     )}
                     {selectedUser.target_package && (
                       <div className="flex justify-between">
                         <span className="text-slate-500">Target CTC</span>
-                        <span className="font-medium text-slate-700">{selectedUser.target_package}</span>
+                        <span className="font-medium text-slate-700">{sanitizeText(selectedUser.target_package)}</span>
                       </div>
                     )}
                   </div>
@@ -403,19 +416,19 @@ export default function AdminDashboard() {
                        <td className="px-6 py-4 font-bold text-slate-800">
                          <div className="flex items-center gap-3">
                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
-                             {user.name ? user.name.charAt(0) : user.email.charAt(0)}
+                             {sanitizeText(user.name) ? sanitizeText(user.name).charAt(0) : sanitizeText(user.email).charAt(0)}
                            </div>
-                           {user.name || "N/A"}
+                           {sanitizeText(user.name) || "N/A"}
                          </div>
                        </td>
-                       <td className="px-6 py-4 text-slate-500 font-medium">{user.email}</td>
+                       <td className="px-6 py-4 text-slate-500 font-medium">{sanitizeText(user.email)}</td>
                        <td className="px-6 py-4">
                          <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${
                            user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
                            user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
                            'bg-purple-50 text-purple-700 border border-purple-100'
                          }`}>
-                           {user.role}
+                           {sanitizeText(user.role)}
                          </span>
                        </td>
                        <td className="px-6 py-4 text-slate-500 text-sm font-medium">

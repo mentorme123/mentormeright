@@ -59,9 +59,9 @@ export default function RegisterPage() {
         console.log("Confirmation required.");
         setSuccess(true);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Registration Error:", err);
-      setError(err.message || "Registration failed. Try again.");
+      setError(err instanceof Error ? err.message : "Registration failed. Try again.");
     } finally {
       setLoading(false);
     }
@@ -79,8 +79,8 @@ export default function RegisterPage() {
         },
       });
       if (error) throw error;
-    } catch (err: any) {
-      setError(err.message || "Google Signup Failed");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Google Signup Failed");
       setLoading(false);
     }
   };

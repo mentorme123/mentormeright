@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
       key_secret: process.env.RAZORPAY_KEY_SECRET || '',
     });
 
-    if (!process.env.RAZORPAY_KEY_ID) {
-      console.error('RAZORPAY_KEY_ID is missing');
+    if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+      console.error('RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET is missing');
       return NextResponse.json({ error: 'Payment gateway not configured' }, { status: 500 });
     }
 
@@ -28,6 +28,12 @@ export async function POST(req: NextRequest) {
 
     if (!slotId || !counsellorId || !amount) {
       return NextResponse.json({ error: 'Missing required fields: slotId, counsellorId, amount' }, { status: 400 });
+    }
+
+    // Validate amount is a positive number within reasonable limits
+    const amountNum = Number(amount);
+    if (isNaN(amountNum) || amountNum <= 0 || amountNum > 100000) {
+      return NextResponse.json({ error: 'Invalid amount. Must be a positive number between 1 and 100,000.' }, { status: 400 });
     }
 
     // Verify slot is still available
@@ -80,7 +86,6 @@ export async function POST(req: NextRequest) {
       bookingId: booking.id,
       amount: order.amount,
       currency: order.currency,
-      key: process.env.RAZORPAY_KEY_ID,
     });
 
   } catch (error: unknown) {

@@ -11,14 +11,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing event_type' }, { status: 400 });
     }
 
+    // Validate environment variables
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error('Supabase environment variables missing');
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
+
     const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY
     );
+
+    // Sanitize path to prevent injection
+    const sanitizedPath = path ? String(path).slice(0, 500) : null;
 
     const { error } = await supabase.from('analytics_events').insert({
       event_type,
-      path: path || null,
+      path: sanitizedPath,
     });
 
     if (error) {

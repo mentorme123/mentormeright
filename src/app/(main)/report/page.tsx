@@ -107,19 +107,19 @@ export default function ReportPage() {
 
   return (
     <div className="bg-[#F1F5F9] min-h-screen py-8 print:bg-white print:p-0">
-      <style dangerouslySetInnerHTML={{__html: `
+      <style>{`
         @media print {
           @page { size: A4; margin: 0; }
           body { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: white !important; }
-          nav, footer, .print-hidden, #ai-chatbot-root, [data-print-ignore="true"] { 
-            display: none !important; 
+          nav, footer, .print-hidden, #ai-chatbot-root, [data-print-ignore="true"] {
+            display: none !important;
             visibility: hidden !important;
             opacity: 0 !important;
             pointer-events: none !important;
           }
           .A4Page { margin: 0 !important; shadow: none !important; }
         }
-      `}} />
+      `}</style>
 
       {/* Floating Web Print Controls */}
       <div className="fixed bottom-8 right-8 z-50 print:hidden flex flex-col gap-4">

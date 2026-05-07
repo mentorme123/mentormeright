@@ -6,6 +6,17 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
+    // Validate environment variables
+    if (!process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error('SMTP environment variables missing');
+      return NextResponse.json({ error: 'Email service not configured' }, { status: 500 });
+    }
+
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error('Supabase environment variables missing');
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
@@ -17,12 +28,17 @@ export async function POST(req: NextRequest) {
     });
 
     const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
       { auth: { autoRefreshToken: false, persistSession: false } }
     );
 
     const { bookingId, userId, counselorId, slotId } = await req.json();
+
+    // Validate required fields
+    if (!bookingId || !userId || !counselorId || !slotId) {
+      return NextResponse.json({ error: 'Missing required fields: bookingId, userId, counselorId, slotId' }, { status: 400 });
+    }
 
     // Fetch all details needed for the confirmation email
     const [userRes, counselorRes, slotRes] = await Promise.all([
@@ -35,9 +51,22 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
+    if (counselorRes.error || !counselorRes.data) {
+      return NextResponse.json({ error: 'Counselor not found' }, { status: 404 });
+    }
+
+    if (slotRes.error || !slotRes.data) {
+      return NextResponse.json({ error: 'Slot not found' }, { status: 404 });
+    }
+
     const user = userRes.data;
     const counselor = counselorRes.data;
     const slot = slotRes.data;
+
+    // Sanitize user inputs to prevent XSS
+    const sanitizedName = String(user.name || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const sanitizedCounselorName = String(counselor.name || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    const sanitizedCounselorEmail = String(counselor.email || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
     const sessionDate = slot
       ? new Date(`${slot.date}T${slot.start_time}`).toLocaleString('en-IN', {
@@ -63,15 +92,15 @@ VERSION:2.0
 PRODID:-//MentorMe//Booking Calendar//EN
 CALSCALE:GREGORIAN
 BEGIN:VEVENT
-SUMMARY:MentorMe Counselling: ${user.name} & ${counselor?.name || 'Counselor'}
+SUMMARY:MentorMe Counselling: ${sanitizedName} & ${sanitizedCounselorName}
 DTSTART:${formatIcsDate(startDate)}
 DTEND:${formatIcsDate(endDate)}
 LOCATION:${joinUrl}
 DESCRIPTION:Career Counselling Session via MentorMe. Join using the location link: ${joinUrl}
 STATUS:CONFIRMED
 ORGANIZER;CN=MentorMe:mailto:admin@mentormeright.in
-ATTENDEE;RSVP=TRUE;CN=${user.name}:mailto:${user.email}
-ATTENDEE;RSVP=TRUE;CN=${counselor?.name || 'Counselor'}:mailto:${counselor?.email || 'admin@mentormeright.in'}
+ATTENDEE;RSVP=TRUE;CN=${sanitizedName}:mailto:${user.email}
+ATTENDEE;RSVP=TRUE;CN=${sanitizedCounselorName}:mailto:${sanitizedCounselorEmail}
 END:VEVENT
 END:VCALENDAR`;
     }
@@ -111,7 +140,7 @@ END:VCALENDAR`;
                     <tr><td colspan="2" style="border-top: 1px solid #e2e8f0; padding: 0;"></td></tr>
                     <tr>
                       <td style="color: #94a3b8; font-size: 13px; font-weight: 600; padding: 8px 0; text-transform: uppercase; letter-spacing: 0.5px;">${isCounselor ? 'Student' : 'Counselor'}</td>
-                      <td style="color: #1e293b; font-size: 13px; font-weight: 700; text-align: right;">${isCounselor ? user.name : (counselor?.name || 'Counselor')}</td>
+                      <td style="color: #1e293b; font-size: 13px; font-weight: 700; text-align: right;">${isCounselor ? sanitizedName : sanitizedCounselorName}</td>
                     </tr>
                     <tr><td colspan="2" style="border-top: 1px solid #e2e8f0; padding: 0;"></td></tr>
                     <tr>
@@ -154,7 +183,7 @@ END:VCALENDAR`;
       from: process.env.EMAIL_FROM,
       to: user.email,
       subject: '✅ MentorMe Session Confirmed',
-      html: emailHtml(user.name, false),
+      html: emailHtml(sanitizedName, false),
       attachments: icsContent ? [{
         filename: 'mentorme-session.ics',
         content: icsContent,
@@ -168,7 +197,7 @@ END:VCALENDAR`;
         from: process.env.EMAIL_FROM,
         to: counselor.email,
         subject: '📅 New Student Booking: MentorMe',
-        html: emailHtml(counselor.name, true),
+        html: emailHtml(sanitizedCounselorName, true),
         attachments: icsContent ? [{
           filename: 'mentorme-session.ics',
           content: icsContent,

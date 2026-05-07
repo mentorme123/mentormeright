@@ -4,6 +4,11 @@ import nodemailer from "nodemailer";
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
+// Validate GEMINI_API_KEY exists
+if (!process.env.GEMINI_API_KEY) {
+  console.error('GEMINI_API_KEY is missing');
+}
+
 const SYSTEM_PROMPT = `You are "AI Corner", the dedicated AI agent and receptionist for MentorMe Career Intelligence and Training Pvt. Ltd. (mentormeright.com).
 
 ## YOUR PERSONALITY
@@ -135,6 +140,11 @@ function extractSuggestions(text: string): string[] {
 export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
+
+    // Validate messages array
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      return NextResponse.json({ error: 'Invalid messages array' }, { status: 400 });
+    }
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 

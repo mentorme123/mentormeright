@@ -27,8 +27,8 @@ export default function LoginPage() {
         },
       });
       if (error) throw error;
-    } catch (err: any) {
-      setError(err.message || "Google Login Failed");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Google Login Failed");
       setLoading(false);
     }
   };
@@ -81,9 +81,9 @@ export default function LoginPage() {
       console.log("Authentication successful. Handing over to Route Director...");
       router.push("/auth/route-director");
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Login Error:", err);
-      setError(err.message || "Login failed. Check your credentials.");
+      setError(err instanceof Error ? err.message : "Login failed. Check your credentials.");
       await supabase.auth.signOut();
     } finally {
       setLoading(false);
@@ -109,10 +109,10 @@ export default function LoginPage() {
         <div className="p-8">
           {/* Simple Tab Switcher */}
           <div className="flex bg-slate-100 p-1 rounded-xl mb-8 border border-slate-200">
-            {['student', 'institution', 'counselor', 'admin'].map((tab) => (
+            {(['student', 'institution', 'counselor', 'admin'] as const).map((tab) => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab as any)}
+                onClick={() => setActiveTab(tab)}
                 className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${activeTab === tab ? 'bg-white shadow-md text-brand-blue' : 'text-slate-500'}`}
               >
                 {tab.toUpperCase()}

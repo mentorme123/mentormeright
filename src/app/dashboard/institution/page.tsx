@@ -18,8 +18,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Student = any;
+interface Student {
+  id: string;
+  name: string | null;
+  email: string;
+  education_level: string | null;
+  role: string;
+  assessment_results?: Array<{ id: string }>;
+}
 
 export default function InstitutionDashboard() {
   const supabase = createClient();
@@ -28,7 +34,7 @@ export default function InstitutionDashboard() {
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
   const [isExporting, setIsExporting] = useState(false);
-  
+
   const [students, setStudents] = useState<Student[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
@@ -62,11 +68,15 @@ export default function InstitutionDashboard() {
       // Fetch advanced B2B analytics via Postgres RPCs
       try {
         const { data: misData } = await supabase.rpc('get_cohort_misalignment_rate', { inst_name: 'Global School System' });
-        if (misData) setMisalignmentData(misData as any);
+        if (misData && typeof misData === 'object' && 'misaligned_percentage' in misData) {
+          setMisalignmentData(misData as { misaligned_percentage: number });
+        }
 
         const { data: gapData } = await supabase.rpc('get_cohort_reality_gap', { inst_name: 'Global School System' });
-        if (gapData) setRealityGapData(gapData as any);
-      } catch (err) {
+        if (gapData && typeof gapData === 'object' && 'danger_zone_percentage' in gapData) {
+          setRealityGapData(gapData as { danger_zone_percentage: number });
+        }
+      } catch (err: unknown) {
         console.error("Failed to fetch advanced metrics:", err);
       }
 
@@ -102,9 +112,9 @@ export default function InstitutionDashboard() {
       skipEmptyLines: true,
       complete: async (results) => {
         try {
-          const rows = results.data as any[];
+          const rows = results.data as Array<{ Name: string; Email: string; Grade: string }>;
           if (rows.length === 0) throw new Error("The CSV file is empty.");
-          
+
           const response = await fetch('/api/bulk-import', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -112,13 +122,13 @@ export default function InstitutionDashboard() {
           });
 
           if (!response.ok) throw new Error("Failed to provision accounts.");
-          
+
           setStudentsImported(rows.length);
           setUploadStatus('success');
           // Refresh list
           window.location.reload();
-        } catch (err: any) {
-          setErrorMessage(err.message);
+        } catch (err: unknown) {
+          setErrorMessage(err instanceof Error ? err.message : "An error occurred");
           setUploadStatus('error');
         }
       }

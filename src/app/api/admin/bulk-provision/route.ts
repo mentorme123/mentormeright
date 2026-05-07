@@ -3,6 +3,12 @@ import { createClient } from '@supabase/supabase-js';
 
 // This route uses the Service Role key to bypass RLS and provision users server-side
 // It must NEVER be exposed to the client
+
+// Validate environment variables
+if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  console.error('Supabase environment variables missing');
+}
+
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
@@ -55,6 +61,9 @@ export async function POST(req: NextRequest) {
 
     const tempPassword = `MentorMe@${Math.floor(1000 + Math.random() * 9000)}`;
 
+    // Email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     for (const student of students) {
       const email = student.Email?.trim().toLowerCase();
       const name = student.Name?.trim();
@@ -65,13 +74,23 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
+      // Validate email format
+      if (!emailRegex.test(email)) {
+        results.failed++;
+        results.errors.push(`Invalid email format: ${email}`);
+        continue;
+      }
+
+      // Sanitize name
+      const sanitizedName = String(name).slice(0, 100).replace(/[<>]/g, '');
+
       try {
         // Create auth user via Admin API (bypasses email confirmation)
         const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
           email,
           password: tempPassword,
           email_confirm: true, // Auto-confirm email
-          user_metadata: { full_name: name },
+          user_metadata: { full_name: sanitizedName },
         });
 
         if (createError) {
@@ -88,15 +107,21 @@ export async function POST(req: NextRequest) {
           // but we also update it with the name explicitly
           await supabaseAdmin
             .from('users')
-            .update({ name })
+            .update({ name: sanitizedName })
             .eq('id', newUser.user.id);
 
-          // Send welcome email with temp password via Resend
-          await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/welcome`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, tempPassword }),
-          });
+          // Validate SITE_URL before making fetch request
+          const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+          if (!siteUrl) {
+            console.error('NEXT_PUBLIC_SITE_URL is missing');
+          } else {
+            // Send welcome email with temp password via Resend
+            await fetch(`${siteUrl}/api/email/welcome`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: sanitizedName, email, tempPassword }),
+            }).catch(err => console.error('Failed to send welcome email:', err));
+          }
         }
 
         results.success++;
@@ -109,7 +134,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       message: `Provisioning complete.`,
       results,
-      tempPasswordUsed: tempPassword,
       note: 'Students have been emailed their login credentials. Ask them to change passwords on first login.',
     });
 

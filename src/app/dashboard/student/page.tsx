@@ -39,24 +39,62 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ParameterScores } from "@/lib/scoring";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type UserProfile = any;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ReportData = any;
+interface UserProfile {
+  id: string;
+  email: string;
+  name: string | null;
+  role: string;
+  phone: string | null;
+  gender: string | null;
+  country: string | null;
+  state: string | null;
+  education_level: string | null;
+  current_package: string | null;
+  target_package: string | null;
+  target_career: string | null;
+  audience_type: string | null;
+  profile_image: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+interface ReportData {
+  executiveSummary?: string;
+  strengths?: string[];
+  top_strengths?: string[];
+  keyStrengths?: string[];
+  summary?: {
+    strengths?: string[];
+    areas_for_development?: string[];
+  };
+  areas_for_development?: string[];
+  weaknesses?: string[];
+  areasForImprovement?: string[];
+  careerMatches?: Array<{
+    title: string;
+    industry: string;
+    matchScore?: string;
+  }>;
+  [key: string]: unknown;
+}
 
 export default function StudentDashboard() {
   const router = useRouter();
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [authUser, setAuthUser] = useState<any>(null);
-  const [profile, setProfile] = useState<UserProfile>(null);
-  const [reportData, setReportData] = useState<ReportData>(null);
+  const [authUser, setAuthUser] = useState<{ id: string; email: string; user_metadata?: { full_name?: string } } | null>(null);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [reportData, setReportData] = useState<ReportData | null>(null);
   const [assessmentScores, setAssessmentScores] = useState<ParameterScores | null>(null);
   const [assessmentStatus, setAssessmentStatus] = useState<'not_started' | 'completed'>('not_started');
   const [showOnboarding, setShowOnboarding] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [bookings, setBookings] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<Array<{
+    id: string;
+    created_at: string;
+    status: string;
+    jitsi_link?: string | null;
+    counsellors: { name: string; specialization: string | null };
+  }>>([]);
   const [bookingsLoading, setBookingsLoading] = useState(true);
 
   // Onboarding form state
@@ -77,7 +115,11 @@ export default function StudentDashboard() {
         router.push("/login");
         return;
       }
-      setAuthUser(user);
+      setAuthUser({
+        id: user.id,
+        email: user.email || '',
+        user_metadata: user.user_metadata as { full_name?: string }
+      });
 
       // Fetch profile from users table
       const { data: userProfile } = await supabase
@@ -150,7 +192,7 @@ export default function StudentDashboard() {
         target_career: formTargetCareer || null,
         updated_at: new Date().toISOString()
       })
-      .eq('id', authUser.id);
+      .eq('id', authUser?.id || '');
 
     if (error) {
       alert("Failed to save profile. Please try again.");
@@ -160,7 +202,7 @@ export default function StudentDashboard() {
       const { data: updatedProfile } = await supabase
         .from('users')
         .select('*')
-        .eq('id', authUser.id)
+        .eq('id', authUser?.id || '')
         .single();
       setProfile(updatedProfile);
       setShowOnboarding(false);
@@ -171,8 +213,8 @@ export default function StudentDashboard() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: authUser.user_metadata?.full_name || authUser.email.split('@')[0],
-            email: authUser.email
+            name: authUser?.user_metadata?.full_name || authUser?.email?.split('@')[0] || 'User',
+            email: authUser?.email || ''
           })
         });
       } catch (e) {
@@ -826,11 +868,17 @@ export default function StudentDashboard() {
                         </p>
                       </div>
 
-                      <a href={booking.jitsi_link} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                        <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-5 px-6 rounded-xl shadow-lg shadow-brand-blue/10 transition-all hover:scale-105">
-                          Join Call <Video className="ml-2" size={16} />
+                      {booking.jitsi_link ? (
+                        <a href={booking.jitsi_link} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                          <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-5 px-6 rounded-xl shadow-lg shadow-brand-blue/10 transition-all hover:scale-105">
+                            Join Call <Video className="ml-2" size={16} />
+                          </Button>
+                        </a>
+                      ) : (
+                        <Button disabled className="w-full bg-slate-300 text-slate-500 font-bold py-5 px-6 rounded-xl">
+                          Link Pending
                         </Button>
-                      </a>
+                      )}
                     </div>
                   ))}
                 </div>

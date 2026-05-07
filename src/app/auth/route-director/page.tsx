@@ -25,7 +25,7 @@ export default function RouteDirector() {
         // 1. Fetch/Self-Heal Profile
         let { data: profile, error: profileError } = await supabase
           .from('users')
-          .select('*')
+          .select('role')
           .eq('id', user.id)
           .maybeSingle();
 

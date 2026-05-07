@@ -7,8 +7,8 @@ export function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Show on all pages as per recent requirements
-  // if (pathname === "/") return null;
+  // Hide on homepage — no need for a back button on the landing page
+  if (pathname === "/") return null;
 
   const handleBack = () => {
     // Fire-and-forget analytics

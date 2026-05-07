@@ -261,7 +261,7 @@ export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const chat = model.startChat({
       history: [
@@ -346,10 +346,11 @@ export async function POST(req: NextRequest) {
     const suggestions = extractSuggestions(cleanReply);
 
     return NextResponse.json({ reply: cleanReply, suggestions });
-  } catch (error) {
-    console.error("Chat API error:", error);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error("Chat API error:", message);
     return NextResponse.json(
-      { reply: "I apologize, I'm having a momentary issue. Please try again later.", suggestions: [] },
+      { reply: `I'm having a momentary difficulty (${message}). Please try again or WhatsApp us at +91-9392707596 📲`, suggestions: [] },
       { status: 200 }
     );
   }

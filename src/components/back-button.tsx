@@ -7,8 +7,8 @@ export function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Don't show on the homepage or dashboard roots
-  if (pathname === "/") return null;
+  // Show on all pages as per recent requirements
+  // if (pathname === "/") return null;
 
   const handleBack = () => {
     // Fire-and-forget analytics
@@ -41,7 +41,7 @@ export function BackButtonCompact() {
   const router = useRouter();
   const pathname = usePathname();
 
-  if (pathname === "/") return null;
+  // if (pathname === "/") return null;
 
   const handleBack = () => {
     // Fire-and-forget analytics

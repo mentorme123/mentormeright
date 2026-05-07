@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", poppins.variable)}>
       <body className="antialiased min-h-screen flex flex-col font-sans">
-        <BackButton />
+        {/* BackButton is handled in sub-layouts to allow for variant control */}
         {children}
 
         {/* WhatsApp Floating Button */}

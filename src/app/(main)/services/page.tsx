@@ -18,6 +18,39 @@ export default function ServicesPage() {
     }
   };
 
+  const skillPrograms = {
+    schools: [
+      { img: "/images/school.png", title: "Vedic Maths Training Program", highlights: "Fast-Track Mental Math | No Tools Needed | Expert-Led" },
+      { img: "/images/school.png", title: "AI Training Program", highlights: "Hands-on projects | Generative AI ML & NLP | Ethics & responsible AI" },
+      { img: "/images/school.png", title: "Robotics Training Program", highlights: "Hands-on training | No lab investment | Robotics Expo" }
+    ],
+    colleges: [
+      { img: "/images/school.png", title: "Machine Learning Training", highlights: "Advanced ML training for engineering students | Practical projects" },
+      { img: "/images/school.png", title: "Deep Learning Program", highlights: "Advanced AI neural networks training program | Certification" },
+      { img: "/images/school.png", title: "Communication Skills", highlights: "Essential soft skills | Corporate communication | Interview Prep" }
+    ],
+    working_professionals: [
+      { img: "/images/professional.png", title: "Digital Marketing", highlights: "Comprehensive modern digital marketing strategies | SEO & SEM" },
+      { img: "/images/professional.png", title: "Python Full Stack", highlights: "End-to-end web development with Python | Hands-on coding" },
+      { img: "/images/professional.png", title: "SAP FICO / Power BI", highlights: "Financial Accounting and Controlling | Data analytics mastery" }
+    ]
+  };
+
+  const guidancePrograms = {
+    institutions: [
+      { title: "6th-7th Class Students", desc: "Discover strengths early! MentorMe guides young minds toward the right academic & career path." },
+      { title: "8th-10th Class Students", desc: "Critical phase? We help pick subjects & careers with science-backed assessments & expert advice." },
+      { title: "11th-12th Class Students", desc: "Decide your future confidently — exams, colleges, careers. MentorMe's guidance ensures no regrets." },
+      { title: "College Students", desc: "Have you lost in career options? AI + mentors help you strategize, skill up, and land dream roles." },
+    ],
+    professionals: [
+      { title: "Career Transition", desc: "Looking to switch fields? We analyze your transferable skills and guide your successful transition." },
+      { title: "Upskilling Roadmap", desc: "Identify the exact skills and certifications needed to secure that promotion or pay raise." },
+      { title: "Resume & Interview Prep", desc: "Expert optimization of your professional profile and mock interviews with industry leaders." },
+      { title: "Executive Coaching", desc: "1-on-1 mentorship for mid-to-senior professionals aiming for leadership positions." },
+    ]
+  };
+
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-slate-50">
       {/* Header */}
@@ -71,23 +104,24 @@ export default function ServicesPage() {
             Unlock your full potential with our scientifically validated career assessments. Whether you're a student, a working professional, or someone exploring a career change, our tools provide deep insights into your strengths, preferences, and ideal career paths.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-8 mt-12">
+          <div className="grid md:grid-cols-4 gap-6 mt-12">
             {[
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 11th-12th grad..." },
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 8th-10th grad..." },
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 6th-7th grad..." }
+              { img: "/images/school.png", title: "Psychometric Assessment Test for 11th-12th grade students" },
+              { img: "/images/school.png", title: "Psychometric Assessment Test for 8th-10th grade students" },
+              { img: "/images/school.png", title: "Psychometric Assessment Test for 6th-7th grade students" },
+              { img: "/images/professional.png", title: "Psychometric Assessment Test for College & Professionals" }
             ].map((item, i) => (
-              <div key={i} className="bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all">
-                <div className="h-48 relative bg-slate-200">
+              <div key={i} className="bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
+                <div className="h-40 relative bg-slate-200">
                   <Image src={item.img} alt={item.title} fill className="object-cover" />
                 </div>
-                <div className="p-6 space-y-6">
-                  <h3 className="font-bold text-lg line-clamp-2">{item.title}</h3>
-                  <div className="flex gap-4">
-                    <Link href="/assessment" className="flex-1">
+                <div className="p-5 flex-1 flex flex-col space-y-4">
+                  <h3 className="font-bold text-md flex-1">{item.title}</h3>
+                  <div className="flex flex-col gap-2 mt-auto">
+                    <Link href="/assessment">
                       <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50">Know More</Button>
                     </Link>
-                    <Link href="/contact" className="flex-1">
+                    <Link href="/contact">
                       <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Contact Us</Button>
                     </Link>
                   </div>
@@ -120,16 +154,11 @@ export default function ServicesPage() {
             </div>
 
             <div className="grid md:grid-cols-4 gap-6">
-              {[
-                { title: "6th-7th Class Students", desc: "Discover strengths early! MentorMe guides young minds toward the right academic & career path." },
-                { title: "8th-10th Class Students", desc: "Critical phase? We help pick subjects & careers with science-backed assessments & expert advice." },
-                { title: "11th-12th Class Students", desc: "Decide your future confidently — exams, colleges, careers. MentorMe's guidance ensures no regrets." },
-                { title: "College Students", desc: "Have you lost in career options? AI + mentors help you strategize, skill up, and land dream roles." },
-              ].map((item, i) => (
+              {guidancePrograms[guidanceTab as keyof typeof guidancePrograms].map((item, i) => (
                 <div key={i} className="bg-slate-50 rounded-2xl p-6 border flex flex-col h-full hover:shadow-md transition-all">
                   <h3 className="text-xl font-bold text-blue-600 mb-4">{item.title}</h3>
                   <p className="text-slate-600 text-sm leading-relaxed mb-8 flex-1">{item.desc}</p>
-                  <Link href="/contact">
+                  <Link href="/contact" className="mt-auto">
                     <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-full">View Program Details</Button>
                   </Link>
                 </div>
@@ -145,26 +174,23 @@ export default function ServicesPage() {
           <h2 className="text-4xl font-bold mb-8">Skill Training</h2>
           
           <div className="flex flex-wrap gap-4 mb-12">
-            {["Schools", "Colleges", "Working Professionals"].map((tab) => {
-              const tabId = tab.toLowerCase().replace(" ", "-");
-              return (
-                <button 
-                  key={tabId}
-                  onClick={() => setSkillTab(tabId)}
-                  className={`px-8 py-3 rounded-full border transition-all ${skillTab === tabId ? "border-blue-600 text-blue-600 bg-blue-50" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}
-                >
-                  For {tab}
-                </button>
-              );
-            })}
+            {[
+              { id: "schools", label: "For Schools" },
+              { id: "colleges", label: "For Colleges" },
+              { id: "working_professionals", label: "For Working Professionals" }
+            ].map((tab) => (
+              <button 
+                key={tab.id}
+                onClick={() => setSkillTab(tab.id)}
+                className={`px-8 py-3 rounded-full border transition-all ${skillTab === tab.id ? "border-blue-600 text-blue-600 bg-blue-50" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { img: "/images/school.png", title: "Vedic Maths Training Program", highlights: "Fast-Track Mental Math | No Tools Needed | Expert-Led..." },
-              { img: "/images/school.png", title: "AI Training Program", highlights: "Hands-on projects | Generative AI ML & NLP | Ethics & r..." },
-              { img: "/images/school.png", title: "Robotics Training Program", highlights: "Hands-on training | No lab investment | Robotics Expo..." }
-            ].map((item, i) => (
+            {skillPrograms[skillTab as keyof typeof skillPrograms].map((item, i) => (
               <div key={i} className="bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
                 <div className="h-56 relative bg-slate-200">
                   <Image src={item.img} alt={item.title} fill className="object-cover" />
@@ -190,7 +216,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Study Abroad Section (Placeholder link matching Our Services Icons) */}
+      {/* Study Abroad Section */}
       <section id="abroad" className="py-20 px-4 bg-brand-blue text-white text-center">
         <div className="max-w-4xl mx-auto space-y-8">
           <Globe2 size={64} className="mx-auto text-brand-orange" />

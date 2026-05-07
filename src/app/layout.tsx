@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
 import { BackButton } from "@/components/back-button";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { QueryProvider } from "@/components/providers/query-provider";
+import { GoogleAnalytics } from "@/components/analytics";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -24,9 +26,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-sans", poppins.variable)}>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="MentorMe" />
+        <meta name="theme-color" content="#1B3A6B" />
+      </head>
       <body className="antialiased min-h-screen flex flex-col font-sans">
         {/* BackButton is handled in sub-layouts to allow for variant control */}
-        {children}
+        <script dangerouslySetInnerHTML={{ __html: `
+          if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('/sw.js').catch(() => {});
+            });
+          }
+        `}} />
+        <GoogleAnalytics />
+        <QueryProvider>
+          {children}
+        </QueryProvider>
 
         {/* WhatsApp Floating Button */}
         <a

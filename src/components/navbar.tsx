@@ -16,6 +16,13 @@ export function Navbar() {
     { href: "/about", label: "About Us" },
     { href: "/career-library", label: "Career Library" },
     { href: "/ai-corner", label: "AI Corner" },
+    { href: "/career-simulator", label: "Career Simulator" },
+    { href: "/exam-predictor", label: "Exam Predictor" },
+    { href: "/scholarships", label: "Scholarships" },
+    { href: "/alumni", label: "Alumni Network" },
+    { href: "/community", label: "Community" },
+    { href: "/gamify", label: "Gamify" },
+    { href: "/roadmap", label: "Roadmap" },
     { href: "/counsellors", label: "Counsellors" },
     { href: "/study-abroad", label: "Study Abroad" },
     { href: "/blogs", label: "Blogs" },
@@ -57,12 +64,17 @@ export function Navbar() {
               <div className="absolute top-[60px] left-1/2 -translate-x-1/2 w-56 bg-background border border-border rounded-xl shadow-lg py-2 flex flex-col gap-1 z-50">
                 <Link href="/career-library" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Career Library</Link>
                 <Link href="/ai-corner" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors flex items-center justify-between">
-                  AI Corner 
+                  AI Corner
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-orange opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-orange"></span>
                   </span>
                 </Link>
+                <Link href="/career-simulator" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Career Simulator</Link>
+                <Link href="/exam-predictor" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Exam Predictor</Link>
+                <Link href="/scholarships" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Scholarships</Link>
+                <Link href="/alumni" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Alumni Network</Link>
+                <Link href="/community" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Community</Link>
                 <Link href="/counsellors" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Counsellors</Link>
                 <Link href="/study-abroad" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Study Abroad</Link>
               </div>

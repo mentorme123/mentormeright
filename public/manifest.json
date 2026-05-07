@@ -1,0 +1,59 @@
+{
+  "name": "MentorMe - Career Intelligence Platform",
+  "short_name": "MentorMe",
+  "description": "AI-powered career guidance, psychometric assessments, and expert counseling for students and professionals.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1B3A6B",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "screenshots": [
+    {
+      "src": "/logo.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Career Assessment",
+      "short_name": "Assessment",
+      "description": "Take the free career assessment",
+      "url": "/assessment",
+      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "AI Chatbot",
+      "short_name": "AI Corner",
+      "description": "Chat with AI Career Counselor",
+      "url": "/ai-corner",
+      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Expert Counseling",
+      "short_name": "Counselors",
+      "description": "Book 1-on-1 expert sessions",
+      "url": "/counsellors",
+      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

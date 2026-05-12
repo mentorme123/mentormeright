@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
+import { fetchAllUsers } from "./actions";
 
 // Types
 type DBUser = {
@@ -30,7 +30,6 @@ const sanitizeText = (text: string | null) => {
 };
 
 export default function AdminDashboard() {
-  const supabase = createClient();
   const [users, setUsers] = useState<DBUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
@@ -47,12 +46,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function fetchDashboardData() {
       try {
-        const { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .order('created_at', { ascending: false });
-          
-        if (error) throw error;
+        const data = await fetchAllUsers();
         if (data) setUsers(data);
         
         // Show tour if this is their first time seeing the dashboard
@@ -69,7 +63,7 @@ export default function AdminDashboard() {
     }
     
     fetchDashboardData();
-  }, [supabase]);
+  }, []);
 
   // Derived Stats
   const totalStudents = users.filter(u => u.role === 'individual').length;

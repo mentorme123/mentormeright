@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { X } from "lucide-react";
+import { syncUserProfile } from "./actions";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -50,29 +51,8 @@ export default function LoginPage() {
 
       console.log("Auth success, checking profile...");
 
-      // 1. Get or Create Profile
-      let { data: userProfile, error: profileError } = await supabase
-        .from('users')
-        .select('role')
-        .eq('id', data.user.id)
-        .maybeSingle();
-
-      if (!userProfile) {
-        console.log("Profile missing, creating fallback...");
-        const { data: newProfile, error: createError } = await supabase
-          .from('users')
-          .insert([{ 
-            id: data.user.id, 
-            email: data.user.email, 
-            name: data.user.user_metadata?.full_name || email.split('@')[0], 
-            role: 'individual' 
-          }])
-          .select('role')
-          .single();
-        
-        if (createError) throw createError;
-        userProfile = newProfile;
-      }
+      // 1. Get or Create Profile securely bypassing RLS
+      const userProfile = await syncUserProfile(data.user);
 
       const userRole = userProfile.role;
       console.log("User Role:", userRole, "Active Tab:", activeTab);

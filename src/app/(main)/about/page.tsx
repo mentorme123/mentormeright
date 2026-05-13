@@ -8,15 +8,21 @@ export default function AboutPage() {
   const leadership = [
     {
       name: "Vijay Kiran Agastya",
-      role: "Founder & Managing Director",
+      role: "Co-Founder & Managing Director",
       desc: "Ex-Deloitte Vice President | Trainer | Leadership Coach",
-      image: "/images/vijay.jpg"
+      image: "/images/vijay.png"
     },
     {
       name: "Sirisha Kode",
-      role: "Chief Operating Officer",
-      desc: "Finance Professional | Corporate Trainer",
-      image: "/images/sirisha.jpg"
+      role: "Co-Founder & COO",
+      desc: "Ex-Ernst & Young | Corporate Trainer | Women Leader",
+      image: "/images/sirisha.png"
+    },
+    {
+      name: "Santhi Vedula",
+      role: "Advisor - Institutional Relationships",
+      desc: "Senior Academicician | Author | Research Scholar",
+      image: "/images/santhi.png"
     }
   ];
   // ... (skipping to the render part in the next chunk)
@@ -105,7 +111,7 @@ export default function AboutPage() {
             <p className="text-lg text-muted-foreground mt-4">The visionaries behind MentorMe Right.</p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {leadership.map((leader, i) => (
               <motion.div 
                 key={i}

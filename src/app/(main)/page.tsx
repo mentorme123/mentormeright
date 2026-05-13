@@ -217,6 +217,88 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Our Recent Program Partners Section */}
+      <section className="py-20 px-4 bg-brand-blue text-white overflow-hidden">
+        <div className="max-w-6xl mx-auto space-y-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="space-y-2"
+          >
+            <h2 className="text-4xl font-bold text-white">Our Recent Program Partners</h2>
+            <p className="text-white/80 text-lg">These are some of our Prestigious Clients</p>
+          </motion.div>
+
+          {/* Scrolling Carousel */}
+          <div className="relative overflow-hidden">
+            {/* Left fade */}
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-brand-blue to-transparent z-10 pointer-events-none" />
+            {/* Right fade */}
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-brand-blue to-transparent z-10 pointer-events-none" />
+
+            <div className="flex gap-6 partners-scroll">
+              {[
+                { name: "TSWRDC Nalgonda", logo: "/images/partners/logo1.png" },
+                { name: "Pragati Mahavidyalaya", logo: "/images/partners/logo2.png" },
+                { name: "Keshav Memorial", logo: "/images/partners/logo3.png" },
+                { name: "Fiji School", logo: "/images/partners/logo4.png" },
+                { name: "St. Joseph's College", logo: "/images/partners/logo1.png" },
+                { name: "Howard Park International", logo: "/images/partners/logo2.png" },
+                { name: "Narayana Group", logo: "/images/partners/logo3.png" },
+                { name: "Sri Chaitanya", logo: "/images/partners/logo4.png" },
+                { name: "Delhi Public School", logo: "/images/partners/logo1.png" },
+                { name: "Kendriya Vidyalaya", logo: "/images/partners/logo2.png" },
+                // Duplicate for seamless loop
+                { name: "TSWRDC Nalgonda", logo: "/images/partners/logo1.png" },
+                { name: "Pragati Mahavidyalaya", logo: "/images/partners/logo2.png" },
+                { name: "Keshav Memorial", logo: "/images/partners/logo3.png" },
+                { name: "Fiji School", logo: "/images/partners/logo4.png" },
+                { name: "St. Joseph's College", logo: "/images/partners/logo1.png" },
+                { name: "Howard Park International", logo: "/images/partners/logo2.png" },
+                { name: "Narayana Group", logo: "/images/partners/logo3.png" },
+                { name: "Sri Chaitanya", logo: "/images/partners/logo4.png" },
+                { name: "Delhi Public School", logo: "/images/partners/logo1.png" },
+                { name: "Kendriya Vidyalaya", logo: "/images/partners/logo2.png" },
+              ].map((partner, i) => (
+                <div
+                  key={i}
+                  className="flex-shrink-0 flex flex-col items-center gap-3 bg-white rounded-2xl p-6 shadow-xl border border-gray-100"
+                  style={{ minWidth: "200px" }}
+                >
+                  <div className="relative w-24 h-24 flex items-center justify-center">
+                    <Image 
+                      src={partner.logo} 
+                      alt={partner.name}
+                      width={80}
+                      height={80}
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="text-sm font-bold text-gray-800 text-center leading-tight">
+                    {partner.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <style>{`
+          .partners-scroll {
+            animation: scroll-partners 30s linear infinite;
+            width: max-content;
+          }
+          .partners-scroll:hover {
+            animation-play-state: paused;
+          }
+          @keyframes scroll-partners {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+        `}</style>
+      </section>
+
       {/* Skill Training */}
       <section className="py-24 px-4 bg-muted/20">
         <div className="max-w-6xl mx-auto space-y-12">
@@ -335,85 +417,6 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
-
-      {/* Our Recent Program Partners Section */}
-      <section className="py-20 px-4 bg-brand-blue text-white overflow-hidden">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="space-y-2"
-          >
-            <h2 className="text-4xl font-bold text-white">Our Recent Program Partners</h2>
-            <p className="text-white/80 text-lg">These are some of our Prestigious Clients</p>
-          </motion.div>
-
-          {/* Scrolling Carousel */}
-          <div className="relative overflow-hidden">
-            {/* Left fade */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-brand-blue to-transparent z-10 pointer-events-none" />
-            {/* Right fade */}
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-brand-blue to-transparent z-10 pointer-events-none" />
-
-            <div className="flex gap-6 partners-scroll">
-              {[
-                { name: "TSWRDC Nalgonda", initials: "TS", color: "#7c3aed" },
-                { name: "Pragati Mahavidyalaya", initials: "PM", color: "#059669" },
-                { name: "Keshav Memorial", initials: "KM", color: "#d97706" },
-                { name: "Fiji School", initials: "FJ", color: "#dc2626" },
-                { name: "St. Joseph's College", initials: "SJ", color: "#0284c7" },
-                { name: "Howard Park International", initials: "HP", color: "#7c3aed" },
-                { name: "Narayana Group", initials: "NG", color: "#16a34a" },
-                { name: "Sri Chaitanya", initials: "SC", color: "#b45309" },
-                { name: "Delhi Public School", initials: "DP", color: "#0369a1" },
-                { name: "Kendriya Vidyalaya", initials: "KV", color: "#7e22ce" },
-                // Duplicate for seamless loop
-                { name: "TSWRDC Nalgonda", initials: "TS", color: "#7c3aed" },
-                { name: "Pragati Mahavidyalaya", initials: "PM", color: "#059669" },
-                { name: "Keshav Memorial", initials: "KM", color: "#d97706" },
-                { name: "Fiji School", initials: "FJ", color: "#dc2626" },
-                { name: "St. Joseph's College", initials: "SJ", color: "#0284c7" },
-                { name: "Howard Park International", initials: "HP", color: "#7c3aed" },
-                { name: "Narayana Group", initials: "NG", color: "#16a34a" },
-                { name: "Sri Chaitanya", initials: "SC", color: "#b45309" },
-                { name: "Delhi Public School", initials: "DP", color: "#0369a1" },
-                { name: "Kendriya Vidyalaya", initials: "KV", color: "#7e22ce" },
-              ].map((partner, i) => (
-                <div
-                  key={i}
-                  className="flex-shrink-0 flex flex-col items-center gap-3 bg-white rounded-2xl p-6 shadow-xl"
-                  style={{ minWidth: "160px" }}
-                >
-                  <div
-                    className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-extrabold shadow-md"
-                    style={{ backgroundColor: partner.color }}
-                  >
-                    {partner.initials}
-                  </div>
-                  <span className="text-sm font-semibold text-gray-700 text-center leading-tight">
-                    {partner.name}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <style>{`
-          .partners-scroll {
-            animation: scroll-partners 30s linear infinite;
-            width: max-content;
-          }
-          .partners-scroll:hover {
-            animation-play-state: paused;
-          }
-          @keyframes scroll-partners {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-          }
-        `}</style>
       </section>
 
       {/* Contact Form Section */}

@@ -117,15 +117,19 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <Link href="/assessment" className="hidden lg:block">
-            <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300">
+            <button className="bg-[#FF7A1A] text-white hover:bg-[#FF7A1A]/90 hover:scale-105 active:scale-95 font-black px-7 py-3.5 rounded-2xl shadow-xl shadow-orange-500/20 transition-all duration-300 text-[15px] tracking-tight">
               Free Assessment
             </button>
           </Link>
-          <Link href="/register" className="hidden sm:block">
-            <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">Register</button>
+          <Link href="/register" className="hidden md:block">
+            <button className="bg-[#1069C2] text-white hover:bg-[#1069C2]/90 hover:scale-105 active:scale-95 font-black px-7 py-3.5 rounded-2xl transition-all duration-300 shadow-xl shadow-blue-600/20 text-[15px] tracking-tight">
+              Register
+            </button>
           </Link>
-          <Link href="/login">
-            <button className="hidden sm:inline-flex font-bold px-5 py-2.5 hover:bg-muted rounded-xl transition-all duration-300 text-slate-700 hover:text-brand-blue">Log in</button>
+          <Link href="/login" className="hidden sm:block">
+            <button className="font-bold px-6 py-3.5 text-[#334155] hover:text-[#1069C2] transition-colors duration-300 text-[15px]">
+              Log in
+            </button>
           </Link>
 
           {/* Mobile Hamburger Button */}

@@ -12,12 +12,12 @@ const pillars = [
     desc: "Access scholarships, internships, and skill-building workshops for global success." 
   },
   { 
-    image: "https://images.unsplash.com/photo-1454165833767-027ffea9e778?q=80&w=800&auto=format&fit=crop", 
+    image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=800&auto=format&fit=crop", 
     title: "Entrance Exam Prep", 
     desc: "Expert guidance for IELTS, TOEFL, GRE, GMAT, SAT, and PTE exams." 
   },
   { 
-    image: "https://images.unsplash.com/photo-1521791136064-7986c295944b?q=80&w=800&auto=format&fit=crop", 
+    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=800&auto=format&fit=crop", 
     title: "Expert Advisors", 
     desc: "Personalized mentorship on course selection and top-tier university shortlisting." 
   },
@@ -32,7 +32,7 @@ const pillars = [
     desc: "We handle the bureaucracy, so you can focus on your academic journey." 
   },
   { 
-    image: "https://images.unsplash.com/photo-1517733925043-4b509312403d?q=80&w=800&auto=format&fit=crop", 
+    image: "https://images.unsplash.com/photo-1526772662000-3f88f10405ff?q=80&w=800&auto=format&fit=crop", 
     title: "Smooth Transition", 
     desc: "Assistance with housing, international banking, and local cultural orientation." 
   },

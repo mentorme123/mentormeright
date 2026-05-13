@@ -118,14 +118,14 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="bg-background rounded-3xl shadow-xl border overflow-hidden group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+                className="bg-background rounded-3xl shadow-xl border-2 border-transparent hover:border-brand-blue/10 overflow-hidden group hover:shadow-[0_40px_80px_rgba(0,0,0,0.15)] transition-all duration-500 hover:-translate-y-4"
               >
-                <div className="relative aspect-[334/423] w-full">
+                <div className="relative aspect-[334/423] w-full overflow-hidden">
                   <Image 
                     src={leader.image} 
                     alt={leader.name} 
                     fill 
-                    className="object-cover" 
+                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
                   />
                 </div>
                 {/* Hidden text for SEO/Accessibility */}

@@ -6,12 +6,36 @@ import { ArrowRight, Globe, GraduationCap, FileText, Landmark, ShieldCheck, MapP
 import { destinations } from "@/lib/data/study-abroad";
 
 const pillars = [
-  { icon: <GraduationCap className="w-8 h-8" />, title: "Academic Support", desc: "Access scholarships, internships, and skill-building workshops for global success." },
-  { icon: <FileText className="w-8 h-8" />, title: "Entrance Exam Prep", desc: "Expert guidance for IELTS, TOEFL, GRE, GMAT, SAT, and PTE exams." },
-  { icon: <Globe className="w-8 h-8" />, title: "Expert Advisors", desc: "Personalized mentorship on course selection and top-tier university shortlisting." },
-  { icon: <ShieldCheck className="w-8 h-8" />, title: "Application & Visa", desc: "End-to-end support for error-free applications and guaranteed visa processing." },
-  { icon: <Landmark className="w-8 h-8" />, title: "Stress-Free Process", desc: "We handle the bureaucracy, so you can focus on your academic journey." },
-  { icon: <MapPin className="w-8 h-8" />, title: "Smooth Transition", desc: "Assistance with housing, international banking, and local cultural orientation." },
+  { 
+    image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=800&auto=format&fit=crop", 
+    title: "Academic Support", 
+    desc: "Access scholarships, internships, and skill-building workshops for global success." 
+  },
+  { 
+    image: "https://images.unsplash.com/photo-1454165833767-027ffea9e778?q=80&w=800&auto=format&fit=crop", 
+    title: "Entrance Exam Prep", 
+    desc: "Expert guidance for IELTS, TOEFL, GRE, GMAT, SAT, and PTE exams." 
+  },
+  { 
+    image: "https://images.unsplash.com/photo-1521791136064-7986c295944b?q=80&w=800&auto=format&fit=crop", 
+    title: "Expert Advisors", 
+    desc: "Personalized mentorship on course selection and top-tier university shortlisting." 
+  },
+  { 
+    image: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?q=80&w=800&auto=format&fit=crop", 
+    title: "Application & Visa", 
+    desc: "End-to-end support for error-free applications and guaranteed visa processing." 
+  },
+  { 
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop", 
+    title: "Stress-Free Process", 
+    desc: "We handle the bureaucracy, so you can focus on your academic journey." 
+  },
+  { 
+    image: "https://images.unsplash.com/photo-1517733925043-4b509312403d?q=80&w=800&auto=format&fit=crop", 
+    title: "Smooth Transition", 
+    desc: "Assistance with housing, international banking, and local cultural orientation." 
+  },
 ];
 
 export default function StudyAbroadHub() {
@@ -77,12 +101,17 @@ export default function StudyAbroadHub() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className="p-8 bg-white rounded-3xl border border-slate-100 hover:border-brand-blue/30 hover:shadow-xl hover:shadow-brand-blue/5 transition-all group"
+              className="p-8 bg-white rounded-3xl border border-slate-100 hover:border-brand-blue/30 hover:shadow-2xl hover:shadow-brand-blue/10 transition-all group overflow-hidden"
             >
-              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-all mb-6">
-                {pillar.icon}
+              <div className="w-full h-48 rounded-2xl overflow-hidden mb-6 relative">
+                <img 
+                  src={pillar.image} 
+                  alt={pillar.title} 
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-brand-blue/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </div>
-              <h3 className="text-xl font-black text-slate-800 mb-3">{pillar.title}</h3>
+              <h3 className="text-2xl font-black text-slate-800 mb-3">{pillar.title}</h3>
               <p className="text-slate-500 leading-relaxed">{pillar.desc}</p>
             </motion.div>
           ))}

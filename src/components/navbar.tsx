@@ -46,56 +46,86 @@ export function Navbar() {
         </Link>
         
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-6 text-sm font-medium text-muted-foreground">
-          <Link href="/" className="hover:text-brand-blue transition-colors text-foreground">Home</Link>
-          <Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link>
+        <div className="hidden lg:flex items-center gap-8 text-[15px] font-semibold text-muted-foreground">
+          <Link href="/" className="relative group py-2">
+            <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">Home</span>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+          </Link>
+          <Link href="/about" className="relative group py-2">
+            <span className="group-hover:text-brand-blue transition-colors duration-300">About Us</span>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+          </Link>
           
           {/* Dropdown for remaining features */}
           <div 
-            className="relative"
+            className="relative group"
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            <button className="hover:text-brand-blue transition-colors flex items-center gap-1 font-bold text-brand-orange py-6">
-              Our Programs <ChevronDown size={14} className={`transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+            <button className="flex items-center gap-1 font-extrabold text-brand-orange py-6 transition-transform hover:scale-105 active:scale-95">
+              Our Programs <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
-            {isDropdownOpen && (
-              <div className="absolute top-[60px] left-1/2 -translate-x-1/2 w-56 bg-background border border-border rounded-xl shadow-lg py-2 flex flex-col gap-1 z-50">
-                <Link href="/career-library" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Career Library</Link>
-                <Link href="/ai-corner" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors flex items-center justify-between">
-                  AI Corner
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-orange opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-orange"></span>
-                  </span>
-                </Link>
-                <Link href="/career-simulator" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Career Simulator</Link>
-                <Link href="/exam-predictor" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Exam Predictor</Link>
-                <Link href="/scholarships" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Scholarships</Link>
-                <Link href="/alumni" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Alumni Network</Link>
-                <Link href="/community" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Community</Link>
-                <Link href="/counsellors" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Counsellors</Link>
-                <Link href="/study-abroad" className="px-4 py-2 hover:bg-muted text-sm font-medium hover:text-brand-blue transition-colors">Study Abroad</Link>
-              </div>
-            )}
+            <AnimatePresence>
+              {isDropdownOpen && (
+                <motion.div 
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-[75px] left-1/2 -translate-x-1/2 w-64 bg-background border border-border rounded-2xl shadow-2xl py-3 flex flex-col gap-1 z-50 overflow-hidden"
+                >
+                  {[
+                    { href: "/career-library", label: "Career Library" },
+                    { href: "/ai-corner", label: "AI Corner", badge: true },
+                    { href: "/career-simulator", label: "Career Simulator" },
+                    { href: "/exam-predictor", label: "Exam Predictor" },
+                    { href: "/scholarships", label: "Scholarships" },
+                    { href: "/alumni", label: "Alumni Network" },
+                    { href: "/community", label: "Community" },
+                    { href: "/counsellors", label: "Counsellors" },
+                    { href: "/study-abroad", label: "Study Abroad" },
+                  ].map((item) => (
+                    <Link 
+                      key={item.href}
+                      href={item.href} 
+                      className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 flex items-center justify-between group/item"
+                    >
+                      <span className="group-hover/item:translate-x-1 transition-transform duration-300">{item.label}</span>
+                      {item.badge && (
+                        <span className="relative flex h-2.5 w-2.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-orange opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-orange"></span>
+                        </span>
+                      )}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
-          <Link href="/blogs" className="hover:text-brand-blue transition-colors">Blogs</Link>
-          <Link href="/contact" className="hover:text-brand-blue transition-colors">Contact Us</Link>
+          <Link href="/blogs" className="relative group py-2">
+            <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+          </Link>
+          <Link href="/contact" className="relative group py-2">
+            <span className="group-hover:text-brand-blue transition-colors duration-300">Contact Us</span>
+            <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>
+          </Link>
         </div>
 
         <div className="flex items-center gap-3">
           <Link href="/assessment" className="hidden lg:block">
-            <button className="bg-brand-orange text-white hover:bg-brand-orange/90 font-bold px-6 py-2.5 rounded-lg shadow-md shadow-brand-orange/20 animate-pulse-slow transition-all">
-              Free Career Assessment Test
+            <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300">
+              Free Assessment
             </button>
           </Link>
           <Link href="/register" className="hidden sm:block">
-            <button className="bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold px-6 py-2.5 rounded-lg transition-all shadow-md">Register</button>
+            <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">Register</button>
           </Link>
           <Link href="/login">
-            <button className="hidden sm:inline-flex font-semibold px-4 py-2 hover:bg-muted rounded-lg transition-colors text-slate-700">Log in</button>
+            <button className="hidden sm:inline-flex font-bold px-5 py-2.5 hover:bg-muted rounded-xl transition-all duration-300 text-slate-700 hover:text-brand-blue">Log in</button>
           </Link>
 
           {/* Mobile Hamburger Button */}

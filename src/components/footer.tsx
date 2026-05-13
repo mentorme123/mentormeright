@@ -32,17 +32,17 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-bold text-foreground">Company</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/about" className="hover:text-brand-blue">About Us</Link></li>
-              <li><Link href="/services" className="hover:text-brand-blue">Our Services</Link></li>
-              <li><Link href="/careers" className="hover:text-brand-blue">Careers</Link></li>
+              <li><Link href="/about" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">About Us</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/services" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Our Services</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/careers" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Careers</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
             </ul>
             
             <h4 className="font-bold text-foreground pt-4">Support</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/contact" className="hover:text-brand-blue">Contact Us</Link></li>
-              <li><Link href="/terms" className="hover:text-brand-blue">Terms & Conditions</Link></li>
-              <li><Link href="/privacy" className="hover:text-brand-blue">Privacy Policy</Link></li>
-              <li><Link href="/refund" className="hover:text-brand-blue">Refund Policy</Link></li>
+              <li><Link href="/contact" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Contact Us</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/terms" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Terms & Conditions</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/privacy" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Privacy Policy</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/refund" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Refund Policy</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
             </ul>
           </div>
 
@@ -50,17 +50,17 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-bold text-foreground">School Programs</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/programs/robotics" className="hover:text-brand-blue">Robotics</Link></li>
-              <li><Link href="/programs/ai-school" className="hover:text-brand-blue">AI</Link></li>
-              <li><Link href="/programs/vedic-maths" className="hover:text-brand-blue">Vedic Maths</Link></li>
+              <li><Link href="/programs/robotics" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Robotics</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/programs/ai-school" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">AI</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/programs/vedic-maths" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Vedic Maths</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
             </ul>
 
             <h4 className="font-bold text-foreground pt-4">College Programs</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/programs/ml" className="hover:text-brand-blue">Machine Learning</Link></li>
-              <li><Link href="/programs/ai-college" className="hover:text-brand-blue">Artificial Intelligence</Link></li>
-              <li><Link href="/programs/deep-learning" className="hover:text-brand-blue">Deep Learning</Link></li>
-              <li><Link href="/programs/communication" className="hover:text-brand-blue">Communication Skills</Link></li>
+              <li><Link href="/programs/ml" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Machine Learning</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/programs/ai-college" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Artificial Intelligence</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/programs/deep-learning" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Deep Learning</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/programs/communication" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Communication Skills</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
             </ul>
           </div>
 
@@ -68,10 +68,10 @@ export function Footer() {
           <div className="space-y-4">
             <h4 className="font-bold text-foreground">Corporate Programs</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link href="/programs/digital-marketing" className="hover:text-brand-blue">Digital Marketing</Link></li>
-              <li><Link href="/programs/python" className="hover:text-brand-blue">Python Full Stack</Link></li>
-              <li><Link href="/programs/sap-fico" className="hover:text-brand-blue">SAP FICO</Link></li>
-              <li><Link href="/programs/power-bi" className="hover:text-brand-blue">Power BI</Link></li>
+              <li><Link href="/programs/digital-marketing" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Digital Marketing</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/programs/python" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Python Full Stack</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/programs/sap-fico" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">SAP FICO</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
+              <li><Link href="/programs/power-bi" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Power BI</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
             </ul>
           </div>
 

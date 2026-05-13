@@ -8,18 +8,23 @@ export default function AboutPage() {
   const leadership = [
     {
       name: "Vijay Kiran Agastya",
-      role: "Founder & Managing Director",
+      role: "Co-Founder & Managing Director",
       desc: "Ex-Deloitte Vice President | Trainer | Leadership Coach",
-      image: "/images/vijay.png"
+      image: "/images/vijay_card.png"
     },
     {
       name: "Sirisha Kode",
-      role: "Chief Operating Officer",
-      desc: "Finance Professional | Corporate Trainer",
-      image: "/images/sirisha.png"
+      role: "Co-Founder & COO",
+      desc: "Ex-Ernst & Young | Corporate Trainer | Women Leader",
+      image: "/images/sirisha_card.png"
+    },
+    {
+      name: "Santhi Vedula",
+      role: "Advisor - Institutional Relationships",
+      desc: "Senior Academician | Author | Research Scholar",
+      image: "/images/santhi_card.png"
     }
   ];
-  // ... (skipping to the render part in the next chunk)
 
   const features = [
     "Holistic Career Guidance Extensive",
@@ -105,7 +110,7 @@ export default function AboutPage() {
             <p className="text-lg text-muted-foreground mt-4">The visionaries behind MentorMe Right.</p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {leadership.map((leader, i) => (
               <motion.div 
                 key={i}
@@ -113,14 +118,22 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="bg-background p-8 rounded-3xl shadow-lg border text-center space-y-4"
+                className="bg-background rounded-3xl shadow-xl border overflow-hidden group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
               >
-                <div className="h-32 w-32 mx-auto relative rounded-full overflow-hidden border-4 border-brand-blue/10 mb-4">
-                  <Image src={leader.image} alt={leader.name} fill className="object-cover" />
+                <div className="relative aspect-[334/423] w-full">
+                  <Image 
+                    src={leader.image} 
+                    alt={leader.name} 
+                    fill 
+                    className="object-cover" 
+                  />
                 </div>
-                <h3 className="text-2xl font-bold text-foreground">{leader.name}</h3>
-                <p className="text-brand-orange font-semibold">{leader.role}</p>
-                <p className="text-muted-foreground">{leader.desc}</p>
+                {/* Hidden text for SEO/Accessibility */}
+                <div className="sr-only">
+                  <h3>{leader.name}</h3>
+                  <p>{leader.role}</p>
+                  <p>{leader.desc}</p>
+                </div>
               </motion.div>
             ))}
           </div>

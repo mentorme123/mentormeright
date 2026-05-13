@@ -101,8 +101,25 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-bold">
-              {error}
+            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-bold flex flex-col gap-2">
+              <p>{error}</p>
+              {error.toLowerCase().includes("not confirmed") && (
+                <button 
+                  onClick={async () => {
+                    setLoading(true);
+                    const { error: resendError } = await supabase.auth.resend({
+                      type: 'signup',
+                      email: email,
+                    });
+                    setLoading(false);
+                    if (resendError) setError(resendError.message);
+                    else setError("Confirmation email resent! Please check your inbox (and spam).");
+                  }}
+                  className="text-brand-blue hover:underline text-xs text-left"
+                >
+                  Resend confirmation link?
+                </button>
+              )}
             </div>
           )}
 

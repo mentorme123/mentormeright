@@ -50,6 +50,23 @@ export async function syncUserProfile(user: any) {
     }
 
     userProfile = newProfile;
+  } else if (!userProfile.role) {
+    // 3. If exists but role is null, update it to 'individual'
+    console.log("Profile found but role is null, updating to 'individual' for ID:", user.id);
+    const { data: updatedProfile, error: updateError } = await supabaseAdmin
+      .from('users')
+      .update({ role: 'individual' })
+      .eq('id', user.id)
+      .select('role')
+      .single();
+
+    if (updateError) {
+      console.error("Profile update error:", updateError);
+      // Even if update fails, we can just return the default so user can login
+      userProfile.role = 'individual';
+    } else {
+      userProfile = updatedProfile;
+    }
   }
 
   return userProfile;

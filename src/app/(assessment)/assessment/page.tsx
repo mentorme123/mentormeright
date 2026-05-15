@@ -40,15 +40,11 @@ export default function AssessmentPage() {
       const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
       
-      if (!session) {
-        router.push("/login?redirect=/assessment");
-        return;
-      }
-
-      const { data: userProfile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
+      // Guest access allowed for assessment
+      const userProfile = session ? (await supabase.from('users').select('*').eq('id', session.user.id).single()).data : null;
       setProfile(userProfile);
 
-      if (!userProfile?.phone) setShowOnboarding(true);
+      if (session && !userProfile?.phone) setShowOnboarding(true);
 
       const audience = (localStorage.getItem("mentorme_audience") || userProfile?.audience_type || "ST") as AudienceType;
       const q = getQuestions(audience);
@@ -199,8 +195,8 @@ export default function AssessmentPage() {
         body: JSON.stringify({ 
           answers, 
           audience, 
-          userName: profile?.name || user?.email?.split('@')[0], 
-          userId: user?.id 
+          userName: profile?.name || user?.email?.split('@')[0] || "Guest", 
+          userId: user?.id || null 
         })
       });
       const data = await response.json();

@@ -62,7 +62,7 @@ export async function middleware(request: NextRequest) {
   const isAuthPage = pathname.startsWith('/login') || pathname.startsWith('/register');
   
   // Strict Protection for Assessment/Test routes
-  const isTestRoute = pathname.startsWith('/assessment') || pathname.startsWith('/test');
+  const isTestRoute = pathname.startsWith('/test');
   const isDashboardRoute = pathname.startsWith('/dashboard');
   const isProtectedPage = isTestRoute || isDashboardRoute || pathname.startsWith('/report');
 

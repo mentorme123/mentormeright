@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { getModel } from "@/lib/gemini";
 import nodemailer from "nodemailer";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 
 // Validate GEMINI_API_KEY exists
 if (!process.env.GEMINI_API_KEY) {
@@ -271,7 +269,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid messages array' }, { status: 400 });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+    const model = getModel('gemini-1.5-flash');
 
     const chat = model.startChat({
       history: [
@@ -291,8 +289,27 @@ export async function POST(req: NextRequest) {
     });
 
     const lastMessage = messages[messages.length - 1];
-    const result = await chat.sendMessage(lastMessage.content);
-    const rawReply = result.response.text();
+    
+    // Send message with retry logic
+    let rawReply = "";
+    let maxRetries = 3;
+    for (let i = 0; i < maxRetries; i++) {
+      try {
+        const result = await chat.sendMessage(lastMessage.content);
+        rawReply = result.response.text();
+        break;
+      } catch (error: any) {
+        if (i === maxRetries - 1) throw error;
+        const message = error.message || "";
+        if (message.includes('429') || message.includes('quota') || message.includes('500') || message.includes('503')) {
+          const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+          await new Promise(resolve => setTimeout(resolve, delay));
+          continue;
+        }
+        throw error;
+      }
+    }
+
 
     // 1. Process B2B Leads -> Sandeep
     const b2bLead = extractB2BLead(rawReply);

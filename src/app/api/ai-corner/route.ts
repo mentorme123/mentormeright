@@ -1,13 +1,5 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
-// Initialize Gemini API
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '');
-
-// Validate API key
-if (!process.env.GEMINI_API_KEY && !process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
-  console.error('GEMINI_API_KEY is missing');
-}
+import { generateWithRetry } from '@/lib/gemini';
 
 export async function POST(req: Request) {
   try {
@@ -21,8 +13,6 @@ export async function POST(req: Request) {
     const sanitizedProfile = String(profile).slice(0, 2000).replace(/[<>]/g, '');
     const sanitizedGoal = String(goal).slice(0, 1000).replace(/[<>]/g, '');
     const sanitizedCurrentLevel = currentLevel ? String(currentLevel).slice(0, 500).replace(/[<>]/g, '') : 'Not specified';
-
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     const prompt = `
 You are an expert career counsellor and skill-development coach for MentorMe, a premium career guidance platform in India.
@@ -42,14 +32,21 @@ Format the response in Markdown with the following sections:
 Keep the tone professional, motivating, and highly practical. Do not use generic fluff.
 `;
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = response.text();
+    const text = await generateWithRetry(prompt, 'gemini-1.5-flash');
 
     return NextResponse.json({ roadmap: text });
   } catch (err: unknown) {
     const error = err as Error;
     console.error("AI Corner Error:", error);
+    
+    if (error.message && (error.message.includes('429') || error.message.includes('quota') || error.message.includes('exhausted'))) {
+      return NextResponse.json(
+        { error: 'Our AI servers are currently experiencing high traffic. Please wait 1 minute and try submitting again.' }, 
+        { status: 429 }
+      );
+    }
+    
     return NextResponse.json({ error: error.message || 'Failed to generate roadmap' }, { status: 500 });
   }
 }
+

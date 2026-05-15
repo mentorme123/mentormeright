@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MentorMe — Career Discovery Assessment</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- Firebase v9 compat (works via CDN without bundler) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<style>
+:root{
+  --navy:#0f2460;--blue:#1a3a8f;--blue2:#2952c4;--blue-lt:#e8effe;--blue-md:#dbeafe;
+  --amber:#f59e0b;--amber2:#d97706;--amber-lt:#fffbeb;--amber-md:#fef3c7;
+  --text:#0a0f1e;--t2:#4a5568;--t3:#94a3b8;
+  --surf:#f8fafc;--white:#fff;--bdr:#e2e8f0;
+  --r:10px;--r2:14px;--r3:20px;
+  --sh:0 2px 8px rgba(0,0,0,.07);
+  --sh2:0 8px 32px rgba(15,36,96,.1);
+  --f:'DM Sans',sans-serif;--fh:'Sora',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--f);background:#eef2fb;min-height:100vh;color:var(--text)}
+.page{display:none}.page.on{display:block}
+.shell{max-width:700px;margin:0 auto;padding:24px 16px 72px}
+.card{background:var(--white);border-radius:var(--r2);border:1px solid var(--bdr);box-shadow:var(--sh2);overflow:hidden}
+
+/* ── HEADER ── */
+.hd{background:var(--navy);padding:18px 24px;display:flex;align-items:center;gap:14px}
+.hd-brand{font-family:var(--fh);font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.hd-brand em{color:var(--amber);font-style:normal}
+.hd-sub{font-size:11px;color:#93c5fd;margin-top:2px;font-weight:400}
+
+/* ── TYPOGRAPHY ── */
+h1{font-family:var(--fh);font-size:26px;font-weight:800;line-height:1.2;color:var(--text)}
+h2{font-family:var(--fh);font-size:19px;font-weight:700;color:var(--text)}
+h3{font-size:15px;font-weight:600;color:var(--text)}
+p{font-size:14px;color:var(--t2);line-height:1.7}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 28px;border-radius:var(--r);font-family:var(--f);font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .18s;text-decoration:none;line-height:1}
+.btn-navy{background:var(--navy);color:#fff}.btn-navy:hover{background:var(--blue2)}
+.btn-amber{background:var(--amber);color:#78350f}.btn-amber:hover{background:var(--amber2)}
+.btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}.btn-ghost:hover{background:var(--blue-lt)}
+.btn-lg{padding:16px 36px;font-size:15px;border-radius:12px}
+.btn-full{width:100%}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+/* ── BADGES ── */
+.bdg{display:inline-flex;align-items:center;padding:4px 11px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.3px}
+.bdg-blue{background:var(--blue-md);color:var(--blue)}
+.bdg-amber{background:var(--amber-md);color:#92400e}
+.bdg-green{background:#dcfce7;color:#15803d}
+.bdg-purple{background:#ede9fe;color:#6d28d9}
+.bdg-navy{background:#e0e7ff;color:var(--navy)}
+
+/* ── PROGRESS ── */
+.pbar-wrap{padding:14px 24px 0}
+.pbar-meta{display:flex;justify-content:space-between;margin-bottom:7px}
+.pbar-lbl{font-size:12px;font-weight:600;color:var(--t2)}
+.pbar-track{height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.pbar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue),#60a5fa);transition:width .35s}
+
+/* ── QUESTION ── */
+.qh{display:flex;align-items:center;gap:10px;padding:14px 20px;border-bottom:1px solid var(--bdr);background:var(--surf)}
+.q-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.q-sec-nm{font-size:12px;font-weight:700;color:var(--t2);letter-spacing:.2px}
+.q-param{font-size:11px;color:var(--t3);margin-left:auto}
+.timer{background:var(--amber-md);color:#92400e;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;font-family:var(--fh);margin-left:8px}
+.qb{padding:22px 24px}
+.q-num{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:9px}
+.q-txt{font-size:16px;font-weight:600;color:var(--text);line-height:1.6;margin-bottom:18px}
+.q-note{font-size:11px;color:var(--blue);background:var(--blue-lt);padding:3px 9px;border-radius:5px;display:inline-block;margin-bottom:12px}
+.opts{display:grid;gap:9px}
+.opt{display:flex;align-items:center;gap:13px;width:100%;padding:13px 16px;background:var(--white);border:1.5px solid var(--bdr);border-radius:var(--r);cursor:pointer;font-family:var(--f);font-size:14px;color:var(--text);text-align:left;transition:all .15s}
+.opt:hover{border-color:var(--blue);background:var(--blue-lt);color:var(--blue)}
+.opt.sel{border-color:var(--blue);background:var(--blue-md);color:var(--navy)}
+.opt-l{width:27px;height:27px;border-radius:50%;background:#e9eef8;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;color:var(--t2);transition:all .15s}
+.opt.sel .opt-l{background:var(--blue);color:#fff}
+.qnav{display:flex;justify-content:space-between;align-items:center;padding:14px 24px;border-top:1px solid var(--bdr)}
+.q-ct{font-size:13px;color:var(--t2);font-weight:500}
+
+/* ── WELCOME ── */
+.hero{padding:40px 28px 32px;text-align:center}
+.hero-kicker{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.7px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:7px}
+.hero-kicker::before,.hero-kicker::after{content:'';flex:1;max-width:40px;height:1px;background:var(--bdr)}
+.hero-h1{font-family:var(--fh);font-size:30px;font-weight:800;color:var(--text);line-height:1.18;margin-bottom:14px}
+.hero-h1 em{color:var(--blue);font-style:normal}
+.hero-sub{font-size:15px;color:var(--t2);line-height:1.75;max-width:460px;margin:0 auto 28px}
+.trust-strip{display:flex;justify-content:center;gap:0;margin-bottom:32px;border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden}
+.trust-item{flex:1;padding:14px 8px;text-align:center;border-right:1px solid var(--bdr)}
+.trust-item:last-child{border-right:none}
+.trust-n{font-family:var(--fh);font-size:20px;font-weight:800;color:var(--blue)}
+.trust-l{font-size:10px;color:var(--t3);margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:.3px}
+.sec-cards{display:grid;gap:12px;margin:0 28px 32px}
+.sec-card{display:flex;gap:14px;padding:16px;background:var(--surf);border-radius:var(--r);border:1px solid var(--bdr);text-align:left}
+.sc-icon{font-size:24px;flex-shrink:0;margin-top:1px}
+.sc-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px}
+.sc-desc{font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:7px}
+.pills{display:flex;flex-wrap:wrap;gap:5px}
+.cta-block{padding:0 28px 36px;text-align:center}
+.price-display{margin-bottom:6px}
+.price-was{font-size:13px;color:var(--t3);text-decoration:line-through;margin-bottom:2px}
+.price-now{font-family:var(--fh);font-size:32px;font-weight:800;color:var(--navy)}
+.price-now sup{font-size:16px;vertical-align:super}
+.price-tag{font-size:12px;color:var(--t2);margin-top:2px;margin-bottom:18px}
+.guarantees{display:flex;justify-content:center;gap:20px;margin-top:14px;flex-wrap:wrap}
+.gitem{font-size:12px;color:var(--t2);display:flex;align-items:center;gap:5px}
+.gitem::before{content:'✓';color:#16a34a;font-weight:700}
+
+/* ── REGISTER ── */
+.reg-body{padding:28px 24px}
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.reg-field{display:flex;flex-direction:column;gap:5px}
+.reg-field.full{grid-column:1/-1}
+.reg-field label{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.4px}
+.reg-field input,.reg-field select{padding:11px 13px;border:1.5px solid var(--bdr);border-radius:var(--r);font-family:var(--f);font-size:14px;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
+.reg-field input:focus,.reg-field select:focus{border-color:var(--blue)}
+.reg-field input::placeholder{color:var(--t3)}
+.err{color:#dc2626;font-size:12px;background:#fef2f2;padding:9px 13px;border-radius:var(--r);margin-bottom:12px;display:none}
+.pay-box{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin:18px 0}
+.pay-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px;align-items:center}
+.pay-row:last-child{margin-bottom:0;padding-top:10px;border-top:1px solid var(--bdr);font-weight:700;font-size:16px;color:var(--navy)}
+.pay-lbl{color:var(--t2)}
+.pay-secure{text-align:center;font-size:11px;color:var(--t3);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+
+/* ── PAYING ── */
+.paying-screen{display:flex;align-items:center;justify-content:center;min-height:55vh;flex-direction:column;gap:16px;padding:40px}
+.spinner{width:52px;height:52px;border:3px solid var(--bdr);border-top-color:var(--blue);border-radius:50%;animation:spin .75s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── SECTION INTRO ── */
+.si-body{padding:36px 24px;text-align:center}
+.si-icon{font-size:44px;margin-bottom:14px}
+.si-title{font-family:var(--fh);font-size:22px;font-weight:800;color:var(--text);margin-bottom:10px}
+.si-sub{font-size:14px;color:var(--t2);line-height:1.7;max-width:400px;margin:0 auto 22px}
+.si-tips{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;margin-bottom:22px;text-align:left}
+.si-tip-row{display:flex;gap:10px;font-size:13px;color:var(--t2);line-height:1.5;margin-bottom:9px}
+.si-tip-row:last-child{margin-bottom:0}
+.si-bullet{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:5px}
+.si-params{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:24px}
+
+/* ── RESULTS ── */
+.res-hero{text-align:center;padding:32px 24px 22px;border-bottom:1px solid var(--bdr)}
+.res-avatar{width:68px;height:68px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:22px;font-weight:800;color:#fff;margin:0 auto 14px}
+.res-sec{padding:20px 24px;border-bottom:1px solid var(--bdr)}
+.res-sec-hd{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.res-sec-icon{font-size:20px}
+.res-sec-nm{font-size:15px;font-weight:700;color:var(--text)}
+.p-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.p-lbl{font-size:13px;color:var(--t2);width:125px;flex-shrink:0}
+.p-track{flex:1;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.p-fill{height:100%;border-radius:4px;transition:width .7s ease}
+.p-pct{font-size:13px;font-weight:700;color:var(--text);width:36px;text-align:right}
+.top-trait{background:linear-gradient(135deg,var(--blue-lt),var(--blue-md));border:1px solid #bfdbfe;border-radius:var(--r);padding:14px 16px;margin-top:13px}
+.tt-lbl{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.6px;text-transform:uppercase;margin-bottom:4px}
+.tt-nm{font-size:15px;font-weight:700;color:var(--navy)}
+.tt-desc{font-size:13px;color:#3b82f6;margin-top:3px;line-height:1.55}
+.career-box{margin:20px 24px;background:linear-gradient(135deg,#fffbeb,var(--amber-md));border:1px solid #fde68a;border-radius:var(--r2);padding:20px}
+.career-lbl{font-size:10px;font-weight:700;color:#92400e;letter-spacing:.5px;text-transform:uppercase;margin-bottom:5px}
+.career-nm{font-family:var(--fh);font-size:16px;font-weight:700;color:#78350f;margin-bottom:5px}
+.career-txt{font-size:14px;color:#7c4c0a;line-height:1.7}
+.report-pending{margin:20px 24px;background:var(--surf);border:1.5px dashed var(--bdr);border-radius:var(--r2);padding:22px;text-align:center}
+.rp-icon{font-size:32px;margin-bottom:10px}
+.rp-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.rp-sub{font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:0}
+.res-actions{padding:22px 24px;display:flex;flex-direction:column;gap:12px;align-items:center}
+.score-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 24px 0}
+.sc-card{background:var(--surf);border-radius:var(--r);padding:14px;text-align:center}
+.sc-n{font-family:var(--fh);font-size:26px;font-weight:800;color:var(--blue)}
+.sc-l{font-size:10px;color:var(--t3);margin-top:3px;text-transform:uppercase;letter-spacing:.3px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .4s ease forwards}
+@media(max-width:520px){
+  .reg-grid{grid-template-columns:1fr}
+  .reg-field.full{grid-column:1}
+  .hero-h1{font-size:24px}
+  .trust-strip{flex-wrap:wrap}
+  .trust-item{min-width:48%;border-bottom:1px solid var(--bdr)}
+}
+
+/* ══════════════ ADMIN STYLES ══════════════ */
+.adm-shell{max-width:1100px;margin:0 auto;padding:24px 20px 72px}
+/* Admin login */
+.adm-login{max-width:420px;margin:60px auto 0;background:var(--white);border-radius:var(--r2);border:1px solid var(--bdr);box-shadow:var(--sh2);overflow:hidden}
+.adm-login .hd{justify-content:center;flex-direction:column;text-align:center;padding:28px 24px 22px;gap:6px}
+.adm-login-body{padding:24px}
+.adm-login-err{color:#dc2626;font-size:12px;background:#fef2f2;padding:8px 12px;border-radius:var(--r);margin-bottom:12px;display:none}
+/* Admin nav */
+.adm-topbar{background:var(--navy);padding:0 24px;display:flex;align-items:center;gap:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(15,36,96,.2)}
+.adm-topbar-brand{display:flex;align-items:center;gap:10px;padding:14px 0;margin-right:auto}
+.adm-topbar-brand span{font-family:var(--fh);font-size:16px;font-weight:800;color:#fff}
+.adm-topbar-brand span em{color:var(--amber);font-style:normal}
+.adm-nav-tab{padding:16px 18px;font-size:13px;font-weight:600;color:#93c5fd;cursor:pointer;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap}
+.adm-nav-tab:hover{color:#fff}
+.adm-nav-tab.active{color:#fff;border-bottom-color:var(--amber)}
+.adm-signout{margin-left:12px;font-size:12px;color:#64748b;cursor:pointer;padding:6px 12px;border-radius:var(--r);border:1px solid #334155;background:transparent;font-family:var(--f);transition:all .15s}
+.adm-signout:hover{background:#1e293b;color:#fff}
+/* Admin content */
+.adm-tab-content{display:none}.adm-tab-content.on{display:block}
+.adm-page-title{font-family:var(--fh);font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px}
+.adm-page-sub{font-size:13px;color:var(--t2);margin-bottom:22px}
+/* Stats row */
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:var(--white);border-radius:var(--r);border:1px solid var(--bdr);padding:18px 20px;box-shadow:var(--sh)}
+.stat-n{font-family:var(--fh);font-size:28px;font-weight:800;color:var(--navy)}
+.stat-l{font-size:12px;color:var(--t2);margin-top:4px}
+.stat-chg{font-size:11px;font-weight:600;margin-top:6px}
+.stat-chg.up{color:#16a34a}.stat-chg.dn{color:#dc2626}
+/* Table */
+.tbl-wrap{background:var(--white);border-radius:var(--r2);border:1px solid var(--bdr);overflow:hidden;box-shadow:var(--sh)}
+.tbl-toolbar{display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid var(--bdr);flex-wrap:wrap}
+.tbl-search{flex:1;min-width:200px;padding:9px 13px;border:1.5px solid var(--bdr);border-radius:var(--r);font-family:var(--f);font-size:13px;outline:none;color:var(--text)}
+.tbl-search:focus{border-color:var(--blue)}
+.tbl-filter{padding:8px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);font-family:var(--f);font-size:13px;color:var(--text);background:var(--white);cursor:pointer}
+.tbl-export{font-size:13px;padding:8px 14px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:var(--surf)}
+th{padding:11px 14px;text-align:left;font-size:11px;font-weight:700;color:var(--t2);letter-spacing:.4px;text-transform:uppercase;border-bottom:1px solid var(--bdr);white-space:nowrap}
+td{padding:12px 14px;border-bottom:1px solid var(--bdr);color:var(--text);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f8faff}
+.tbl-name{font-weight:600;color:var(--navy)}
+.tbl-school{font-size:12px;color:var(--t2);margin-top:2px}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s}
+.status-pending{background:#fef3c7;color:#92400e}
+.status-sent{background:#dcfce7;color:#15803d}
+.status-pending:hover{background:#fde68a}.status-sent:hover{background:#bbf7d0}
+.tbl-btn{padding:5px 11px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:var(--f);transition:all .15s}
+.tbl-btn-pdf{background:var(--blue-md);color:var(--blue)}.tbl-btn-pdf:hover{background:var(--blue);color:#fff}
+.tbl-btn-view{background:var(--surf);color:var(--t2);border:1px solid var(--bdr)}.tbl-btn-view:hover{background:var(--bdr)}
+.tbl-actions{display:flex;gap:6px;align-items:center}
+/* Detail modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(10,15,30,.5);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.on{display:flex}
+.modal{background:var(--white);border-radius:var(--r2);max-width:680px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.18)}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--bdr);position:sticky;top:0;background:var(--white);z-index:1}
+.modal-close{width:30px;height:30px;border-radius:50%;background:var(--surf);border:1px solid var(--bdr);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--t2)}
+.modal-close:hover{background:var(--bdr)}
+.modal-body{padding:22px}
+/* Score detail in modal */
+.mod-sec{margin-bottom:20px}
+.mod-sec-hd{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.mod-p-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.mod-p-lbl{font-size:12px;color:var(--t2);width:130px;flex-shrink:0}
+.mod-p-track{flex:1;height:7px;background:#e2e8f0;border-radius:4px;overflow:hidden}
+.mod-p-fill{height:100%;border-radius:4px}
+.mod-p-pct{font-size:12px;font-weight:700;color:var(--text);width:32px;text-align:right}
+/* Empty state */
+.empty-state{text-align:center;padding:48px 24px;color:var(--t3)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+/* Loading */
+.adm-loading{text-align:center;padding:48px;color:var(--t2)}
+.adm-spinner{width:36px;height:36px;border:3px solid var(--bdr);border-top-color:var(--blue);border-radius:50%;animation:spin .75s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:700px){.stat-row{grid-template-columns:repeat(2,1fr)}.adm-nav-tab{padding:14px 12px;font-size:12px}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ WELCOME ═══════════════════════════════ -->
+<div id="pg-welcome" class="page on">
+<div class="shell">
+<div class="card fade-up">
+  <div class="hd">
+    <svg width="42" height="42" viewBox="0 0 44 44" fill="none">
+      <circle cx="15" cy="9" r="6" fill="#60a5fa"/><circle cx="29" cy="9" r="6" fill="#f59e0b"/>
+      <path d="M4 38C4 25 11 18 15 18L15 38Z" fill="#60a5fa"/>
+      <rect x="19" y="18" width="6" height="20" rx="3" fill="#60a5fa"/>
+      <path d="M25 18C25 18 29 18 33 22C37 26 40 32 40 38L34 38C34 32 31 26 29 24L29 38L25 38Z" fill="#f59e0b"/>
+    </svg>
+    <div><div class="hd-brand">Mentor<em>Me</em></div><div class="hd-sub">Career Discovery Assessment</div></div>
+  </div>
+
+  <div class="hero">
+    <div class="hero-kicker">India's #1 Student Career Assessment</div>
+    <h1 class="hero-h1">Unlock your <em>perfect</em> career path<br/>before everyone else does</h1>
+    <p class="hero-sub">A comprehensive psychometric assessment built by India's top career experts and certified psychometricians — trusted by students in 500+ schools to make the right stream and career decisions.</p>
+    <div class="trust-strip">
+      <div class="trust-item"><div class="trust-n">90</div><div class="trust-l">Questions</div></div>
+      <div class="trust-item"><div class="trust-n">3</div><div class="trust-l">Sections</div></div>
+      <div class="trust-item"><div class="trust-n">16</div><div class="trust-l">Parameters</div></div>
+      <div class="trust-item"><div class="trust-n">45<span style="font-size:13px">m</span></div><div class="trust-l">Duration</div></div>
+    </div>
+  </div>
+
+  <div class="sec-cards">
+    <div class="sec-card">
+      <div class="sc-icon">🧠</div>
+      <div>
+        <div class="sc-title">Section 1 — Individuality Profile</div>
+        <div class="sc-desc">Reveals your emotional intelligence, empathy, engagement, efficiency and curiosity — the traits that define long-term career success.</div>
+        <div class="pills"><span class="bdg bdg-blue">Emotional Intelligence</span><span class="bdg bdg-blue">Efficiency</span><span class="bdg bdg-blue">Empathy</span><span class="bdg bdg-blue">Engagement</span><span class="bdg bdg-blue">Exploration</span></div>
+      </div>
+    </div>
+    <div class="sec-card">
+      <div class="sc-icon">⚡</div>
+      <div>
+        <div class="sc-title">Section 2 — Skill Proficiency</div>
+        <div class="sc-desc">Measures your natural aptitude across five key reasoning areas — adapted to your class level for accurate results.</div>
+        <div class="pills"><span class="bdg bdg-amber">Logical</span><span class="bdg bdg-amber">Numerical</span><span class="bdg bdg-amber">Mechanical</span><span class="bdg bdg-amber">Verbal</span><span class="bdg bdg-amber">Administrative</span></div>
+      </div>
+    </div>
+    <div class="sec-card">
+      <div class="sc-icon">🎯</div>
+      <div>
+        <div class="sc-title">Section 3 — Passion Exploration (RIASEC)</div>
+        <div class="sc-desc">Based on Holland's globally-validated RIASEC model used by top universities and career centres worldwide.</div>
+        <div class="pills"><span class="bdg bdg-green">Realistic</span><span class="bdg bdg-green">Investigative</span><span class="bdg bdg-green">Artistic</span><span class="bdg bdg-green">Social</span><span class="bdg bdg-green">Enterprising</span><span class="bdg bdg-green">Conventional</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <div class="price-display">
+      <div class="price-was">Regular price ₹1,999</div>
+      <div class="price-now"><sup>₹</sup>999</div>
+      <div class="price-tag">One-time payment &bull; Instant access &bull; Expert PDF report by MentorMe counsellor</div>
+    </div>
+    <button class="btn btn-amber btn-lg btn-full" onclick="goTo('pg-register')">Get started — ₹999 only →</button>
+    <div class="guarantees">
+      <span class="gitem">Secure Razorpay payment</span>
+      <span class="gitem">Personalised expert report</span>
+      <span class="gitem">Science-backed methodology</span>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ REGISTER ═══════════════════════════════ -->
+<div id="pg-register" class="page">
+<div class="shell">
+<div class="card fade-up">
+  <div class="hd">
+    <svg width="36" height="36" viewBox="0 0 44 44" fill="none">
+      <circle cx="15" cy="9" r="6" fill="#60a5fa"/><circle cx="29" cy="9" r="6" fill="#f59e0b"/>
+      <path d="M4 38C4 25 11 18 15 18L15 38Z" fill="#60a5fa"/>
+      <rect x="19" y="18" width="6" height="20" rx="3" fill="#60a5fa"/>
+      <path d="M25 18C25 18 29 18 33 22C37 26 40 32 40 38L34 38C34 32 31 26 29 24L29 38L25 38Z" fill="#f59e0b"/>
+    </svg>
+    <div><div class="hd-brand" style="font-size:17px">Mentor<em>Me</em></div><div class="hd-sub">Student Registration</div></div>
+  </div>
+  <div class="reg-body">
+    <h2 style="margin-bottom:5px">Student details</h2>
+    <p style="margin-bottom:22px">Your MentorMe counsellor uses these details to prepare your personalised career report.</p>
+
+    <div class="reg-grid">
+      <div class="reg-field"><label>Student's full name *</label><input id="r-name" type="text" placeholder="e.g. Priya Sharma"/></div>
+      <div class="reg-field"><label>Class / Standard *</label>
+        <select id="r-class">
+          <option value="">Select class</option>
+          <option value="6">Class 6</option><option value="7">Class 7</option>
+          <option value="8">Class 8</option><option value="9">Class 9</option>
+          <option value="10">Class 10</option><option value="11">Class 11</option>
+          <option value="12">Class 12</option>
+        </select>
+      </div>
+      <div class="reg-field full"><label>School name *</label><input id="r-school" type="text" placeholder="Full name of your school"/></div>
+      <div class="reg-field"><label>City *</label><input id="r-city" type="text" placeholder="e.g. Hyderabad"/></div>
+      <div class="reg-field"><label>Student mobile *</label><input id="r-phone" type="tel" placeholder="10-digit number" maxlength="10"/></div>
+      <div class="reg-field full"><label>Parent's email (report will be sent here)</label><input id="r-email" type="email" placeholder="parent@email.com"/></div>
+    </div>
+
+    <div class="pay-box">
+      <div class="pay-row"><span class="pay-lbl">Career Discovery Assessment</span><span style="text-decoration:line-through;color:var(--t3)">₹1,999</span></div>
+      <div class="pay-row"><span class="pay-lbl">Launch offer discount</span><span style="color:#16a34a;font-weight:600">— ₹1,000</span></div>
+      <div class="pay-row"><span class="pay-lbl">Expert counsellor PDF report</span><span style="color:#16a34a;font-size:12px;font-weight:600">Included</span></div>
+      <div class="pay-row"><span>Total payable</span><span>₹999</span></div>
+    </div>
+
+    <div id="reg-err" class="err">Please fill in all required fields. Mobile number must be 10 digits.</div>
+
+    <button class="btn btn-amber btn-full btn-lg" onclick="initPayment()">Pay ₹999 securely &amp; unlock →</button>
+    <div class="pay-secure">
+      <svg width="12" height="14" viewBox="0 0 12 14" fill="none"><rect x="1" y="5" width="10" height="9" rx="1.5" fill="#94a3b8"/><path d="M3.5 5V3.5a2.5 2.5 0 0 1 5 0V5" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg>
+      100% secure &bull; Powered by Razorpay &bull; UPI, Cards, Net Banking accepted
+    </div>
+    <button class="btn btn-ghost" style="margin-top:14px;font-size:13px;padding:8px 16px" onclick="goTo('pg-welcome')">← Back</button>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ PAYING ═══════════════════════════════ -->
+<div id="pg-paying" class="page">
+<div class="shell">
+<div class="card">
+  <div class="paying-screen">
+    <div class="spinner"></div>
+    <h3>Opening secure payment...</h3>
+    <p>Please do not close or refresh this window.</p>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ SECTION INTRO ═══════════════════════════════ -->
+<div id="pg-si" class="page">
+<div class="shell">
+<div class="card fade-up">
+  <div class="hd">
+    <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+      <circle cx="15" cy="9" r="6" fill="#60a5fa"/><circle cx="29" cy="9" r="6" fill="#f59e0b"/>
+      <path d="M4 38C4 25 11 18 15 18L15 38Z" fill="#60a5fa"/>
+      <rect x="19" y="18" width="6" height="20" rx="3" fill="#60a5fa"/>
+      <path d="M25 18C25 18 29 18 33 22C37 26 40 32 40 38L34 38C34 32 31 26 29 24L29 38L25 38Z" fill="#f59e0b"/>
+    </svg>
+    <div><div class="hd-brand" style="font-size:16px">Mentor<em>Me</em></div><div class="hd-sub" id="si-prog"></div></div>
+  </div>
+  <div class="si-body">
+    <div id="si-bdg"></div>
+    <div class="si-icon" id="si-ico"></div>
+    <h1 class="si-title" id="si-title"></h1>
+    <p class="si-sub" id="si-sub"></p>
+    <div class="si-tips">
+      <div class="si-tip-row"><div class="si-bullet"></div><div><strong>30 questions</strong>, randomly selected from our expert question bank — approximately 15 minutes</div></div>
+      <div class="si-tip-row"><div class="si-bullet"></div><div id="si-tip"></div></div>
+      <div class="si-tip-row"><div class="si-bullet"></div><div>Read every question carefully before selecting your answer</div></div>
+    </div>
+    <div class="si-params" id="si-params"></div>
+    <button class="btn btn-lg fade-up" id="si-btn" onclick="beginSection()">Begin section →</button>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ QUESTION ═══════════════════════════════ -->
+<div id="pg-q" class="page">
+<div class="shell">
+<div class="card">
+  <div class="qh">
+    <div class="q-dot" id="q-dot"></div>
+    <span class="q-sec-nm" id="q-snm"></span>
+    <span class="q-param" id="q-pnm"></span>
+    <div class="timer" id="q-timer">15:00</div>
+  </div>
+  <div class="pbar-wrap">
+    <div class="pbar-meta"><span class="pbar-lbl" id="q-plbl">Question 1 of 30</span></div>
+    <div class="pbar-track"><div class="pbar-fill" id="q-pfill" style="width:0%"></div></div>
+  </div>
+  <div class="qb">
+    <div class="q-num" id="q-num"></div>
+    <div class="q-txt" id="q-txt"></div>
+    <div id="q-note"></div>
+    <div class="opts" id="q-opts"></div>
+  </div>
+  <div class="qnav">
+    <span class="q-ct" id="q-ct"></span>
+    <button class="btn btn-navy" id="q-next" onclick="nextQ()" disabled>Next →</button>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════ RESULTS ═══════════════════════════════ -->
+<div id="pg-results" class="page">
+<div class="shell">
+<div class="card fade-up">
+  <div class="hd">
+    <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
+      <circle cx="15" cy="9" r="6" fill="#60a5fa"/><circle cx="29" cy="9" r="6" fill="#f59e0b"/>
+      <path d="M4 38C4 25 11 18 15 18L15 38Z" fill="#60a5fa"/>
+      <rect x="19" y="18" width="6" height="20" rx="3" fill="#60a5fa"/>
+      <path d="M25 18C25 18 29 18 33 22C37 26 40 32 40 38L34 38C34 32 31 26 29 24L29 38L25 38Z" fill="#f59e0b"/>
+    </svg>
+    <div><div class="hd-brand" style="font-size:16px">Mentor<em>Me</em></div><div class="hd-sub">Your results are ready</div></div>
+  </div>
+  <div id="res-body"></div>
+</div>
+</div>
+</div>
+
+<script>
+// ══════════════════════ CONFIG — EDIT THESE ══════════════════════
+const RAZORPAY_KEY = 'rzp_test_XXXXXXXXXXXXXXXXXX'; // Replace with your Razorpay Key ID
+const ORDER_API    = '/api/create-order';            // Your backend endpoint to create Razorpay order
+const AMOUNT_PAISE = 99900;                          // ₹999 in paise
+const WEBHOOK_URL  = '/api/save-submission';         // Optional: save results to your DB
+// ════════════════════════════════════════════════════════════════
+
+const SECS=[
+  {id:'individuality',nm:'Individuality Profile',icon:'🧠',clr:'#1a3a8f',dot:'#2563eb',bdg:'bdg-blue',
+   params:['Emotional Intelligence','Efficiency','Empathy','Engagement','Exploration'],
+   bars:['#1a3a8f','#2563eb','#3b82f6','#60a5fa','#93c5fd'],
+   sub:'Discover your character — your emotional strengths, resilience, curiosity and inner drive.',
+   tip:'<strong>Honesty matters:</strong> choose the response that feels most natural, not the one that sounds best.',
+   prog:'Section 1 of 3 — Individuality Profile'},
+  {id:'skills',nm:'Skill Proficiency',icon:'⚡',clr:'#d97706',dot:'#f59e0b',bdg:'bdg-amber',
+   params:['Logical','Numerical','Mechanical','Verbal','Administrative'],
+   bars:['#d97706','#f59e0b','#b45309','#92400e','#fbbf24'],
+   sub:'Measure your natural reasoning ability across five aptitude areas that shape career success.',
+   tip:'<strong>This section has correct answers</strong> — take your time and give each question your best attempt.',
+   prog:'Section 2 of 3 — Skill Proficiency'},
+  {id:'passion',nm:'Passion Exploration',icon:'🎯',clr:'#15803d',dot:'#16a34a',bdg:'bdg-green',
+   params:['Realistic','Investigative','Artistic','Social','Enterprising','Conventional'],
+   bars:['#15803d','#16a34a','#22c55e','#4ade80','#166534','#065f46'],
+   sub:'Holland\'s globally-validated RIASEC model reveals what truly excites and motivates you.',
+   tip:'<strong>No right or wrong:</strong> choose what genuinely interests you, not what you think you should say.',
+   prog:'Section 3 of 3 — Passion Exploration (RIASEC)'}
+];
+
+const QB={
+  individuality:{
+    'Emotional Intelligence':[
+      {q:"During a stressful exam, you notice your mind going blank. What do you do?",o:["Pause, take a breath, and refocus calmly","Keep writing frantically hoping it comes back","Give up on that question entirely","Feel anxious for the rest of the exam"],a:0},
+      {q:"A close friend is upset about something and comes to talk to you. You:",o:["Listen fully before offering any advice","Immediately suggest solutions","Tell them about your own similar experience","Say they'll be fine and change the subject"],a:0},
+      {q:"You receive harsh, unexpected criticism in front of others. Your first response is to:",o:["Stay calm and ask for specific feedback","Argue back to defend yourself","Go silent and feel deeply hurt","Dismiss the person as wrong"],a:0},
+      {q:"Which of these best describes how you handle a very bad day?",o:["You process the emotions and reset by evening","The bad mood carries into the next few days","You pretend everything is fine even if it isn't","You shut everyone out entirely"],a:0},
+      {q:"When you genuinely disagree with your teacher's decision, you:",o:["Respectfully raise your concern at the right time","Quietly fume but say nothing","Complain loudly to classmates","Accept it without any reflection"],a:0},
+      {q:"A teammate makes a mistake that costs your team the match. You:",o:["Encourage them and focus on the next game","Express frustration directly at them","Stay silent but feel resentful","Blame yourself for not covering for them"],a:0}
+    ],
+    'Efficiency':[
+      {q:"You have 3 assignments due this week. Your first move is to:",o:["List them by deadline and difficulty, then plan time","Start whichever looks easiest","Wait to see what friends are working on first","Deal with each one when it becomes urgent"],a:0},
+      {q:"Your study session is most productive when:",o:["You have a clear goal and remove all distractions","You study with the TV on for background noise","You study only when fully in the mood","You wait until the last possible moment"],a:0},
+      {q:"You realise mid-project that your approach isn't working. You:",o:["Stop, reassess, and adjust the plan quickly","Continue hoping it works out eventually","Start completely from scratch in a panic","Ask someone to just do it for you"],a:0},
+      {q:"After school, the first thing you usually do is:",o:["Review what was covered that day briefly","Jump straight into entertainment","Wait to see what mood you're in","Chat with friends for a couple of hours"],a:0},
+      {q:"When you set a personal goal, you are most likely to:",o:["Break it into weekly milestones and track progress","Set the goal and rely on motivation alone","Tell others about it but not track it","Set goals you know you'll definitely achieve easily"],a:0},
+      {q:"You would describe your approach to deadlines as:",o:["I plan early so I'm never rushing at the end","I perform best under last-minute pressure","I try to be on time but often fall slightly behind","I struggle with deadlines and often need extensions"],a:0}
+    ],
+    'Empathy':[
+      {q:"You notice a classmate sitting alone at lunch looking upset. You:",o:["Go over, sit with them, and gently check in","Notice but feel too awkward to approach","Tell your friends and wonder what happened","Think they probably want to be alone"],a:0},
+      {q:"During a group debate, a quiet student's idea gets talked over. You:",o:["Say 'let's hear what they were saying' and invite them back","Feel bad but stay quiet","Point it out to your friend later","Don't notice — you were focused on the debate"],a:0},
+      {q:"A younger sibling or cousin is scared about their first day at a new school. You:",o:["Reassure them specifically and share your own story","Tell them there's nothing to worry about","Laugh and say they're being dramatic","Say nothing — they'll figure it out"],a:0},
+      {q:"When a friend is going through something difficult, you tend to:",o:["Check in regularly without being asked","Wait for them to reach out to you","Feel helpless and avoid the topic","Offer practical advice even if they didn't ask"],a:0},
+      {q:"Reading a sad news story about someone you don't know, you typically:",o:["Feel genuine concern and reflect on it","Register it briefly and move on","Feel overwhelmed and try to avoid such stories","Feel nothing in particular"],a:0},
+      {q:"A classmate who you find difficult to like is struggling with a subject. You:",o:["Offer help regardless of your personal feelings","Only help if they ask you directly","Silently feel glad they're struggling","Use it as an opportunity to feel superior"],a:0}
+    ],
+    'Engagement':[
+      {q:"During a school lesson on a topic you love, you:",o:["Ask questions beyond what the teacher covers","Follow along attentively but stay quiet","Daydream about related ideas","Secretly research it on your phone instead of listening"],a:0},
+      {q:"When you commit to something — a club, a team, or a project — you:",o:["Show up consistently and give your best every time","Attend when it's convenient for you","Lose interest after the initial excitement fades","Do the minimum required to remain involved"],a:0},
+      {q:"Which best describes how you spend time between activities?",o:["You fill it with something purposeful — reading, creating, practising","You scroll social media or watch content passively","You rest and recharge for the next activity","You look for something to entertain you"],a:0},
+      {q:"When working on a long-term project, you typically:",o:["Stay motivated by tracking progress and celebrating milestones","Start strong but lose energy halfway through","Struggle to begin and sprint at the end","Need someone to push you to keep going"],a:0},
+      {q:"Outside of school, you are involved in:",o:["At least one activity you actively chose and pursue","Activities your parents enrolled you in","Nothing structured outside of school","Whatever your friends happen to be doing"],a:0},
+      {q:"When you encounter a subject you struggle with, you:",o:["Spend extra time on it until you improve","Avoid it as much as possible","Focus only on your strengths instead","Wait for someone to help without seeking it out"],a:0}
+    ],
+    'Exploration':[
+      {q:"You come across an article headline about a topic you've never heard of. You:",o:["Click it immediately — unfamiliar topics are exciting","Read it only if it relates to something you already know","Ignore it entirely","Save it 'for later' but never actually read it"],a:0},
+      {q:"When a teacher teaches something in an unexpected way, you:",o:["Find it fascinating and think about why they chose that approach","Prefer they just teach it the normal way","Feel confused and ask them to go back to basics","Tune out and wait for the standard explanation"],a:0},
+      {q:"Your approach to learning outside school is:",o:["You actively seek out new knowledge through books, videos, or podcasts","You learn when school requires it and not much more","You explore only if something comes up in conversation","You don't think much about learning outside of class"],a:0},
+      {q:"When travelling to a new city or place, you:",o:["Want to explore every corner and learn about its history and culture","Follow the standard tourist spots and nothing more","Prefer to stay in the hotel or familiar areas","Feel overwhelmed by all the unfamiliar things"],a:0},
+      {q:"Your friends would describe your conversation style as:",o:["Full of questions — you always want to understand more deeply","Mostly sharing opinions and not asking many questions","More listening than contributing","Surface-level and easy-going"],a:0},
+      {q:"When you make a mistake, your instinct is to:",o:["Figure out exactly why it happened so it never happens again","Feel bad for a while and move on without deep analysis","Blame external factors and not examine your own role","Avoid situations where that mistake might happen again"],a:0}
+    ]
+  },
+  skills:{
+    'Logical':[
+      {q:"All squares are rectangles. Some rectangles are blue. Which is definitely true?",o:["All squares are blue","Some squares may be blue","No squares are blue","All rectangles are squares"],a:1},
+      {q:"Find the next number: 1, 4, 9, 16, 25, __",o:["30","36","34","32"],a:1},
+      {q:"In a race, Arjun finished before Bala but after Chetan. Who finished last among the three?",o:["Arjun","Bala","Chetan","Cannot be determined"],a:1},
+      {q:"Which of these does NOT belong: 8, 27, 64, 100, 125?",o:["8","27","100","125"],a:2},
+      {q:"If no fish can fly, and some birds can fly, which is definitely true?",o:["Some birds are fish","No birds are fish","Some fish are birds","None of the above are certain"],a:3},
+      {q:"A pattern: ○ ○ △ ○ ○ △ △ ○ ○ △ △ △ — what comes next?",o:["○","△","○ △","○ ○"],a:0}
+    ],
+    'Numerical':[
+      {q:"A mobile costs ₹12,000. It is sold at a 15% profit. What is the selling price?",o:["₹13,600","₹13,800","₹14,000","₹13,200"],a:1},
+      {q:"A pipe fills a tank in 6 hours. What fraction is filled in 2.5 hours?",o:["5/6","5/12","7/12","1/3"],a:1},
+      {q:"The average of 5 numbers is 18. Four of them are 14, 16, 20, 22. What is the fifth?",o:["18","20","16","17"],a:0},
+      {q:"₹8,000 is invested at 5% simple interest per year. Interest earned after 3 years?",o:["₹1,200","₹1,400","₹1,000","₹1,600"],a:0},
+      {q:"A map has scale 1:50,000. A distance of 4cm on the map equals how many km?",o:["2km","20km","0.2km","200km"],a:0},
+      {q:"A tank is 60% full. After adding 90 litres it is 75% full. Capacity of the tank?",o:["400L","500L","600L","450L"],a:2}
+    ],
+    'Mechanical':[
+      {q:"Three gears are in a row: A drives B which drives C. If A rotates clockwise, C rotates:",o:["Clockwise","Anticlockwise","It stops","Same direction as B"],a:0},
+      {q:"A block and tackle pulley system has 4 rope segments supporting a load. The mechanical advantage is:",o:["2","4","8","1"],a:1},
+      {q:"Which bridge design is strongest for the same amount of material?",o:["Flat beam","Arch","Suspension","Truss"],a:3},
+      {q:"Water pressure at the bottom of a full tank compared to the middle is:",o:["Same","Lower","Higher","Zero"],a:2},
+      {q:"A bicycle shifts to a higher gear. The wheel turns:",o:["Fewer times per pedal rotation","More times per pedal rotation","The same times","It stops turning"],a:1},
+      {q:"Which property of a metal makes it useful for electrical wiring?",o:["Hardness","Magnetism","Electrical conductivity","Thermal expansion"],a:2}
+    ],
+    'Verbal':[
+      {q:"Choose the word closest in meaning to METICULOUS:",o:["Careless","Precise","Hasty","Ordinary"],a:1},
+      {q:"'Barking up the wrong tree' means:",o:["Chasing a dog up a tree","Pursuing the wrong solution or suspect","Making a loud noise","Climbing trees incorrectly"],a:1},
+      {q:"Identify the sentence with no grammatical error:",o:["The news are shocking","One of the students have won","Neither of them are ready","Each of the players has performed well"],a:3},
+      {q:"SCULPTOR is to CHISEL as PAINTER is to:",o:["Canvas","Gallery","Brush","Easel"],a:2},
+      {q:"Choose the correctly spelled word:",o:["Occurrence","Occurrance","Occurance","Occurence"],a:0},
+      {q:"The passage states that biodiversity is declining at an alarming rate. The word 'alarming' most closely means:",o:["Encouraging","Steady","Worrying","Gradual"],a:2}
+    ],
+    'Administrative':[
+      {q:"You receive 20 emails. 5 are urgent, 8 are informational, and 7 need a reply within a week. Best first action?",o:["Reply to all 20 immediately","Address the 5 urgent emails first","Archive the informational ones first","Wait until you have time for all of them"],a:0},
+      {q:"You are running a team meeting. Which approach is most productive?",o:["Stick to a clear agenda with time limits per item","Let the conversation flow naturally wherever it goes","Only discuss the single most important issue","Let everyone talk without limits to ensure all voices are heard"],a:0},
+      {q:"The best filing system for shared team documents is:",o:["Known only to the person who created it","Logical, labelled, and usable by everyone","Based on file size or document colour","Updated only when someone can't find a document"],a:1},
+      {q:"You're given a new large responsibility with no clear instructions. You:",o:["Clarify scope, set milestones, and check in regularly","Dive in immediately without planning","Wait for detailed instructions before starting","Ask a colleague to take it on instead"],a:0},
+      {q:"Which is the most effective way to manage recurring tasks?",o:["Use a checklist or system that becomes routine","Rely on memory to remember when they're due","Do them whenever you happen to think of them","Assign them to someone else when possible"],a:0},
+      {q:"A report you submitted has a factual error. The best action is:",o:["Immediately inform the relevant people and issue a correction","Wait to see if anyone notices","Quietly update the document without telling anyone","Blame unclear source information"],a:0}
+    ]
+  },
+  passion:{
+    'Realistic':[
+      {q:"A free Saturday afternoon — which activity excites you most?",o:["Taking apart an old gadget to see how it works","Reading about new scientific discoveries","Sketching or creating something artistic","Catching up with friends over coffee"],a:0},
+      {q:"Which of these careers sounds most genuinely exciting?",o:["Robotics engineer or aircraft technician","Research scientist or neurosurgeon","Film director or fashion designer","School counsellor or clinical psychologist"],a:0},
+      {q:"In a school project on 'The Future of India', you'd most want to work on:",o:["Infrastructure, smart cities, or renewable energy systems","Medical research or space exploration","Media, culture, or the arts","Education reform or social welfare"],a:0},
+      {q:"Which magazine would you read cover to cover?",o:["Autocar India or Popular Mechanics","Science or National Geographic (nature/science edition)","Vogue or Filmfare","Careers360 or psychology magazine"],a:0},
+      {q:"Your ideal field trip is to:",o:["A factory, construction site, or engineering facility","A research lab, science museum, or planetarium","An art gallery, film studio, or music venue","A community centre, hospital, or NGO"],a:0},
+      {q:"Which school subject gives you the most satisfaction?",o:["Physics (especially mechanics) or technical drawing","Biology, chemistry, or advanced maths","Art, music, or creative writing","Social science, psychology, or health studies"],a:0}
+    ],
+    'Investigative':[
+      {q:"Which best describes your thinking style?",o:["I love taking a problem apart and analysing it logically","I prefer expressing ideas in original and creative ways","I enjoy convincing people and building consensus","I like following established processes and getting things right"],a:0},
+      {q:"You have a free weekend. Which would you most enjoy?",o:["Reading deeply about a complex topic that fascinates you","Creating a new painting, song, or piece of writing","Planning and running an event for your community","Organising your study space or personal records perfectly"],a:0},
+      {q:"Which TV show would you watch voluntarily?",o:["A documentary about quantum physics or deep ocean life","A behind-the-scenes show about how films or music are made","A show about extraordinary entrepreneurs or political leaders","A show about people mastering highly technical administrative roles"],a:0},
+      {q:"In your friend group, you're usually the one who:",o:["Researches things thoroughly before the group makes a decision","Comes up with the most creative and original ideas","Organises everyone and drives the group to action","Makes sure the plan is realistic and everyone follows through"],a:0},
+      {q:"Which school project would you find most intellectually satisfying?",o:["Testing a hypothesis with real data and presenting findings","Designing a visual campaign or creative performance","Pitching and running a student business","Developing an efficient system for managing school resources"],a:0},
+      {q:"You feel the most alive intellectually when:",o:["You're trying to understand how or why something works","You're creating something that didn't exist before","You're persuading someone or negotiating a great outcome","You're completing a complex task with precision and accuracy"],a:0}
+    ],
+    'Artistic':[
+      {q:"When you have to express an idea or opinion, you most naturally want to:",o:["Create something — a drawing, story, video, or song — to express it","Back it up with research and data","Persuade others to see your point of view","Lay it out in a structured, logical format"],a:0},
+      {q:"Which of these would feel like your ideal Saturday?",o:["Working on a creative project with no deadline or rules","Running an experiment or solving a set of hard problems","Organising an event, meeting new people, and being in charge","Sorting, planning, and getting your personal life in order"],a:0},
+      {q:"In school, the feedback you love receiving most is:",o:["'Your work is so creative and original — nobody thinks like you'","'Your analysis and logic are exceptional'","'You're a born leader who knows how to inspire people'","'You're incredibly organised, reliable, and detail-oriented'"],a:0},
+      {q:"Which career trajectory sounds most fulfilling?",o:["Becoming a respected artist, writer, designer, or filmmaker","Becoming a renowned scientist or academic researcher","Building a business empire or entering political leadership","Running a highly efficient, respected organisation"],a:0},
+      {q:"When you face a difficult problem, your instinct is to:",o:["Approach it imaginatively — look for unconventional solutions","Break it down analytically and work through it systematically","Rally others around you and lead the charge","Follow proven methods and trusted procedures"],a:0},
+      {q:"Given a free hour and all the supplies you could want, you'd spend it:",o:["Creating — drawing, writing, composing, filming, crafting","Researching a topic you've always been curious about","Brainstorming a business idea or planning a project","Organising, filing, or optimising a system in your life"],a:0}
+    ],
+    'Social':[
+      {q:"You feel most genuinely fulfilled at the end of a day when:",o:["You helped someone work through a real problem","You solved something intellectually challenging","You achieved a goal or closed a deal","You completed everything on your to-do list perfectly"],a:0},
+      {q:"Your friends and family are most likely to come to you when they need:",o:["Someone to listen without judging and offer support","A well-researched answer to a difficult question","Someone decisive and energetic to take charge","Help organising or managing something complex"],a:0},
+      {q:"Which of these roles would you find most naturally satisfying?",o:["School counsellor, teacher, or mentor","Research scientist, data analyst, or doctor","Entrepreneur, politician, or marketing director","Accountant, project manager, or analyst"],a:0},
+      {q:"If you could make a documentary about anything, it would be about:",o:["People who overcame incredible hardship through community and support","A scientific mystery or historical event","A visionary entrepreneur or political movement","How highly efficient systems and organisations actually work"],a:0},
+      {q:"In a team project, you naturally:",o:["Check in on how every team member is feeling and doing","Focus on the research and technical quality of the output","Take the lead on strategy and direction","Handle the timelines, documents, and coordination"],a:0},
+      {q:"The charity or cause you'd most want to work for is:",o:["One that directly helps people in mental health or poverty","One that funds scientific research and medical breakthroughs","One that advocates for policy change and social justice","One that builds efficient systems to maximise charitable impact"],a:0}
+    ],
+    'Enterprising':[
+      {q:"When you see a problem in your school or community, your instinct is:",o:["Start something — organise people and fix it","Research the root cause in depth","Raise awareness through a creative campaign","Document the problem and report it to the right authority"],a:0},
+      {q:"In a group, you are most naturally the person who:",o:["Sets the vision, rallies the team, and drives results","Provides the depth of knowledge everyone relies on","Brings the most original and creative solutions","Keeps the group on track, on time, and organised"],a:0},
+      {q:"Which book title would you pick up first?",o:["How to Build a Business from Nothing","The Science of Everything — A Visual Encyclopedia","The Art of Creative Expression","The Perfect System — Mastering Productivity"],a:0},
+      {q:"When you think about your future, what excites you most?",o:["Building something of your own — a company, a movement, a legacy","Mastering a field so deeply that you become a world expert","Creating a body of work that outlasts you — art, writing, design","Running a complex and highly respected organisation efficiently"],a:0},
+      {q:"Which skill do you most want to develop over the next 5 years?",o:["Negotiation, leadership, and the ability to sell ideas","Deep expertise in a technical or scientific domain","Creative mastery in your chosen art form","Precision, process design, and operational excellence"],a:0},
+      {q:"Your biggest fear about your future career is:",o:["Being in a role with no power, influence, or visibility","Never getting to go deep enough into what you love","Having to do uncreative, repetitive work indefinitely","Working in an unstructured environment with no clear systems"],a:0}
+    ],
+    'Conventional':[
+      {q:"Which of these tasks would you find most deeply satisfying?",o:["Producing a completely accurate, perfectly formatted report","Conducting original research and finding something new","Creating a design that has never been done before","Leading a team through a high-stakes, fast-moving challenge"],a:0},
+      {q:"When working on a long project, you prefer:",o:["A clear structure, set milestones, and defined roles for everyone","Freedom to explore and follow the work wherever it leads","Creative latitude to make it look and feel exceptional","The authority to make decisions and redirect as needed"],a:0},
+      {q:"Which subject do you find most naturally engaging?",o:["Accountancy, computer science, or statistics","Physics, chemistry, or advanced biology","Fine arts, literature, or media studies","Business studies, economics, or marketing"],a:0},
+      {q:"Your classmates rely on you most for:",o:["Keeping everything organised and making sure nothing is missed","Answering the hardest academic questions correctly","Coming up with the most creative ideas no one else thought of","Making final decisions and leading the group forward"],a:0},
+      {q:"Which future role sounds most naturally like you?",o:["Chief Financial Officer, data analyst, or civil servant","Professor, scientist, or subject-matter expert","Creative director, novelist, or award-winning designer","CEO, politician, or prominent entrepreneur"],a:0},
+      {q:"Your ideal work environment is one where:",o:["Processes are clear, outputs are measurable, and accuracy is valued","You're constantly faced with new unsolved problems","You have complete freedom to create without limits or rules","You're in charge and responsible for high-level outcomes"],a:0}
+    ]
+  }
+};
+
+const TRAITS={
+  'Emotional Intelligence':'You read the emotional landscape of a room and respond with maturity. A superpower in any people-first career.',
+  'Efficiency':'You accomplish more in less time by working smart. Teams and organisations are built around people like you.',
+  'Empathy':'You feel what others feel and respond with genuine care. This rare quality unlocks careers where people matter most.',
+  'Engagement':'You bring full energy to what you commit to. This intensity is what separates good from extraordinary.',
+  'Exploration':'Your curiosity has no off switch. You\'ll thrive in any field that rewards lifelong learning and fresh thinking.',
+  'Logical':'You see structure and patterns where others see confusion. A core analytical advantage for complex careers.',
+  'Numerical':'Numbers are a natural language for you — a formidable edge in data, finance, science, and technology.',
+  'Mechanical':'You understand how things work and enjoy creating tangible solutions. Engineering and applied science call to you.',
+  'Verbal':'Your command of language is precise and powerful. Communication-heavy careers will come naturally to you.',
+  'Administrative':'You bring order, accuracy, and reliability to everything. Every great organisation has someone exactly like you at its core.',
+  'Realistic':'You love building, fixing, and creating tangible things. A hands-on doer who produces real results in the real world.',
+  'Investigative':'Your mind lives in questions and analysis. Research, science, and deep expertise are your natural territory.',
+  'Artistic':'You see the world differently and express it in ways that move people. Creativity is not just a skill — it\'s your identity.',
+  'Social':'You energise and uplift everyone around you. Your career will be built on making genuine differences in people\'s lives.',
+  'Enterprising':'You are a natural leader, risk-taker, and visionary. You don\'t wait for opportunities — you create them.',
+  'Conventional':'You deliver precision, dependability, and structure. The unsung hero that every high-performing organisation needs.'
+};
+
+const CAREER={
+  'Realistic':'Engineering, architecture, robotics, aviation, agriculture, or environmental science. You are someone who builds the infrastructure the rest of the world depends on.',
+  'Investigative':'Medicine, scientific research, data science, biotechnology, or academia. Your curiosity and analytical depth will push the boundaries of what humanity knows.',
+  'Artistic':'Design, film, writing, music, animation, or advertising. You shape culture — how the world looks, thinks, and feels.',
+  'Social':'Teaching, counselling, clinical psychology, social work, or public health. You make individual lives and entire communities meaningfully better.',
+  'Enterprising':'Entrepreneurship, corporate leadership, law, marketing, or politics. You don\'t lead teams — you lead movements and build legacies.',
+  'Conventional':'Finance, chartered accountancy, data analytics, IT systems, or public administration. You are the backbone that holds every great organisation together with precision and trust.'
+};
+
+// ══════════════════════ STATE ══════════════════════
+let student={}, allQs=[], answers=[], scores={}, curSec=0, curQ=0, tmrInt=null, tLeft=0;
+
+// ══════════════════════ NAV ══════════════════════
+function goTo(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));document.getElementById(id).classList.add('on');window.scrollTo(0,0);}
+
+// ══════════════════════ PAYMENT ══════════════════════
+function initPayment(){
+  const name=document.getElementById('r-name').value.trim();
+  const cls=document.getElementById('r-class').value;
+  const school=document.getElementById('r-school').value.trim();
+  const phone=document.getElementById('r-phone').value.trim();
+  const err=document.getElementById('reg-err');
+  if(!name||!cls||!school||!phone||phone.length<10){err.style.display='block';return;}
+  err.style.display='none';
+  student={name,cls:parseInt(cls),school,phone,email:document.getElementById('r-email').value.trim(),city:document.getElementById('r-city').value.trim()};
+  goTo('pg-paying');
+
+  // ══ LIVE RAZORPAY FLOW ══
+  // Step 1: call your backend to create a Razorpay order
+  // Step 2: open Razorpay checkout with the order_id
+  // Step 3: on success, call unlockTest()
+  //
+  // fetch(ORDER_API, {
+  //   method: 'POST',
+  //   headers: {'Content-Type': 'application/json'},
+  //   body: JSON.stringify({amount: AMOUNT_PAISE, currency: 'INR', receipt: 'rcpt_' + Date.now()})
+  // })
+  // .then(r => r.json())
+  // .then(order => {
+  //   const options = {
+  //     key: RAZORPAY_KEY,
+  //     amount: AMOUNT_PAISE,
+  //     currency: 'INR',
+  //     name: 'MentorMe',
+  //     description: 'Career Discovery Assessment',
+  //     order_id: order.id,
+  //     handler: function(response) {
+  //       // Optional: verify payment signature on your backend
+  //       unlockTest();
+  //     },
+  //     prefill: {name: student.name, contact: student.phone, email: student.email},
+  //     theme: {color: '#0f2460'},
+  //     modal: {ondismiss: function(){ goTo('pg-register'); }}
+  //   };
+  //   const rzp = new Razorpay(options);
+  //   rzp.on('payment.failed', () => { alert('Payment failed. Please try again.'); goTo('pg-register'); });
+  //   rzp.open();
+  // })
+  // .catch(() => { alert('Could not connect. Please check your internet connection.'); goTo('pg-register'); });
+
+  // DEMO MODE: simulates 2s payment delay then unlocks
+  setTimeout(unlockTest, 2000);
+}
+
+function unlockTest(){
+  buildBank();
+  curSec=0;
+  showSI();
+}
+
+// ══════════════════════ QUESTION BANK ══════════════════════
+function buildBank(){
+  allQs=[];
+  const diff=student.cls<=7?'easy':(student.cls>=11?'hard':'mid');
+  SECS.forEach((sec,si)=>{
+    const pool=[];
+    sec.params.forEach(param=>{
+      const bank=[...(QB[sec.id][param]||[])].sort(()=>Math.random()-.5);
+      const n=sec.id==='passion'?5:6;
+      bank.slice(0,n).forEach(q=>pool.push({...q,si,param,diff:si===1?diff:'n'}));
+    });
+    pool.sort(()=>Math.random()-.5);
+    allQs.push(pool.slice(0,30));
+  });
+}
+
+// ══════════════════════ SECTION INTRO ══════════════════════
+function showSI(){
+  const s=SECS[curSec];
+  document.getElementById('si-prog').textContent=s.prog;
+  document.getElementById('si-bdg').innerHTML=`<span class="bdg ${s.bdg}" style="margin-bottom:14px;display:inline-block">Section ${curSec+1} of 3</span>`;
+  document.getElementById('si-ico').textContent=s.icon;
+  document.getElementById('si-title').textContent=s.nm;
+  document.getElementById('si-sub').textContent=s.sub;
+  document.getElementById('si-tip').innerHTML=s.tip;
+  document.getElementById('si-params').innerHTML=s.params.map(p=>`<span class="bdg ${s.bdg}">${p}</span>`).join('');
+  const btn=document.getElementById('si-btn');
+  btn.className=`btn btn-lg fade-up btn-${curSec===1?'amber':'navy'}`;
+  btn.textContent=`Begin ${s.nm} →`;
+  goTo('pg-si');
+}
+
+function beginSection(){
+  curQ=0;answers=new Array(30).fill(null);
+  if(!scores[SECS[curSec].id])scores[SECS[curSec].id]={};
+  tLeft=900;startTmr();renderQ();goTo('pg-q');
+}
+
+// ══════════════════════ TIMER ══════════════════════
+function startTmr(){
+  clearInterval(tmrInt);
+  tmrInt=setInterval(()=>{
+    tLeft--;
+    const m=Math.floor(tLeft/60),s=tLeft%60;
+    document.getElementById('q-timer').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+    if(tLeft<=0){clearInterval(tmrInt);nextQ();}
+  },1000);
+}
+
+// ══════════════════════ RENDER QUESTION ══════════════════════
+function renderQ(){
+  const sec=SECS[curSec],q=allQs[curSec][curQ];
+  document.getElementById('q-dot').style.background=sec.dot;
+  document.getElementById('q-snm').textContent=sec.nm;
+  document.getElementById('q-pnm').textContent=q.param;
+  document.getElementById('q-num').textContent=`Question ${curQ+1} of 30`;
+  document.getElementById('q-txt').textContent=q.q;
+  document.getElementById('q-plbl').textContent=`Question ${curQ+1} of 30`;
+  document.getElementById('q-pfill').style.width=`${Math.round((curQ/30)*100)}%`;
+  document.getElementById('q-ct').textContent=`${curQ+1} / 30`;
+  const noteEl=document.getElementById('q-note');
+  noteEl.innerHTML=(q.diff==='easy'&&student.cls<=7)?'<div class="q-note">Adapted for your level</div>':
+    (q.diff==='hard'&&student.cls>=11)?'<div class="q-note">Advanced level</div>':'';
+  const optsEl=document.getElementById('q-opts');optsEl.innerHTML='';
+  ['A','B','C','D'].forEach((l,i)=>{
+    const btn=document.createElement('button');
+    btn.className='opt'+(answers[curQ]===i?' sel':'');
+    btn.innerHTML=`<span class="opt-l">${l}</span>${q.o[i]}`;
+    btn.onclick=()=>pickOpt(i);
+    optsEl.appendChild(btn);
+  });
+  const nb=document.getElementById('q-next');
+  nb.textContent=curQ===29?'Finish section →':'Next →';
+  nb.disabled=answers[curQ]===null;
+}
+
+function pickOpt(i){
+  answers[curQ]=i;
+  document.querySelectorAll('.opt').forEach((b,j)=>b.classList.toggle('sel',j===i));
+  document.getElementById('q-next').disabled=false;
+}
+
+// ══════════════════════ SCORING ══════════════════════
+function scoreQ(){
+  const s=SECS[curSec],q=allQs[curSec][curQ],p=q.param;
+  if(!scores[s.id][p])scores[s.id][p]={c:0,t:0};
+  scores[s.id][p].t++;
+  if(answers[curQ]===0)scores[s.id][p].c++;
+}
+
+function nextQ(){
+  if(answers[curQ]===null&&tLeft>0)return;
+  if(answers[curQ]===null)answers[curQ]=-1;
+  scoreQ();
+  if(curQ<29){curQ++;renderQ();}
+  else{
+    clearInterval(tmrInt);
+    if(curSec<2){curSec++;showSI();}
+    else buildResults();
+  }
+}
+
+// ══════════════════════ RESULTS ══════════════════════
+function buildResults(){
+  const fn=student.name.split(' ')[0];
+  const ini=student.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  let tot=0,totQ=0;
+  Object.values(scores).forEach(s=>Object.values(s).forEach(p=>{tot+=p.c;totQ+=p.t;}));
+  const ovr=Math.round((tot/Math.max(totQ,1))*100);
+
+  let html=`<div class="res-hero">
+    <div class="res-avatar">${ini}</div>
+    <h2 style="margin-bottom:5px">Outstanding, ${fn}!</h2>
+    <p style="margin-bottom:16px">You've completed all 3 sections. Your MentorMe counsellor is preparing your personalised career report.</p>
+    <div class="score-strip">
+      <div class="sc-card"><div class="sc-n">${ovr}%</div><div class="sc-l">Overall</div></div>
+      <div class="sc-card"><div class="sc-n" style="color:var(--amber2)">Class ${student.cls}</div><div class="sc-l">Your class</div></div>
+      <div class="sc-card"><div class="sc-n">90</div><div class="sc-l">Completed</div></div>
+    </div>
+  </div>`;
+
+  SECS.forEach(sec=>{
+    const ss=scores[sec.id]||{};
+    let top='',topPct=-1;
+    sec.params.forEach(p=>{const d=ss[p]||{c:0,t:1};const pct=(d.c/Math.max(d.t,1))*100;if(pct>topPct){topPct=pct;top=p;}});
+    html+=`<div class="res-sec"><div class="res-sec-hd">
+      <span class="res-sec-icon">${sec.icon}</span>
+      <span class="res-sec-nm">${sec.nm}</span>
+      <span class="bdg ${sec.bdg}" style="margin-left:auto">${Math.round(topPct)}%</span>
+    </div>`;
+    sec.params.forEach((p,pi)=>{
+      const d=ss[p]||{c:0,t:1};const pct=Math.round((d.c/Math.max(d.t,1))*100);
+      html+=`<div class="p-row"><div class="p-lbl">${p}</div>
+        <div class="p-track"><div class="p-fill" style="width:${pct}%;background:${sec.bars[pi]}"></div></div>
+        <div class="p-pct">${pct}%</div></div>`;
+    });
+    html+=`<div class="top-trait"><div class="tt-lbl">Strongest trait</div>
+      <div class="tt-nm">${top}</div>
+      <div class="tt-desc">${TRAITS[top]||''}</div>
+    </div></div>`;
+  });
+
+  const tp=topPassion();
+  html+=`<div class="career-box">
+    <div class="career-lbl">Your career direction</div>
+    <div class="career-nm">${tp} personality type</div>
+    <div class="career-txt">${CAREER[tp]||''}</div>
+  </div>
+
+  <div class="report-pending">
+    <div class="rp-icon">📬</div>
+    <div class="rp-title">Your personalised PDF report is being prepared</div>
+    <p class="rp-sub">A MentorMe career counsellor will review your complete results and send you a detailed, personalised career report within <strong>48 hours</strong>${student.email?' to '+student.email:''}. Watch your inbox — and your spam folder just in case!</p>
+  </div>
+
+  <div class="res-actions">
+    <p style="font-size:13px;color:var(--t2);text-align:center;max-width:420px;line-height:1.7">Questions about your results? Our counsellors are available on WhatsApp — mention your name and the date you took the assessment.</p>
+    <a href="https://wa.me/91XXXXXXXXXX?text=Hi+MentorMe+team!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(student.name)}+,+Class+${student.cls}).+Looking+forward+to+my+report!" target="_blank" class="btn btn-navy">Chat with a MentorMe counsellor →</a>
+    <button class="btn btn-ghost" onclick="goTo('pg-welcome')" style="font-size:13px;padding:9px 18px">Back to home</button>
+  </div>`;
+
+  document.getElementById('res-body').innerHTML=html;
+  goTo('pg-results');
+
+  // Save submission to backend (optional)
+  // fetch(WEBHOOK_URL, {
+  //   method:'POST',
+  //   headers:{'Content-Type':'application/json'},
+  //   body: JSON.stringify({student, scores, completedAt: new Date().toISOString()})
+  // });
+
+  setTimeout(()=>{
+    document.querySelectorAll('.p-fill').forEach(el=>{const w=el.style.width;el.style.width='0%';setTimeout(()=>{el.style.width=w;},80);});
+  },300);
+}
+
+function topPassion(){
+  const ps=scores['passion']||{};let top='Social',topP=-1;
+  Object.entries(ps).forEach(([p,d])=>{const pct=(d.c/Math.max(d.t,1))*100;if(pct>topP){topP=pct;top=p;}});
+  return top;
+}
+</script>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ADMIN PAGES
+════════════════════════════════════════════════════════════ -->
+
+<!-- ADMIN LOGIN -->
+<div id="pg-admin-login" class="page">
+<div class="adm-login fade-up">
+  <div class="hd" style="flex-direction:column;text-align:center;padding:28px 24px 18px;gap:8px">
+    <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+      <circle cx="15" cy="9" r="6" fill="#60a5fa"/><circle cx="29" cy="9" r="6" fill="#f59e0b"/>
+      <path d="M4 38C4 25 11 18 15 18L15 38Z" fill="#60a5fa"/>
+      <rect x="19" y="18" width="6" height="20" rx="3" fill="#60a5fa"/>
+      <path d="M25 18C25 18 29 18 33 22C37 26 40 32 40 38L34 38C34 32 31 26 29 24L29 38L25 38Z" fill="#f59e0b"/>
+    </svg>
+    <div class="hd-brand" style="font-size:18px">Mentor<em>Me</em> <span style="font-size:13px;color:#93c5fd;font-weight:400">Admin</span></div>
+    <div class="hd-sub">Restricted access — authorised personnel only</div>
+  </div>
+  <div class="adm-login-body">
+    <h2 style="margin-bottom:5px;text-align:center">Admin sign in</h2>
+    <p style="text-align:center;margin-bottom:20px">Only <strong>admin@mentormeright.in</strong> is authorised to access this panel.</p>
+    <div id="adm-login-err" class="adm-login-err"></div>
+    <button class="btn btn-navy btn-full" style="gap:10px" onclick="adminGoogleSignIn()">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.706A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.706V4.962H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.038l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.962L3.964 6.294C4.672 4.167 6.656 3.58 9 3.58z"/></svg>
+      Sign in with Google
+    </button>
+    <p style="text-align:center;font-size:11px;color:var(--t3);margin-top:14px">Use your admin@mentormeright.in Google account</p>
+    <button class="btn btn-ghost" style="margin-top:16px;font-size:12px;padding:7px 14px;width:100%" onclick="goTo('pg-welcome')">← Back to student portal</button>
+  </div>
+</div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="pg-admin" class="page">
+
+  <!-- Top nav bar -->
+  <div class="adm-topbar">
+    <div class="adm-topbar-brand">
+      <svg width="28" height="28" viewBox="0 0 44 44" fill="none">
+        <circle cx="15" cy="9" r="6" fill="#60a5fa"/><circle cx="29" cy="9" r="6" fill="#f59e0b"/>
+        <path d="M4 38C4 25 11 18 15 18L15 38Z" fill="#60a5fa"/>
+        <rect x="19" y="18" width="6" height="20" rx="3" fill="#60a5fa"/>
+        <path d="M25 18C25 18 29 18 33 22C37 26 40 32 40 38L34 38C34 32 31 26 29 24L29 38L25 38Z" fill="#f59e0b"/>
+      </svg>
+      <span>Mentor<em>Me</em> <span style="font-weight:400;color:#64748b;font-size:12px">Admin</span></span>
+    </div>
+    <div class="adm-nav-tab active" onclick="switchAdmTab('tab-overview',this)">Overview</div>
+    <div class="adm-nav-tab" onclick="switchAdmTab('tab-submissions',this)">Submissions</div>
+    <div class="adm-nav-tab" onclick="switchAdmTab('tab-pending',this)">Pending Reports</div>
+    <button class="adm-signout" onclick="adminSignOut()">Sign out</button>
+  </div>
+
+  <!-- ── OVERVIEW TAB ── -->
+  <div id="tab-overview" class="adm-tab-content on">
+  <div class="adm-shell">
+    <div style="margin-bottom:22px;padding-top:8px">
+      <div class="adm-page-title">Dashboard Overview</div>
+      <div class="adm-page-sub" id="adm-welcome-line">Welcome back. Here's your MentorMe snapshot.</div>
+    </div>
+    <div class="stat-row" id="stat-row">
+      <div class="stat-card"><div class="adm-spinner" style="width:20px;height:20px;border-width:2px"></div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="tbl-wrap">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--bdr);font-size:14px;font-weight:700;color:var(--navy)">Recent submissions</div>
+        <div id="recent-list" style="padding:8px 0"><div class="adm-loading"><div class="adm-spinner"></div>Loading...</div></div>
+      </div>
+      <div class="tbl-wrap">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--bdr);font-size:14px;font-weight:700;color:var(--navy)">Top career types</div>
+        <div id="career-chart" style="padding:16px"></div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- ── SUBMISSIONS TAB ── -->
+  <div id="tab-submissions" class="adm-tab-content">
+  <div class="adm-shell">
+    <div style="margin-bottom:22px;padding-top:8px">
+      <div class="adm-page-title">All Submissions</div>
+      <div class="adm-page-sub">Every student who has completed the assessment. Click a row to view full scores.</div>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-toolbar">
+        <input class="tbl-search" id="tbl-search" type="text" placeholder="Search by name, school, city…" oninput="filterTable()"/>
+        <select class="tbl-filter" id="tbl-filter-class" onchange="filterTable()">
+          <option value="">All classes</option>
+          <option value="6">Class 6</option><option value="7">Class 7</option>
+          <option value="8">Class 8</option><option value="9">Class 9</option>
+          <option value="10">Class 10</option><option value="11">Class 11</option>
+          <option value="12">Class 12</option>
+        </select>
+        <select class="tbl-filter" id="tbl-filter-status" onchange="filterTable()">
+          <option value="">All statuses</option>
+          <option value="pending">Report pending</option>
+          <option value="sent">Report sent</option>
+        </select>
+        <button class="btn btn-navy tbl-export" onclick="exportCSV()">Export CSV</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Student</th><th>Class</th><th>City</th>
+            <th>Overall %</th><th>Top Interest</th><th>Date</th>
+            <th>Report</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="submissions-tbody">
+            <tr><td colspan="9"><div class="adm-loading"><div class="adm-spinner"></div>Loading submissions…</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:12px 20px;border-top:1px solid var(--bdr);font-size:12px;color:var(--t3)" id="tbl-count"></div>
+    </div>
+  </div>
+  </div>
+
+  <!-- ── PENDING TAB ── -->
+  <div id="tab-pending" class="adm-tab-content">
+  <div class="adm-shell">
+    <div style="margin-bottom:22px;padding-top:8px">
+      <div class="adm-page-title">Pending Reports</div>
+      <div class="adm-page-sub">Students waiting for their counsellor PDF report. Download, send, then mark as sent.</div>
+    </div>
+    <div class="tbl-wrap">
+      <div class="tbl-toolbar">
+        <span style="font-size:13px;font-weight:600;color:var(--t2)" id="pending-count">Loading…</span>
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button class="btn btn-amber tbl-export" onclick="markAllSent()" style="font-size:12px;padding:7px 14px">Mark all as sent</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr>
+            <th>Student</th><th>Class</th><th>Parent Email</th><th>Phone</th>
+            <th>Overall %</th><th>Top Interest</th><th>Submitted</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="pending-tbody">
+            <tr><td colspan="8"><div class="adm-loading"><div class="adm-spinner"></div>Loading…</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</div><!-- end pg-admin -->
+
+<!-- STUDENT DETAIL MODAL -->
+<div class="modal-overlay" id="detail-modal" onclick="closeModal(event)">
+<div class="modal">
+  <div class="modal-hd">
+    <div>
+      <div style="font-size:16px;font-weight:700;color:var(--navy)" id="modal-name"></div>
+      <div style="font-size:12px;color:var(--t2)" id="modal-meta"></div>
+    </div>
+    <button class="modal-close" onclick="closeModal()">✕</button>
+  </div>
+  <div class="modal-body" id="modal-body"></div>
+</div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+//  FIREBASE CONFIG — Replace with YOUR project values
+//  Get these from Firebase Console → Project Settings
+// ══════════════════════════════════════════════════
+const FB_CONFIG = {
+  apiKey:            "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+  authDomain:        "mentormeright.firebaseapp.com",
+  projectId:         "mentormeright",
+  storageBucket:     "mentormeright.appspot.com",
+  messagingSenderId: "000000000000",
+  appId:             "1:000000000000:web:xxxxxxxxxxxxxxxxxxxxxx"
+};
+// Authorised admin email — only this account can access the admin panel
+const ADMIN_EMAIL = "admin@mentormeright.in";
+// ══════════════════════════════════════════════════
+
+let fbApp, fbAuth, fbDb, admUser=null, allSubmissions=[], filteredRows=[];
+
+function initFirebase(){
+  if(fbApp) return;
+  fbApp  = firebase.initializeApp(FB_CONFIG);
+  fbAuth = firebase.auth();
+  fbDb   = firebase.firestore();
+  fbAuth.onAuthStateChanged(u=>{
+    if(u && u.email===ADMIN_EMAIL){admUser=u;if(document.getElementById('pg-admin').classList.contains('on'))loadAdminData();}
+    else admUser=null;
+  });
+}
+
+// ── Save submission to Firestore ──────────────────
+function saveSubmission(studentData, scoresData){
+  initFirebase();
+  const tp=topPassion();
+  let tot=0,totQ=0;
+  Object.values(scoresData).forEach(s=>Object.values(s).forEach(p=>{tot+=p.c;totQ+=p.t;}));
+  const ovr=Math.round((tot/Math.max(totQ,1))*100);
+  const doc={
+    student: studentData,
+    scores:  scoresData,
+    topPassion: tp,
+    overall: ovr,
+    reportStatus: 'pending',
+    submittedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    submittedAtISO: new Date().toISOString()
+  };
+  return fbDb.collection('submissions').add(doc)
+    .then(ref=>{ console.log('Saved to Firestore:', ref.id); return ref.id; })
+    .catch(e=>{ console.warn('Firestore save failed (demo mode):', e.message); return null; });
+}
+
+// ── ADMIN AUTH ────────────────────────────────────
+function adminGoogleSignIn(){
+  initFirebase();
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({login_hint: ADMIN_EMAIL, hd: 'mentormeright.in'});
+  fbAuth.signInWithPopup(provider).then(result=>{
+    const email = result.user.email;
+    if(email !== ADMIN_EMAIL){
+      fbAuth.signOut();
+      document.getElementById('adm-login-err').style.display='block';
+      document.getElementById('adm-login-err').textContent=`Access denied. Only ${ADMIN_EMAIL} is authorised.`;
+      return;
+    }
+    admUser = result.user;
+    goTo('pg-admin');
+    loadAdminData();
+  }).catch(e=>{
+    document.getElementById('adm-login-err').style.display='block';
+    document.getElementById('adm-login-err').textContent='Sign-in failed: '+e.message;
+  });
+}
+
+function adminSignOut(){
+  if(fbAuth) fbAuth.signOut();
+  admUser=null;
+  goTo('pg-welcome');
+}
+
+// ── LOAD ADMIN DATA ───────────────────────────────
+function loadAdminData(){
+  if(!fbDb){ renderDemoData(); return; }
+  document.getElementById('adm-welcome-line').textContent=`Welcome back, ${(admUser&&admUser.displayName)||'Admin'}. Here's your MentorMe snapshot.`;
+  fbDb.collection('submissions').orderBy('submittedAt','desc').get()
+    .then(snap=>{
+      allSubmissions = snap.docs.map(d=>({id:d.id,...d.data()}));
+      renderStats();
+      renderRecentList();
+      renderCareerChart();
+      renderSubmissionsTable(allSubmissions);
+      renderPendingTable();
+    })
+    .catch(e=>{ console.warn('Firestore read error:', e); renderDemoData(); });
+}
+
+function renderDemoData(){
+  // Fallback demo data when Firebase isn't configured
+  allSubmissions=[
+    {id:'demo1',student:{name:'Priya Sharma',cls:10,school:'DPS Hyderabad',city:'Hyderabad',phone:'9876543210',email:'parent1@email.com'},scores:{individuality:{'Emotional Intelligence':{c:5,t:6},'Efficiency':{c:4,t:6},'Empathy':{c:6,t:6},'Engagement':{c:4,t:6},'Exploration':{c:5,t:6}},skills:{'Logical':{c:4,t:6},'Numerical':{c:5,t:6},'Mechanical':{c:3,t:6},'Verbal':{c:5,t:6},'Administrative':{c:4,t:6}},passion:{'Realistic':{c:2,t:5},'Investigative':{c:4,t:5},'Artistic':{c:3,t:5},'Social':{c:5,t:5},'Enterprising':{c:3,t:5},'Conventional':{c:2,t:5}}},topPassion:'Social',overall:76,reportStatus:'pending',submittedAtISO:new Date(Date.now()-86400000).toISOString()},
+    {id:'demo2',student:{name:'Arjun Mehta',cls:9,school:'Kendriya Vidyalaya',city:'Pune',phone:'9123456789',email:'parent2@email.com'},scores:{individuality:{'Emotional Intelligence':{c:4,t:6},'Efficiency':{c:5,t:6},'Empathy':{c:3,t:6},'Engagement':{c:5,t:6},'Exploration':{c:6,t:6}},skills:{'Logical':{c:6,t:6},'Numerical':{c:5,t:6},'Mechanical':{c:5,t:6},'Verbal':{c:4,t:6},'Administrative':{c:3,t:6}},passion:{'Realistic':{c:3,t:5},'Investigative':{c:5,t:5},'Artistic':{c:2,t:5},'Social':{c:2,t:5},'Enterprising':{c:4,t:5},'Conventional':{c:2,t:5}}},topPassion:'Investigative',overall:81,reportStatus:'sent',submittedAtISO:new Date(Date.now()-172800000).toISOString()},
+    {id:'demo3',student:{name:'Sneha Reddy',cls:11,school:'Narayana Junior College',city:'Hyderabad',phone:'9988776655',email:'parent3@email.com'},scores:{individuality:{'Emotional Intelligence':{c:5,t:6},'Efficiency':{c:3,t:6},'Empathy':{c:4,t:6},'Engagement':{c:5,t:6},'Exploration':{c:4,t:6}},skills:{'Logical':{c:3,t:6},'Numerical':{c:4,t:6},'Mechanical':{c:2,t:6},'Verbal':{c:5,t:6},'Administrative':{c:4,t:6}},passion:{'Realistic':{c:1,t:5},'Investigative':{c:2,t:5},'Artistic':{c:5,t:5},'Social':{c:4,t:5},'Enterprising':{c:4,t:5},'Conventional':{c:2,t:5}}},topPassion:'Artistic',overall:69,reportStatus:'pending',submittedAtISO:new Date(Date.now()-3600000).toISOString()}
+  ];
+  renderStats(); renderRecentList(); renderCareerChart();
+  renderSubmissionsTable(allSubmissions); renderPendingTable();
+}
+
+// ── STATS ─────────────────────────────────────────
+function renderStats(){
+  const total=allSubmissions.length;
+  const pending=allSubmissions.filter(s=>s.reportStatus==='pending').length;
+  const sent=allSubmissions.filter(s=>s.reportStatus==='sent').length;
+  const avgOvr=total?Math.round(allSubmissions.reduce((a,s)=>a+(s.overall||0),0)/total):0;
+  document.getElementById('stat-row').innerHTML=`
+    <div class="stat-card"><div class="stat-n">${total}</div><div class="stat-l">Total students</div><div class="stat-chg up">↑ All time</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:var(--amber2)">${pending}</div><div class="stat-l">Reports pending</div><div class="stat-chg ${pending>0?'dn':'up'}">${pending>0?'⚠ Action needed':'✓ All done'}</div></div>
+    <div class="stat-card"><div class="stat-n" style="color:#16a34a">${sent}</div><div class="stat-l">Reports sent</div><div class="stat-chg up">✓ Completed</div></div>
+    <div class="stat-card"><div class="stat-n">${avgOvr}%</div><div class="stat-l">Avg overall score</div><div class="stat-chg up">Across all students</div></div>`;
+}
+
+// ── RECENT LIST ───────────────────────────────────
+function renderRecentList(){
+  const recent=allSubmissions.slice(0,6);
+  if(!recent.length){document.getElementById('recent-list').innerHTML='<div class="empty-state"><div class="empty-icon">📭</div><div>No submissions yet</div></div>';return;}
+  document.getElementById('recent-list').innerHTML=recent.map(s=>`
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--bdr);cursor:pointer" onclick="openModal('${s.id}')">
+      <div style="width:34px;height:34px;border-radius:50%;background:var(--blue-md);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);flex-shrink:0">${initials(s.student?.name||'?')}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.student?.name||'—'}</div>
+        <div style="font-size:11px;color:var(--t2)">Class ${s.student?.cls||'?'} · ${s.student?.school||'—'}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-size:13px;font-weight:700;color:var(--navy)">${s.overall||0}%</div>
+        <span class="status-badge ${s.reportStatus==='sent'?'status-sent':'status-pending'}" style="font-size:10px">${s.reportStatus==='sent'?'Sent':'Pending'}</span>
+      </div>
+    </div>`).join('');
+}
+
+// ── CAREER CHART ──────────────────────────────────
+function renderCareerChart(){
+  const counts={};
+  allSubmissions.forEach(s=>{const p=s.topPassion||'Unknown';counts[p]=(counts[p]||0)+1;});
+  const total=allSubmissions.length||1;
+  const colors={'Realistic':'#1a3a8f','Investigative':'#2563eb','Artistic':'#16a34a','Social':'#f59e0b','Enterprising':'#dc2626','Conventional':'#7c3aed'};
+  if(!Object.keys(counts).length){document.getElementById('career-chart').innerHTML='<div class="empty-state"><div class="empty-icon">📊</div><div>No data yet</div></div>';return;}
+  document.getElementById('career-chart').innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([p,n])=>`
+    <div style="margin-bottom:11px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="font-weight:600;color:var(--text)">${p}</span><span style="color:var(--t2)">${n} student${n>1?'s':''}</span></div>
+      <div style="height:7px;background:#e2e8f0;border-radius:4px;overflow:hidden"><div style="height:100%;border-radius:4px;background:${colors[p]||'#64748b'};width:${Math.round(n/total*100)}%"></div></div>
+    </div>`).join('');
+}
+
+// ── SUBMISSIONS TABLE ─────────────────────────────
+function renderSubmissionsTable(data){
+  filteredRows=data;
+  const tbody=document.getElementById('submissions-tbody');
+  if(!data.length){tbody.innerHTML=`<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">🔍</div><div>No matching submissions</div></div></td></tr>`;document.getElementById('tbl-count').textContent='No results';return;}
+  tbody.innerHTML=data.map((s,i)=>`
+    <tr style="cursor:pointer" onclick="openModal('${s.id}')">
+      <td style="color:var(--t3);font-size:12px">${i+1}</td>
+      <td><div class="tbl-name">${s.student?.name||'—'}</div><div class="tbl-school">${s.student?.school||'—'}</div></td>
+      <td><span class="bdg bdg-navy" style="font-size:11px">Class ${s.student?.cls||'?'}</span></td>
+      <td style="font-size:13px;color:var(--t2)">${s.student?.city||'—'}</td>
+      <td><span style="font-family:var(--fh);font-size:15px;font-weight:700;color:var(--navy)">${s.overall||0}%</span></td>
+      <td><span class="bdg bdg-green" style="font-size:11px">${s.topPassion||'—'}</span></td>
+      <td style="font-size:12px;color:var(--t2)">${fmtDate(s.submittedAtISO)}</td>
+      <td onclick="event.stopPropagation()">
+        <span class="status-badge ${s.reportStatus==='sent'?'status-sent':'status-pending'}" onclick="toggleStatus('${s.id}',this)">
+          ${s.reportStatus==='sent'?'✓ Sent':'⏳ Pending'}
+        </span>
+      </td>
+      <td onclick="event.stopPropagation()">
+        <div class="tbl-actions">
+          <button class="tbl-btn tbl-btn-pdf" onclick="genPDF('${s.id}')">PDF</button>
+          <button class="tbl-btn tbl-btn-view" onclick="openModal('${s.id}')">View</button>
+        </div>
+      </td>
+    </tr>`).join('');
+  document.getElementById('tbl-count').textContent=`Showing ${data.length} of ${allSubmissions.length} submission${allSubmissions.length!==1?'s':''}`;
+}
+
+function filterTable(){
+  const q=(document.getElementById('tbl-search').value||'').toLowerCase();
+  const cls=document.getElementById('tbl-filter-class').value;
+  const st=document.getElementById('tbl-filter-status').value;
+  const filtered=allSubmissions.filter(s=>{
+    const name=(s.student?.name||'').toLowerCase();
+    const school=(s.student?.school||'').toLowerCase();
+    const city=(s.student?.city||'').toLowerCase();
+    const matchQ=!q||(name.includes(q)||school.includes(q)||city.includes(q));
+    const matchCls=!cls||String(s.student?.cls)===cls;
+    const matchSt=!st||s.reportStatus===st;
+    return matchQ&&matchCls&&matchSt;
+  });
+  renderSubmissionsTable(filtered);
+}
+
+// ── PENDING TABLE ─────────────────────────────────
+function renderPendingTable(){
+  const pending=allSubmissions.filter(s=>s.reportStatus==='pending');
+  document.getElementById('pending-count').textContent=`${pending.length} student${pending.length!==1?'s':''} awaiting report`;
+  const tbody=document.getElementById('pending-tbody');
+  if(!pending.length){tbody.innerHTML=`<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">🎉</div><div style="font-weight:600;color:var(--text)">All reports sent!</div><div>No pending reports.</div></div></td></tr>`;return;}
+  tbody.innerHTML=pending.map(s=>`
+    <tr>
+      <td><div class="tbl-name">${s.student?.name||'—'}</div><div class="tbl-school">${s.student?.school||'—'}</div></td>
+      <td><span class="bdg bdg-navy" style="font-size:11px">Class ${s.student?.cls||'?'}</span></td>
+      <td style="font-size:12px;color:var(--blue)">${s.student?.email||'—'}</td>
+      <td style="font-size:12px;color:var(--t2)">${s.student?.phone||'—'}</td>
+      <td><span style="font-family:var(--fh);font-size:15px;font-weight:700;color:var(--navy)">${s.overall||0}%</span></td>
+      <td><span class="bdg bdg-green" style="font-size:11px">${s.topPassion||'—'}</span></td>
+      <td style="font-size:12px;color:var(--t2)">${fmtDate(s.submittedAtISO)}</td>
+      <td>
+        <div class="tbl-actions">
+          <button class="tbl-btn tbl-btn-pdf" onclick="genPDF('${s.id}')">Download PDF</button>
+          <button class="tbl-btn" style="background:#dcfce7;color:#15803d" onclick="markSent('${s.id}',this)">Mark sent</button>
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+// ── STATUS TOGGLE ─────────────────────────────────
+function toggleStatus(id,el){
+  const sub=allSubmissions.find(s=>s.id===id);
+  if(!sub)return;
+  const newStatus=sub.reportStatus==='sent'?'pending':'sent';
+  sub.reportStatus=newStatus;
+  el.className=`status-badge ${newStatus==='sent'?'status-sent':'status-pending'}`;
+  el.textContent=newStatus==='sent'?'✓ Sent':'⏳ Pending';
+  if(fbDb) fbDb.collection('submissions').doc(id).update({reportStatus:newStatus});
+  renderStats(); renderPendingTable();
+}
+
+function markSent(id,btn){
+  const sub=allSubmissions.find(s=>s.id===id);
+  if(!sub)return;
+  sub.reportStatus='sent';
+  if(fbDb) fbDb.collection('submissions').doc(id).update({reportStatus:'sent'});
+  renderStats(); renderRecentList(); renderSubmissionsTable(filteredRows.length?filteredRows:allSubmissions); renderPendingTable();
+}
+
+function markAllSent(){
+  if(!confirm('Mark ALL pending reports as sent?'))return;
+  const pending=allSubmissions.filter(s=>s.reportStatus==='pending');
+  pending.forEach(s=>{s.reportStatus='sent';if(fbDb)fbDb.collection('submissions').doc(s.id).update({reportStatus:'sent'});});
+  renderStats(); renderRecentList(); renderSubmissionsTable(allSubmissions); renderPendingTable();
+}
+
+// ── MODAL ─────────────────────────────────────────
+function openModal(id){
+  const s=allSubmissions.find(x=>x.id===id);
+  if(!s)return;
+  document.getElementById('modal-name').textContent=s.student?.name||'—';
+  document.getElementById('modal-meta').textContent=`Class ${s.student?.cls||'?'} · ${s.student?.school||'—'} · ${s.student?.city||'—'} · ${s.student?.phone||'—'} · ${s.student?.email||'—'}`;
+  const SECS_DATA=[
+    {id:'individuality',nm:'🧠 Individuality Profile',params:['Emotional Intelligence','Efficiency','Empathy','Engagement','Exploration'],bars:['#1a3a8f','#2563eb','#3b82f6','#60a5fa','#93c5fd']},
+    {id:'skills',nm:'⚡ Skill Proficiency',params:['Logical','Numerical','Mechanical','Verbal','Administrative'],bars:['#d97706','#f59e0b','#b45309','#92400e','#fbbf24']},
+    {id:'passion',nm:'🎯 Passion Exploration (RIASEC)',params:['Realistic','Investigative','Artistic','Social','Enterprising','Conventional'],bars:['#15803d','#16a34a','#22c55e','#4ade80','#166534','#065f46']}
+  ];
+  let html=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+    <div class="sc-card"><div class="sc-n">${s.overall||0}%</div><div class="sc-l">Overall</div></div>
+    <div class="sc-card"><div class="sc-n" style="color:var(--amber2)">${s.topPassion||'—'}</div><div class="sc-l">Top passion</div></div>
+    <div class="sc-card"><div class="sc-n" style="font-size:15px;color:${s.reportStatus==='sent'?'#16a34a':'#d97706'}">${s.reportStatus==='sent'?'✓ Sent':'⏳ Pending'}</div><div class="sc-l">Report status</div></div>
+  </div>`;
+  SECS_DATA.forEach(sec=>{
+    const ss=s.scores?.[sec.id]||{};
+    html+=`<div class="mod-sec"><div class="mod-sec-hd">${sec.nm}</div>`;
+    sec.params.forEach((p,pi)=>{
+      const d=ss[p]||{c:0,t:1};const pct=Math.round((d.c/Math.max(d.t,1))*100);
+      html+=`<div class="mod-p-row"><div class="mod-p-lbl">${p}</div>
+        <div class="mod-p-track"><div class="mod-p-fill" style="width:${pct}%;background:${sec.bars[pi]}"></div></div>
+        <div class="mod-p-pct">${pct}%</div></div>`;
+    });
+    html+='</div>';
+  });
+  html+=`<div style="display:flex;gap:10px;justify-content:center;padding-top:8px">
+    <button class="btn btn-navy" onclick="genPDF('${id}')">Download PDF report</button>
+    <button class="btn btn-ghost" onclick="markSent('${id}',null);closeModal()">Mark report as sent</button>
+  </div>`;
+  document.getElementById('modal-body').innerHTML=html;
+  document.getElementById('detail-modal').classList.add('on');
+}
+
+function closeModal(e){
+  if(!e||e.target===document.getElementById('detail-modal')||e.target.className==='modal-close')
+    document.getElementById('detail-modal').classList.remove('on');
+}
+
+// ── PDF GENERATION (Admin) ────────────────────────
+function genPDF(id){
+  const sub=allSubmissions.find(s=>s.id===id);
+  if(!sub){alert('Submission not found.');return;}
+  if(typeof window.jspdf==='undefined'){alert('PDF library still loading, please try again.');return;}
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  const W=210,NAVY=[15,36,96],AMBER=[245,158,11],GRAY=[100,116,139],LTGRAY=[241,245,249],GREEN=[21,128,61];
+  const s=sub.student||{};
+
+  // Header band
+  doc.setFillColor(...NAVY);doc.rect(0,0,W,38,'F');
+  doc.setFillColor(...AMBER);doc.rect(0,35,W,3,'F');
+
+  // Logo text
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(22);
+  doc.text('MentorMe',14,18);
+  doc.setFillColor(...AMBER);doc.setTextColor(245,158,11);
+  doc.setFont('helvetica','normal');doc.setFontSize(10);
+  doc.setTextColor(147,197,253);doc.text('Career Discovery Assessment — Personal Report',14,26);
+  doc.setFontSize(8);doc.setTextColor(148,163,184);
+  doc.text('Confidential · Prepared by MentorMe Counsellor Team · '+new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}),14,33);
+
+  // Student info card
+  doc.setFillColor(...LTGRAY);doc.roundedRect(14,44,182,30,3,3,'F');
+  doc.setTextColor(...NAVY);doc.setFont('helvetica','bold');doc.setFontSize(15);
+  doc.text(s.name||'Student',20,55);
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(...GRAY);
+  doc.text(`Class ${s.cls||'?'}  ·  ${s.school||''}  ·  ${s.city||'India'}`,20,62);
+  doc.text(`Mobile: ${s.phone||'—'}    Parent email: ${s.email||'—'}`,20,68);
+  doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(...NAVY);
+  doc.text(`Overall Score: ${sub.overall||0}%`,140,55);
+  doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(...GRAY);
+  doc.text(`Top passion: ${sub.topPassion||'—'}`,140,62);
+
+  let y=82;
+  const SECS_PDF=[
+    {id:'individuality',nm:'SECTION 1 — Individuality Profile',icon:'',params:['Emotional Intelligence','Efficiency','Empathy','Engagement','Exploration'],clr:NAVY},
+    {id:'skills',nm:'SECTION 2 — Skill Proficiency',params:['Logical','Numerical','Mechanical','Verbal','Administrative'],clr:AMBER},
+    {id:'passion',nm:'SECTION 3 — Passion Exploration (RIASEC)',params:['Realistic','Investigative','Artistic','Social','Enterprising','Conventional'],clr:GREEN}
+  ];
+
+  const TRAITS_PDF={'Emotional Intelligence':'Understands and manages emotions effectively — a core life and leadership skill.',
+    'Efficiency':'Achieves goals with focus and minimal wasted effort — highly valued in all careers.',
+    'Empathy':'Deeply connects with others — invaluable in people-facing and leadership roles.',
+    'Engagement':'Brings full energy and commitment — a driver of extraordinary outcomes.',
+    'Exploration':'Insatiably curious — thrives wherever lifelong learning is rewarded.',
+    'Logical':'Identifies patterns and solves problems systematically — a critical analytical strength.',
+    'Numerical':'Strong quantitative ability — a natural edge in data, finance, and STEM fields.',
+    'Mechanical':'Understands how things work — suited to engineering and applied technical careers.',
+    'Verbal':'Commands language with precision — excels in communication-heavy professions.',
+    'Administrative':'Brings order and accuracy — the backbone of every well-run organisation.',
+    'Realistic':'Excels at building and producing real-world results with hands and tools.',
+    'Investigative':'Thrives on research, analysis, and intellectual depth.',
+    'Artistic':'Sees the world creatively and expresses it powerfully — a natural creative.',
+    'Social':'Energises people and lives to make a genuine difference in their lives.',
+    'Enterprising':'A natural leader and visionary — builds movements, not just teams.',
+    'Conventional':'Delivers precision and reliability — every high-performing organisation needs this.'};
+
+  const CAREER_PDF={'Realistic':'Engineering, architecture, robotics, aviation, or environmental science.',
+    'Investigative':'Medicine, scientific research, data science, or biotechnology.',
+    'Artistic':'Design, film, writing, music, animation, or advertising.',
+    'Social':'Teaching, counselling, psychology, social work, or public health.',
+    'Enterprising':'Entrepreneurship, corporate leadership, law, or marketing.',
+    'Conventional':'Finance, chartered accountancy, data analytics, or IT systems.'};
+
+  SECS_PDF.forEach(sec=>{
+    if(y>240){doc.addPage();y=20;}
+    doc.setFillColor(...sec.clr);doc.rect(14,y,182,10,'F');
+    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(9.5);
+    doc.text(sec.nm,18,y+7);
+    y+=14;
+    const ss=sub.scores?.[sec.id]||{};
+    let top='',topPct=-1;
+    sec.params.forEach(p=>{const d=ss[p]||{c:0,t:1};const pct=(d.c/Math.max(d.t,1))*100;if(pct>topPct){topPct=pct;top=p;}});
+    sec.params.forEach(p=>{
+      const d=ss[p]||{c:0,t:1};const pct=Math.round((d.c/Math.max(d.t,1))*100);
+      doc.setTextColor(...GRAY);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.text(p,20,y);
+      doc.setFillColor(226,232,240);doc.roundedRect(80,y-4,100,5,2,2,'F');
+      doc.setFillColor(...sec.clr);doc.roundedRect(80,y-4,pct,5,2,2,'F');
+      doc.setTextColor(...NAVY);doc.setFont('helvetica','bold');doc.setFontSize(8.5);
+      doc.text(pct+'%',184,y,{align:'right'});
+      y+=9;
+    });
+    if(top){
+      doc.setFillColor(232,240,255);doc.roundedRect(14,y,182,16,2,2,'F');
+      doc.setTextColor(...NAVY);doc.setFont('helvetica','bold');doc.setFontSize(8);
+      doc.text('Strongest trait: '+top,18,y+6);
+      doc.setFont('helvetica','normal');doc.setTextColor(...GRAY);doc.setFontSize(7.5);
+      doc.text((TRAITS_PDF[top]||'').substring(0,95),18,y+11);
+      y+=21;
+    }
+    y+=5;
+  });
+
+  if(y>255){doc.addPage();y=20;}
+  const tp=sub.topPassion||'Social';
+  doc.setFillColor(255,251,235);doc.roundedRect(14,y,182,26,3,3,'F');
+  doc.setDrawColor(...AMBER);doc.setLineWidth(.5);doc.roundedRect(14,y,182,26,3,3,'S');
+  doc.setTextColor(146,64,14);doc.setFont('helvetica','bold');doc.setFontSize(10);
+  doc.text('Career Direction — '+tp+' Personality Type',18,y+8);
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(120,53,15);
+  const ctxt=doc.splitTextToSize(CAREER_PDF[tp]||'',170);
+  doc.text(ctxt,18,y+15);
+  y+=32;
+
+  // Counsellor note
+  if(y>255){doc.addPage();y=20;}
+  doc.setFillColor(...LTGRAY);doc.roundedRect(14,y,182,20,2,2,'F');
+  doc.setTextColor(...NAVY);doc.setFont('helvetica','bold');doc.setFontSize(9);
+  doc.text('Counsellor Note',18,y+7);
+  doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(...GRAY);
+  doc.text('This report was prepared by a certified MentorMe career counsellor based on your assessment results.',18,y+13);
+  doc.text('For further guidance, reach out to us at mentormeright.in or via WhatsApp.',18,y+18);
+
+  // Footer
+  doc.setFillColor(...NAVY);doc.rect(0,286,W,11,'F');
+  doc.setTextColor(255,255,255);doc.setFont('helvetica','normal');doc.setFontSize(7.5);
+  doc.text('MentorMe Career Discovery Assessment  ·  mentormeright.in  ·  admin@mentormeright.in  ·  Confidential — prepared for '+( s.name||'Student'),W/2,292,{align:'center'});
+
+  doc.save('MentorMe_Report_'+( s.name||'Student').replace(/\s+/g,'_')+'_Class'+( s.cls||'X')+'.pdf');
+}
+
+// ── EXPORT CSV ────────────────────────────────────
+function exportCSV(){
+  const rows=[['Name','Class','School','City','Phone','Parent Email','Overall %','Top Passion','Report Status','Submitted']];
+  allSubmissions.forEach(s=>{
+    rows.push([s.student?.name||'',s.student?.cls||'',s.student?.school||'',s.student?.city||'',s.student?.phone||'',s.student?.email||'',s.overall||0,s.topPassion||'',s.reportStatus||'',fmtDate(s.submittedAtISO)]);
+  });
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='MentorMe_Submissions_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+}
+
+// ── UTILS ─────────────────────────────────────────
+function initials(name){return name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();}
+function fmtDate(iso){if(!iso)return'—';try{return new Date(iso).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}catch{return'—';}}
+function switchAdmTab(tabId,el){
+  document.querySelectorAll('.adm-tab-content').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.adm-nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(tabId).classList.add('on');
+  el.classList.add('active');
+}
+
+// ── PATCH: save to Firestore when student finishes ─
+const _origBuildResults=buildResults;
+window.buildResults=function(){
+  _origBuildResults();
+  initFirebase();
+  saveSubmission(student, scores);
+};
+
+// ── Secret admin entry: triple-click footer on welcome page ──
+document.addEventListener('DOMContentLoaded',()=>{
+  // Hidden admin link — accessible via URL ?admin=1
+  if(window.location.search.includes('admin=1')){
+    initFirebase();
+    goTo('pg-admin-login');
+  }
+});
+</script>
+</body>
+</html>

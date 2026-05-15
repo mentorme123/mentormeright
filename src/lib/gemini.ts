@@ -37,7 +37,11 @@ export async function generateWithRetry(
     'gemini-2.0-flash-exp'
   ];
 
-  for (let attempt = 0; attempt < maxRetries; attempt++) {
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY is missing or undefined. Please ensure it is set in your environment variables (Vercel/Local).');
+  }
+
+  for (let attempt = 0; attempt < 10; attempt++) {
     // Alternate models on persistent failure to find one with available quota
     const currentModelName = modelsToTry[attempt % modelsToTry.length];
     console.log(`Attempting generation with model: ${currentModelName} (attempt ${attempt + 1})`);
@@ -53,7 +57,11 @@ export async function generateWithRetry(
       
       // If model not found (404), try the next one immediately
       if (message.includes('404') || message.includes('not found')) {
-        console.warn(`Model ${currentModelName} not found (404). Trying next model...`);
+        console.warn(`Model ${currentModelName} not found. Trying next...`);
+        // If we've tried a few and still getting 404, it might be an API key issue
+        if (attempt >= modelsToTry.length - 1) {
+           throw new Error(`AI Service Error: All models returned 404. This usually means the API Key is invalid or the 'Generative Language API' is not enabled in your Google Cloud Project. Checked: ${modelsToTry.join(', ')}`);
+        }
         continue; 
       }
 

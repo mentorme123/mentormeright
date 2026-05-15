@@ -280,6 +280,13 @@ export async function POST(req: NextRequest) {
     let rawReply = "";
     let lastError: any;
 
+    if (!apiKey) {
+      return NextResponse.json(
+        { reply: "I'm sorry, but the AI service is not configured correctly (Missing API Key). Please contact the administrator.", suggestions: [] },
+        { status: 200 }
+      );
+    }
+
     for (let attempt = 0; attempt < modelsToTry.length * 2; attempt++) {
       const currentModelName = modelsToTry[attempt % modelsToTry.length];
       try {
@@ -312,6 +319,9 @@ export async function POST(req: NextRequest) {
 
         // If it's a 404, try next model immediately
         if (message.includes('404') || message.includes('not found')) {
+          if (attempt >= modelsToTry.length - 1) {
+             throw new Error(`AI Service Error: All models returned 404. Check API Key or Google Cloud settings.`);
+          }
           continue;
         }
 

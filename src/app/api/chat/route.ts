@@ -269,7 +269,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid messages array' }, { status: 400 });
     }
 
-    const model = getModel('gemini-1.5-flash');
+    const model = getModel('gemini-2.0-flash');
 
     const chat = model.startChat({
       history: [

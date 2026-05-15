@@ -3,7 +3,7 @@ import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
 const genAI = new GoogleGenerativeAI(apiKey);
 
-export const getModel = (modelName: string = 'gemini-1.5-flash'): GenerativeModel => {
+export const getModel = (modelName: string = 'gemini-2.0-flash'): GenerativeModel => {
   return genAI.getGenerativeModel({ model: modelName });
 };
 
@@ -12,11 +12,11 @@ export const getModel = (modelName: string = 'gemini-1.5-flash'): GenerativeMode
  */
 export async function generateWithRetry(
   prompt: string,
-  modelName: string = 'gemini-1.5-flash',
+  modelName: string = 'gemini-2.0-flash',
   maxRetries: number = 5
 ) {
   let lastError: any;
-  const modelsToTry = [modelName, 'gemini-1.5-flash-8b', 'gemini-1.5-flash']; // Try original, then 8b, then back to flash
+  const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b'];
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     // Alternate models on persistent failure to find one with available quota

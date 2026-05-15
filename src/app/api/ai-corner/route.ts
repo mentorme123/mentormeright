@@ -32,7 +32,7 @@ Format the response in Markdown with the following sections:
 Keep the tone professional, motivating, and highly practical. Do not use generic fluff.
 `;
 
-    const text = await generateWithRetry(prompt, 'gemini-1.5-flash');
+    const text = await generateWithRetry(prompt, 'gemini-2.0-flash');
 
     return NextResponse.json({ roadmap: text });
   } catch (err: unknown) {

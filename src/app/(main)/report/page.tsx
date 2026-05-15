@@ -105,21 +105,41 @@ export default function ReportPage() {
     );
   }
 
+  const ensureString = (val: any, fallback = 'Not Specified') => {
+    if (typeof val === 'string') return val;
+    if (typeof val === 'number') return String(val);
+    if (!val) return fallback;
+    try { return JSON.stringify(val); } catch { return fallback; }
+  };
+
+  const ensureArrayOfObjects = (arr: any) => {
+    if (!Array.isArray(arr)) return [];
+    return arr.map(item => typeof item === 'object' && item !== null ? item : { name: String(item), title: String(item), desc: '', score: 0, max: 10 });
+  };
+
   const safeReport = {
     ...report,
-    coreStrengths: report.coreStrengths || [],
-    areasToDevelop: report.areasToDevelop || [],
-    careerInterests: report.careerInterests || [],
-    excellentFitCareers: report.excellentFitCareers || [],
-    goodFitCareers: report.goodFitCareers || [],
-    academicRoadmap: report.academicRoadmap || { recommendedStream: 'Not Specified', focusSubjects: 'Not Specified', programmingNote: 'Not Specified', extraCurricular: 'Not Specified' },
-    educationPathways: {
-      ugOptions: report.educationPathways?.ugOptions || [],
-      pgOptions: report.educationPathways?.pgOptions || []
+    clientName: ensureString(report.clientName, 'Student'),
+    grade: ensureString(report.grade, 'N/A'),
+    executiveSummary: ensureString(report.executiveSummary, 'No summary provided.'),
+    coreStrengths: ensureArrayOfObjects(report.coreStrengths),
+    areasToDevelop: ensureArrayOfObjects(report.areasToDevelop),
+    careerInterests: ensureArrayOfObjects(report.careerInterests),
+    excellentFitCareers: ensureArrayOfObjects(report.excellentFitCareers),
+    goodFitCareers: ensureArrayOfObjects(report.goodFitCareers),
+    academicRoadmap: {
+      recommendedStream: ensureString(report.academicRoadmap?.recommendedStream),
+      focusSubjects: ensureString(report.academicRoadmap?.focusSubjects),
+      programmingNote: ensureString(report.academicRoadmap?.programmingNote),
+      extraCurricular: ensureString(report.academicRoadmap?.extraCurricular)
     },
-    entranceExams: report.entranceExams || [],
-    recommendedColleges: report.recommendedColleges || [],
-    nextSteps: report.nextSteps || []
+    educationPathways: {
+      ugOptions: ensureArrayOfObjects(report.educationPathways?.ugOptions),
+      pgOptions: ensureArrayOfObjects(report.educationPathways?.pgOptions)
+    },
+    entranceExams: ensureArrayOfObjects(report.entranceExams),
+    recommendedColleges: ensureArrayOfObjects(report.recommendedColleges),
+    nextSteps: Array.isArray(report.nextSteps) ? report.nextSteps.map((s: any) => ensureString(s)) : []
   };
 
   return (

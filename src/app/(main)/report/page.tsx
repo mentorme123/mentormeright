@@ -105,6 +105,23 @@ export default function ReportPage() {
     );
   }
 
+  const safeReport = {
+    ...report,
+    coreStrengths: report.coreStrengths || [],
+    areasToDevelop: report.areasToDevelop || [],
+    careerInterests: report.careerInterests || [],
+    excellentFitCareers: report.excellentFitCareers || [],
+    goodFitCareers: report.goodFitCareers || [],
+    academicRoadmap: report.academicRoadmap || { recommendedStream: 'Not Specified', focusSubjects: 'Not Specified', programmingNote: 'Not Specified', extraCurricular: 'Not Specified' },
+    educationPathways: {
+      ugOptions: report.educationPathways?.ugOptions || [],
+      pgOptions: report.educationPathways?.pgOptions || []
+    },
+    entranceExams: report.entranceExams || [],
+    recommendedColleges: report.recommendedColleges || [],
+    nextSteps: report.nextSteps || []
+  };
+
   return (
     <div className="bg-[#F1F5F9] min-h-screen py-8 print:bg-white print:p-0">
       <style>{`
@@ -144,11 +161,11 @@ export default function ReportPage() {
              <div className="bg-slate-50 border-2 border-slate-200 p-8 rounded-2xl w-full max-w-md mt-16 text-left space-y-4 shadow-lg">
                 <div className="flex justify-between items-center border-b pb-4">
                   <span className="text-slate-500 font-bold uppercase text-sm">Student Name</span>
-                  <span className="text-xl font-black text-slate-800">{report.clientName || 'Student'}</span>
+                  <span className="text-xl font-black text-slate-800">{safeReport.clientName || 'Student'}</span>
                 </div>
                 <div className="flex justify-between items-center pt-2">
                   <span className="text-slate-500 font-bold uppercase text-sm">Current Grade</span>
-                  <span className="text-xl font-black text-brand-orange">{report.grade || 'N/A'}</span>
+                  <span className="text-xl font-black text-brand-orange">{safeReport.grade || 'N/A'}</span>
                 </div>
              </div>
           </div>
@@ -158,19 +175,19 @@ export default function ReportPage() {
         <A4Page pageNumber={2}>
           <SectionHeader num="1" title="Your Career Profile" />
           <p className="text-slate-600 font-medium leading-relaxed mb-8 bg-brand-blue/5 p-6 rounded-xl border-l-4 border-brand-blue text-lg">
-            {report.executiveSummary}
+            {safeReport.executiveSummary}
           </p>
 
           <h3 className="text-xl font-bold mb-6 flex items-center gap-2"><Sparkles className="text-brand-orange" /> Core Strengths</h3>
           
           <div className="flex-1">
              <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={report.coreStrengths} layout="vertical" margin={{ top: 0, right: 30, left: 40, bottom: 0 }}>
+              <BarChart data={safeReport.coreStrengths} layout="vertical" margin={{ top: 0, right: 30, left: 40, bottom: 0 }}>
                 <XAxis type="number" domain={[0, 10]} hide />
                 <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#334155', fontSize: 12, fontWeight: 700 }} width={140} />
                 <Tooltip cursor={{ fill: '#F1F5F9' }} />
                 <Bar dataKey="score" radius={[0, 4, 4, 0]} barSize={24}>
-                  {report.coreStrengths.map((entry, index) => (
+                  {safeReport.coreStrengths.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Bar>
@@ -178,7 +195,7 @@ export default function ReportPage() {
             </ResponsiveContainer>
 
             <div className="mt-8 space-y-4">
-              {report.coreStrengths.map((strength, i) => (
+              {safeReport.coreStrengths.map((strength, i) => (
                 <div key={i} className="flex gap-4">
                   <div className="w-12 text-xl font-black text-brand-blue">{strength.score}/{strength.max}</div>
                   <div>
@@ -199,7 +216,7 @@ export default function ReportPage() {
           </p>
 
           <div className="space-y-6">
-            {report.areasToDevelop.map((area, i) => (
+            {safeReport.areasToDevelop.map((area, i) => (
               <div key={i} className="bg-red-50 border border-red-100 p-6 rounded-2xl flex gap-6">
                  <div className="w-16 h-16 shrink-0 bg-white rounded-full flex flex-col items-center justify-center border-2 border-red-200 text-red-600 shadow-sm">
                    <AlertTriangle size={20} className="mb-1" />
@@ -222,7 +239,7 @@ export default function ReportPage() {
           </p>
 
           <div className="grid grid-cols-1 gap-6">
-             {report.careerInterests.map((interest, i) => (
+             {safeReport.careerInterests.map((interest, i) => (
                 <div key={i} className="bg-brand-blue text-white p-8 rounded-3xl relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl transform translate-x-1/2 -translate-y-1/2"></div>
                   <Target className="mb-4 text-brand-orange" size={32} />
@@ -244,7 +261,7 @@ export default function ReportPage() {
           </p>
 
           <div className="space-y-6">
-            {report.excellentFitCareers.map((career, i) => (
+            {safeReport.excellentFitCareers.map((career, i) => (
               <div key={i} className="border-2 border-slate-100 p-6 rounded-2xl">
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-xl font-black text-brand-blue flex items-center gap-2"><Briefcase size={20} className="text-brand-orange"/> {career.title}</h3>
@@ -266,7 +283,7 @@ export default function ReportPage() {
           </p>
 
           <div className="space-y-6">
-            {report.goodFitCareers.map((career, i) => (
+            {safeReport.goodFitCareers.map((career, i) => (
               <div key={i} className="border border-slate-200 p-6 rounded-2xl bg-slate-50">
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-lg font-bold text-slate-800">{career.title}</h3>
@@ -286,23 +303,23 @@ export default function ReportPage() {
           
           <div className="bg-brand-orange text-white p-8 rounded-3xl mb-8 shadow-lg">
              <h3 className="text-sm uppercase tracking-widest font-bold mb-2 text-white/80">Recommended Stream (Grade 11-12)</h3>
-             <h2 className="text-3xl font-black leading-tight">{report.academicRoadmap.recommendedStream}</h2>
+             <h2 className="text-3xl font-black leading-tight">{safeReport.academicRoadmap.recommendedStream}</h2>
           </div>
 
           <div className="space-y-8">
             <div>
               <h4 className="font-bold text-brand-blue text-lg mb-2 flex items-center gap-2"><GraduationCap /> Focus Subjects</h4>
-              <p className="text-slate-700 leading-relaxed border-l-4 border-brand-orange pl-4 py-2 bg-slate-50">{report.academicRoadmap.focusSubjects}</p>
+              <p className="text-slate-700 leading-relaxed border-l-4 border-brand-orange pl-4 py-2 bg-slate-50">{safeReport.academicRoadmap.focusSubjects}</p>
             </div>
             
             <div>
               <h4 className="font-bold text-brand-blue text-lg mb-2 flex items-center gap-2"><Target /> Programming & Technical</h4>
-              <p className="text-slate-700 leading-relaxed border-l-4 border-brand-orange pl-4 py-2 bg-slate-50">{report.academicRoadmap.programmingNote}</p>
+              <p className="text-slate-700 leading-relaxed border-l-4 border-brand-orange pl-4 py-2 bg-slate-50">{safeReport.academicRoadmap.programmingNote}</p>
             </div>
 
             <div>
               <h4 className="font-bold text-brand-blue text-lg mb-2 flex items-center gap-2"><Sparkles /> Extra-Curricular Prioritization</h4>
-              <p className="text-slate-700 leading-relaxed border-l-4 border-brand-orange pl-4 py-2 bg-slate-50">{report.academicRoadmap.extraCurricular}</p>
+              <p className="text-slate-700 leading-relaxed border-l-4 border-brand-orange pl-4 py-2 bg-slate-50">{safeReport.academicRoadmap.extraCurricular}</p>
             </div>
           </div>
         </A4Page>
@@ -313,7 +330,7 @@ export default function ReportPage() {
           
           <h3 className="text-xl font-bold mb-6 text-slate-800">Undergraduate (UG) Options</h3>
           <div className="space-y-4 mb-12">
-            {report.educationPathways.ugOptions.map((opt, i) => (
+            {safeReport.educationPathways.ugOptions.map((opt, i) => (
               <div key={i} className="border border-slate-200 p-5 rounded-xl flex flex-col md:flex-row gap-4 justify-between items-start md:items-center bg-white shadow-sm">
                 <div className="flex-1">
                    <h4 className="font-bold text-brand-blue">{opt.program}</h4>
@@ -328,7 +345,7 @@ export default function ReportPage() {
 
           <h3 className="text-xl font-bold mb-6 text-slate-800">Postgraduate (PG) & Professional Qualifications</h3>
           <div className="space-y-4">
-            {report.educationPathways.pgOptions.map((opt, i) => (
+            {safeReport.educationPathways.pgOptions.map((opt, i) => (
               <div key={i} className="border-l-4 border-brand-orange pl-4 py-3">
                  <h4 className="font-bold text-lg text-slate-800">{opt.program}</h4>
                  <p className="text-sm text-slate-600 mt-2 leading-relaxed">{opt.path}</p>
@@ -342,7 +359,7 @@ export default function ReportPage() {
           <SectionHeader num="8" title="Entrance Exams & Timeline" />
           
           <div className="relative border-l-2 border-brand-blue/20 ml-4 py-4 space-y-12">
-             {report.entranceExams.map((exam, i) => (
+             {safeReport.entranceExams.map((exam, i) => (
                 <div key={i} className="relative pl-8">
                   <div className="absolute w-6 h-6 bg-brand-blue rounded-full -left-[13px] top-0 border-4 border-white flex items-center justify-center shadow-md">
                      <div className="w-2 h-2 bg-white rounded-full"></div>
@@ -368,7 +385,7 @@ export default function ReportPage() {
           </p>
 
           <div className="grid grid-cols-1 gap-6">
-            {report.recommendedColleges.map((college, i) => (
+            {safeReport.recommendedColleges.map((college, i) => (
               <div key={i} className="flex bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <div className="bg-brand-blue/5 w-16 flex items-center justify-center shrink-0 border-r border-slate-100">
                   <Landmark className="text-brand-blue" size={24} />
@@ -397,7 +414,7 @@ export default function ReportPage() {
                Connect with MentorMe to take the next confident step in your academic and professional journey. During our 1-on-1 session, we will guide you on:
              </p>
              <div className="space-y-4">
-                {report.nextSteps.map((step, i) => (
+                {safeReport.nextSteps.map((step, i) => (
                   <div key={i} className="flex gap-4 items-center">
                     <CheckCircle2 className="text-brand-orange shrink-0" size={20} />
                     <p className="font-medium">{step}</p>

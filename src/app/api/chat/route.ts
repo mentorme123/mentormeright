@@ -277,6 +277,7 @@ export async function POST(req: NextRequest) {
       'gemini-1.0-pro',
       'gemini-2.0-flash'
     ];
+    const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     let rawReply = "";
     let lastError: any;
 

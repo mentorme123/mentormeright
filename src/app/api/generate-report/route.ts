@@ -23,6 +23,63 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'System configuration error: API key missing.' }, { status: 500 });
     }
 
+    const clientName = userName ? String(userName).slice(0, 100).replace(/[<>]/g, '') : 'Student';
+
+    const prompt = `
+You are an elite career intelligence counselor at MentorMe (mentormeright.in).
+A client named "${clientName}" has completed a 90-question psychometric assessment.
+
+Here are ${clientName}'s SCORED results across all 17 parameters:
+
+${scoreSummary}
+
+Based STRICTLY on these scores, generate a detailed, personalised career intelligence report in JSON format for ${clientName}.
+Use the scores to determine realistic skill ratings, career fits, and development areas.
+High scores (>75%) = strength. Medium (50-75%) = moderate. Low (<50%) = develop.
+Top RIASEC traits drive career recommendations. Top skill scores confirm those careers.
+
+Return ONLY valid JSON with this structure:
+{
+  "clientName": "${clientName}",
+  "grade": "N/A",
+  "executiveSummary": "3-4 sentences personalised overview based on their actual scores",
+  "coreStrengths": [
+    { "name": "...", "score": number, "max": number, "desc": "why this is a strength based on their score" }
+  ],
+  "areasToDevelop": [
+    { "name": "...", "score": number, "max": number, "desc": "specific actionable advice to improve" }
+  ],
+  "careerInterests": [
+    { "name": "...", "score": number, "max": number, "desc": "how this RIASEC trait shapes their career fit" }
+  ],
+  "excellentFitCareers": [
+    { "title": "...", "salary": "Indian salary range", "desc": "why this career fits their specific scores" }
+  ],
+  "goodFitCareers": [
+    { "title": "...", "salary": "Indian salary range", "desc": "..." }
+  ],
+  "academicRoadmap": {
+    "recommendedStream": "...",
+    "focusSubjects": "...",
+    "programmingNote": "...",
+    "extraCurricular": "..."
+  },
+  "educationPathways": {
+    "ugOptions": [ { "program": "...", "duration": "...", "leadsTo": "..." } ],
+    "pgOptions": [ { "program": "...", "path": "..." } ]
+  },
+  "entranceExams": [
+    { "exam": "...", "forTitle": "...", "timeline": "..." }
+  ],
+  "recommendedColleges": [
+    { "institution": "...", "location": "India", "program": "..." }
+  ],
+  "nextSteps": [ "...", "..." ]
+}
+
+Do not return any markdown. Return strictly valid JSON only.
+    `;
+
     // Real API Call using Gemini with retry logic
     let text;
     try {

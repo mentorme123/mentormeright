@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { X } from "lucide-react";
-import { syncUserProfile } from "./actions";
+
 
 export default function LoginPage() {
   const router = useRouter();
@@ -49,21 +49,9 @@ export default function LoginPage() {
       if (authError) throw authError;
       if (!data.user) throw new Error("No user found");
 
-      console.log("Auth success, checking profile...");
-
-      // 1. Get or Create Profile securely bypassing RLS
-      const userProfile = await syncUserProfile(data.user);
-
-      if (!userProfile) {
-        console.error("User profile is missing:", userProfile);
-        throw new Error("Login successful, but your user profile could not be loaded. Please try again or contact support.");
-      }
-
-      const userRole = userProfile.role || 'individual';
-      console.log("User Role:", userRole, "Active Tab:", activeTab);
-
-      // 2. Pure Handover to Route Director
-      console.log("Authentication successful. Handing over to Route Director...");
+      console.log("Auth success, handing over to Route Director...");
+      
+      // The Route Director handles profile fetching and self-healing automatically
       router.push("/auth/route-director");
 
     } catch (err: unknown) {

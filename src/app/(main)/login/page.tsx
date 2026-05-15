@@ -54,12 +54,12 @@ export default function LoginPage() {
       // 1. Get or Create Profile securely bypassing RLS
       const userProfile = await syncUserProfile(data.user);
 
-      if (!userProfile || !userProfile.role) {
-        console.error("User profile or role is missing:", userProfile);
+      if (!userProfile) {
+        console.error("User profile is missing:", userProfile);
         throw new Error("Login successful, but your user profile could not be loaded. Please try again or contact support.");
       }
 
-      const userRole = userProfile.role;
+      const userRole = userProfile.role || 'individual';
       console.log("User Role:", userRole, "Active Tab:", activeTab);
 
       // 2. Pure Handover to Route Director

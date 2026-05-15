@@ -8,17 +8,21 @@ export const getModel = (modelName: string = 'gemini-1.5-flash'): GenerativeMode
 };
 
 /**
- * Utility to call Gemini with automatic retries and exponential backoff
+ * Utility to call Gemini with automatic retries, exponential backoff, and model fallback
  */
 export async function generateWithRetry(
   prompt: string,
   modelName: string = 'gemini-1.5-flash',
-  maxRetries: number = 3
+  maxRetries: number = 5
 ) {
-  const model = getModel(modelName);
   let lastError: any;
+  const modelsToTry = [modelName, 'gemini-1.5-flash-8b', 'gemini-1.5-flash']; // Try original, then 8b, then back to flash
 
-  for (let i = 0; i < maxRetries; i++) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    // Alternate models on persistent failure to find one with available quota
+    const currentModelName = modelsToTry[attempt % modelsToTry.length];
+    const model = getModel(currentModelName);
+    
     try {
       const result = await model.generateContent(prompt);
       const response = await result.response;
@@ -27,15 +31,24 @@ export async function generateWithRetry(
       lastError = error;
       const message = error.message || '';
       
-      // If it's a rate limit (429) or server error (500, 503, 504), retry
-      if (message.includes('429') || message.includes('quota') || message.includes('500') || message.includes('503') || message.includes('504')) {
-        const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
-        console.warn(`Gemini API error (retry ${i + 1}/${maxRetries}): ${message}. Retrying in ${Math.round(delay)}ms...`);
+      // If it's a rate limit (429), server error (500, 503, 504), or high traffic
+      if (
+        message.includes('429') || 
+        message.includes('quota') || 
+        message.includes('exhausted') ||
+        message.includes('500') || 
+        message.includes('503') || 
+        message.includes('504') ||
+        message.includes('overloaded')
+      ) {
+        // Exponential backoff: 2s, 4s, 8s, 16s... plus jitter
+        const delay = Math.pow(2, attempt + 1) * 1000 + Math.random() * 2000;
+        console.warn(`Gemini API ${currentModelName} error (attempt ${attempt + 1}/${maxRetries}): ${message}. Retrying in ${Math.round(delay)}ms...`);
         await new Promise(resolve => setTimeout(resolve, delay));
         continue;
       }
       
-      // For other errors, throw immediately
+      // For other errors (like invalid prompt), throw immediately
       throw error;
     }
   }

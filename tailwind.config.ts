@@ -14,8 +14,8 @@ const config: Config = {
         border: "var(--border)",
         ring: "var(--ring)",
         brand: {
-          blue: "#1A6DD1",
-          orange: "#F97316",
+          blue: "#0870B8",
+          orange: "#FF8A00",
         }
       },
     },

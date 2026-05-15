@@ -117,7 +117,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <Link href="/assessment" className="hidden lg:block">
-            <button className="bg-[#FF7A1A] text-white hover:bg-[#FF7A1A]/90 hover:scale-105 active:scale-95 font-black px-8 py-3.5 rounded-2xl shadow-xl shadow-orange-500/20 transition-all duration-300 text-[14px] tracking-tight">
+            <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-black px-8 py-3.5 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all duration-300 text-[14px] tracking-tight">
               Free Career Assessment Test
             </button>
           </Link>

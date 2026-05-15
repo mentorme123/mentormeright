@@ -120,11 +120,11 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link href="/assessment" className="hidden lg:block">
+          <a href="/assessment" className="hidden lg:block">
             <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-black px-8 py-3.5 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all duration-300 text-[14px] tracking-tight">
               Free Career Assessment Test
             </button>
-          </Link>
+          </a>
           <Link href="/register" className="hidden sm:block">
             <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">Register</button>
           </Link>
@@ -168,11 +168,11 @@ export function Navbar() {
               ))}
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
-                <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
+                <a href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">
                     Free Career Assessment Test
                   </button>
-                </Link>
+                </a>
                 <div className="flex gap-3">
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
                     <button className="w-full font-semibold py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">Log in</button>

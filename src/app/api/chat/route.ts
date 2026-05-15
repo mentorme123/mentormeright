@@ -269,46 +269,58 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid messages array' }, { status: 400 });
     }
 
-    const model = getModel('gemini-2.0-flash');
-
-    const chat = model.startChat({
-      history: [
-        {
-          role: "user",
-          parts: [{ text: SYSTEM_PROMPT }],
-        },
-        {
-          role: "model",
-          parts: [{ text: "Understood! I am AI Corner, MentorMe's dedicated AI agent. I'm here to help students and professionals alike. How can I assist you today?" }],
-        },
-        ...messages.slice(0, -1).map((m: { role: string; content: string }) => ({
-          role: m.role === "assistant" ? "model" : "user",
-          parts: [{ text: m.content }],
-        })),
-      ],
-    });
-
-    const lastMessage = messages[messages.length - 1];
-    
-    // Send message with retry logic
+    // Model selection with fallback
+    const modelsToTry = ['gemini-1.5-flash', 'gemini-1.5-flash-latest', 'gemini-2.0-flash'];
     let rawReply = "";
-    let maxRetries = 3;
-    for (let i = 0; i < maxRetries; i++) {
+    let lastError: any;
+
+    for (let attempt = 0; attempt < modelsToTry.length * 2; attempt++) {
+      const currentModelName = modelsToTry[attempt % modelsToTry.length];
       try {
+        const model = getModel(currentModelName);
+        const chat = model.startChat({
+          history: [
+            {
+              role: "user",
+              parts: [{ text: SYSTEM_PROMPT }],
+            },
+            {
+              role: "model",
+              parts: [{ text: "Understood! I am AI Corner, MentorMe's dedicated AI agent. I'm here to help students and professionals alike. How can I assist you today?" }],
+            },
+            ...messages.slice(0, -1).map((m: { role: string; content: string }) => ({
+              role: m.role === "assistant" ? "model" : "user",
+              parts: [{ text: m.content }],
+            })),
+          ],
+        });
+
+        const lastMessage = messages[messages.length - 1];
         const result = await chat.sendMessage(lastMessage.content);
         rawReply = result.response.text();
-        break;
+        break; // Success!
       } catch (error: any) {
-        if (i === maxRetries - 1) throw error;
+        lastError = error;
         const message = error.message || "";
+        console.warn(`Chat attempt ${attempt + 1} with ${currentModelName} failed: ${message}`);
+
+        // If it's a 404, try next model immediately
+        if (message.includes('404') || message.includes('not found')) {
+          continue;
+        }
+
+        // If it's a rate limit or server error, wait and try next
         if (message.includes('429') || message.includes('quota') || message.includes('500') || message.includes('503')) {
-          const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+          const delay = Math.pow(2, Math.floor(attempt / modelsToTry.length)) * 1000 + Math.random() * 1000;
           await new Promise(resolve => setTimeout(resolve, delay));
           continue;
         }
-        throw error;
+        
+        throw error; // Other errors (like safety filters) should probably be thrown
       }
     }
+
+    if (!rawReply && lastError) throw lastError;
 
 
     // 1. Process B2B Leads -> Sandeep

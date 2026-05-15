@@ -3,7 +3,7 @@ import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
 const genAI = new GoogleGenerativeAI(apiKey);
 
-export const getModel = (modelName: string = 'gemini-2.0-flash'): GenerativeModel => {
+export const getModel = (modelName: string = 'gemini-1.5-flash'): GenerativeModel => {
   return genAI.getGenerativeModel({ model: modelName });
 };
 
@@ -12,18 +12,25 @@ export const getModel = (modelName: string = 'gemini-2.0-flash'): GenerativeMode
  */
 export async function generateWithRetry(
   prompt: string,
-  modelName: string = 'gemini-2.0-flash',
+  modelName: string = 'gemini-1.5-flash',
   maxRetries: number = 5
 ) {
   let lastError: any;
-  const modelsToTry = ['gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-flash-8b'];
+  const modelsToTry = [
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-latest',
+    'gemini-1.5-flash-8b',
+    'gemini-2.0-flash',
+    'gemini-2.0-flash-exp'
+  ];
 
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     // Alternate models on persistent failure to find one with available quota
     const currentModelName = modelsToTry[attempt % modelsToTry.length];
-    const model = getModel(currentModelName);
+    console.log(`Attempting generation with model: ${currentModelName} (attempt ${attempt + 1})`);
     
     try {
+      const model = getModel(currentModelName);
       const result = await model.generateContent(prompt);
       const response = await result.response;
       return response.text();
@@ -31,6 +38,12 @@ export async function generateWithRetry(
       lastError = error;
       const message = error.message || '';
       
+      // If model not found (404), try the next one immediately
+      if (message.includes('404') || message.includes('not found')) {
+        console.warn(`Model ${currentModelName} not found (404). Trying next model...`);
+        continue; 
+      }
+
       // If it's a rate limit (429), server error (500, 503, 504), or high traffic
       if (
         message.includes('429') || 

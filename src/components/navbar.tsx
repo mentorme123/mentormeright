@@ -18,6 +18,7 @@ export function Navbar() {
     { href: "/ai-corner", label: "AI Corner" },
     { href: "/career-simulator", label: "Career Simulator" },
     { href: "/exam-predictor", label: "Exam Predictor" },
+    { href: "/career-assessment.html", label: "Career Assessment", external: true },
     { href: "/scholarships", label: "Scholarships" },
     { href: "/alumni", label: "Alumni Network" },
     { href: "/community", label: "Community" },
@@ -80,15 +81,18 @@ export function Navbar() {
                     { href: "/ai-corner", label: "AI Corner", badge: true },
                     { href: "/career-simulator", label: "Career Simulator" },
                     { href: "/exam-predictor", label: "Exam Predictor" },
+                    { href: "/career-assessment.html", label: "Career Assessment", external: true },
                     { href: "/scholarships", label: "Scholarships" },
                     { href: "/alumni", label: "Alumni Network" },
                     { href: "/community", label: "Community" },
                     { href: "/counsellors", label: "Counsellors" },
                     { href: "/study-abroad", label: "Study Abroad" },
                   ].map((item) => (
-                    <Link
+                    <a
                       key={item.href}
                       href={item.href}
+                      target={item.external ? '_blank' : undefined}
+                      rel={item.external ? 'noopener noreferrer' : undefined}
                       className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 flex items-center justify-between group/item"
                     >
                       <span className="group-hover/item:translate-x-1 transition-transform duration-300">{item.label}</span>
@@ -98,7 +102,7 @@ export function Navbar() {
                           <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-orange"></span>
                         </span>
                       )}
-                    </Link>
+                    </a>
                   ))}
                 </motion.div>
               )}
@@ -151,14 +155,16 @@ export function Navbar() {
           >
             <div className="container mx-auto px-4 py-4 space-y-1">
               {mobileLinks.map((link) => (
-                <Link
+                <a
                   key={link.href}
                   href={link.href}
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noopener noreferrer' : undefined}
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="block px-4 py-3 rounded-xl text-sm font-semibold text-foreground hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                 >
                   {link.label}
-                </Link>
+                </a>
               ))}
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">

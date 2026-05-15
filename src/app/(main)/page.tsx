@@ -218,9 +218,9 @@ export default function Home() {
       </section>
 
       {/* Our Recent Program Partners Section */}
-      <section className="py-24 px-4 bg-gradient-to-br from-brand-blue to-[#055e9c] text-white overflow-hidden relative">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 bg-center"></div>
-        <div className="max-w-6xl mx-auto space-y-10">
+      <section className="py-24 px-4 bg-gradient-to-br from-brand-blue via-brand-blue to-[#112D55] text-white overflow-hidden relative">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 blur-[120px] rounded-full -mr-64 -mt-64 z-0"></div>
+        <div className="max-w-6xl mx-auto space-y-12 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -234,9 +234,9 @@ export default function Home() {
           {/* Scrolling Carousel */}
           <div className="relative overflow-hidden">
             {/* Left fade */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0870B8] to-transparent z-10 pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-brand-blue to-transparent z-10 pointer-events-none" />
             {/* Right fade */}
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#055e9c] to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-blue to-transparent z-10 pointer-events-none" />
 
             <div className="flex gap-6 partners-scroll">
               {[
@@ -356,8 +356,9 @@ export default function Home() {
       </section>
 
       {/* Study Abroad Collaboration */}
-      <section className="py-24 px-4 bg-gradient-to-br from-brand-orange to-[#e67c00] text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 bg-center"></div>
+      <section className="py-24 px-4 bg-gradient-to-tl from-brand-blue via-brand-blue to-[#112D55] text-white relative overflow-hidden">
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-orange/10 blur-[120px] rounded-full -ml-64 -mb-64 z-0"></div>
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 bg-center"></div>
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -383,7 +384,7 @@ export default function Home() {
              transition={{ delay: 0.4 }}
           >
             <Link href="/study-abroad">
-              <button className="bg-white text-brand-orange hover:bg-white/90 text-lg font-extrabold px-12 py-4 rounded-xl shadow-2xl transition-all hover:scale-105 active:scale-95 border-2 border-white/20">
+              <button className="bg-brand-orange hover:bg-brand-orange/90 text-white text-lg font-bold px-10 py-4 rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
                 Learn more
               </button>
             </Link>

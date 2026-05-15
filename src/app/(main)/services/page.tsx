@@ -203,10 +203,10 @@ export default function ServicesPage() {
                   </div>
                   <div className="flex gap-4 pt-4 mt-auto">
                     <Link href="/contact" className="flex-1">
-                      <Button variant="outline" className="w-full text-brand-blue border-brand-blue hover:bg-brand-blue/5">Know More</Button>
+                      <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50">Know More</Button>
                     </Link>
                     <Link href="/contact" className="flex-1">
-                      <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white">Contact Us</Button>
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Contact Us</Button>
                     </Link>
                   </div>
                 </div>
@@ -217,16 +217,16 @@ export default function ServicesPage() {
       </section>
 
       {/* Study Abroad Section */}
-      <section id="abroad" className="py-24 px-4 bg-gradient-to-br from-brand-orange to-[#e67c00] text-white text-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20 bg-center"></div>
+      <section id="abroad" className="py-24 px-4 bg-gradient-to-br from-brand-blue to-[#112D55] text-white text-center relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 blur-[120px] rounded-full -mr-64 -mt-64 z-0"></div>
         <div className="max-w-4xl mx-auto space-y-8 relative z-10">
-          <Globe2 size={64} className="mx-auto text-white" />
+          <Globe2 size={64} className="mx-auto text-brand-orange" />
           <h2 className="text-4xl font-bold">Study Abroad Support</h2>
           <p className="text-xl opacity-90 max-w-2xl mx-auto">
             Ready to take your education global? Partnering with certified agencies, we guide you to top universities worldwide.
           </p>
           <Link href="/study-abroad">
-            <Button className="bg-white text-brand-orange hover:bg-white/90 px-10 py-6 text-lg rounded-xl shadow-2xl font-bold transition-transform hover:scale-105 active:scale-95">
+            <Button className="bg-brand-orange hover:bg-brand-orange/90 text-white px-10 py-6 text-lg rounded-xl shadow-xl">
               Explore Destinations
             </Button>
           </Link>

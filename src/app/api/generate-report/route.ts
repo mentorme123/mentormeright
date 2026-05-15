@@ -129,6 +129,15 @@ Do not return any markdown. Return strictly valid JSON only.
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Error generating report:', err);
+
+    // Gracefully handle Gemini Free Tier Rate Limits
+    if (err.message && (err.message.includes('429') || err.message.includes('quota') || err.message.includes('exhausted'))) {
+      return NextResponse.json(
+        { error: 'Our AI servers are currently experiencing high traffic. Please wait 1 minute and try submitting again.' }, 
+        { status: 429 }
+      );
+    }
+
     return NextResponse.json({ error: err.message || 'Failed to generate report' }, { status: 500 });
   }
 }

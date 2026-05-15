@@ -1,10 +1,21 @@
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
 
 const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY || '';
+if (!apiKey) {
+  console.error('FATAL: GEMINI_API_KEY is not defined in environment variables!');
+} else {
+  console.log(`Gemini API Key detected (starts with: ${apiKey.substring(0, 6)}...)`);
+}
+
 const genAI = new GoogleGenerativeAI(apiKey);
 
 export const getModel = (modelName: string = 'gemini-1.5-flash'): GenerativeModel => {
-  return genAI.getGenerativeModel({ model: modelName });
+  // Use v1 for stable models, v1beta for experimental ones
+  const isExperimental = modelName.includes('2.0') || modelName.includes('exp') || modelName.includes('beta');
+  return genAI.getGenerativeModel(
+    { model: modelName },
+    { apiVersion: isExperimental ? 'v1beta' : 'v1' }
+  );
 };
 
 /**
@@ -19,6 +30,8 @@ export async function generateWithRetry(
   const modelsToTry = [
     'gemini-1.5-flash',
     'gemini-1.5-flash-latest',
+    'gemini-1.5-pro',
+    'gemini-1.0-pro',
     'gemini-1.5-flash-8b',
     'gemini-2.0-flash',
     'gemini-2.0-flash-exp'

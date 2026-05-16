@@ -31,7 +31,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="w-full border-t-4 border-t-brand-orange border-b border-brand-blue/10 bg-brand-blue/[0.03] backdrop-blur-md sticky top-0 z-50">
+    <nav className="w-full border-t-4 border-t-brand-orange border-b border-brand-blue/10 bg-gradient-to-r from-brand-blue/[0.04] to-brand-orange/[0.04] backdrop-blur-md sticky top-0 z-50">
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-8">
         <Link href="/" className="flex items-center gap-2">
           {/* User's uploaded logo */}

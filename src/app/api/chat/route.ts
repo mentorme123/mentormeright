@@ -303,10 +303,19 @@ export async function POST(req: NextRequest) {
               role: "model",
               parts: [{ text: "Understood! I am AI Corner, MentorMe's dedicated AI agent. I'm here to help students and professionals alike. How can I assist you today?" }],
             },
-            ...messages.slice(0, -1).map((m: { role: string; content: string }) => ({
-              role: m.role === "assistant" ? "model" : "user",
-              parts: [{ text: m.content }],
-            })),
+            ...messages.slice(0, -1).reduce((acc: any[], m: { role: string; content: string }) => {
+              const mappedRole = m.role === "assistant" ? "model" : "user";
+              // Skip the initial welcome message from the assistant
+              if (acc.length === 0 && mappedRole === "model") return acc;
+              
+              // If the role is the same as the last one, combine the text instead of pushing a new message
+              if (acc.length > 0 && acc[acc.length - 1].role === mappedRole) {
+                acc[acc.length - 1].parts[0].text += `\n\n${m.content}`;
+              } else {
+                acc.push({ role: mappedRole, parts: [{ text: m.content }] });
+              }
+              return acc;
+            }, []),
           ],
         });
 

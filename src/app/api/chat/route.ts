@@ -272,11 +272,10 @@ export async function POST(req: NextRequest) {
 
     // Model selection with fallback
     const modelsToTry = [
-      'gemini-1.5-flash', 
-      'gemini-1.5-flash-latest', 
-      'gemini-1.5-pro',
-      'gemini-1.0-pro',
-      'gemini-2.0-flash'
+      'gemini-2.5-flash', 
+      'gemini-2.0-flash', 
+      'gemini-flash-latest',
+      'gemini-2.5-pro'
     ];
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     let rawReply = "";
@@ -328,11 +327,8 @@ export async function POST(req: NextRequest) {
         const message = error.message || "";
         console.warn(`Chat attempt ${attempt + 1} with ${currentModelName} failed: ${message}`);
 
-        // If it's a 404, try next model immediately
+        // If it's a 404, we don't throw immediately, we just try the next one.
         if (message.includes('404') || message.includes('not found')) {
-          if (attempt >= modelsToTry.length - 1) {
-             throw new Error(`AI Service Error: All models returned 404. Check API Key or Google Cloud settings.`);
-          }
           continue;
         }
 

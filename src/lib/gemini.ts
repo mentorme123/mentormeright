@@ -28,13 +28,10 @@ export async function generateWithRetry(
 ) {
   let lastError: any;
   const modelsToTry = [
-    'gemini-1.5-flash',
-    'gemini-1.5-flash-latest',
-    'gemini-1.5-pro',
-    'gemini-1.0-pro',
-    'gemini-1.5-flash-8b',
+    'gemini-2.5-flash',
     'gemini-2.0-flash',
-    'gemini-2.0-flash-exp'
+    'gemini-flash-latest',
+    'gemini-2.5-pro'
   ];
 
   if (!apiKey) {
@@ -58,10 +55,6 @@ export async function generateWithRetry(
       // If model not found (404), try the next one immediately
       if (message.includes('404') || message.includes('not found')) {
         console.warn(`Model ${currentModelName} not found. Trying next...`);
-        // If we've tried a few and still getting 404, it might be an API key issue
-        if (attempt >= modelsToTry.length - 1) {
-           throw new Error(`AI Service Error: All models returned 404. This usually means the API Key is invalid or the 'Generative Language API' is not enabled in your Google Cloud Project. Checked: ${modelsToTry.join(', ')}`);
-        }
         continue; 
       }
 

@@ -32,6 +32,8 @@ export function Navbar() {
 
   return (
     <nav className="w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
+      {/* Top accent bar */}
+      <div className="h-1 w-full bg-gradient-to-r from-brand-blue via-brand-orange to-brand-blue opacity-80" />
       <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-8">
         <Link href="/" className="flex items-center gap-2">
           {/* User's uploaded logo */}
@@ -63,7 +65,7 @@ export function Navbar() {
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            <button className="flex items-center gap-1 font-extrabold text-brand-orange py-6 transition-transform hover:scale-105 active:scale-95">
+            <button className="flex items-center gap-1 font-semibold text-brand-orange py-6 transition-transform hover:scale-105 active:scale-95 group-hover:text-brand-orange/80">
               Our Programs <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 
@@ -121,15 +123,19 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <Link href="/assessment" className="hidden lg:block">
-            <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-black px-8 py-3.5 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all duration-300 text-[14px] tracking-tight">
+            <button className="bg-gradient-to-r from-brand-orange to-orange-500 text-white hover:shadow-brand-orange/40 hover:scale-[1.02] active:scale-95 font-bold px-8 py-3.5 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all duration-300 text-[14px] tracking-tight">
               Free Career Assessment Test
             </button>
           </Link>
           <Link href="/register" className="hidden sm:block">
-            <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">Register</button>
+            <button className="bg-gradient-to-r from-brand-blue to-blue-600 text-white hover:shadow-brand-blue/40 hover:scale-[1.02] active:scale-95 font-bold px-7 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">
+              Register
+            </button>
           </Link>
           <Link href="/login">
-            <button className="hidden sm:inline-flex font-bold px-5 py-2.5 hover:bg-muted rounded-xl transition-all duration-300 text-slate-700 hover:text-brand-blue">Log in</button>
+            <button className="hidden sm:inline-flex font-bold px-5 py-2.5 hover:bg-slate-100 rounded-xl transition-all duration-300 text-slate-700 hover:text-brand-blue border border-transparent hover:border-slate-200">
+              Log in
+            </button>
           </Link>
 
           {/* Mobile Hamburger Button */}
@@ -169,7 +175,7 @@ export function Navbar() {
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
                 <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">
+                  <button className="w-full bg-gradient-to-r from-brand-orange to-orange-500 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-brand-orange/20">
                     Free Career Assessment Test
                   </button>
                 </Link>
@@ -178,7 +184,7 @@ export function Navbar() {
                     <button className="w-full font-semibold py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">Log in</button>
                   </Link>
                   <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                    <button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold py-2.5 rounded-xl transition-all shadow-sm">Register</button>
+                    <button className="w-full bg-gradient-to-r from-brand-blue to-blue-600 text-white font-semibold py-2.5 rounded-xl transition-all shadow-lg shadow-brand-blue/20">Register</button>
                   </Link>
                 </div>
               </div>

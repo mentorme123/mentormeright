@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
-import { BackButton } from "@/components/back-button";
+import { PathTracker } from "@/components/back-button";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { GoogleAnalytics } from "@/components/analytics";
@@ -34,6 +34,7 @@ export default function RootLayout({
         <meta name="theme-color" content="#1B3A6B" />
       </head>
       <body className="antialiased min-h-screen flex flex-col font-sans">
+        <PathTracker />
         {/* BackButton is handled in sub-layouts to allow for variant control */}
         <script dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {

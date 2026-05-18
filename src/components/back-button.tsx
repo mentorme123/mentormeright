@@ -4,11 +4,9 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
-export function BackButton() {
-  const router = useRouter();
+export function PathTracker() {
   const pathname = usePathname();
 
-  // Track last visited content page to support correct back navigation from assessment
   useEffect(() => {
     if (typeof window !== "undefined") {
       const isContentPage = !pathname.startsWith("/assessment") && 
@@ -20,6 +18,13 @@ export function BackButton() {
       }
     }
   }, [pathname]);
+
+  return null;
+}
+
+export function BackButton() {
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Hide on homepage — no need for a back button on the landing page
   if (pathname === "/") return null;
@@ -63,19 +68,6 @@ export function BackButton() {
 export function BackButtonCompact() {
   const router = useRouter();
   const pathname = usePathname();
-
-  // Track last visited content page to support correct back navigation from assessment
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const isContentPage = !pathname.startsWith("/assessment") && 
-                            !pathname.startsWith("/login") && 
-                            !pathname.startsWith("/register") && 
-                            !pathname.startsWith("/auth");
-      if (isContentPage) {
-        sessionStorage.setItem("mentorme_last_content_page", pathname);
-      }
-    }
-  }, [pathname]);
 
   const handleBack = () => {
     // Fire-and-forget analytics

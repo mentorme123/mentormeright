@@ -1,11 +1,25 @@
 "use client";
 
+import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 export function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
+
+  // Track last visited content page to support correct back navigation from assessment
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isContentPage = !pathname.startsWith("/assessment") && 
+                            !pathname.startsWith("/login") && 
+                            !pathname.startsWith("/register") && 
+                            !pathname.startsWith("/auth");
+      if (isContentPage) {
+        sessionStorage.setItem("mentorme_last_content_page", pathname);
+      }
+    }
+  }, [pathname]);
 
   // Hide on homepage — no need for a back button on the landing page
   if (pathname === "/") return null;
@@ -19,15 +33,11 @@ export function BackButton() {
     }).catch(() => {});
 
     if (pathname.startsWith("/assessment")) {
-      const referrer = typeof document !== "undefined" ? document.referrer : "";
-      const isAuthPage = referrer.includes("/login") || referrer.includes("/register") || referrer.includes("/auth");
-      
-      if (isAuthPage || !referrer) {
-        // If previous page in history is an auth page, redirect to home to break loop
-        router.push("/");
+      const lastContentPage = typeof window !== "undefined" ? sessionStorage.getItem("mentorme_last_content_page") : null;
+      if (lastContentPage) {
+        router.push(lastContentPage);
       } else {
-        // Otherwise, safely go back to the actual previous content page (e.g. /about, /services)
-        router.back();
+        router.push("/");
       }
     } else {
       router.back();
@@ -54,7 +64,18 @@ export function BackButtonCompact() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // if (pathname === "/") return null;
+  // Track last visited content page to support correct back navigation from assessment
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const isContentPage = !pathname.startsWith("/assessment") && 
+                            !pathname.startsWith("/login") && 
+                            !pathname.startsWith("/register") && 
+                            !pathname.startsWith("/auth");
+      if (isContentPage) {
+        sessionStorage.setItem("mentorme_last_content_page", pathname);
+      }
+    }
+  }, [pathname]);
 
   const handleBack = () => {
     // Fire-and-forget analytics
@@ -65,15 +86,11 @@ export function BackButtonCompact() {
     }).catch(() => {});
 
     if (pathname.startsWith("/assessment")) {
-      const referrer = typeof document !== "undefined" ? document.referrer : "";
-      const isAuthPage = referrer.includes("/login") || referrer.includes("/register") || referrer.includes("/auth");
-      
-      if (isAuthPage || !referrer) {
-        // If previous page in history is an auth page, redirect to home to break loop
-        router.push("/");
+      const lastContentPage = typeof window !== "undefined" ? sessionStorage.getItem("mentorme_last_content_page") : null;
+      if (lastContentPage) {
+        router.push(lastContentPage);
       } else {
-        // Otherwise, safely go back to the actual previous content page (e.g. /about, /services)
-        router.back();
+        router.push("/");
       }
     } else {
       router.back();

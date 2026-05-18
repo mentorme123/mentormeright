@@ -75,7 +75,7 @@ export default function BlogsPage() {
           <div className="pt-4">
             <Link href="/assessment">
               <Button size="lg" className="bg-brand-orange text-white hover:bg-brand-orange/90 font-bold text-lg px-8 py-6 rounded-full shadow-lg shadow-brand-orange/20">
-                Get Free Assessment
+                Career Assessment
               </Button>
             </Link>
           </div>

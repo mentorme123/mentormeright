@@ -63,7 +63,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
           <div className="pt-8">
             <Link href="/assessment">
               <Button size="lg" className={`${bgColor} hover:opacity-90 text-white border-0 shadow-2xl scale-100 hover:scale-105 transition-all duration-300 text-lg px-8 py-6 rounded-full`}>
-                Get Free Assessment <ArrowRight className="ml-2" />
+                Career Assessment <ArrowRight className="ml-2" />
               </Button>
             </Link>
           </div>
@@ -129,7 +129,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
                 <p className="text-sm text-slate-400 mb-4 text-center">Ready to discover your potential?</p>
                 <Link href="/assessment" className="block w-full">
                   <Button className={`w-full py-6 text-lg font-bold rounded-xl ${bgColor} hover:opacity-90 text-white shadow-lg`}>
-                    Get Free Assessment
+                    Career Assessment
                   </Button>
                 </Link>
               </div>

@@ -129,7 +129,7 @@ export function Navbar() {
             <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">Register</button>
           </Link>
           <Link href="/login">
-            <button className="hidden sm:inline-flex font-bold px-5 py-2.5 hover:bg-muted rounded-xl transition-all duration-300 text-slate-700 hover:text-brand-blue">Log in</button>
+            <button className="hidden sm:inline-flex bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20">Log in</button>
           </Link>
 
           {/* Mobile Hamburger Button */}

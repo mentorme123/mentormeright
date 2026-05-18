@@ -63,7 +63,7 @@ export function Navbar() {
             onMouseEnter={() => setIsDropdownOpen(true)}
             onMouseLeave={() => setIsDropdownOpen(false)}
           >
-            <button className="flex items-center gap-1 font-extrabold text-brand-orange py-6 transition-transform hover:scale-105 active:scale-95">
+            <button className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300">
               Our Programs <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
 

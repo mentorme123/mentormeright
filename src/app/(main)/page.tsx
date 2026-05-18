@@ -22,7 +22,9 @@ function Counter({ value }: { value: string }) {
       ([entry]) => {
         if (entry.isIntersecting) {
           setHasStarted(true);
-          observer.disconnect();
+        } else {
+          setHasStarted(false);
+          setCount(0);
         }
       },
       { threshold: 0.1 }
@@ -38,9 +40,9 @@ function Counter({ value }: { value: string }) {
   useEffect(() => {
     if (!hasStarted) return;
 
-    let start = 0;
     const duration = 2000; // 2 seconds
     const startTime = performance.now();
+    let animationFrameId: number;
 
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
@@ -53,11 +55,17 @@ function Counter({ value }: { value: string }) {
       setCount(currentCount);
 
       if (progress < 1) {
-        requestAnimationFrame(animate);
+        animationFrameId = requestAnimationFrame(animate);
       }
     };
 
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, [hasStarted, target]);
 
   return (

@@ -106,10 +106,10 @@ export default function ServicesPage() {
 
           <div className="grid md:grid-cols-4 gap-6 mt-12">
             {[
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 11th-12th grade students" },
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 8th-10th grade students" },
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 6th-7th grade students" },
-              { img: "/images/professional.png", title: "Psychometric Assessment Test for College & Professionals" }
+              { img: "/images/school.png", title: "Psychometric Assessment Test for 11th-12th grade students", audience: "GR" },
+              { img: "/images/school.png", title: "Psychometric Assessment Test for 8th-10th grade students", audience: "ST" },
+              { img: "/images/school.png", title: "Psychometric Assessment Test for 6th-7th grade students", audience: "ST" },
+              { img: "/images/professional.png", title: "Psychometric Assessment Test for College & Professionals", audience: "UG" }
             ].map((item, i) => (
               <div key={i} className="bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
                 <div className="h-40 relative bg-slate-200">
@@ -118,7 +118,7 @@ export default function ServicesPage() {
                 <div className="p-5 flex-1 flex flex-col space-y-4">
                   <h3 className="font-bold text-md flex-1">{item.title}</h3>
                   <div className="flex flex-col gap-2 mt-auto">
-                    <Link href="/assessment">
+                    <Link href={`/assessment?audience=${item.audience}`}>
                       <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50">Know More</Button>
                     </Link>
                     <Link href="/contact">

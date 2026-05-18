@@ -140,10 +140,10 @@ export default function Home() {
             
             <div className="lg:col-span-7 grid sm:grid-cols-2 gap-6">
               {[
-                { title: "College Students", desc: "Career assessment test for college students" },
-                { title: "11th-12th Grade", desc: "Psychometric assessment test for class 11-12th students" },
-                { title: "8th-10th Grade", desc: "Psychometric assessment test for class 8-10th students" },
-                { title: "6th-7th Grade", desc: "Psychometric Assessment test for class 6 & 7 students" },
+                { title: "College Students", desc: "Career assessment test for college students", audience: "UG" },
+                { title: "11th-12th Grade", desc: "Psychometric assessment test for class 11-12th students", audience: "GR" },
+                { title: "8th-10th Grade", desc: "Psychometric assessment test for class 8-10th students", audience: "ST" },
+                { title: "6th-7th Grade", desc: "Psychometric Assessment test for class 6 & 7 students", audience: "ST" },
               ].map((item, i) => (
                 <motion.div 
                   key={i}
@@ -157,7 +157,7 @@ export default function Home() {
                   <h3 className="text-xl font-bold mb-2 text-brand-blue group-hover:text-brand-orange transition-colors duration-300">{item.title}</h3>
                   <p className="text-muted-foreground mb-4 h-16">{item.desc}</p>
                   <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
-                    <Link href="/assessment" className="text-sm font-bold text-brand-orange hover:underline bg-brand-orange/10 px-4 py-2 rounded-full transition-all group-hover:bg-brand-orange group-hover:text-white">Career Assessment</Link>
+                    <Link href={`/assessment?audience=${item.audience}`} className="text-sm font-bold text-brand-orange hover:underline bg-brand-orange/10 px-4 py-2 rounded-full transition-all group-hover:bg-brand-orange group-hover:text-white">Career Assessment</Link>
                     <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact us</Link>
                   </div>
                 </motion.div>

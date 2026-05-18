@@ -46,6 +46,18 @@ export default function AssessmentPage() {
 
       if (session && !userProfile?.phone) setShowOnboarding(true);
 
+      // Check query params for audience type
+      const params = new URLSearchParams(window.location.search);
+      const urlAudience = params.get("audience");
+      if (urlAudience && ["ST", "UG", "GR", "WP"].includes(urlAudience)) {
+        localStorage.setItem("mentorme_audience", urlAudience);
+        // Clear saved progress if user switches test types to prevent loading old answers
+        const savedProgress = localStorage.getItem("mentorme_assessment_progress");
+        if (savedProgress) {
+          localStorage.removeItem("mentorme_assessment_progress");
+        }
+      }
+
       const audience = (localStorage.getItem("mentorme_audience") || userProfile?.audience_type || "ST") as AudienceType;
       const q = getQuestions(audience);
       setQuestions(q);

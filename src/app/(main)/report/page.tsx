@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Printer, Sparkles, AlertTriangle, Target, Briefcase, GraduationCap, Calendar, Landmark, CheckCircle2 } from "lucide-react";
+import { Printer, Download, Sparkles, AlertTriangle, Target, Briefcase, GraduationCap, Calendar, Landmark, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer } from "recharts";
 import Image from "next/image";
@@ -159,9 +159,27 @@ export default function ReportPage() {
       `}</style>
 
       {/* Floating Web Print Controls */}
-      <div className="fixed bottom-28 right-6 z-[100] print:hidden flex flex-col gap-4">
-        <Button onClick={handlePrint} size="lg" className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold shadow-2xl rounded-full h-16 w-16 p-0 flex flex-col items-center justify-center animate-bounce">
-          <Printer size={24} />
+      <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[200] print:hidden flex flex-col items-end gap-3 max-w-sm">
+        {/* Helper Card */}
+        <div className="hidden md:flex bg-white/95 backdrop-blur-md border border-slate-200/80 p-4 rounded-2xl shadow-2xl flex-col gap-2 text-slate-700 animate-in fade-in slide-in-from-bottom-5 duration-300">
+          <div className="flex gap-2 items-center text-brand-blue font-bold text-sm">
+            <span className="flex h-2 w-2 rounded-full bg-brand-orange animate-pulse"></span>
+            How to Download as PDF:
+          </div>
+          <p className="text-xs text-slate-500 leading-normal font-medium">
+            Click the button below. In the print dialog, change the <b>Destination</b> to <b>"Save as PDF"</b> to download this report to your device.
+          </p>
+        </div>
+
+        {/* Action Button */}
+        <Button 
+          onClick={handlePrint} 
+          size="lg" 
+          className="bg-gradient-to-r from-brand-blue to-brand-orange hover:from-brand-blue/90 hover:to-brand-orange/90 text-white font-black shadow-2xl rounded-2xl py-6 px-6 sm:px-8 flex gap-3 items-center justify-center border border-white/20 transition-all hover:scale-105 hover:shadow-brand-orange/20"
+        >
+          <Download size={20} className="animate-bounce" />
+          <Printer size={20} />
+          <span>Download & Print PDF</span>
         </Button>
       </div>
 

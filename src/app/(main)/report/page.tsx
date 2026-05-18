@@ -159,7 +159,7 @@ export default function ReportPage() {
       `}</style>
 
       {/* Floating Web Print Controls */}
-      <div className="fixed bottom-8 right-8 z-50 print:hidden flex flex-col gap-4">
+      <div className="fixed bottom-28 right-6 z-[100] print:hidden flex flex-col gap-4">
         <Button onClick={handlePrint} size="lg" className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold shadow-2xl rounded-full h-16 w-16 p-0 flex flex-col items-center justify-center animate-bounce">
           <Printer size={24} />
         </Button>

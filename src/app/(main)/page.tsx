@@ -2,10 +2,71 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+
+function Counter({ value }: { value: string }) {
+  const [count, setCount] = useState(0);
+  const elementRef = useRef<HTMLDivElement>(null);
+  const [hasStarted, setHasStarted] = useState(false);
+
+  // Parse target number and suffix (e.g. "20+" -> target: 20, suffix: "+", "50k+" -> target: 50, suffix: "k+")
+  const match = value.match(/^(\d+)(.*)$/);
+  const target = match ? parseInt(match[1], 10) : 0;
+  const suffix = match ? match[2] : "";
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasStarted(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!hasStarted) return;
+
+    let start = 0;
+    const duration = 2000; // 2 seconds
+    const startTime = performance.now();
+
+    const animate = (currentTime: number) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Ease out quad formula: progress * (2 - progress)
+      const easeProgress = progress * (2 - progress);
+      const currentCount = Math.floor(easeProgress * target);
+
+      setCount(currentCount);
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    requestAnimationFrame(animate);
+  }, [hasStarted, target]);
+
+  return (
+    <div ref={elementRef} className="text-5xl font-extrabold text-brand-orange">
+      {count}
+      {suffix}
+    </div>
+  );
+}
 
 export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -417,7 +478,7 @@ export default function Home() {
                 transition={{ type: "spring", stiffness: 100, delay: i * 0.1 }}
                 className="space-y-2"
               >
-                <div className="text-5xl font-extrabold text-brand-orange">{stat.value}</div>
+                <Counter value={stat.value} />
                 <div className="text-lg font-medium text-muted-foreground">{stat.label}</div>
               </motion.div>
             ))}

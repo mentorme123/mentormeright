@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Search, BrainCircuit, Users, BookOpen, GraduationCap, Globe2, Briefcase, FileSearch } from "lucide-react";
+import { Users, BookOpen, Globe2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -70,10 +70,9 @@ export default function ServicesPage() {
             Our Services
           </motion.h1>
 
-          {/* 4 Core Service Icons */}
-          <div className="flex flex-wrap justify-between items-center gap-8 border-b pb-12">
+          {/* 3 Core Service Icons */}
+          <div className="flex flex-wrap justify-center items-center gap-16 border-b pb-12">
             {[
-              { title: "Career Assessments", icon: <FileSearch size={32} className="text-white" />, id: "assessments" },
               { title: "Career Guidance", icon: <Users size={32} className="text-white" />, id: "guidance" },
               { title: "Skill Training", icon: <BookOpen size={32} className="text-white" />, id: "skills" },
               { title: "Study Abroad", icon: <Globe2 size={32} className="text-white" />, id: "abroad" }
@@ -96,48 +95,72 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Career Assessments Section */}
-      <section id="assessments" className="py-20 px-4">
-        <div className="max-w-6xl mx-auto space-y-8">
-          <h2 className="text-4xl font-bold">Career Assessments</h2>
-          <p className="text-muted-foreground max-w-4xl text-lg leading-relaxed">
-            Unlock your full potential with our scientifically validated career assessments. Whether you're a student, a working professional, or someone exploring a career change, our tools provide deep insights into your strengths, preferences, and ideal career paths.
-          </p>
 
-          <div className="grid md:grid-cols-4 gap-6 mt-12">
-            {[
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 11th-12th grade students", audience: "GR" },
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 8th-10th grade students", audience: "ST" },
-              { img: "/images/school.png", title: "Psychometric Assessment Test for 6th-7th grade students", audience: "ST" },
-              { img: "/images/professional.png", title: "Psychometric Assessment Test for College & Professionals", audience: "UG" }
-            ].map((item, i) => (
-              <div key={i} className="bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                <div className="h-40 relative bg-slate-200">
-                  <Image src={item.img} alt={item.title} fill className="object-cover" />
-                </div>
-                <div className="p-5 flex-1 flex flex-col space-y-4">
-                  <h3 className="font-bold text-md flex-1">{item.title}</h3>
-                  <div className="flex flex-col gap-2 mt-auto">
-                    <Link href={`/assessment?audience=${item.audience}`}>
-                      <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50">Know More</Button>
-                    </Link>
-                    <Link href="/contact">
-                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Contact Us</Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Career Guidance Section */}
       <section id="guidance" className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto space-y-8">
           <div className="border border-blue-200 rounded-3xl p-8 lg:p-12 shadow-sm">
-            <h2 className="text-4xl font-bold mb-8">Career Guidance</h2>
-            
+            <h2 className="text-4xl font-bold mb-4">Career Guidance</h2>
+            <p className="text-slate-500 text-lg mb-10">Scientifically validated psychometric assessments for every stage of life.</p>
+
+            {/* Auto-scrolling Assessment Cards Carousel */}
+            <div className="relative overflow-hidden mb-12">
+              {/* Left fade */}
+              <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+              {/* Right fade */}
+              <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+
+              <div className="flex gap-6 guidance-scroll">
+                {[
+                  { img: "/images/professional.png", title: "One to one career Guidance for college students", audience: "UG" },
+                  { img: "/images/school.png", title: "Group counseling sessions in schools for 11th-12th grade students", audience: "GR" },
+                  { img: "/images/school.png", title: "Group counseling sessions in schools for 8th-10th grade students", audience: "ST" },
+                  { img: "/images/school.png", title: "Group counseling sessions in schools for 6th-7th grade students", audience: "ST" },
+                  // Duplicated for seamless loop
+                  { img: "/images/professional.png", title: "One to one career Guidance for college students", audience: "UG" },
+                  { img: "/images/school.png", title: "Group counseling sessions in schools for 11th-12th grade students", audience: "GR" },
+                  { img: "/images/school.png", title: "Group counseling sessions in schools for 8th-10th grade students", audience: "ST" },
+                  { img: "/images/school.png", title: "Group counseling sessions in schools for 6th-7th grade students", audience: "ST" },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex-shrink-0 bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col"
+                    style={{ width: "260px" }}
+                  >
+                    <div className="h-44 relative bg-slate-200">
+                      <Image src={item.img} alt={item.title} fill className="object-cover" />
+                    </div>
+                    <div className="p-5 flex-1 flex flex-col space-y-4">
+                      <h3 className="font-bold text-sm flex-1 leading-snug">{item.title}</h3>
+                      <div className="flex flex-col gap-2 mt-auto">
+                        <Link href={`/assessment?audience=${item.audience}`}>
+                          <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50 text-sm">Know More</Button>
+                        </Link>
+                        <Link href="/contact">
+                          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm">Contact Us</Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <style>{`
+              .guidance-scroll {
+                animation: scroll-guidance 18s linear infinite;
+                width: max-content;
+              }
+              .guidance-scroll:hover {
+                animation-play-state: paused;
+              }
+              @keyframes scroll-guidance {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+            `}</style>
+
             <div className="flex gap-4 mb-12">
               <button 
                 onClick={() => setGuidanceTab("institutions")}

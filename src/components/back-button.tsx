@@ -19,7 +19,16 @@ export function BackButton() {
     }).catch(() => {});
 
     if (pathname.startsWith("/assessment")) {
-      router.push("/");
+      const referrer = typeof document !== "undefined" ? document.referrer : "";
+      const isAuthPage = referrer.includes("/login") || referrer.includes("/register") || referrer.includes("/auth");
+      
+      if (isAuthPage || !referrer) {
+        // If previous page in history is an auth page, redirect to home to break loop
+        router.push("/");
+      } else {
+        // Otherwise, safely go back to the actual previous content page (e.g. /about, /services)
+        router.back();
+      }
     } else {
       router.back();
     }
@@ -56,7 +65,16 @@ export function BackButtonCompact() {
     }).catch(() => {});
 
     if (pathname.startsWith("/assessment")) {
-      router.push("/");
+      const referrer = typeof document !== "undefined" ? document.referrer : "";
+      const isAuthPage = referrer.includes("/login") || referrer.includes("/register") || referrer.includes("/auth");
+      
+      if (isAuthPage || !referrer) {
+        // If previous page in history is an auth page, redirect to home to break loop
+        router.push("/");
+      } else {
+        // Otherwise, safely go back to the actual previous content page (e.g. /about, /services)
+        router.back();
+      }
     } else {
       router.back();
     }

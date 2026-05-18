@@ -49,12 +49,16 @@ export default function CareerLibrary() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: `I want to know more about being a ${selectedCareer.title}. Act as a senior professional in this field and give me a brief 'Day in the life' summary and one tip to succeed. Keep it under 100 words.`,
-          history: []
+          messages: [
+            {
+              role: "user",
+              content: `I want to know more about being a ${selectedCareer.title}. Act as a senior professional in this field and give me a brief 'Day in the life' summary and one tip to succeed. Keep it under 100 words.`
+            }
+          ]
         }),
       });
       const data = await response.json();
-      setSimulationMessage(data.text);
+      setSimulationMessage(data.reply || data.text || "");
     } catch (_error) {
       alert("Failed to start simulation. Please try again.");
     } finally {

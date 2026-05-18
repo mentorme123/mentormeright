@@ -5,6 +5,15 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   try {
+    // Validate SMTP credentials
+    if (!process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error('SMTP environment variables missing');
+      return NextResponse.json(
+        { error: 'Email service is not configured. If running locally, please restart your development server to load .env.local. If running in production (Vercel), please add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and EMAIL_FROM to your Vercel Project Environment Variables.' },
+        { status: 500 }
+      );
+    }
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),

@@ -43,7 +43,7 @@ export default function Home() {
           >
             <Link href="/assessment">
               <Button size="lg" className="w-full sm:w-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-xl px-12 py-8 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-4 border-white/20">
-                Take Your Free Career Assessment Test
+                Career Assessment
               </Button>
             </Link>
             <Link href="/contact">

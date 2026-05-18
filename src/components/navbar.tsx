@@ -81,7 +81,7 @@ export function Navbar() {
                     { href: "/ai-corner", label: "AI Corner", badge: true },
                     { href: "/career-simulator", label: "Career Simulator" },
                     { href: "/exam-predictor", label: "Exam Predictor" },
-                    { href: "/career-assessment.html", label: "Career Assessment", external: true },
+                    { href: "/career-assessment.html", label: "Career Assessment-VK", external: true },
                     { href: "/scholarships", label: "Scholarships" },
                     { href: "/alumni", label: "Alumni Network" },
                     { href: "/community", label: "Community" },
@@ -122,7 +122,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <Link href="/assessment" className="hidden lg:block">
             <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-black px-8 py-3.5 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all duration-300 text-[14px] tracking-tight">
-              Free Career Assessment Test
+              Career Assessment
             </button>
           </Link>
           <Link href="/register" className="hidden sm:block">
@@ -170,7 +170,7 @@ export function Navbar() {
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
                 <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">
-                    Free Career Assessment Test
+                    Career Assessment
                   </button>
                 </Link>
                 <div className="flex gap-3">

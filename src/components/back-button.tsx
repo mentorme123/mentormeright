@@ -18,7 +18,11 @@ export function BackButton() {
       body: JSON.stringify({ event_type: "back_button_click", path: pathname }),
     }).catch(() => {});
 
-    router.back();
+    if (pathname.startsWith("/assessment")) {
+      router.push("/");
+    } else {
+      router.back();
+    }
   };
 
   return (
@@ -51,7 +55,11 @@ export function BackButtonCompact() {
       body: JSON.stringify({ event_type: "back_button_click", path: pathname }),
     }).catch(() => {});
 
-    router.back();
+    if (pathname.startsWith("/assessment")) {
+      router.push("/");
+    } else {
+      router.back();
+    }
   };
 
   return (

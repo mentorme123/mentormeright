@@ -148,7 +148,7 @@ export function AiCornerChatbot() {
       {/* Floating Button */}
       <div 
         id="ai-chatbot-root"
-        className={`fixed bottom-6 right-6 z-[999] print-hidden ${isOpen ? 'w-full max-w-[400px] h-[600px]' : 'w-auto h-auto'}`}
+        className="fixed right-6 top-[calc(50%+44px)] -translate-y-1/2 z-[999] print-hidden w-auto h-auto flex flex-col items-end justify-center"
       >
         <AnimatePresence>
           {!isOpen && hasShownPing && (
@@ -209,7 +209,7 @@ export function AiCornerChatbot() {
             initial={{ opacity: 0, scale: 0.9, y: 20, originX: 1, originY: 1 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed bottom-28 right-6 z-[200] w-[380px] max-w-[calc(100vw-3rem)] bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden"
+            className="fixed right-6 md:right-24 bottom-24 md:bottom-auto md:top-1/2 md:-translate-y-1/2 z-[998] w-[380px] max-w-[calc(100vw-3rem)] bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden"
             style={{ height: isMinimized ? "auto" : "580px", maxHeight: "calc(100vh - 200px)" }}
           >
             {/* Header */}

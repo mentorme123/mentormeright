@@ -20,19 +20,19 @@ export default function ServicesPage() {
 
   const skillPrograms = {
     schools: [
-      { img: "/images/school.png", title: "Vedic Maths Training Program", highlights: "Fast-Track Mental Math | No Tools Needed | Expert-Led" },
-      { img: "/images/school.png", title: "AI Training Program", highlights: "Hands-on projects | Generative AI ML & NLP | Ethics & responsible AI" },
-      { img: "/images/school.png", title: "Robotics Training Program", highlights: "Hands-on training | No lab investment | Robotics Expo" }
+      { img: "/images/programs/vedic-maths.png", title: "Vedic Maths Training Program", highlights: "Fast-Track Mental Math | No Tools Needed | Expert-Led" },
+      { img: "/images/programs/ai-school.png", title: "AI Training Program", highlights: "Hands-on projects | Generative AI ML & NLP | Ethics & responsible AI" },
+      { img: "/images/programs/robotics.png", title: "Robotics Training Program", highlights: "Hands-on training | No lab investment | Robotics Expo" }
     ],
     colleges: [
-      { img: "/images/school.png", title: "Machine Learning Training", highlights: "Advanced ML training for engineering students | Practical projects" },
-      { img: "/images/school.png", title: "Deep Learning Program", highlights: "Advanced AI neural networks training program | Certification" },
-      { img: "/images/school.png", title: "Communication Skills", highlights: "Essential soft skills | Corporate communication | Interview Prep" }
+      { img: "/images/programs/ml.png", title: "Machine Learning Training", highlights: "Advanced ML training for engineering students | Practical projects" },
+      { img: "/images/programs/deep-learning.png", title: "Deep Learning Program", highlights: "Advanced AI neural networks training program | Certification" },
+      { img: "/images/programs/communication.png", title: "Communication Skills", highlights: "Essential soft skills | Corporate communication | Interview Prep" }
     ],
     working_professionals: [
-      { img: "/images/professional.png", title: "Digital Marketing", highlights: "Comprehensive modern digital marketing strategies | SEO & SEM" },
-      { img: "/images/professional.png", title: "Python Full Stack", highlights: "End-to-end web development with Python | Hands-on coding" },
-      { img: "/images/professional.png", title: "SAP FICO / Power BI", highlights: "Financial Accounting and Controlling | Data analytics mastery" }
+      { img: "/images/programs/digital-marketing.png", title: "Digital Marketing", highlights: "Comprehensive modern digital marketing strategies | SEO & SEM" },
+      { img: "/images/programs/python.png", title: "Python Full Stack", highlights: "End-to-end web development with Python | Hands-on coding" },
+      { img: "/images/programs/sap-fico.png", title: "SAP FICO / Power BI", highlights: "Financial Accounting and Controlling | Data analytics mastery" }
     ]
   };
 
@@ -212,30 +212,59 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {skillPrograms[skillTab as keyof typeof skillPrograms].map((item, i) => (
-              <div key={i} className="bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full">
-                <div className="h-56 relative bg-slate-200">
-                  <Image src={item.img} alt={item.title} fill className="object-cover" />
-                </div>
-                <div className="p-6 space-y-4 flex-1 flex flex-col">
-                  <h3 className="font-bold text-xl">{item.title}</h3>
-                  <div className="flex-1">
-                    <span className="text-xs text-slate-400 uppercase tracking-wider block mb-1">Key Highlights</span>
-                    <p className="text-sm font-medium">{item.highlights}</p>
+          {/* Auto-scrolling Skill Training Cards Carousel */}
+          <div className="relative overflow-hidden">
+            {/* Left fade */}
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
+            {/* Right fade */}
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
+
+            <div className="flex gap-8 skills-scroll">
+              {[
+                ...skillPrograms[skillTab as keyof typeof skillPrograms],
+                ...skillPrograms[skillTab as keyof typeof skillPrograms], // Duplicate for loop
+              ].map((item, i) => (
+                <div 
+                  key={i} 
+                  className="flex-shrink-0 bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-[460px]"
+                  style={{ width: "320px" }}
+                >
+                  <div className="h-52 relative bg-slate-200">
+                    <Image src={item.img} alt={item.title} fill className="object-cover" />
                   </div>
-                  <div className="flex gap-4 pt-4 mt-auto">
-                    <Link href="/contact" className="flex-1">
-                      <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50">Know More</Button>
-                    </Link>
-                    <Link href="/contact" className="flex-1">
-                      <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">Contact Us</Button>
-                    </Link>
+                  <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <h3 className="font-bold text-lg mb-2 leading-snug">{item.title}</h3>
+                      <span className="text-xs text-slate-400 uppercase tracking-wider block mb-1">Key Highlights</span>
+                      <p className="text-sm font-medium text-slate-600 leading-relaxed">{item.highlights}</p>
+                    </div>
+                    <div className="flex gap-4 pt-4">
+                      <Link href="/contact" className="flex-1">
+                        <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50 text-sm">Know More</Button>
+                      </Link>
+                      <Link href="/contact" className="flex-1">
+                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm">Contact Us</Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+
+          <style>{`
+            .skills-scroll {
+              animation: scroll-skills 18s linear infinite;
+              width: max-content;
+            }
+            .skills-scroll:hover {
+              animation-play-state: paused;
+            }
+            @keyframes scroll-skills {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(-50%); }
+            }
+          `}</style>
         </div>
       </section>
 

@@ -18,7 +18,7 @@ export function Navbar() {
     { href: "/ai-corner", label: "AI Corner" },
     { href: "/career-simulator", label: "Career Simulator" },
     { href: "/exam-predictor", label: "Exam Predictor" },
-    { href: "/career-assessment.html", label: "Career Assessment", external: true },
+    { href: "/career-assessment.html", label: "Career Assessment-VK", external: true },
     { href: "/scholarships", label: "Scholarships" },
     { href: "/alumni", label: "Alumni Network" },
     { href: "/community", label: "Community" },

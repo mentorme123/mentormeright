@@ -38,7 +38,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
     <div className="flex flex-col min-h-screen bg-slate-50 pt-20">
       
       {/* Hero Section */}
-      <section className="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
+      <section className="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden pb-[50px] md:pb-[100px]">
         <div className="absolute inset-0 z-0">
           <Image 
             src={program.image}
@@ -49,7 +49,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
           />
         </div>
         
-        <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl text-white space-y-6">
+        <div className="relative z-30 container mx-auto px-4 text-center max-w-4xl text-white space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase mb-4">
             <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
             {program.category}

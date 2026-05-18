@@ -151,7 +151,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="bg-background p-6 rounded-2xl border-2 border-transparent hover:border-brand-blue/20 hover:shadow-[0_20px_50px_rgba(8,112,184,0.1)] transition-all duration-500 hover:-translate-y-3 relative overflow-hidden group shadow-sm"
+                  className="bg-background p-6 rounded-2xl border-2 border-slate-100/80 hover:border-brand-blue/40 hover:shadow-[0_20px_45px_rgba(8,112,184,0.12)] transition-all duration-500 hover:-translate-y-3 relative overflow-hidden group shadow-sm"
                 >
                   <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-brand-blue/5 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-700"></div>
                   <h3 className="text-xl font-bold mb-2 text-brand-blue group-hover:text-brand-orange transition-colors duration-300">{item.title}</h3>
@@ -339,7 +339,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-8 rounded-3xl border-2 border-transparent bg-background shadow-lg hover:shadow-[0_30px_60px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-4 group"
+                className="p-8 rounded-3xl border-2 border-slate-100/80 bg-background shadow-md hover:border-brand-blue/40 hover:shadow-[0_30px_60px_rgba(8,112,184,0.15)] transition-all duration-500 hover:-translate-y-3 group"
               >
                 <h3 className="text-2xl font-bold mb-1 text-brand-blue group-hover:text-brand-orange transition-colors duration-300">{item.title}</h3>
                 <p className="font-medium text-brand-orange mb-6 group-hover:text-brand-blue transition-colors duration-300">{item.subtitle}</p>

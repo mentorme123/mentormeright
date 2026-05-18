@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
+// Trigger redeploy to load Vercel SMTP variables
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {

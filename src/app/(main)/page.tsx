@@ -156,9 +156,13 @@ export default function Home() {
                   <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-brand-blue/5 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-700"></div>
                   <h3 className="text-xl font-bold mb-2 text-brand-blue group-hover:text-brand-orange transition-colors duration-300">{item.title}</h3>
                   <p className="text-muted-foreground mb-4 h-16">{item.desc}</p>
-                  <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-100">
-                    <Link href={`/assessment?audience=${item.audience}`} className="text-sm font-bold text-brand-orange hover:underline bg-brand-orange/10 px-4 py-2 rounded-full transition-all group-hover:bg-brand-orange group-hover:text-white">Career Assessment</Link>
-                    <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact us</Link>
+                  <div className="flex justify-between items-center mt-4 pt-4 border-t border-slate-100">
+                    <Link href={`/assessment?audience=${item.audience}`} className="text-xs sm:text-sm font-black text-white bg-brand-orange hover:bg-brand-orange/90 px-5 py-2.5 rounded-xl shadow-md transition-all duration-300 hover:scale-105 active:scale-95">
+                      Career Assessment
+                    </Link>
+                    <Link href="/contact" className="text-xs sm:text-sm font-bold text-slate-500 hover:text-brand-blue transition-colors duration-300">
+                      Contact us
+                    </Link>
                   </div>
                 </motion.div>
               ))}

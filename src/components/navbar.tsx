@@ -32,10 +32,10 @@ export function Navbar() {
 
   return (
     <nav className="w-full border-b border-brand-blue/10 bg-gradient-to-r from-brand-blue/[0.04] to-brand-orange/[0.04] backdrop-blur-md sticky top-0 z-50">
-      <div className="container mx-auto flex h-20 items-center justify-between px-4 sm:px-8">
+      <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-6 sm:px-10 lg:px-12">
         <Link href="/" className="flex items-center gap-2">
           {/* User's uploaded logo */}
-          <div className="relative h-12 w-40">
+          <div className="relative h-14 w-44">
             <Image
               src="/logo.png"
               alt="MentorMe Logo"
@@ -47,7 +47,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center gap-8 text-[15px] font-semibold text-muted-foreground">
+        <div className="hidden lg:flex items-center gap-10 text-[17px] font-bold text-slate-800">
           <Link href="/" className="relative group py-2">
             <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">Home</span>
             <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span>

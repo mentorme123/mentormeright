@@ -205,7 +205,21 @@ export default function Home() {
           >
             <h2 className="text-4xl font-bold">Career Guidance for All Stages</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Expert advice tailored to your specific academic phase or career transition.
+              MentorMe is an elite career intelligence platform powered by advanced AI — helping students & professionals discover their true potential through deep psychometric evaluations.{` `}
+              <details className="inline">
+                <summary className="inline cursor-pointer text-brand-blue font-semibold hover:underline list-none">Read more</summary>
+                <span className="block mt-3 space-y-3 text-base">
+                  <span className="block">After taking our 90-question assessment, our proprietary AI engine instantly generates a hyper-personalized, 10-page career roadmap outlining your dominant strengths, blind spots, and ideal job matches.</span>
+                  <span className="block space-y-2 pt-1">
+                    {["Science-backed Psychometric Analysis", "Proprietary AI-Powered Career Reports", "1-on-1 Sessions with Elite Counselors"].map((point, i) => (
+                      <span key={i} className="flex items-center gap-2">
+                        <span className="h-6 w-6 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center text-sm flex-shrink-0">✓</span>
+                        <span className="font-medium text-foreground">{point}</span>
+                      </span>
+                    ))}
+                  </span>
+                </span>
+              </details>
             </p>
             <div className="space-y-4 pt-4">
               {[

@@ -15,8 +15,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "MentorMe | Career Guidance AI",
-  description: "Navigate your career path with AI-driven insights and expert counseling.",
+  title: "MentorMe | Empowering Careers Beyond Classrooms",
+  description: "MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability.",
 };
 
 export default function RootLayout({

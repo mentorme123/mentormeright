@@ -78,6 +78,7 @@ function Counter({ value }: { value: string }) {
 
 export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [skillTab, setSkillTab] = useState("k12");
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden">
 
@@ -174,71 +175,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Career Assessments Section */}
-      <section className="py-24 px-4 bg-muted/20 overflow-hidden">
-        <div className="max-w-6xl mx-auto space-y-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center space-y-4 max-w-3xl mx-auto"
-          >
-            <h2 className="text-4xl font-bold">Career Assessments for All Ages</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Unlock your full potential with our scientifically validated career assessments. Whether you’re a 6th grader just starting to explore, a college student, or a working professional, our tools provide deep insights into your strengths, preferences, and ideal career paths.
-            </p>
-          </motion.div>
 
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="lg:col-span-5 relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
-              <Image
-                src="/images/school.png"
-                alt="School student taking assessment"
-                width={600}
-                height={600}
-                className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
-              />
-            </motion.div>
-
-            <div className="lg:col-span-7 grid sm:grid-cols-2 gap-6">
-              {[
-                { title: "College Students", desc: "Career assessment test for college students", audience: "UG" },
-                { title: "11th-12th Grade", desc: "Psychometric assessment test for class 11-12th students", audience: "GR" },
-                { title: "8th-10th Grade", desc: "Psychometric assessment test for class 8-10th students", audience: "ST" },
-                { title: "6th-7th Grade", desc: "Psychometric Assessment test for class 6 & 7 students", audience: "ST" },
-              ].map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className="bg-background p-6 rounded-2xl border-2 border-slate-100/80 hover:border-brand-blue/40 hover:shadow-[0_20px_45px_rgba(8,112,184,0.12)] transition-all duration-500 hover:-translate-y-3 relative overflow-hidden group shadow-sm"
-                >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-brand-blue/5 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-700"></div>
-                  <h3 className="text-xl font-bold mb-2 text-brand-blue group-hover:text-brand-orange transition-colors duration-300">{item.title}</h3>
-                  <p className="text-muted-foreground mb-4 h-16">{item.desc}</p>
-                  <div className="flex justify-between items-center mt-4 pt-4 border-t border-slate-100">
-                    <Link href={`/assessment?audience=${item.audience}`} className="text-xs sm:text-sm font-black text-white bg-brand-orange hover:bg-brand-orange/90 px-5 py-2.5 rounded-xl shadow-md transition-all duration-300 hover:scale-105 active:scale-95">
-                      Career Assessment
-                    </Link>
-                    <Link href="/contact" className="text-xs sm:text-sm font-bold text-slate-500 hover:text-brand-blue transition-colors duration-300">
-                      Contact us
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Career Guidance + Working Professional Image */}
       <section className="py-24 px-4 bg-background">
@@ -384,8 +321,22 @@ export default function Home() {
           >
             Skill Training Programs
           </motion.h2>
+          <div className="flex flex-wrap items-center gap-4 mb-8">
+            <button
+              onClick={() => setSkillTab("k12")}
+              className={`px-8 py-3 rounded-full font-bold transition-all shadow-sm ${skillTab === "k12" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
+            >
+              K-12 Programs
+            </button>
+            <button
+              onClick={() => setSkillTab("college")}
+              className={`px-8 py-3 rounded-full font-bold transition-all shadow-sm ${skillTab === "college" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
+            >
+              College Programs
+            </button>
+          </div>
           <div className="grid lg:grid-cols-3 gap-8">
-            {[
+            {(skillTab === "k12" ? [
               {
                 title: "Future AI Leaders Program",
                 subtitle: "AI Classes for School Students",
@@ -401,7 +352,23 @@ export default function Home() {
                 subtitle: "Vedic Maths Classes for School Students",
                 highlights: "Fast‑Track Mental Math | No Tools Needed | Expert‑Led Sessions | Certification"
               },
-            ].map((item, i) => (
+            ] : [
+              {
+                title: "Advanced AI & Machine Learning",
+                subtitle: "AI Certification for College Students",
+                highlights: "Deep Learning | Computer Vision | NLP Projects | Industry Capstone | Placement Assistance"
+              },
+              {
+                title: "Full Stack Web Development",
+                subtitle: "Web & App Development Training",
+                highlights: "MERN Stack | Next.js | Cloud Deployment | Real-world Projects | Technical Interview Prep"
+              },
+              {
+                title: "Data Science & Analytics",
+                subtitle: "Data Analytics Training Program",
+                highlights: "Python & SQL | Tableau & PowerBI | Predictive Modeling | Business Analytics | Live Projects"
+              },
+            ]).map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}

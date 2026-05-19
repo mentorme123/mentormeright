@@ -135,25 +135,15 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <h2 className="text-4xl font-bold">Built for Smarter Career Decisions</h2>
+            <h2 className="text-4xl font-bold leading-tight text-foreground">
+              MentorMe – Empowering Careers Beyond Classrooms
+            </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              MentorMe is an elite career intelligence platform powered by advanced AI. We help students and professionals discover their true potential through deep psychometric evaluations.
+              MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability. We specialize in career counseling, psychometric assessments, Robotics & AI training for schools, value-added programs for colleges, and Campus Recruitment Training (CRT).
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              After taking our 90-question assessment, our proprietary AI engine instantly generates a hyper-personalized, 10-page career roadmap outlining your dominant strengths, blind spots, and ideal job matches.
+              Our mission is to bridge classroom learning with real-world success and prepare students for future-ready careers.
             </p>
-            <ul className="space-y-4 pt-4">
-              {[
-                "Science-backed Psychometric Analysis",
-                "Proprietary AI-Powered Career Reports",
-                "1-on-1 Sessions with Elite Counselors",
-              ].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-foreground font-medium">
-                  <div className="h-6 w-6 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center text-sm">✓</div>
-                  {item}
-                </li>
-              ))}
-            </ul>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, x: 40 }}

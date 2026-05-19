@@ -127,7 +127,7 @@ export default function Home() {
 
       {/* What is MentorMe? (Deep Dive + Image) */}
       <section className="py-24 px-4 bg-background relative z-10">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}

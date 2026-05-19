@@ -92,16 +92,20 @@ export default function CounsellorMarketplace() {
     }
 
     try {
-      // 1. Create Razorpay order for ₹4999
+      // 1. Create Razorpay order
       const orderRes = await fetch("/api/razorpay/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: 4999 })
+        body: JSON.stringify({
+          amount: selectedCounsellor.price_per_session || 4999,
+          slotId: selectedSlot.id,
+          counsellorId: selectedCounsellor.id
+        })
       });
       const order = await orderRes.json();
 
-      if (!order || !order.id) {
-        throw new Error("Failed to initialize payment gateway.");
+      if (!order || !order.orderId) {
+        throw new Error(order.error || "Failed to initialize payment gateway.");
       }
 
       // 2. Open Razorpay Checkout
@@ -111,45 +115,31 @@ export default function CounsellorMarketplace() {
         currency: order.currency,
         name: "MentorMe",
         description: `Counseling Session with ${selectedCounsellor.name}`,
-        order_id: order.id,
-        handler: async function () {
-          // PAYMENT SUCCESS - CREATE BOOKING
+        order_id: order.orderId,
+        handler: async function (response: any) {
+          // PAYMENT SUCCESS - VERIFY ON SERVER
           try {
-            const jitsiLink = `https://meet.jit.si/MentorMe-${selectedCounsellor.id.slice(0, 6)}-${selectedSlot.id.slice(0, 6)}`;
-
-            const { data: bookingData, error: bookingError } = await supabase
-              .from("bookings")
-              .insert({
-                user_id: user.id,
-                counsellor_id: selectedCounsellor.id,
-                slot_id: selectedSlot.id,
-                status: "confirmed",
-                jitsi_link: jitsiLink,
-              })
-              .select("id")
-              .single();
-
-            if (bookingError) throw bookingError;
-
-            // Mark slot as booked
-            await supabase.from("slots").update({ is_booked: true }).eq("id", selectedSlot.id);
-
-            // Send confirmation email
-            await fetch("/api/email/booking-confirmation", {
+            const verifyRes = await fetch("/api/razorpay/verify-payment", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                bookingId: bookingData.id,
-                userId: user.id,
-                counselorId: selectedCounsellor.id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+                bookingId: order.bookingId,
                 slotId: selectedSlot.id,
-              }),
+              })
             });
+
+            const verifyResult = await verifyRes.json();
+            if (!verifyRes.ok || !verifyResult.success) {
+              throw new Error(verifyResult.error || "Payment verification failed.");
+            }
 
             setBookingSuccess(true);
           } catch (err) {
             console.error(err);
-            setBookingError("Payment succeeded but booking failed. Contact support.");
+            setBookingError(err instanceof Error ? err.message : "Payment succeeded but verification failed. Contact support.");
           } finally {
             setBooking(false);
           }

@@ -47,7 +47,7 @@ function Counter({ value }: { value: string }) {
     const animate = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      
+
       // Ease out quad formula: progress * (2 - progress)
       const easeProgress = progress * (2 - progress);
       const currentCount = Math.floor(easeProgress * target);
@@ -80,12 +80,12 @@ export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden">
-      
+
       {/* Hero Section */}
       <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-32 pb-20 lg:pt-48 lg:pb-32">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-blue/10 via-background to-background"></div>
         <div className="max-w-5xl space-y-8 relative z-10">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -94,8 +94,8 @@ export default function Home() {
             Transform Your Career with <br className="hidden md:block" />
             <span className="text-brand-blue">MentorMe</span>
           </motion.h1>
-          
-          <motion.p 
+
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -103,8 +103,8 @@ export default function Home() {
           >
             We provide a comprehensive range of services, spanning from self-discovery to enhancing employability, serving as a one-stop destination for all the support students require beyond their academic institution.
           </motion.p>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
@@ -127,7 +127,7 @@ export default function Home() {
       {/* What is MentorMe? (Deep Dive + Image) */}
       <section className="py-24 px-4 bg-background relative z-10">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -136,7 +136,7 @@ export default function Home() {
           >
             <h2 className="text-4xl font-bold">What is MentorMe?</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              MentorMe is an elite career intelligence platform powered by advanced AI. We help students and professionals discover their true potential through deep psychometric evaluations. 
+              MentorMe is an elite career intelligence platform powered by advanced AI. We help students and professionals discover their true potential through deep psychometric evaluations.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
               After taking our 90-question assessment, our proprietary AI engine instantly generates a hyper-personalized, 10-page career roadmap outlining your dominant strengths, blind spots, and ideal job matches.
@@ -154,7 +154,7 @@ export default function Home() {
               ))}
             </ul>
           </motion.div>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -162,11 +162,11 @@ export default function Home() {
             className="relative"
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/20 to-brand-orange/20 rounded-3xl blur-3xl transform scale-105"></div>
-            <Image 
-              src="/images/student.png" 
-              alt="Student taking assessment" 
-              width={600} 
-              height={500} 
+            <Image
+              src="/images/student.png"
+              alt="Student taking assessment"
+              width={600}
+              height={500}
               className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
               priority
             />
@@ -177,20 +177,20 @@ export default function Home() {
       {/* Career Assessments Section */}
       <section className="py-24 px-4 bg-muted/20 overflow-hidden">
         <div className="max-w-6xl mx-auto space-y-16">
-          <motion.div 
-             initial={{ opacity: 0, y: 20 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             className="text-center space-y-4 max-w-3xl mx-auto"
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center space-y-4 max-w-3xl mx-auto"
           >
             <h2 className="text-4xl font-bold">Career Assessments for All Ages</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
               Unlock your full potential with our scientifically validated career assessments. Whether you’re a 6th grader just starting to explore, a college student, or a working professional, our tools provide deep insights into your strengths, preferences, and ideal career paths.
             </p>
           </motion.div>
-          
+
           <div className="grid lg:grid-cols-12 gap-12 items-center">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -198,15 +198,15 @@ export default function Home() {
               className="lg:col-span-5 relative"
             >
               <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
-              <Image 
-                src="/images/school.png" 
-                alt="School student taking assessment" 
-                width={600} 
-                height={600} 
+              <Image
+                src="/images/school.png"
+                alt="School student taking assessment"
+                width={600}
+                height={600}
                 className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
               />
             </motion.div>
-            
+
             <div className="lg:col-span-7 grid sm:grid-cols-2 gap-6">
               {[
                 { title: "College Students", desc: "Career assessment test for college students", audience: "UG" },
@@ -214,7 +214,7 @@ export default function Home() {
                 { title: "8th-10th Grade", desc: "Psychometric assessment test for class 8-10th students", audience: "ST" },
                 { title: "6th-7th Grade", desc: "Psychometric Assessment test for class 6 & 7 students", audience: "ST" },
               ].map((item, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -243,23 +243,23 @@ export default function Home() {
       {/* Career Guidance + Working Professional Image */}
       <section className="py-24 px-4 bg-background">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             className="order-2 lg:order-1 relative"
           >
-             <div className="absolute inset-0 bg-gradient-to-tl from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
-             <Image 
-              src="/images/guidance-session.jpg" 
-              alt="Career Guidance Session" 
-              width={600} 
-              height={600} 
+            <div className="absolute inset-0 bg-gradient-to-tl from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
+            <Image
+              src="/images/guidance-session.jpg"
+              alt="Career Guidance Session"
+              width={580}
+              height={580}
               className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[500px] lg:h-[600px]"
             />
           </motion.div>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -278,7 +278,7 @@ export default function Home() {
                 { title: "College Students & Professionals", desc: "Strategize, skill up, and land your dream roles with our mentors." },
               ].map((item, i) => (
                 <div key={i} className="flex gap-4 p-4 bg-muted/30 rounded-2xl border">
-                  <div className="h-10 w-10 shrink-0 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold">{i+1}</div>
+                  <div className="h-10 w-10 shrink-0 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold">{i + 1}</div>
                   <div>
                     <h3 className="font-bold">{item.title}</h3>
                     <p className="text-sm text-muted-foreground">{item.desc}</p>
@@ -341,8 +341,8 @@ export default function Home() {
                   style={{ minWidth: "200px" }}
                 >
                   <div className="relative w-24 h-24 flex items-center justify-center">
-                    <Image 
-                      src={partner.logo} 
+                    <Image
+                      src={partner.logo}
                       alt={partner.name}
                       width={80}
                       height={80}
@@ -376,7 +376,7 @@ export default function Home() {
       {/* Skill Training */}
       <section className="py-24 px-4 bg-muted/20">
         <div className="max-w-6xl mx-auto space-y-12">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -386,23 +386,23 @@ export default function Home() {
           </motion.h2>
           <div className="grid lg:grid-cols-3 gap-8">
             {[
-              { 
-                title: "Future AI Leaders Program", 
+              {
+                title: "Future AI Leaders Program",
                 subtitle: "AI Classes for School Students",
                 highlights: "Hands‑on projects | Generative AI ML & NLP | Ethics & responsible AI | Teacher upskilling"
               },
-              { 
-                title: "Robotics & STEM Learning for Kids", 
+              {
+                title: "Robotics & STEM Learning for Kids",
                 subtitle: "Robotics Classes for School Students",
                 highlights: "Hands‑on training | No lab investment | Robotics Expo | STEM Integration | Robotics Lab Upgrade | Teacher Training"
               },
-              { 
-                title: "Smart Maths with Vedic Techniques", 
+              {
+                title: "Smart Maths with Vedic Techniques",
                 subtitle: "Vedic Maths Classes for School Students",
                 highlights: "Fast‑Track Mental Math | No Tools Needed | Expert‑Led Sessions | Certification"
               },
             ].map((item, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -433,7 +433,7 @@ export default function Home() {
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-brand-orange/10 blur-[120px] rounded-full -ml-64 -mb-64 z-0"></div>
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10 bg-center"></div>
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -441,7 +441,7 @@ export default function Home() {
           >
             Study Abroad Support
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -451,10 +451,10 @@ export default function Home() {
             MentorMe announces a strategic collaboration with <strong>United Educational Services</strong>, an AIRC, British Council, and British High Commission certified agency. We provide students with a seamless journey to top international destinations, including the US, UK, Australia, Canada, Ireland, and New Zealand.
           </motion.p>
           <motion.div
-             initial={{ opacity: 0, y: 20 }}
-             whileInView={{ opacity: 1, y: 0 }}
-             viewport={{ once: true }}
-             transition={{ delay: 0.4 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
           >
             <Link href="/study-abroad">
               <button className="bg-brand-orange hover:bg-brand-orange/90 text-white text-lg font-bold px-10 py-4 rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
@@ -470,7 +470,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto text-center space-y-12">
           <h2 className="text-3xl font-bold">Why Choose MentorMe?</h2>
           <p className="text-lg text-muted-foreground">We are proud to present the success of our Programs</p>
-          
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { label: "States", value: "20+" },
@@ -478,7 +478,7 @@ export default function Home() {
               { label: "Students", value: "50k+" },
               { label: "Hours", value: "10k+" },
             ].map((stat, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ scale: 0.5, opacity: 0 }}
                 whileInView={{ scale: 1, opacity: 1 }}
@@ -497,7 +497,7 @@ export default function Home() {
       {/* Contact Form Section */}
       <section className="py-24 px-4 bg-muted/20">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -508,20 +508,20 @@ export default function Home() {
               Create a win-win opportunity: gain practical AI expertise and unlock new income streams with our innovative Train-the-Trainer program!
             </p>
             <div className="space-y-4">
-              <p><strong>Call us at:</strong><br/> +91-9392707596, +91-8188824440</p>
-              <p><strong>Mail us at:</strong><br/> admin@mentormeright.in</p>
-              <p><strong>Location:</strong><br/> Hyderabad, India</p>
+              <p><strong>Call us at:</strong><br /> +91-9392707596, +91-8188824440</p>
+              <p><strong>Mail us at:</strong><br /> admin@mentormeright.in</p>
+              <p><strong>Location:</strong><br /> Hyderabad, India</p>
             </div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="bg-background p-8 rounded-3xl shadow-lg border relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-brand-blue/5 rounded-bl-full -z-10"></div>
-            
+
             {isSubmitted ? (
               <div className="flex flex-col items-center justify-center h-full py-12 text-center space-y-6">
                 <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
@@ -536,7 +536,7 @@ export default function Home() {
             ) : (
               <>
                 <h3 className="text-2xl font-bold mb-6">Apply For</h3>
-                <form 
+                <form
                   onSubmit={(e) => {
                     e.preventDefault();
                     setIsSubmitted(true);

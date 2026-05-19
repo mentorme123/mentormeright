@@ -255,8 +255,8 @@ export default function Home() {
               src="/images/guidance-session.jpg" 
               alt="Career Guidance Session" 
               width={600} 
-              height={500} 
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
+              height={600} 
+              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[500px] lg:h-[600px]"
             />
           </motion.div>
           <motion.div 

@@ -135,7 +135,7 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <h2 className="text-4xl font-bold">What is MentorMe?</h2>
+            <h2 className="text-4xl font-bold">Built for Smarter Career Decisions</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
               MentorMe is an elite career intelligence platform powered by advanced AI. We help students and professionals discover their true potential through deep psychometric evaluations.
             </p>

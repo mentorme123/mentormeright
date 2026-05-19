@@ -242,21 +242,21 @@ export default function Home() {
 
       {/* Career Guidance + Working Professional Image */}
       <section className="py-24 px-4 bg-background">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="order-2 lg:order-1 relative"
+            className="order-2 lg:order-1 relative lg:col-span-5 h-full"
           >
             <div className="absolute inset-0 bg-gradient-to-tl from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
             <Image
               src="/images/guidance-session.jpg"
               alt="Career Guidance Session"
-              width={580}
-              height={580}
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[500px] lg:h-[600px]"
+              width={600}
+              height={800}
+              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-full min-h-[400px]"
             />
           </motion.div>
           <motion.div
@@ -264,7 +264,7 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="space-y-6 order-1 lg:order-2"
+            className="space-y-6 order-1 lg:order-2 lg:col-span-7"
           >
             <h2 className="text-4xl font-bold">Career Guidance for All Stages</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">

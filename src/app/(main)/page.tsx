@@ -275,7 +275,7 @@ export default function Home() {
                 { title: "6th-7th Class Students", desc: "Discover strengths early and guide young minds toward the right path." },
                 { title: "8th-10th Class Students", desc: "Pick subjects & careers with science-backed assessments & expert advice." },
                 { title: "11th-12th Class Students", desc: "Decide your future confidently—exams, colleges, careers." },
-                { title: "College Students & Pros", desc: "Strategize, skill up, and land your dream roles with our mentors." },
+                { title: "College Students & Professionals", desc: "Strategize, skill up, and land your dream roles with our mentors." },
               ].map((item, i) => (
                 <div key={i} className="flex gap-4 p-4 bg-muted/30 rounded-2xl border">
                   <div className="h-10 w-10 shrink-0 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold">{i+1}</div>

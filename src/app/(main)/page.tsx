@@ -250,27 +250,27 @@ export default function Home() {
 
             <div className="flex gap-6 partners-scroll">
               {[
-                { name: "TSWRDC Nalgonda", logo: "/images/partners/logo1.png" },
-                { name: "Pragati Mahavidyalaya", logo: "/images/partners/logo2.png" },
-                { name: "Keshav Memorial", logo: "/images/partners/logo3.png" },
-                { name: "Fiji School", logo: "/images/partners/logo4.png" },
-                { name: "St. Joseph's College", logo: "/images/partners/logo1.png" },
-                { name: "Howard Park International", logo: "/images/partners/logo2.png" },
+                { name: "Pragati Academy", logo: "/images/partners/logo1.png" },
+                { name: "Keshav Memorial", logo: "/images/partners/logo2.png" },
                 { name: "Narayana Group", logo: "/images/partners/logo3.png" },
                 { name: "Sri Chaitanya", logo: "/images/partners/logo4.png" },
-                { name: "Delhi Public School", logo: "/images/partners/logo1.png" },
-                { name: "Kendriya Vidyalaya", logo: "/images/partners/logo2.png" },
+                { name: "Pragati Academy", logo: "/images/partners/logo1.png" },
+                { name: "Keshav Memorial", logo: "/images/partners/logo2.png" },
+                { name: "Narayana Group", logo: "/images/partners/logo3.png" },
+                { name: "Sri Chaitanya", logo: "/images/partners/logo4.png" },
+                { name: "Pragati Academy", logo: "/images/partners/logo1.png" },
+                { name: "Keshav Memorial", logo: "/images/partners/logo2.png" },
                 // Duplicate for seamless loop
-                { name: "TSWRDC Nalgonda", logo: "/images/partners/logo1.png" },
-                { name: "Pragati Mahavidyalaya", logo: "/images/partners/logo2.png" },
-                { name: "Keshav Memorial", logo: "/images/partners/logo3.png" },
-                { name: "Fiji School", logo: "/images/partners/logo4.png" },
-                { name: "St. Joseph's College", logo: "/images/partners/logo1.png" },
-                { name: "Howard Park International", logo: "/images/partners/logo2.png" },
+                { name: "Pragati Academy", logo: "/images/partners/logo1.png" },
+                { name: "Keshav Memorial", logo: "/images/partners/logo2.png" },
                 { name: "Narayana Group", logo: "/images/partners/logo3.png" },
                 { name: "Sri Chaitanya", logo: "/images/partners/logo4.png" },
-                { name: "Delhi Public School", logo: "/images/partners/logo1.png" },
-                { name: "Kendriya Vidyalaya", logo: "/images/partners/logo2.png" },
+                { name: "Pragati Academy", logo: "/images/partners/logo1.png" },
+                { name: "Keshav Memorial", logo: "/images/partners/logo2.png" },
+                { name: "Narayana Group", logo: "/images/partners/logo3.png" },
+                { name: "Sri Chaitanya", logo: "/images/partners/logo4.png" },
+                { name: "Pragati Academy", logo: "/images/partners/logo1.png" },
+                { name: "Keshav Memorial", logo: "/images/partners/logo2.png" },
               ].map((partner, i) => (
                 <div
                   key={i}

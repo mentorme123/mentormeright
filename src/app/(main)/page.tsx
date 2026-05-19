@@ -163,11 +163,11 @@ export default function Home() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/20 to-brand-orange/20 rounded-3xl blur-3xl transform scale-105"></div>
             <Image
-              src="/images/student.png"
-              alt="Student taking assessment"
+              src="/images/mentorme-session.jpg"
+              alt="MentorMe Session with students"
               width={600}
               height={500}
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"
+              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[400px] lg:h-[500px]"
               priority
             />
           </motion.div>

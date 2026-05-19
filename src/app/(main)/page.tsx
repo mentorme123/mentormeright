@@ -185,7 +185,7 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="order-2 lg:order-1 relative lg:col-span-5 h-full"
+            className="order-2 lg:order-1 relative lg:col-span-5"
           >
             <div className="absolute inset-0 bg-gradient-to-tl from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
             <Image
@@ -193,7 +193,7 @@ export default function Home() {
               alt="Career Guidance Session"
               width={600}
               height={800}
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-full min-h-[400px]"
+              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[450px] lg:h-[550px]"
             />
           </motion.div>
           <motion.div

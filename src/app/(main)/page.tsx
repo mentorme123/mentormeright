@@ -252,8 +252,8 @@ export default function Home() {
           >
              <div className="absolute inset-0 bg-gradient-to-tl from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
              <Image 
-              src="/images/professional.png" 
-              alt="Working Professional" 
+              src="/images/guidance-session.jpg" 
+              alt="Career Guidance Session" 
               width={600} 
               height={500} 
               className="relative rounded-3xl shadow-2xl border border-white/10 object-cover"

@@ -387,18 +387,18 @@ export default function Home() {
           <div className="grid lg:grid-cols-3 gap-8">
             {[
               { 
-                title: "AI for School Students", 
-                subtitle: "AI Training Program",
+                title: "Future AI Leaders Program", 
+                subtitle: "AI Classes for School Students",
                 highlights: "Hands‑on projects | Generative AI ML & NLP | Ethics & responsible AI | Teacher upskilling"
               },
               { 
-                title: "Robotics for Students", 
-                subtitle: "Robotics Training Program",
+                title: "Robotics & STEM Learning for Kids", 
+                subtitle: "Robotics Classes for School Students",
                 highlights: "Hands‑on training | No lab investment | Robotics Expo | STEM Integration | Robotics Lab Upgrade | Teacher Training"
               },
               { 
-                title: "Vedic Maths Program", 
-                subtitle: "Vedic Maths Training Program",
+                title: "Smart Maths with Vedic Techniques", 
+                subtitle: "Vedic Maths Classes for School Students",
                 highlights: "Fast‑Track Mental Math | No Tools Needed | Expert‑Led Sessions | Certification"
               },
             ].map((item, i) => (

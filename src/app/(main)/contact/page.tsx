@@ -19,6 +19,16 @@ function ContactForm() {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [errorMsg, setErrorMsg] = useState("");
 
+  const SUBJECT_OPTIONS = [
+    { value: "", label: "How can we help?" },
+    { value: "General Inquiry", label: "General Inquiry" },
+    { value: "Study Abroad", label: "Study Abroad" },
+    { value: "Career Guidance", label: "Career Guidance" },
+    { value: "Program Inquiry", label: "Program Inquiry" },
+    { value: "Partnership Request", label: "Partnership Request" },
+    { value: "Feature Suggestion", label: "Feature Suggestion" },
+  ];
+
   useEffect(() => {
     const msg = searchParams.get("message");
     const university = searchParams.get("university");
@@ -28,7 +38,7 @@ function ContactForm() {
       setMessage(msg);
     }
     if (university && country) {
-      setSubject(`Study Abroad: ${university} (${country})`);
+      setSubject("Study Abroad");
     }
   }, [searchParams]);
 
@@ -108,13 +118,17 @@ function ContactForm() {
       </div>
       <div className="space-y-2">
         <label className="text-sm font-medium">Subject</label>
-        <input 
-          type="text" 
+        <select
           value={subject}
           onChange={(e) => setSubject(e.target.value)}
-          className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow" 
-          placeholder="How can we help?" 
-        />
+          className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none transition-shadow"
+        >
+          {SUBJECT_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value} disabled={option.value === ""}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </div>
       <div className="space-y-2">
         <label className="text-sm font-medium">Your Message <span className="text-red-500">*</span></label>

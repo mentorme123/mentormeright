@@ -112,7 +112,7 @@ export default function AboutPage() {
                 </div>
                 <div className="overflow-hidden rounded-[2rem] border border-slate-200 shadow-xl bg-slate-50">
                   <Image
-                    src="/images/session-5.jpg"
+                    src="/images/session-6.jpg"
                     alt="MentorMe session example"
                     width={720}
                     height={420}

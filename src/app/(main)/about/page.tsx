@@ -35,6 +35,7 @@ export default function AboutPage() {
   ];
 
   const scrollImages = [
+    "/images/session-5.jpg",
     "/images/session-1.jpg",
     "/images/session-2.jpg",
     "/images/session-3.jpg",
@@ -110,7 +111,7 @@ export default function AboutPage() {
                 </div>
                 <div className="overflow-hidden rounded-[2rem] border border-slate-200 shadow-xl bg-slate-50">
                   <Image
-                    src="/images/about-screenshot.jpg"
+                    src="/images/session-5.jpg"
                     alt="MentorMe session example"
                     width={720}
                     height={420}

@@ -35,6 +35,7 @@ export default function AboutPage() {
   ];
 
   const scrollImages = [
+    "/images/session-6.jpg",
     "/images/session-5.jpg",
     "/images/session-1.jpg",
     "/images/session-2.jpg",

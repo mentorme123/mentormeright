@@ -34,6 +34,13 @@ export default function AboutPage() {
     "Future-Ready Skill Development"
   ];
 
+  const scrollImages = [
+    "/images/about-scroll-1.jpg",
+    "/images/about-scroll-2.jpg",
+    "/images/about-scroll-3.jpg",
+    "/images/about-scroll-4.jpg",
+  ];
+
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
       {/* Header */}
@@ -98,6 +105,22 @@ export default function AboutPage() {
               height={500} 
               className="relative rounded-3xl shadow-2xl border border-white/10 object-cover h-[500px]"
             />
+            <div className="mt-8">
+              <p className="text-sm uppercase tracking-[0.35em] text-brand-blue font-bold mb-4">Scroll through our latest moments</p>
+              <div className="flex gap-4 overflow-x-auto pb-2 scroll-smooth">
+                {scrollImages.map((src, index) => (
+                  <div key={index} className="min-w-[260px] flex-shrink-0 rounded-3xl overflow-hidden border border-white/10 shadow-lg">
+                    <Image
+                      src={src}
+                      alt={`Our Philosophy gallery ${index + 1}`}
+                      width={320}
+                      height={220}
+                      className="object-cover w-full h-56"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

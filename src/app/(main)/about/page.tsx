@@ -92,8 +92,8 @@ export default function AboutPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
             <Image 
-              src="/images/guidance-session.jpg" 
-              alt="Career guidance session" 
+              src="/images/about-screenshot.jpg" 
+              alt="Our Philosophy screenshot" 
               width={600} 
               height={500} 
               className="relative rounded-3xl shadow-2xl border border-white/10 object-cover h-[500px]"

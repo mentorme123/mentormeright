@@ -35,10 +35,13 @@ export default function AboutPage() {
   ];
 
   const scrollImages = [
+    "/images/session-1.jpg",
+    "/images/session-2.jpg",
+    "/images/session-3.jpg",
+    "/images/session-4.jpg",
     "/images/about-screenshot.jpg",
     "/images/guidance-session.jpg",
     "/images/mentorme-session.jpg",
-    "/images/school.png",
   ];
 
   return (
@@ -66,7 +69,7 @@ export default function AboutPage() {
 
       {/* Main Content */}
       <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
           <motion.div 
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}

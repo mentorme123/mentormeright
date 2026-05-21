@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Search,
   GraduationCap,
@@ -43,7 +44,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Merit",
     level: "School",
     state: "All India",
-    url: "#",
+    url: "https://scholarships.gov.in/",
     featured: true
   },
   {
@@ -56,7 +57,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Caste-based",
     level: "College",
     state: "All India",
-    url: "#",
+    url: "https://scholarships.gov.in/",
     featured: true
   },
   {
@@ -69,7 +70,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Need-based",
     level: "All",
     state: "All India",
-    url: "#",
+    url: "https://www.buddy4study.com/page/hdfc-group-social-initiative-scholarship",
     featured: false
   },
   {
@@ -82,7 +83,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Merit",
     level: "School",
     state: "All India",
-    url: "#",
+    url: "https://www.buddy4study.com/page/tata-capital-pankh-scholarship",
     featured: false
   },
   {
@@ -95,7 +96,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Fellowship",
     level: "Graduate",
     state: "All India",
-    url: "#",
+    url: "https://youthforindia.org/",
     featured: true
   },
   {
@@ -108,7 +109,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Merit-cum-need",
     level: "College",
     state: "All India",
-    url: "#",
+    url: "https://www.kcmet.org/what-we-do-Scholarship-Grants.aspx",
     featured: false
   },
   {
@@ -121,7 +122,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Caste-based",
     level: "College",
     state: "Telangana",
-    url: "#",
+    url: "https://telanganaepass.cgg.gov.in/",
     featured: false
   },
   {
@@ -134,7 +135,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Caste-based",
     level: "College",
     state: "Karnataka",
-    url: "#",
+    url: "https://karepass.cgg.gov.in/",
     featured: false
   },
   {
@@ -147,7 +148,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Study Abroad",
     level: "Graduate",
     state: "All India",
-    url: "#",
+    url: "https://www.inlaksfoundation.org/",
     featured: true
   },
   {
@@ -160,7 +161,7 @@ const SCHOLARSHIPS: Scholarship[] = [
     category: "Merit",
     level: "College",
     state: "Haryana",
-    url: "#",
+    url: "https://jgu.edu.in/admissions/scholarships/",
     featured: false
   }
 ];
@@ -315,37 +316,41 @@ function ScholarshipCard({ scholarship: s }: { scholarship: Scholarship }) {
   return (
     <motion.div
       whileHover={{ y: -4 }}
-      className="bg-gradient-to-br from-brand-blue to-blue-900 rounded-2xl p-6 text-white shadow-xl"
+      className="bg-gradient-to-br from-brand-blue to-blue-900 rounded-2xl p-6 text-white shadow-xl flex flex-col justify-between"
     >
-      <div className="flex items-start justify-between mb-4">
-        <div>
-          <span className="inline-block px-2 py-1 bg-white/20 rounded-lg text-[10px] font-black uppercase tracking-wider mb-2">
-            {s.category}
+      <div>
+        <div className="flex items-start justify-between mb-4">
+          <div>
+            <span className="inline-block px-2 py-1 bg-white/20 rounded-lg text-[10px] font-black uppercase tracking-wider mb-2">
+              {s.category}
+            </span>
+            <h3 className="text-lg font-black">{s.name}</h3>
+            <p className="text-sm text-blue-200">{s.provider}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-2xl font-black">{s.amount}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 mb-4 text-sm">
+          <span className="flex items-center gap-1">
+            <Clock size={14} className={isUrgent ? 'text-red-300' : 'text-blue-200'} />
+            {isUrgent ? `${daysLeft} days left` : new Date(s.deadline).toLocaleDateString()}
           </span>
-          <h3 className="text-lg font-black">{s.name}</h3>
-          <p className="text-sm text-blue-200">{s.provider}</p>
+          <span className="flex items-center gap-1">
+            <MapPin size={14} className="text-blue-200" /> {s.state}
+          </span>
         </div>
-        <div className="text-right">
-          <p className="text-2xl font-black">{s.amount}</p>
+        <div className="flex flex-wrap gap-2 mb-6">
+          {s.eligibility.slice(0, 2).map((e, i) => (
+            <span key={i} className="px-2 py-1 bg-white/10 rounded-lg text-xs font-bold">{e}</span>
+          ))}
         </div>
       </div>
-      <div className="flex items-center gap-4 mb-4 text-sm">
-        <span className="flex items-center gap-1">
-          <Clock size={14} className={isUrgent ? 'text-red-300' : 'text-blue-200'} />
-          {isUrgent ? `${daysLeft} days left` : new Date(s.deadline).toLocaleDateString()}
-        </span>
-        <span className="flex items-center gap-1">
-          <MapPin size={14} className="text-blue-200" /> {s.state}
-        </span>
-      </div>
-      <div className="flex flex-wrap gap-2 mb-4">
-        {s.eligibility.slice(0, 2).map((e, i) => (
-          <span key={i} className="px-2 py-1 bg-white/10 rounded-lg text-xs font-bold">{e}</span>
-        ))}
-      </div>
-      <Button className="w-full bg-white text-brand-blue font-bold py-5 rounded-xl hover:bg-blue-50">
-        Apply Now <ExternalLink size={16} className="ml-2" />
-      </Button>
+      <Link href={s.url} target="_blank" rel="noopener noreferrer" className="w-full mt-auto block">
+        <Button className="w-full bg-white text-brand-blue font-bold py-5 rounded-xl hover:bg-blue-50/90 transition-all flex items-center justify-center gap-2">
+          Apply Now <ExternalLink size={16} />
+        </Button>
+      </Link>
     </motion.div>
   );
 }
@@ -377,9 +382,11 @@ function ScholarshipRow({ scholarship: s }: { scholarship: Scholarship }) {
               {isUrgent ? `${daysLeft} days` : new Date(s.deadline).toLocaleDateString()}
             </p>
           </div>
-          <Button variant="outline" className="border-brand-blue text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white">
-            Apply
-          </Button>
+          <Link href={s.url} target="_blank" rel="noopener noreferrer">
+            <Button variant="outline" className="border-brand-blue text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all flex items-center gap-2">
+              Apply <ExternalLink size={14} />
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import {
   Search,
@@ -31,6 +31,7 @@ interface Scholarship {
   state: string;
   url: string;
   featured: boolean;
+  status?: "active" | "maintenance";
 }
 
 const SCHOLARSHIPS: Scholarship[] = [
@@ -45,7 +46,8 @@ const SCHOLARSHIPS: Scholarship[] = [
     level: "School",
     state: "All India",
     url: "https://scholarships.gov.in/",
-    featured: true
+    featured: true,
+    status: "maintenance"
   },
   {
     id: "s2",
@@ -58,7 +60,8 @@ const SCHOLARSHIPS: Scholarship[] = [
     level: "College",
     state: "All India",
     url: "https://scholarships.gov.in/",
-    featured: true
+    featured: true,
+    status: "maintenance"
   },
   {
     id: "s3",
@@ -173,6 +176,20 @@ export default function ScholarshipsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedLevel, setSelectedLevel] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [maintenanceScholarship, setMaintenanceScholarship] = useState<Scholarship | null>(null);
+  const [notifyEmail, setNotifyEmail] = useState("");
+  const [notifySuccess, setNotifySuccess] = useState(false);
+
+  const handleNotifySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!notifyEmail) return;
+    setNotifySuccess(true);
+    setTimeout(() => {
+      setNotifySuccess(false);
+      setNotifyEmail("");
+      setMaintenanceScholarship(null);
+    }, 3000);
+  };
 
   const filtered = SCHOLARSHIPS.filter(s => {
     const matchesCategory = selectedCategory === "All" || s.category === selectedCategory;
@@ -289,7 +306,7 @@ export default function ScholarshipsPage() {
             <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">Featured Scholarships</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {featured.map((s) => (
-                <ScholarshipCard key={s.id} scholarship={s} />
+                <ScholarshipCard key={s.id} scholarship={s} onMaintenanceClick={setMaintenanceScholarship} />
               ))}
             </div>
           </div>
@@ -300,16 +317,100 @@ export default function ScholarshipsPage() {
           <h2 className="text-sm font-black text-slate-400 uppercase tracking-widest mb-4">All Scholarships ({regular.length})</h2>
           <div className="space-y-3">
             {regular.map((s) => (
-              <ScholarshipRow key={s.id} scholarship={s} />
+              <ScholarshipRow key={s.id} scholarship={s} onMaintenanceClick={setMaintenanceScholarship} />
             ))}
           </div>
         </div>
       </div>
+
+      {/* Maintenance Modal Dialog */}
+      <AnimatePresence>
+        {maintenanceScholarship && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 relative overflow-hidden animate-in fade-in duration-300"
+            >
+              {/* Close Button */}
+              <button 
+                onClick={() => {
+                  setMaintenanceScholarship(null);
+                  setNotifySuccess(false);
+                  setNotifyEmail("");
+                }}
+                className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-all font-bold text-sm"
+              >
+                ✕
+              </button>
+
+              <div className="text-center space-y-4">
+                <div className="mx-auto w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-500 mb-2 border border-amber-100 shadow-sm animate-pulse">
+                  <AlertCircle size={32} />
+                </div>
+                
+                <h3 className="text-xl font-black text-slate-900 leading-tight">
+                  National Scholarship Portal is Under Scheduled Maintenance
+                </h3>
+                
+                <p className="text-slate-500 text-sm leading-relaxed">
+                  The official government portal (<span className="font-mono text-slate-600 text-xs">scholarships.gov.in</span>) for <span className="font-bold text-slate-700">{maintenanceScholarship.name}</span> is temporarily offline for backend maintenance. External application forms are currently unreachable.
+                </p>
+
+                <div className="bg-amber-50/50 border border-amber-200/50 rounded-xl p-3 text-left">
+                  <p className="text-xs text-amber-800 font-medium leading-relaxed">
+                    💡 <strong>Note:</strong> We are actively monitoring the portal status. Enter your email below, and we will automatically notify you the moment the server is back online!
+                  </p>
+                </div>
+
+                {notifySuccess ? (
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="py-4 text-center space-y-2 bg-emerald-50 rounded-xl border border-emerald-200"
+                  >
+                    <CheckCircle2 className="text-emerald-500 mx-auto" size={28} />
+                    <p className="text-sm font-bold text-emerald-800">You're on the list!</p>
+                    <p className="text-xs text-emerald-600">We'll alert you the instant the NSP portal goes live.</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleNotifySubmit} className="space-y-2 pt-2">
+                    <input
+                      type="email"
+                      required
+                      placeholder="Enter your email address"
+                      value={notifyEmail}
+                      onChange={(e) => setNotifyEmail(e.target.value)}
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none font-medium text-sm text-center"
+                    />
+                    <div className="flex gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => window.open(maintenanceScholarship.url, "_blank")}
+                        className="flex-1 px-4 py-2.5 border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-50 text-xs transition-all"
+                      >
+                        Try Portal Anyway
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 px-4 py-2.5 bg-amber-500 text-white font-bold rounded-xl hover:bg-amber-600 text-xs transition-all shadow-md shadow-amber-500/10"
+                      >
+                        Notify Me When Online
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
 
-function ScholarshipCard({ scholarship: s }: { scholarship: Scholarship }) {
+function ScholarshipCard({ scholarship: s, onMaintenanceClick }: { scholarship: Scholarship; onMaintenanceClick: (s: Scholarship) => void }) {
   const daysLeft = Math.ceil((new Date(s.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
   const isUrgent = daysLeft <= 30;
 
@@ -321,9 +422,16 @@ function ScholarshipCard({ scholarship: s }: { scholarship: Scholarship }) {
       <div>
         <div className="flex items-start justify-between mb-4">
           <div>
-            <span className="inline-block px-2 py-1 bg-white/20 rounded-lg text-[10px] font-black uppercase tracking-wider mb-2">
-              {s.category}
-            </span>
+            <div className="flex flex-wrap gap-2 items-center mb-2">
+              <span className="inline-block px-2 py-1 bg-white/20 rounded-lg text-[10px] font-black uppercase tracking-wider">
+                {s.category}
+              </span>
+              {s.status === "maintenance" && (
+                <span className="inline-flex items-center gap-1 px-2 py-1 bg-amber-500/30 text-amber-200 border border-amber-500/50 rounded-lg text-[10px] font-black uppercase tracking-wider">
+                  <AlertCircle size={10} /> Maintenance
+                </span>
+              )}
+            </div>
             <h3 className="text-lg font-black">{s.name}</h3>
             <p className="text-sm text-blue-200">{s.provider}</p>
           </div>
@@ -346,16 +454,25 @@ function ScholarshipCard({ scholarship: s }: { scholarship: Scholarship }) {
           ))}
         </div>
       </div>
-      <Link href={s.url} target="_blank" rel="noopener noreferrer" className="w-full mt-auto block">
-        <Button className="w-full bg-white text-brand-blue font-bold py-5 rounded-xl hover:bg-blue-50/90 transition-all flex items-center justify-center gap-2">
-          Apply Now <ExternalLink size={16} />
+      {s.status === "maintenance" ? (
+        <Button 
+          onClick={() => onMaintenanceClick(s)}
+          className="w-full bg-amber-500 text-white font-bold py-5 rounded-xl hover:bg-amber-600 transition-all flex items-center justify-center gap-2"
+        >
+          Check Portal Status <AlertCircle size={16} />
         </Button>
-      </Link>
+      ) : (
+        <Link href={s.url} target="_blank" rel="noopener noreferrer" className="w-full mt-auto block">
+          <Button className="w-full bg-white text-brand-blue font-bold py-5 rounded-xl hover:bg-blue-50/90 transition-all flex items-center justify-center gap-2">
+            Apply Now <ExternalLink size={16} />
+          </Button>
+        </Link>
+      )}
     </motion.div>
   );
 }
 
-function ScholarshipRow({ scholarship: s }: { scholarship: Scholarship }) {
+function ScholarshipRow({ scholarship: s, onMaintenanceClick }: { scholarship: Scholarship; onMaintenanceClick: (s: Scholarship) => void }) {
   const daysLeft = Math.ceil((new Date(s.deadline).getTime() - Date.now()) / (1000 * 60 * 60 * 24));
   const isUrgent = daysLeft <= 30;
 
@@ -367,7 +484,14 @@ function ScholarshipRow({ scholarship: s }: { scholarship: Scholarship }) {
             <GraduationCap size={24} className="text-brand-blue" />
           </div>
           <div>
-            <h3 className="font-black text-slate-800">{s.name}</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="font-black text-slate-800">{s.name}</h3>
+              {s.status === "maintenance" && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-md text-[9px] font-bold uppercase tracking-wider">
+                  <AlertCircle size={10} /> Maintenance
+                </span>
+              )}
+            </div>
             <p className="text-sm text-slate-500">{s.provider} · {s.level}</p>
           </div>
         </div>
@@ -382,11 +506,21 @@ function ScholarshipRow({ scholarship: s }: { scholarship: Scholarship }) {
               {isUrgent ? `${daysLeft} days` : new Date(s.deadline).toLocaleDateString()}
             </p>
           </div>
-          <Link href={s.url} target="_blank" rel="noopener noreferrer">
-            <Button variant="outline" className="border-brand-blue text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all flex items-center gap-2">
-              Apply <ExternalLink size={14} />
+          {s.status === "maintenance" ? (
+            <Button 
+              onClick={() => onMaintenanceClick(s)}
+              variant="outline" 
+              className="border-amber-500 text-amber-600 font-bold rounded-xl hover:bg-amber-500 hover:text-white transition-all flex items-center gap-2"
+            >
+              Maintenance <AlertCircle size={14} />
             </Button>
-          </Link>
+          ) : (
+            <Link href={s.url} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="border-brand-blue text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all flex items-center gap-2">
+                Apply <ExternalLink size={14} />
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </div>

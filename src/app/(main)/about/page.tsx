@@ -35,10 +35,10 @@ export default function AboutPage() {
   ];
 
   const scrollImages = [
-    "/images/about-scroll-1.jpg",
-    "/images/about-scroll-2.jpg",
-    "/images/about-scroll-3.jpg",
-    "/images/about-scroll-4.jpg",
+    "/images/about-screenshot.jpg",
+    "/images/guidance-session.jpg",
+    "/images/mentorme-session.jpg",
+    "/images/school.png",
   ];
 
   return (
@@ -98,29 +98,33 @@ export default function AboutPage() {
             className="relative"
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
-            <Image 
-              src="/images/about-screenshot.jpg" 
-              alt="Our Philosophy screenshot" 
-              width={600} 
-              height={500} 
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover h-[500px]"
-            />
-            <div className="mt-8">
-              <p className="text-sm uppercase tracking-[0.35em] text-brand-blue font-bold mb-4">Scroll through our latest moments</p>
-              <div className="flex gap-4 overflow-x-auto pb-2 scroll-smooth">
-                {scrollImages.map((src, index) => (
-                  <div key={index} className="min-w-[260px] flex-shrink-0 rounded-3xl overflow-hidden border border-white/10 shadow-lg">
-                    <Image
-                      src={src}
-                      alt={`Our Philosophy gallery ${index + 1}`}
-                      width={320}
-                      height={220}
-                      className="object-cover w-full h-56"
-                    />
-                  </div>
-                ))}
+            <div className="relative rounded-3xl shadow-2xl border border-white/10 bg-white/90 p-6 overflow-hidden">
+              <p className="text-xs uppercase tracking-[0.45em] text-brand-blue font-bold mb-4">COMING LIKE THESE</p>
+              <div className="overflow-hidden rounded-3xl">
+                <div className="flex gap-4 min-w-max animate-scroll-x">
+                  {[...scrollImages, ...scrollImages].map((src, index) => (
+                    <div key={index} className="min-w-[260px] flex-shrink-0 rounded-3xl overflow-hidden border border-slate-200 shadow-lg">
+                      <Image
+                        src={src}
+                        alt={`Our Philosophy gallery ${index % scrollImages.length + 1}`}
+                        width={320}
+                        height={220}
+                        className="object-cover w-full h-56"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
+            <style jsx>{`
+              @keyframes scroll-x {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .animate-scroll-x {
+                animation: scroll-x 24s linear infinite;
+              }
+            `}</style>
           </motion.div>
         </div>
       </section>

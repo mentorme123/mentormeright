@@ -99,9 +99,28 @@ export default function AboutPage() {
           >
             <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
             <div className="relative rounded-3xl shadow-2xl border border-white/10 bg-white/90 p-6 overflow-hidden">
-              <p className="text-xs uppercase tracking-[0.45em] text-brand-blue font-bold mb-4">COMING LIKE THESE</p>
+              <div className="space-y-5">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.45em] text-brand-blue font-bold mb-2">COMING LIKE THESE</p>
+                  <h3 className="text-2xl font-bold text-slate-900">Real MentorMe sessions in action</h3>
+                  <p className="mt-2 text-sm text-slate-500">Browse through our student workshops, counseling moments, and career coaching events.</p>
+                </div>
+                <div className="overflow-hidden rounded-[2rem] border border-slate-200 shadow-xl bg-slate-50">
+                  <Image
+                    src="/images/about-screenshot.jpg"
+                    alt="MentorMe session example"
+                    width={720}
+                    height={420}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 rounded-3xl shadow-2xl border border-white/10 bg-white/90 p-6">
+              <p className="text-xs uppercase tracking-[0.45em] text-brand-blue font-bold mb-4">Scroll through real moments</p>
               <div className="overflow-hidden rounded-3xl">
-                <div className="flex gap-4 min-w-max animate-scroll-x">
+                <div className="flex gap-4 min-w-max animate-scroll-x py-2">
                   {[...scrollImages, ...scrollImages].map((src, index) => (
                     <div key={index} className="min-w-[260px] flex-shrink-0 rounded-3xl overflow-hidden border border-slate-200 shadow-lg">
                       <Image
@@ -116,6 +135,7 @@ export default function AboutPage() {
                 </div>
               </div>
             </div>
+
             <style jsx>{`
               @keyframes scroll-x {
                 0% { transform: translateX(0); }

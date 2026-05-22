@@ -170,31 +170,24 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
-                className="relative rounded-3xl overflow-hidden group shadow-2xl hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)] transition-all duration-500 hover:-translate-y-4"
+                className="relative rounded-[2.5rem] overflow-hidden group shadow-xl hover:shadow-2xl hover:shadow-brand-blue/20 transition-all duration-500 hover:-translate-y-2 border border-slate-200/50 bg-white"
               >
-                <div className="relative aspect-[334/423] w-full bg-slate-900">
+                <div className="relative aspect-[334/423] w-full">
                   <Image 
                     src={leader.image} 
                     alt={leader.name} 
                     fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" 
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.02]" 
                   />
-                  {/* Dynamic Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
-                  
-                  {/* Content */}
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                    <div className="transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
-                      <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">{leader.name}</h3>
-                      <p className="text-brand-blue font-semibold text-sm tracking-wide uppercase opacity-90 mb-0 group-hover:mb-4 transition-all duration-500">{leader.role}</p>
-                      
-                      <div className="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-500 overflow-hidden delay-100">
-                        <p className="text-slate-300 text-sm leading-relaxed border-t border-white/20 pt-4 mt-2">
-                          {leader.desc}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  {/* Subtle shine effect on hover */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/0 group-hover:via-white/10 transition-all duration-700"></div>
+                </div>
+                
+                {/* Hidden text for SEO/Accessibility */}
+                <div className="sr-only">
+                  <h3>{leader.name}</h3>
+                  <p>{leader.role}</p>
+                  <p>{leader.desc}</p>
                 </div>
               </motion.div>
             ))}

@@ -278,6 +278,35 @@ export default function ContactPage() {
           
         </div>
       </section>
+
+      {/* Map Section */}
+      <section className="py-16 px-4 bg-brand-blue/5">
+        <div className="max-w-6xl mx-auto space-y-8">
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl font-bold text-foreground">Visit Our Office</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Shop no. 103, Purna Chandra Bhavan, near Ramalayam St, opposite HMT Community Hall, JNTUH, Kukatpally, Hyderabad, Telangana 500085
+            </p>
+          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="w-full h-[450px] rounded-3xl overflow-hidden border shadow-xl relative bg-muted flex items-center justify-center"
+          >
+            <iframe 
+              src="https://maps.google.com/maps?q=17.4952,78.3916&z=15&output=embed" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade"
+              title="MentorMe Office Location"
+            ></iframe>
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 }

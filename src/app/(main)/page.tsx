@@ -534,6 +534,53 @@ export default function Home() {
                       <input required type="tel" className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none" />
                     </div>
                   </div>
+
+                  {/* I am a - User Type */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">I am a <span className="text-red-500">*</span></label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {[
+                        { value: "school", label: "🏫 School Student" },
+                        { value: "college", label: "🎓 College Student" },
+                        { value: "professional", label: "💼 Working Professional" },
+                      ].map((opt) => (
+                        <label key={opt.value} className="relative cursor-pointer">
+                          <input required type="radio" name="userType" value={opt.value} className="peer sr-only" />
+                          <div className="w-full text-center p-3 rounded-xl border-2 border-slate-200 bg-background text-sm font-medium text-muted-foreground transition-all peer-checked:border-brand-blue peer-checked:bg-brand-blue/5 peer-checked:text-brand-blue hover:border-brand-blue/40">
+                            {opt.label}
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Interested Course or Department */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium">Interested Course / Department <span className="text-red-500">*</span></label>
+                    <select required className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none text-sm">
+                      <option value="">Select your interest...</option>
+                      <optgroup label="School Programs">
+                        <option value="ai-school">Future AI Leaders Program</option>
+                        <option value="robotics">Robotics &amp; STEM Learning</option>
+                        <option value="vedic-maths">Smart Maths with Vedic Techniques</option>
+                        <option value="career-counseling-school">Career Counseling (School)</option>
+                      </optgroup>
+                      <optgroup label="College Programs">
+                        <option value="ai-college">Advanced AI &amp; Machine Learning</option>
+                        <option value="fullstack">Full Stack Web Development</option>
+                        <option value="data-science">Data Science &amp; Analytics</option>
+                        <option value="crt">Campus Recruitment Training (CRT)</option>
+                        <option value="career-counseling-college">Career Counseling (College)</option>
+                      </optgroup>
+                      <optgroup label="Professional">
+                        <option value="career-pivot">Career Change / Pivot</option>
+                        <option value="leadership">Leadership Coaching</option>
+                        <option value="study-abroad">Study Abroad Guidance</option>
+                        <option value="other">Other</option>
+                      </optgroup>
+                    </select>
+                  </div>
+
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Message</label>
                     <textarea required rows={4} className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none"></textarea>

@@ -155,36 +155,46 @@ export default function AboutPage() {
       </section>
 
       {/* Leadership Section */}
-      <section className="py-20 px-4 bg-muted/30">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <div className="text-center">
-            <h2 className="text-4xl font-bold">Meet Our Leadership Team</h2>
-            <p className="text-lg text-muted-foreground mt-4">The visionaries behind MentorMe Right.</p>
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
+        <div className="max-w-6xl mx-auto space-y-16">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Meet Our Leadership Team</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">The visionaries and experts driving the mission behind MentorMe Right.</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
             {leadership.map((leader, i) => (
               <motion.div 
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.2 }}
-                className="bg-background rounded-3xl shadow-xl border-2 border-transparent hover:border-brand-blue/10 overflow-hidden group hover:shadow-[0_40px_80px_rgba(0,0,0,0.15)] transition-all duration-500 hover:-translate-y-4"
+                transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
+                className="relative rounded-3xl overflow-hidden group shadow-2xl hover:shadow-[0_40px_80px_rgba(0,0,0,0.2)] transition-all duration-500 hover:-translate-y-4"
               >
-                <div className="relative aspect-[334/423] w-full overflow-hidden">
+                <div className="relative aspect-[334/423] w-full bg-slate-900">
                   <Image 
                     src={leader.image} 
                     alt={leader.name} 
                     fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-110" 
+                    className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100" 
                   />
-                </div>
-                {/* Hidden text for SEO/Accessibility */}
-                <div className="sr-only">
-                  <h3>{leader.name}</h3>
-                  <p>{leader.role}</p>
-                  <p>{leader.desc}</p>
+                  {/* Dynamic Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/60 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+                  
+                  {/* Content */}
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                    <div className="transform translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
+                      <h3 className="text-2xl font-bold text-white mb-1 group-hover:text-brand-orange transition-colors">{leader.name}</h3>
+                      <p className="text-brand-blue font-semibold text-sm tracking-wide uppercase opacity-90 mb-0 group-hover:mb-4 transition-all duration-500">{leader.role}</p>
+                      
+                      <div className="h-0 opacity-0 group-hover:h-auto group-hover:opacity-100 transition-all duration-500 overflow-hidden delay-100">
+                        <p className="text-slate-300 text-sm leading-relaxed border-t border-white/20 pt-4 mt-2">
+                          {leader.desc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}

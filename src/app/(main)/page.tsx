@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Phone, Mail, MapPin } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
   const [count, setCount] = useState(0);
@@ -376,7 +376,7 @@ export default function Home() {
                 title: "Data Science & Analytics",
                 subtitle: "Data Analytics Training Program",
                 highlights: "Python & SQL | Tableau & PowerBI | Predictive Modeling | Business Analytics | Live Projects",
-                image: "/images/programs/ml.png"
+                image: "/images/programs/power-bi.png"
               },
             ]).map((item, i) => (
               <motion.div
@@ -385,27 +385,46 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="relative p-8 rounded-3xl border-2 border-slate-100/80 bg-background shadow-md hover:shadow-[0_30px_60px_rgba(8,112,184,0.15)] transition-all duration-500 hover:-translate-y-3 group overflow-hidden z-10"
+                className="p-8 rounded-3xl border-2 border-slate-100/80 bg-background shadow-md hover:border-brand-blue/40 hover:shadow-[0_30px_60px_rgba(8,112,184,0.15)] transition-all duration-500 hover:-translate-y-3 group flex flex-col justify-between h-full"
               >
-                {/* Hover Background Image & Overlay */}
-                <div 
-                  className="absolute inset-0 bg-cover bg-center transition-all duration-500 opacity-0 group-hover:opacity-100 -z-10 scale-105 group-hover:scale-100"
-                  style={{ backgroundImage: `url(${item.image})` }}
-                />
-                <div 
-                  className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/95 to-slate-900/60 transition-all duration-500 opacity-0 group-hover:opacity-100 -z-10"
-                />
+                <div className="flex flex-col">
+                  {/* Hover Image Reveal */}
+                  <div className="relative overflow-hidden rounded-2xl h-0 opacity-0 group-hover:h-48 group-hover:opacity-100 group-hover:mb-6 transition-all duration-500 ease-in-out">
+                    <div className="relative w-full h-48">
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover rounded-2xl transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    </div>
+                  </div>
 
-                <h3 className="text-2xl font-bold mb-1 text-brand-blue group-hover:text-white transition-colors duration-300">{item.title}</h3>
-                <p className="font-medium text-brand-orange mb-6 transition-colors duration-300">{item.subtitle}</p>
-                <h4 className="font-semibold text-sm uppercase tracking-wider mb-2 text-slate-800 group-hover:text-slate-200 transition-colors duration-300">Key Highlights</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-8 group-hover:text-slate-300 transition-colors duration-300">{item.highlights}</p>
-                <div className="flex gap-4">
+                  <h3 className="text-2xl font-bold mb-1 text-brand-blue group-hover:text-brand-orange transition-colors duration-300">
+                    {item.title}
+                  </h3>
+                  <p className="font-medium text-brand-orange mb-6 group-hover:text-brand-blue transition-colors duration-300">
+                    {item.subtitle}
+                  </p>
+                  <h4 className="font-semibold text-sm uppercase tracking-wider mb-2">
+                    Key Highlights
+                  </h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed mb-8">
+                    {item.highlights}
+                  </p>
+                </div>
+
+                <div className="flex gap-4 mt-auto">
                   <Link href="/services" className="flex-1">
-                    <button className="w-full py-3 border-2 border-brand-blue/20 text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all duration-300 group-hover:border-white/20 group-hover:text-white group-hover:hover:bg-white group-hover:hover:text-slate-900">Know more</button>
+                    <button className="w-full py-3 border-2 border-brand-blue/20 text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all duration-300">
+                      Know more
+                    </button>
                   </Link>
                   <Link href="/contact" className="flex-1">
-                    <button className="w-full py-3 bg-brand-blue text-white hover:bg-brand-orange border-2 border-transparent font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-brand-orange/30 group-hover:bg-brand-orange group-hover:hover:bg-brand-orange/90">Contact us</button>
+                    <button className="w-full py-3 bg-brand-blue text-white hover:bg-brand-orange border-2 border-transparent font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-brand-orange/30">
+                      Contact us
+                    </button>
                   </Link>
                 </div>
               </motion.div>
@@ -487,16 +506,71 @@ export default function Home() {
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="space-y-8"
+            className="space-y-8 flex flex-col justify-between"
           >
-            <h2 className="text-4xl font-bold">Connect with us</h2>
-            <p className="text-lg text-muted-foreground">
-              Create a win-win opportunity: gain practical AI expertise and unlock new income streams with our innovative Train-the-Trainer program!
-            </p>
-            <div className="space-y-4">
-              <p><strong>Call us at:</strong><br /> +91-9392707596, +91-8188824440</p>
-              <p><strong>Mail us at:</strong><br /> admin@mentormeright.in</p>
-              <p><strong>Location:</strong><br /> Hyderabad, India</p>
+            <div className="space-y-6">
+              <h2 className="text-4xl font-bold">Connect with us</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                Create a win-win opportunity: gain practical AI expertise and unlock new income streams with our innovative Train-the-Trainer program!
+              </p>
+              
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div className="p-4 bg-background/50 rounded-2xl border border-slate-100/80 flex items-center gap-4 shadow-sm">
+                  <div className="p-3 bg-brand-blue/10 text-brand-blue rounded-xl shrink-0">
+                    <Phone size={20} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Call us</div>
+                    <div className="text-sm font-semibold text-foreground">+91-9392707596</div>
+                    <div className="text-xs text-muted-foreground">+91-8188824440</div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-background/50 rounded-2xl border border-slate-100/80 flex items-center gap-4 shadow-sm">
+                  <div className="p-3 bg-brand-orange/10 text-brand-orange rounded-xl shrink-0">
+                    <Mail size={20} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Mail us</div>
+                    <div className="text-sm font-semibold text-foreground break-all">admin@mentormeright.in</div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-background/50 rounded-2xl border border-slate-100/80 flex items-center gap-4 shadow-sm sm:col-span-2">
+                  <div className="p-3 bg-green-500/10 text-green-600 rounded-xl shrink-0">
+                    <MapPin size={20} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Location</div>
+                    <div className="text-sm font-semibold text-foreground">Hyderabad, India</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Premium Card filling space */}
+            <div className="bg-background/80 backdrop-blur-md p-6 rounded-3xl border border-slate-100 shadow-lg relative overflow-hidden space-y-6">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-brand-orange/5 rounded-bl-full -z-10"></div>
+              <h3 className="text-xl font-bold text-brand-blue flex items-center gap-2">
+                What Happens Next?
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { step: "1", title: "Submit Application", desc: "Fill out the form with your program of interest and contact details." },
+                  { step: "2", title: "Expert Callback", desc: "Our executive partner/counselor will connect with you within 24 hours." },
+                  { step: "3", title: "Tailored Access", desc: "Receive customized curriculum details, fee structure, and batch schedule." }
+                ].map((item) => (
+                  <div key={item.step} className="flex gap-4 items-start">
+                    <div className="h-8 w-8 shrink-0 rounded-full bg-brand-orange/10 text-brand-orange flex items-center justify-center font-bold text-sm shadow-inner">
+                      {item.step}
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-foreground text-sm">{item.title}</h4>
+                      <p className="text-xs text-muted-foreground leading-relaxed mt-0.5">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
 

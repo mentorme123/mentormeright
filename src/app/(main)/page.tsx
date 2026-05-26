@@ -344,33 +344,39 @@ export default function Home() {
               {
                 title: "Future AI Leaders Program",
                 subtitle: "AI Classes for School Students",
-                highlights: "Hands‑on projects | Generative AI ML & NLP | Ethics & responsible AI | Teacher upskilling"
+                highlights: "Hands‑on projects | Generative AI ML & NLP | Ethics & responsible AI | Teacher upskilling",
+                image: "/images/programs/ai-school.png"
               },
               {
                 title: "Robotics & STEM Learning for Kids",
                 subtitle: "Robotics Classes for School Students",
-                highlights: "Hands‑on training | No lab investment | Robotics Expo | STEM Integration | Robotics Lab Upgrade | Teacher Training"
+                highlights: "Hands‑on training | No lab investment | Robotics Expo | STEM Integration | Robotics Lab Upgrade | Teacher Training",
+                image: "/images/programs/robotics.png"
               },
               {
                 title: "Smart Maths with Vedic Techniques",
                 subtitle: "Vedic Maths Classes for School Students",
-                highlights: "Fast‑Track Mental Math | No Tools Needed | Expert‑Led Sessions | Certification"
+                highlights: "Fast‑Track Mental Math | No Tools Needed | Expert‑Led Sessions | Certification",
+                image: "/images/programs/vedic-maths.png"
               },
             ] : [
               {
                 title: "Advanced AI & Machine Learning",
                 subtitle: "AI Certification for College Students",
-                highlights: "Deep Learning | Computer Vision | NLP Projects | Industry Capstone | Placement Assistance"
+                highlights: "Deep Learning | Computer Vision | NLP Projects | Industry Capstone | Placement Assistance",
+                image: "/images/programs/ai-college.png"
               },
               {
                 title: "Full Stack Web Development",
                 subtitle: "Web & App Development Training",
-                highlights: "MERN Stack | Next.js | Cloud Deployment | Real-world Projects | Technical Interview Prep"
+                highlights: "MERN Stack | Next.js | Cloud Deployment | Real-world Projects | Technical Interview Prep",
+                image: "/images/programs/python.png"
               },
               {
                 title: "Data Science & Analytics",
                 subtitle: "Data Analytics Training Program",
-                highlights: "Python & SQL | Tableau & PowerBI | Predictive Modeling | Business Analytics | Live Projects"
+                highlights: "Python & SQL | Tableau & PowerBI | Predictive Modeling | Business Analytics | Live Projects",
+                image: "/images/programs/ml.png"
               },
             ]).map((item, i) => (
               <motion.div
@@ -379,18 +385,27 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="p-8 rounded-3xl border-2 border-slate-100/80 bg-background shadow-md hover:border-brand-blue/40 hover:shadow-[0_30px_60px_rgba(8,112,184,0.15)] transition-all duration-500 hover:-translate-y-3 group"
+                className="relative p-8 rounded-3xl border-2 border-slate-100/80 bg-background shadow-md hover:shadow-[0_30px_60px_rgba(8,112,184,0.15)] transition-all duration-500 hover:-translate-y-3 group overflow-hidden z-10"
               >
-                <h3 className="text-2xl font-bold mb-1 text-brand-blue group-hover:text-brand-orange transition-colors duration-300">{item.title}</h3>
-                <p className="font-medium text-brand-orange mb-6 group-hover:text-brand-blue transition-colors duration-300">{item.subtitle}</p>
-                <h4 className="font-semibold text-sm uppercase tracking-wider mb-2">Key Highlights</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-8">{item.highlights}</p>
+                {/* Hover Background Image & Overlay */}
+                <div 
+                  className="absolute inset-0 bg-cover bg-center transition-all duration-500 opacity-0 group-hover:opacity-100 -z-10 scale-105 group-hover:scale-100"
+                  style={{ backgroundImage: `url(${item.image})` }}
+                />
+                <div 
+                  className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/95 to-slate-900/60 transition-all duration-500 opacity-0 group-hover:opacity-100 -z-10"
+                />
+
+                <h3 className="text-2xl font-bold mb-1 text-brand-blue group-hover:text-white transition-colors duration-300">{item.title}</h3>
+                <p className="font-medium text-brand-orange mb-6 transition-colors duration-300">{item.subtitle}</p>
+                <h4 className="font-semibold text-sm uppercase tracking-wider mb-2 text-slate-800 group-hover:text-slate-200 transition-colors duration-300">Key Highlights</h4>
+                <p className="text-muted-foreground text-sm leading-relaxed mb-8 group-hover:text-slate-300 transition-colors duration-300">{item.highlights}</p>
                 <div className="flex gap-4">
                   <Link href="/services" className="flex-1">
-                    <button className="w-full py-3 border-2 border-brand-blue/20 text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all duration-300">Know more</button>
+                    <button className="w-full py-3 border-2 border-brand-blue/20 text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all duration-300 group-hover:border-white/20 group-hover:text-white group-hover:hover:bg-white group-hover:hover:text-slate-900">Know more</button>
                   </Link>
                   <Link href="/contact" className="flex-1">
-                    <button className="w-full py-3 bg-brand-blue text-white hover:bg-brand-orange border-2 border-transparent font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-brand-orange/30">Contact us</button>
+                    <button className="w-full py-3 bg-brand-blue text-white hover:bg-brand-orange border-2 border-transparent font-bold rounded-xl transition-all duration-300 shadow-md hover:shadow-brand-orange/30 group-hover:bg-brand-orange group-hover:hover:bg-brand-orange/90">Contact us</button>
                   </Link>
                 </div>
               </motion.div>

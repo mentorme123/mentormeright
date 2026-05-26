@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Phone, Mail, MapPin } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
@@ -79,49 +79,125 @@ function Counter({ value }: { value: string }) {
 export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [skillTab, setSkillTab] = useState("k12");
+
+  const slides = [
+    {
+      image: "/images/mentorme-session.jpg",
+      heading: "Transform Your Career with ",
+      highlight: "MentorMe",
+      subtitle: "We provide a comprehensive range of services, spanning from self-discovery to enhancing employability, serving as a one-stop destination for all the support students require beyond academic institutions.",
+      btn1Text: "Career Assessment",
+      btn1Link: "/assessment",
+      btn2Text: "Contact Us",
+      btn2Link: "/contact"
+    },
+    {
+      image: "/images/guidance-session.jpg",
+      heading: "Unlock Your Future ",
+      highlight: "Potential",
+      subtitle: "Discover your true strengths, career matches, and development pathways through our advanced science-backed AI evaluations and elite mentorship.",
+      btn1Text: "Start Assessment",
+      btn1Link: "/assessment",
+      btn2Text: "Our Programs",
+      btn2Link: "/services"
+    },
+    {
+      image: "/images/session-3.jpg",
+      heading: "Bridging Education and ",
+      highlight: "Success",
+      subtitle: "Empowering students and colleges with cutting-edge Robotics, AI certification, full-stack development, and campus recruitment training.",
+      btn1Text: "Explore Services",
+      btn1Link: "/services",
+      btn2Text: "Partner With Us",
+      btn2Link: "/contact"
+    }
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden w-full max-w-full">
 
-      {/* Hero Section */}
-      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-32 pb-20 lg:pt-48 lg:pb-32">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-blue/10 via-background to-background"></div>
-        <div className="max-w-5xl space-y-8 relative z-10">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-tight"
-          >
-            Transform Your Career with <br className="hidden md:block" />
-            <span className="text-brand-blue">MentorMe</span>
-          </motion.h1>
+      {/* Hero Section Carousel */}
+      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-32 pb-24 lg:pt-48 lg:pb-36 min-h-[650px] lg:min-h-[750px] text-white">
+        {/* Background Image Carousel (Ken Burns Zoom effect) */}
+        <div className="absolute inset-0 -z-10 w-full h-full overflow-hidden">
+          {slides.map((slide, idx) => (
+            <div
+              key={idx}
+              className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[1500ms] ease-in-out ${
+                idx === currentSlide ? "opacity-100 scale-105" : "opacity-0 scale-100"
+              }`}
+              style={{
+                backgroundImage: `url('${slide.image}')`,
+                transitionProperty: "opacity, transform",
+              }}
+            />
+          ))}
+          {/* Rich modern dark gradient overlay for optimal readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#071324]/90 via-[#0a182b]/85 to-[#0b1b30]/95 z-0" />
+        </div>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-2"
-          >
-            We provide a comprehensive range of services, spanning from self-discovery to enhancing employability, serving as a one-stop destination for all the support students require beyond their academic institution.
-          </motion.p>
+        {/* Dynamic content with exit-intent animation */}
+        <div className="max-w-5xl space-y-8 relative z-10 px-4">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="space-y-8"
+            >
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+                {slides[currentSlide].heading}
+                <br className="hidden md:block" />
+                <span className="text-brand-orange drop-shadow-[0_2px_8px_rgba(244,114,22,0.25)]">
+                  {slides[currentSlide].highlight}
+                </span>
+              </h1>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8"
-          >
-            <Link href="/assessment">
-              <Button size="lg" className="w-full sm:w-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-xl px-12 py-8 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-4 border-white/20">
-                Career Assessment
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto text-lg px-10 py-6 rounded-full border-2 hover:bg-muted transition-all">
-                Contact Us
-              </Button>
-            </Link>
-          </motion.div>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-200 max-w-3xl mx-auto leading-relaxed px-2 drop-shadow-md">
+                {slides[currentSlide].subtitle}
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+                <Link href={slides[currentSlide].btn1Link} className="w-full sm:w-auto">
+                  <Button size="lg" className="w-full bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-xl px-12 py-8 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-4 border-white/20">
+                    {slides[currentSlide].btn1Text}
+                  </Button>
+                </Link>
+                <Link href={slides[currentSlide].btn2Link} className="w-full sm:w-auto">
+                  <Button size="lg" variant="outline" className="w-full text-lg px-10 py-6 rounded-full border-2 border-white/20 hover:border-white/50 text-white hover:bg-white/10 transition-all">
+                    {slides[currentSlide].btn2Text}
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Dots Navigation Indicator */}
+          <div className="flex justify-center gap-3 pt-12">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`h-3 rounded-full transition-all duration-300 ${
+                  idx === currentSlide
+                    ? "w-8 bg-brand-orange"
+                    : "w-3 bg-white/40 hover:bg-white/60"
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </section>
 

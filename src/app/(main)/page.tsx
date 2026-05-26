@@ -308,27 +308,27 @@ export default function Home() {
       </section>
 
       {/* Our Recent Program Partners Section */}
-      <section className="py-24 px-4 bg-gradient-to-br from-brand-blue via-brand-blue to-[#112D55] text-white overflow-hidden relative w-full max-w-full">
+      <section className="py-14 px-4 bg-gradient-to-br from-brand-blue via-brand-blue to-[#112D55] text-white overflow-hidden relative w-full max-w-full">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 blur-[120px] rounded-full -mr-64 -mt-64 z-0"></div>
-        <div className="max-w-6xl mx-auto space-y-12 relative z-10">
+        <div className="max-w-6xl mx-auto space-y-8 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="space-y-2"
+            className="space-y-1"
           >
-            <h2 className="text-4xl font-bold text-white">Our Recent Program Partners</h2>
-            <p className="text-white/80 text-lg">These are some of our Prestigious Clients</p>
+            <h2 className="text-3xl font-bold text-white">Our Recent Program Partners</h2>
+            <p className="text-white/80 text-sm">These are some of our Prestigious Clients</p>
           </motion.div>
-
+ 
           {/* Scrolling Carousel */}
           <div className="relative overflow-hidden">
             {/* Left fade */}
             <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-brand-blue to-transparent z-10 pointer-events-none" />
             {/* Right fade */}
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-blue to-transparent z-10 pointer-events-none" />
-
-            <div className="flex gap-6 partners-scroll">
+ 
+            <div className="flex gap-4 partners-scroll">
               {[
                 { name: "Pragati Academy", logo: "/images/partners/logo1.png" },
                 { name: "Keshav Memorial", logo: "/images/partners/logo2.png" },
@@ -354,19 +354,19 @@ export default function Home() {
               ].map((partner, i) => (
                 <div
                   key={i}
-                  className="flex-shrink-0 flex flex-col items-center gap-3 bg-white rounded-2xl p-6 shadow-xl border border-gray-100"
-                  style={{ minWidth: "200px" }}
+                  className="flex-shrink-0 flex flex-col items-center gap-2 bg-white rounded-xl p-4 shadow-lg border border-gray-100"
+                  style={{ minWidth: "150px" }}
                 >
-                  <div className="relative w-24 h-24 flex items-center justify-center">
+                  <div className="relative w-16 h-16 flex items-center justify-center">
                     <Image
                       src={partner.logo}
                       alt={partner.name}
-                      width={80}
-                      height={80}
+                      width={55}
+                      height={55}
                       className="object-contain"
                     />
                   </div>
-                  <span className="text-sm font-bold text-gray-800 text-center leading-tight">
+                  <span className="text-xs font-bold text-gray-800 text-center leading-tight">
                     {partner.name}
                   </span>
                 </div>
@@ -374,10 +374,10 @@ export default function Home() {
             </div>
           </div>
         </div>
-
+ 
         <style>{`
           .partners-scroll {
-            animation: scroll-partners 30s linear infinite;
+            animation: scroll-partners 15s linear infinite;
             width: max-content;
           }
           .partners-scroll:hover {

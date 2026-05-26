@@ -82,7 +82,7 @@ export default function Home() {
 
   const slides = [
     {
-      image: "/images/mentorme-session.jpg",
+      image: "/images/programs/robotics.png",
       heading: "Transform Your Career with ",
       highlight: "MentorMe",
       subtitle: "We provide a comprehensive range of services, spanning from self-discovery to enhancing employability, serving as a one-stop destination for all the support students require beyond academic institutions.",
@@ -92,7 +92,7 @@ export default function Home() {
       btn2Link: "/contact"
     },
     {
-      image: "/images/guidance-session.jpg",
+      image: "/images/programs/ai-school.png",
       heading: "Unlock Your Future ",
       highlight: "Potential",
       subtitle: "Discover your true strengths, career matches, and development pathways through our advanced science-backed AI evaluations and elite mentorship.",
@@ -102,7 +102,7 @@ export default function Home() {
       btn2Link: "/services"
     },
     {
-      image: "/images/session-3.jpg",
+      image: "/images/programs/vedic-maths.png",
       heading: "Bridging Education and ",
       highlight: "Success",
       subtitle: "Empowering students and colleges with cutting-edge Robotics, AI certification, full-stack development, and campus recruitment training.",
@@ -170,12 +170,12 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
                 <Link href={slides[currentSlide].btn1Link} className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-xl px-12 py-8 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-4 border-white/20">
+                  <Button size="lg" className="w-full h-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-lg sm:text-xl px-10 py-5 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-2 border-white/20">
                     {slides[currentSlide].btn1Text}
                   </Button>
                 </Link>
                 <Link href={slides[currentSlide].btn2Link} className="w-full sm:w-auto">
-                  <Button size="lg" variant="outline" className="w-full text-lg px-10 py-6 rounded-full border-2 border-white/20 hover:border-white/50 text-white hover:bg-white/10 transition-all">
+                  <Button size="lg" variant="ghost" className="w-full h-auto text-lg sm:text-xl font-extrabold px-10 py-5 rounded-full border-2 border-white/30 hover:border-white/60 text-white hover:bg-white/10 transition-all">
                     {slides[currentSlide].btn2Text}
                   </Button>
                 </Link>

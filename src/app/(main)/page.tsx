@@ -80,7 +80,7 @@ export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [skillTab, setSkillTab] = useState("k12");
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden w-full max-w-full">
 
       {/* Hero Section */}
       <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-32 pb-20 lg:pt-48 lg:pb-32">
@@ -90,7 +90,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground leading-tight"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-tight"
           >
             Transform Your Career with <br className="hidden md:block" />
             <span className="text-brand-blue">MentorMe</span>
@@ -100,7 +100,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+            className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-2"
           >
             We provide a comprehensive range of services, spanning from self-discovery to enhancing employability, serving as a one-stop destination for all the support students require beyond their academic institution.
           </motion.p>
@@ -232,7 +232,7 @@ export default function Home() {
       </section>
 
       {/* Our Recent Program Partners Section */}
-      <section className="py-24 px-4 bg-gradient-to-br from-brand-blue via-brand-blue to-[#112D55] text-white overflow-hidden relative">
+      <section className="py-24 px-4 bg-gradient-to-br from-brand-blue via-brand-blue to-[#112D55] text-white overflow-hidden relative w-full max-w-full">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 blur-[120px] rounded-full -mr-64 -mt-64 z-0"></div>
         <div className="max-w-6xl mx-auto space-y-12 relative z-10">
           <motion.div

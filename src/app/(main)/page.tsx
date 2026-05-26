@@ -118,7 +118,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
@@ -126,34 +126,39 @@ export default function Home() {
     <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden w-full max-w-full">
 
       {/* Hero Section Carousel */}
-      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-32 pb-24 lg:pt-48 lg:pb-36 min-h-[650px] lg:min-h-[750px] text-white">
-        {/* Background Image Carousel (Ken Burns Zoom effect) */}
+      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-24 pb-16 lg:pt-36 lg:pb-28 min-h-[500px] lg:min-h-[600px] text-white overflow-hidden">
+        {/* Background Image Carousel (Horizontal Slide transition) */}
         <div className="absolute inset-0 -z-10 w-full h-full overflow-hidden">
-          {slides.map((slide, idx) => (
-            <div
-              key={idx}
-              className={`absolute inset-0 w-full h-full bg-cover bg-center transition-all duration-[1500ms] ease-in-out ${
-                idx === currentSlide ? "opacity-100 scale-105" : "opacity-0 scale-100"
-              }`}
-              style={{
-                backgroundImage: `url('${slide.image}')`,
-                transitionProperty: "opacity, transform",
-              }}
-            />
-          ))}
+          {slides.map((slide, idx) => {
+            let translateClass = "translate-x-full";
+            if (idx === currentSlide) {
+              translateClass = "translate-x-0";
+            } else if (idx === (currentSlide - 1 + slides.length) % slides.length) {
+              translateClass = "-translate-x-full";
+            }
+            return (
+              <div
+                key={idx}
+                className={`absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-[800ms] ease-in-out ${translateClass}`}
+                style={{
+                  backgroundImage: `url('${slide.image}')`,
+                }}
+              />
+            );
+          })}
           {/* Rich modern dark gradient overlay for optimal readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-[#071324]/90 via-[#0a182b]/85 to-[#0b1b30]/95 z-0" />
         </div>
 
-        {/* Dynamic content with exit-intent animation */}
+        {/* Dynamic content with horizontal slide animation */}
         <div className="max-w-5xl space-y-8 relative z-10 px-4">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -50 }}
+              transition={{ duration: 0.5, ease: "easeInOut" }}
               className="space-y-8"
             >
               <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">

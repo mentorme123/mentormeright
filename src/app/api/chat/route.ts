@@ -273,10 +273,9 @@ export async function POST(req: NextRequest) {
 
     // Model selection with fallback
     const modelsToTry = [
-      'gemini-2.5-flash', 
-      'gemini-2.0-flash', 
-      'gemini-flash-latest',
-      'gemini-2.5-pro'
+      'gemini-1.5-flash',
+      'gemini-1.5-pro',
+      'gemini-2.0-flash'
     ];
     const apiKey = process.env.GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
     let rawReply = "";

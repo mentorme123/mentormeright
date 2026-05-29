@@ -330,6 +330,7 @@ export function AiCornerChatbot() {
                 </div>
                 {/* Search Bar Below Quick Links */}
                 <div className="px-4 py-2 bg-white border-t border-slate-100 flex items-center gap-2">
+                  <h3 className="text-sm font-medium text-slate-800 mr-2">Search</h3>
                   <input
                     type="text"
                     placeholder="Search mentors, topics, etc..."

@@ -39,6 +39,7 @@ How can I help you today?`,
 ];
 
 export function AiCornerChatbot() {
+  const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
@@ -127,6 +128,13 @@ export function AiCornerChatbot() {
     }
   };
 
+  // New search handling – reuse sendMessage to treat search as a regular query
+  const handleSearch = () => {
+    if (!searchQuery.trim()) return;
+    // Send the search query as a normal message so the AI can respond
+    sendMessage(searchQuery);
+    setSearchQuery("");
+  };
   // Parse markdown-like bold text with XSS protection
   const parseContent = (content: string) => {
     // Basic sanitization - remove script tags and dangerous attributes
@@ -320,7 +328,22 @@ export function AiCornerChatbot() {
                     Study Abroad 🌍
                   </Link>
                 </div>
-
+                {/* Search Bar Below Quick Links */}
+                <div className="px-4 py-2 bg-white border-t border-slate-100 flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder="Search mentors, topics, etc..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="flex-1 bg-slate-50 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
+                  />
+                  <button
+                    onClick={handleSearch}
+                    className="px-3 py-1.5 bg-brand-blue text-white rounded-xl hover:bg-brand-blue/90"
+                  >
+                    Search
+                  </button>
+                </div>
                 {/* Input */}
                 <div className="p-4 bg-white border-t border-slate-100 flex-shrink-0">
                   <div className="flex gap-2 items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2 focus-within:border-brand-blue focus-within:ring-2 focus-within:ring-brand-blue/10 transition-all">

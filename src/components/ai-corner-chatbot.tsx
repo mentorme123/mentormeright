@@ -156,20 +156,10 @@ export function AiCornerChatbot() {
       {/* Floating Button */}
       <div 
         id="ai-chatbot-root"
-        className="fixed right-6 top-[calc(50%+44px)] -translate-y-1/2 z-[999] print-hidden w-auto h-auto flex flex-col items-end justify-center"
+        className="fixed right-6 top-6 z-[999] print-hidden w-auto h-auto flex flex-col items-end justify-center"
       >
         <AnimatePresence>
           {!isOpen && (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.8, y: 20 }}
-    animate={{ opacity: 1, scale: 1, y: 0 }}
-    className="mb-3 bg-white rounded-2xl shadow-2xl border border-slate-100 p-3 pr-6 flex items-center gap-3 cursor-pointer hover:shadow-brand-blue/20 transition-all group"
-    onClick={() => setIsOpen(true)}
-  >
-    <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-orange rounded-xl flex items-center justify-center flex-shrink-0">
-      <Sparkles className="text-white w-5 h-5" />
-    </div>
-    <div>
             <motion.div
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}

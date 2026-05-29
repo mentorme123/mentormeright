@@ -53,7 +53,7 @@ export default function RootLayout({
           href="https://wa.me/919392707596"
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed right-6 top-[calc(6px+80px)] -translate-y-0 z-[999] w-14 h-14 bg-[#25D366] rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group"
+          className="fixed right-6 bottom-6 z-[999] w-14 h-14 bg-[#25D366] rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group"
           title="Chat on WhatsApp"
         >
           <svg className="w-8 h-8 text-white fill-current" viewBox="0 0 24 24">

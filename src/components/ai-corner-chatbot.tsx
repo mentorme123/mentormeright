@@ -156,7 +156,7 @@ export function AiCornerChatbot() {
       {/* Floating Button */}
       <div 
         id="ai-chatbot-root"
-        className="fixed right-6 top-6 z-[999] print-hidden w-auto h-auto flex flex-col items-end justify-center"
+        className="fixed right-6 bottom-[96px] z-[999] print-hidden w-auto h-auto flex flex-col items-end justify-center"
       >
         <AnimatePresence>
           {!isOpen && (

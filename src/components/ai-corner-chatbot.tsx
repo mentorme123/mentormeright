@@ -208,11 +208,12 @@ export function AiCornerChatbot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20, originX: 1, originY: 1 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="fixed right-6 md:right-24 bottom-24 md:bottom-auto md:top-1/2 md:-translate-y-1/2 z-[998] w-[380px] max-w-[calc(100vw-3rem)] bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden"
-            style={{ height: isMinimized ? "auto" : "580px", maxHeight: "calc(100vh - 200px)" }}
+            initial={{ opacity: 0, scale: 0.9, x: "-50%", y: "-40%" }}
+            animate={{ opacity: 1, scale: 1, x: "-50%", y: "-50%" }}
+            exit={{ opacity: 0, scale: 0.9, x: "-50%", y: "-40%" }}
+            transition={{ type: "spring", duration: 0.4 }}
+            className="fixed left-1/2 top-1/2 z-[998] w-[420px] max-w-[calc(100vw-2rem)] bg-white rounded-3xl shadow-2xl border border-slate-100 flex flex-col overflow-hidden"
+            style={{ height: isMinimized ? "auto" : "600px", maxHeight: "85vh" }}
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-brand-blue to-brand-blue/80 p-4 flex items-center justify-between flex-shrink-0">
@@ -246,6 +247,24 @@ export function AiCornerChatbot() {
 
             {!isMinimized && (
               <>
+                {/* Search Bar Below Header */}
+                <div className="px-4 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center gap-2 flex-shrink-0">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">Search</span>
+                  <input
+                    type="text"
+                    placeholder="Search mentors, topics, etc..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="flex-1 bg-white border border-slate-200 text-sm px-3 py-1.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
+                  />
+                  <button
+                    onClick={handleSearch}
+                    className="px-3.5 py-1.5 bg-brand-blue text-white text-xs font-bold rounded-xl hover:bg-brand-blue/90 transition-all flex-shrink-0"
+                  >
+                    Search
+                  </button>
+                </div>
+
                 {/* Messages */}
                 <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
                   {messages.map((msg) => (
@@ -322,23 +341,7 @@ export function AiCornerChatbot() {
                     Study Abroad 🌍
                   </Link>
                 </div>
-                {/* Search Bar Below Quick Links */}
-                <div className="px-4 py-2 bg-white border-t border-slate-100 flex items-center gap-2">
-                  <h3 className="text-sm font-medium text-slate-800 mr-2">Search</h3>
-                  <input
-                    type="text"
-                    placeholder="Search mentors, topics, etc..."
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className="flex-1 bg-slate-50 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
-                  />
-                  <button
-                    onClick={handleSearch}
-                    className="px-3 py-1.5 bg-brand-blue text-white rounded-xl hover:bg-brand-blue/90"
-                  >
-                    Search
-                  </button>
-                </div>
+
                 {/* Input */}
                 <div className="p-4 bg-white border-t border-slate-100 flex-shrink-0">
                   <div className="flex gap-2 items-center bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2 focus-within:border-brand-blue focus-within:ring-2 focus-within:ring-brand-blue/10 transition-all">

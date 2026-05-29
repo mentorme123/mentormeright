@@ -159,11 +159,20 @@ export function AiCornerChatbot() {
         className="fixed right-6 top-[calc(50%+44px)] -translate-y-1/2 z-[999] print-hidden w-auto h-auto flex flex-col items-end justify-center"
       >
         <AnimatePresence>
-          {!isOpen && hasShownPing && (
+          {!isOpen && (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.8, y: 20 }}
+    animate={{ opacity: 1, scale: 1, y: 0 }}
+    className="mb-3 bg-white rounded-2xl shadow-2xl border border-slate-100 p-3 pr-6 flex items-center gap-3 cursor-pointer hover:shadow-brand-blue/20 transition-all group"
+    onClick={() => setIsOpen(true)}
+  >
+    <div className="w-10 h-10 bg-gradient-to-br from-brand-blue to-brand-orange rounded-xl flex items-center justify-center flex-shrink-0">
+      <Sparkles className="text-white w-5 h-5" />
+    </div>
+    <div>
             <motion.div
               initial={{ opacity: 0, scale: 0.8, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.8, y: 20 }}
               className="mb-3 bg-white rounded-2xl shadow-2xl border border-slate-100 p-3 pr-6 flex items-center gap-3 cursor-pointer hover:shadow-brand-blue/20 transition-all group"
               onClick={() => setIsOpen(true)}
             >
@@ -174,11 +183,6 @@ export function AiCornerChatbot() {
                 <p className="text-xs font-black text-slate-800">AI Corner</p>
                 <p className="text-[10px] text-slate-400">Ask me anything! 👋</p>
               </div>
-              <X 
-                size={14} 
-                className="text-slate-300 hover:text-slate-500 transition-colors ml-2"
-                onClick={(e) => { e.stopPropagation(); setHasShownPing(false); }}
-              />
             </motion.div>
           )}
         </AnimatePresence>

@@ -17,7 +17,7 @@ export function Navbar() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
     { href: "/career-library", label: "Career Library" },
-    { href: "/ai-corner", label: "AI Corner" },
+    
     { href: "/career-simulator", label: "Career Simulator" },
     { href: "/exam-predictor", label: "Exam Predictor" },
     { href: "/career-assessment.html", label: "Career Assessment-VK", external: true },
@@ -83,7 +83,7 @@ export function Navbar() {
                   >
                     {[
                       { href: "/career-library", label: "Career Library" },
-                      { href: "/ai-corner", label: "AI Corner", badge: true },
+                      
                       { href: "/career-simulator", label: "Career Simulator" },
                       { href: "/exam-predictor", label: "Exam Predictor" },
                       { href: "/career-assessment.html", label: "Career Assessment-VK", external: true },

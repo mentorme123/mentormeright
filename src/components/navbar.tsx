@@ -81,7 +81,6 @@ export function Navbar() {
                     {/* 1. Career Counseling */}
                     <div
                       onMouseEnter={() => setActiveSubmenu("career")}
-                      onMouseLeave={() => setActiveSubmenu(null)}
                     >
                       <div className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 flex items-center justify-between cursor-default">
                         <span>Career Counseling</span>
@@ -112,7 +111,6 @@ export function Navbar() {
                     {/* 2. Training Programs */}
                     <div
                       onMouseEnter={() => setActiveSubmenu("training")}
-                      onMouseLeave={() => setActiveSubmenu(null)}
                     >
                       <div className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 flex items-center justify-between cursor-default">
                         <span>Training Programs</span>

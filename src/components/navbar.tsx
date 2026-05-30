@@ -81,18 +81,20 @@ export function Navbar() {
                     transition={{ duration: 0.2 }}
                     className="absolute top-[75px] left-1/2 -translate-x-1/2 w-64 bg-background border border-border rounded-2xl shadow-2xl py-3 flex flex-col gap-1 z-50 overflow-hidden"
                   >
-                    {[
-                      { href: "/career-library", label: "Career Library" },
-                      
-                      { href: "/career-simulator", label: "Career Simulator" },
-                      { href: "/exam-predictor", label: "Exam Predictor" },
-                      { href: "/career-assessment.html", label: "Career Assessment-VK", external: true },
-                      { href: "/scholarships", label: "Scholarships" },
-                      { href: "/alumni", label: "Alumni Network" },
-                      { href: "/community", label: "Community" },
-                      { href: "/counsellors", label: "Counsellors" },
-                      { href: "/study-abroad", label: "Study Abroad" },
-                    ].map((item) => (
+                    {(
+                      [
+                        { href: "/career-library", label: "Career Library" },
+                        
+                        { href: "/career-simulator", label: "Career Simulator" },
+                        { href: "/exam-predictor", label: "Exam Predictor" },
+                        { href: "/career-assessment.html", label: "Career Assessment-VK", external: true },
+                        { href: "/scholarships", label: "Scholarships" },
+                        { href: "/alumni", label: "Alumni Network" },
+                        { href: "/community", label: "Community" },
+                        { href: "/counsellors", label: "Counsellors" },
+                        { href: "/study-abroad", label: "Study Abroad" },
+                      ] as { href: string; label: string; external?: boolean; badge?: boolean }[]
+                    ).map((item) => (
                       <a
                         key={item.href}
                         href={item.href}

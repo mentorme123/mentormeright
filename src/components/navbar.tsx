@@ -4,13 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Menu, X, Search } from "lucide-react";
+import { ChevronDown, ChevronRight, Menu, X, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SiteSearch, useSiteSearch } from "@/components/site-search";
 
 export function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
 
   const mobileLinks = [
@@ -74,58 +75,73 @@ export function Navbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-[75px] left-1/2 -translate-x-1/2 w-[420px] bg-background border border-border rounded-2xl shadow-2xl py-4 px-2 flex flex-col z-50 overflow-hidden"
+                    className="absolute top-[75px] left-1/2 -translate-x-1/2 w-56 bg-background border border-border rounded-2xl shadow-2xl py-3 flex flex-col z-50 overflow-visible"
                   >
-                    {/* Career Counseling */}
-                    <div className="px-4 pt-1 pb-2">
-                      <span className="text-xs font-bold text-brand-blue uppercase tracking-wider">Career Counseling</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1 px-1">
-                      {[
-                        { href: "/career-library", label: "Career Library" },
-                        { href: "/career-assessment.html", label: "Career Assessment", external: true },
-                        { href: "/career-simulator", label: "Career Simulator" },
-                        { href: "/counsellors", label: "Counsellors" },
-                      ].map((item) => (
-                        <a
-                          key={item.href}
-                          href={item.href}
-                          target={item.external ? "_blank" : undefined}
-                          rel={item.external ? "noopener noreferrer" : undefined}
-                          className="px-3 py-2 rounded-lg hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 group/item"
-                        >
-                          <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">{item.label}</span>
-                        </a>
-                      ))}
-                    </div>
-
-                    <div className="mx-4 my-2 border-t border-slate-200" />
-
-                    {/* Training Programs */}
-                    <div className="px-4 pt-1 pb-2">
-                      <span className="text-xs font-bold text-brand-orange uppercase tracking-wider">Training Programs</span>
-                    </div>
-                    <div className="grid grid-cols-2 gap-1 px-1">
-                      {[
-                        { href: "/k12-programs", label: "K12 Programs" },
-                        { href: "/college-programs", label: "College Programs" },
-                      ].map((item) => (
-                        <a
-                          key={item.href}
-                          href={item.href}
-                          className="px-3 py-2 rounded-lg hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 group/item"
-                        >
-                          <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">{item.label}</span>
-                        </a>
-                      ))}
+                    {/* Career Counseling - with submenu */}
+                    <div
+                      className="relative"
+                      onMouseEnter={() => setActiveSubmenu("career")}
+                      onMouseLeave={() => setActiveSubmenu(null)}
+                    >
+                      <div className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 flex items-center justify-between cursor-pointer">
+                        <span>Career Counseling</span>
+                        <ChevronRight size={14} />
+                      </div>
+                      {activeSubmenu === "career" && (
+                        <div className="absolute left-full top-0 ml-1 w-52 bg-background border border-border rounded-2xl shadow-2xl py-3 flex flex-col">
+                          {[
+                            { href: "/career-library", label: "Career Library" },
+                            { href: "/career-assessment.html", label: "Career Assessment", external: true },
+                            { href: "/career-simulator", label: "Career Simulator" },
+                            { href: "/counsellors", label: "Counsellors" },
+                          ].map((item) => (
+                            <a
+                              key={item.href}
+                              href={item.href}
+                              target={item.external ? "_blank" : undefined}
+                              rel={item.external ? "noopener noreferrer" : undefined}
+                              className="px-5 py-2 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 group/item"
+                            >
+                              <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">{item.label}</span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
-                    <div className="mx-4 my-2 border-t border-slate-200" />
+                    {/* Training Programs - with submenu */}
+                    <div
+                      className="relative"
+                      onMouseEnter={() => setActiveSubmenu("training")}
+                      onMouseLeave={() => setActiveSubmenu(null)}
+                    >
+                      <div className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 flex items-center justify-between cursor-pointer">
+                        <span>Training Programs</span>
+                        <ChevronRight size={14} />
+                      </div>
+                      {activeSubmenu === "training" && (
+                        <div className="absolute left-full top-0 ml-1 w-52 bg-background border border-border rounded-2xl shadow-2xl py-3 flex flex-col">
+                          {[
+                            { href: "/k12-programs", label: "K12 Programs" },
+                            { href: "/college-programs", label: "College Programs" },
+                          ].map((item) => (
+                            <a
+                              key={item.href}
+                              href={item.href}
+                              className="px-5 py-2 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 group/item"
+                            >
+                              <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">{item.label}</span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
 
-                    {/* Study Abroad */}
+                    {/* Study Abroad - direct link */}
                     <a
                       href="/study-abroad"
-                      className="mx-1 px-3 py-2.5 rounded-lg hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 group/item"
+                      className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 group/item"
+                      onMouseEnter={() => setActiveSubmenu(null)}
                     >
                       <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">🌍 Study Abroad</span>
                     </a>

@@ -74,56 +74,60 @@ export function Navbar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
-                    className="absolute top-[75px] left-1/2 -translate-x-1/2 w-72 bg-background border border-border rounded-2xl shadow-2xl py-3 flex flex-col z-50 overflow-hidden"
+                    className="absolute top-[75px] left-1/2 -translate-x-1/2 w-[420px] bg-background border border-border rounded-2xl shadow-2xl py-4 px-2 flex flex-col z-50 overflow-hidden"
                   >
                     {/* Career Counseling */}
-                    <div className="px-5 pt-2 pb-1">
+                    <div className="px-4 pt-1 pb-2">
                       <span className="text-xs font-bold text-brand-blue uppercase tracking-wider">Career Counseling</span>
                     </div>
-                    {[
-                      { href: "/career-library", label: "Career Library" },
-                      { href: "/career-assessment.html", label: "Career Assessment", external: true },
-                      { href: "/career-simulator", label: "Career Simulator" },
-                      { href: "/counsellors", label: "Counsellors" },
-                    ].map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        target={item.external ? "_blank" : undefined}
-                        rel={item.external ? "noopener noreferrer" : undefined}
-                        className="px-5 py-2 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 flex items-center group/item"
-                      >
-                        <span className="group-hover/item:translate-x-1 transition-transform duration-300">{item.label}</span>
-                      </a>
-                    ))}
+                    <div className="grid grid-cols-2 gap-1 px-1">
+                      {[
+                        { href: "/career-library", label: "Career Library" },
+                        { href: "/career-assessment.html", label: "Career Assessment", external: true },
+                        { href: "/career-simulator", label: "Career Simulator" },
+                        { href: "/counsellors", label: "Counsellors" },
+                      ].map((item) => (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          target={item.external ? "_blank" : undefined}
+                          rel={item.external ? "noopener noreferrer" : undefined}
+                          className="px-3 py-2 rounded-lg hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 group/item"
+                        >
+                          <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">{item.label}</span>
+                        </a>
+                      ))}
+                    </div>
 
-                    <div className="mx-4 my-1.5 border-t border-slate-200" />
+                    <div className="mx-4 my-2 border-t border-slate-200" />
 
                     {/* Training Programs */}
-                    <div className="px-5 pt-1 pb-1">
+                    <div className="px-4 pt-1 pb-2">
                       <span className="text-xs font-bold text-brand-orange uppercase tracking-wider">Training Programs</span>
                     </div>
-                    {[
-                      { href: "/k12-programs", label: "K12 Programs" },
-                      { href: "/college-programs", label: "College Programs" },
-                    ].map((item) => (
-                      <a
-                        key={item.href}
-                        href={item.href}
-                        className="px-5 py-2 hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 flex items-center group/item"
-                      >
-                        <span className="group-hover/item:translate-x-1 transition-transform duration-300">{item.label}</span>
-                      </a>
-                    ))}
+                    <div className="grid grid-cols-2 gap-1 px-1">
+                      {[
+                        { href: "/k12-programs", label: "K12 Programs" },
+                        { href: "/college-programs", label: "College Programs" },
+                      ].map((item) => (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          className="px-3 py-2 rounded-lg hover:bg-brand-blue/5 text-sm font-semibold hover:text-brand-blue transition-all duration-300 group/item"
+                        >
+                          <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">{item.label}</span>
+                        </a>
+                      ))}
+                    </div>
 
-                    <div className="mx-4 my-1.5 border-t border-slate-200" />
+                    <div className="mx-4 my-2 border-t border-slate-200" />
 
                     {/* Study Abroad */}
                     <a
                       href="/study-abroad"
-                      className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 flex items-center group/item"
+                      className="mx-1 px-3 py-2.5 rounded-lg hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 group/item"
                     >
-                      <span className="group-hover/item:translate-x-1 transition-transform duration-300">🌍 Study Abroad</span>
+                      <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">🌍 Study Abroad</span>
                     </a>
                   </motion.div>
                 )}

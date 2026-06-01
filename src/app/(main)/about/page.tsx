@@ -220,12 +220,12 @@ export default function AboutPage() {
       image: "/images/vijay_card.png",
       images: ["/images/leadership/gallery-1.jpg", "/images/leadership/gallery-2.jpg", "/images/leadership/gallery-3.jpg", "/images/leadership/gallery-4.jpg", "/images/leadership/gallery-5.jpg", "/images/leadership/gallery-6.jpg"],
       captions: [
-        "Leadership felicitation with faculty and industry leaders",
-        "MOU and collaboration ceremony with institutional partners",
-        "Academic leadership and advisory board session",
-        "Strategic planning and mentorship meeting",
-        "MentorMe guided session with students",
-        "One-on-one career guidance counseling session"
+        "Post the panel discussion on Budget 2026 at Siva Sivani Institute of Management",
+        "Meet with Governor of Telangana Jishnu Dev Varma in 2025",
+        "With the management students of Woxsen University",
+        "With Member of Parliament, Shri Etela Rajender",
+        "Addressing a large gathering of students in Chennai",
+        "Meet with Shri Naveen Mittal, Commissioner, Collegiate Education and Technical, Telangana in 2023"
       ],
       fullName: "Shri Vijay Kiran Agastya",
       designation: "Co-Founder & Managing Director",
@@ -439,26 +439,26 @@ export default function AboutPage() {
                 {leader.images.length > 0 ? (
                   <div>
                     <h3 className="text-2xl font-bold text-slate-900 mb-4">
-                      Gallery
+                      Brand and Eminence
                     </h3>
                     <div className="grid grid-cols-3 gap-4">
                       {(galleryOpen[index] ? leader.images : leader.images.slice(0, 1)).map(
                         (img, i) => (
-                        <div
-                          key={i}
-                          className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-white"
-                        >
-                          <div className="relative w-full aspect-[4/3]">
-                            <img
-                              src={img}
-                              alt={`${leader.name} ${i + 1}`}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                            />
+                          <div
+                            key={i}
+                            className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-white"
+                          >
+                            <div className="relative w-full aspect-[4/3]">
+                              <img
+                                src={img}
+                                alt={`${leader.name} ${i + 1}`}
+                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                            {leader.captions && leader.captions[i] ? (
+                              <p className="mt-2 px-2 pb-2 text-xs text-slate-600 text-center">{leader.captions[i]}</p>
+                            ) : null}
                           </div>
-                          {leader.captions && leader.captions[i] ? (
-                            <p className="mt-2 px-2 pb-2 text-xs text-slate-600 text-center">{leader.captions[i]}</p>
-                          ) : null}
-                        </div>
                         )
                       )}
                     </div>

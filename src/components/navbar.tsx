@@ -144,10 +144,11 @@ export function Navbar() {
                     </div>
 
                     {/* 3. Study Abroad */}
+                    <a
                       href="/study-abroad"
                       className="m-1.5 px-3 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 rounded-xl"
                     >
-                      <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">🌍 Study Abroad</span>
+                      <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-200">🌍 Study Abroad</span>
                     </a>
                   </motion.div>
                 )}

@@ -500,9 +500,14 @@ export default function Home() {
                   <h4 className="font-semibold text-sm uppercase tracking-wider mb-2">
                     Key Highlights
                   </h4>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-                    {item.highlights}
-                  </p>
+                  <ul className="text-muted-foreground text-sm leading-relaxed mb-8 list-none space-y-1">
+                    {item.highlights.split(" | ").map((h, idx) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="mr-2 text-brand-blue">•</span>
+                        <span>{h}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 <div className="flex gap-4 mt-auto">

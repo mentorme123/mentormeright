@@ -336,28 +336,15 @@ export default function Home() {
             <div className="flex gap-4 partners-scroll">
   {(() => {
     const partners = [
-      // Row 1
-      { name: "DDGD Vaishnav Chennai",            logo: "/images/partners/ddgd-vaishnav.png" },
-      { name: "Bhavan's Group",                   logo: "/images/partners/bhavans-group.png" },
       { name: "ICBM School of Business",          logo: "/images/partners/icbm.png" },
       { name: "TSWRDC Nalgonda",                  logo: "/images/partners/tswrdc.png" },
       { name: "Pragati Mahavidyalaya",            logo: "/images/partners/pragati-maha.png" },
       { name: "Keshav Memorial",                  logo: "/images/partners/keshav-memorial.png" },
-      // Row 2
       { name: "Elgi School",                      logo: "/images/partners/elgi-school.png" },
       { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.png" },
       { name: "Howard Park International",        logo: "/images/partners/howard-park.png" },
       { name: "Geetam School",                    logo: "/images/partners/geetam.png" },
-      { name: "Pantheon Digital",                 logo: "/images/partners/pantheon-digital.png" },
-      { name: "Avanthi Degree & PG Colleges",     logo: "/images/partners/avanthi.png" },
-      // Row 3
-      { name: "HPS Nizamabad",                    logo: "/images/partners/hps-nizamabad.png" },
       { name: "IIMC Hyderabad",                   logo: "/images/partners/iimc-hyderabad.png" },
-      { name: "St Pious Hyderabad",               logo: "/images/partners/st-pious.png" },
-      { name: "Vasavi School",                    logo: "/images/partners/vasavi-school.png" },
-      { name: "VBR Group of Institutions",        logo: "/images/partners/vbr-group.png" },
-      { name: "OASIS School of Excellence",       logo: "/images/partners/oasis-excellence.png" },
-      { name: "OASIS International School",       logo: "/images/partners/oasis-international.png" },
     ];
     // Duplicate for seamless infinite scroll
     return [...partners, ...partners].map((partner, i) => (
@@ -398,7 +385,7 @@ export default function Home() {
  
         <style>{`
           .partners-scroll {
-            animation: scroll-partners 15s linear infinite;
+            animation: scroll-partners 20s linear infinite;
             width: max-content;
           }
           .partners-scroll:hover {

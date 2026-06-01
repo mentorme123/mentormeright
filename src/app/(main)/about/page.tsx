@@ -1,29 +1,220 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2, ChevronDown, ChevronUp, GraduationCap, Users2, BookOpen, Award, Globe2, Lightbulb } from "lucide-react";
 import Image from "next/image";
 
 export default function AboutPage() {
+  const [expandedLeaders, setExpandedLeaders] = useState<Set<number>>(new Set());
+  const [expandedImages, setExpandedImages] = useState<Set<string>>(new Set());
+
+  const toggleLeader = (index: number) => {
+    setExpandedLeaders(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
+
+  const toggleImages = (key: string) => {
+    setExpandedImages(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
+
   const leadership = [
     {
       name: "Vijay Kiran Agastya",
       role: "Co-Founder & Managing Director",
-      desc: "Ex-Deloitte Vice President | Trainer | Leadership Coach",
-      image: "/images/vijay_card.png"
+      shortRole: "Co-Founder & Managing Director",
+      company: "MentorMe Career Intelligence and Training Pvt. Ltd.",
+      tagline: "Empowering Careers. Enabling Future Leaders.",
+      desc: "A distinguished entrepreneur, corporate leader, educator, and career strategist with over 24 years of experience across consulting, leadership development, digital transformation, and professional education.",
+      image: "/images/vijay_card.png",
+      images: ["/images/leadership/vijay-1.jpg", "/images/leadership/vijay-2.jpg", "/images/leadership/vijay-3.jpg"],
+      expandedContent: (
+        <div className="space-y-8 mt-8">
+          <p className="text-slate-700 leading-relaxed">
+            Before co-founding MentorMe, he built an exceptional corporate career with leading organizations including <strong>Deloitte, Genpact, and Indian Immunologicals Ltd.</strong>, rising to the position of <strong>Vice President at Deloitte</strong>. Today, he combines his industry expertise with a passion for empowering students and professionals to navigate the future of work with confidence.
+          </p>
+
+          <h3 className="text-2xl font-bold text-slate-900">Key Leadership Positions</h3>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {[
+              "Co-Founder & Managing Director, MentorMe Career Intelligence and Training Pvt. Ltd.",
+              "Chairman (2025-26), Southern India Regional Council (SIRC), The Institute of Cost Accountants of India",
+              "Former Vice President, Deloitte U.S India",
+              "Functional Consultant & Advisor, Numantec AI & Digital Transformation Solutions",
+              "Member, Board of Studies (Commerce), Osmania University",
+              "Entrepreneurship Mentor, ICT Academy",
+              "Consultant Trainer & Research Associate, National Institute for MSME (ni-msme)",
+            ].map((position, i) => (
+              <div key={i} className="flex items-start gap-3 p-3 bg-brand-blue/5 rounded-xl">
+                <Award className="text-brand-orange shrink-0 mt-1" size={18} />
+                <span className="text-sm font-medium text-slate-700">{position}</span>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="text-2xl font-bold text-slate-900">Leadership in the CMA Profession</h3>
+          <p className="text-slate-700 leading-relaxed">
+            As the <strong>Chairman of the Southern India Regional Council (SIRC) of The Institute of Cost Accountants of India</strong>, Vijay Kiran plays a pivotal role in shaping the future of the CMA profession across South India. He previously created history as the <strong>youngest Chairman of the Hyderabad Chapter</strong> in its 53-year legacy.
+          </p>
+
+          <h3 className="text-2xl font-bold text-slate-900">Educator • Mentor • Thought Leader</h3>
+          <p className="text-slate-700 leading-relaxed">
+            A globally certified trainer and sought-after speaker, he has delivered <strong>500+ guest lectures</strong>, mentored thousands of learners, and conducted impactful programs on leadership, employability, business transformation, and career development.
+          </p>
+
+          <div className="bg-gradient-to-r from-brand-blue/10 to-brand-orange/10 p-6 rounded-2xl border border-brand-blue/20">
+            <h4 className="text-lg font-bold text-brand-blue mb-2">His Vision</h4>
+            <p className="text-slate-700 italic leading-relaxed">
+              "The future belongs to those who continuously learn, adapt, and create value. With the right guidance and mindset, every individual can unlock extraordinary opportunities and build a meaningful career."
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">Gallery</h3>
+            <div className="grid grid-cols-3 gap-4">
+              {(expandedImages.has("vijay") ? leadership[0].images : leadership[0].images.slice(0, 1)).map((img, i) => (
+                <div key={i} className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-slate-200">
+                  <Image
+                    src={img}
+                    alt={`${leadership[0].name} ${i + 1}`}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              ))}
+            </div>
+            {leadership[0].images.length > 1 && (
+              <button
+                onClick={() => toggleImages("vijay")}
+                className="mt-3 flex items-center gap-2 text-brand-blue font-semibold hover:underline"
+              >
+                {expandedImages.has("vijay") ? "Show less" : `View all ${leadership[0].images.length} photos`}
+                {expandedImages.has("vijay") ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              </button>
+            )}
+          </div>
+        </div>
+      ),
     },
     {
       name: "Sirisha Kode",
       role: "Co-Founder & COO",
-      desc: "Ex-Ernst & Young | Corporate Trainer | Women Leader",
-      image: "/images/sirisha_card.png"
+      shortRole: "Co-Founder & COO",
+      company: "MentorMe Career Intelligence and Training Pvt. Ltd.",
+      tagline: "Ex-Ernst & Young | Corporate Trainer | Women Leader",
+      desc: "",
+      image: "/images/sirisha_card.png",
+      images: [],
+      expandedContent: null,
     },
     {
       name: "Santhi Vedula",
-      role: "Advisor - Institutional Relationships",
-      desc: "Senior Academician | Author | Research Scholar",
-      image: "/images/santhi_card.png"
-    }
+      role: "Advisory Board Member | Educator | Author | Academic Leader",
+      shortRole: "Advisor - Institutional Relationships",
+      company: "MentorMe Right Advisory Board",
+      tagline: "Senior Academician | Author | Research Scholar",
+      desc: "With over 30 years of distinguished experience in education, academic leadership, and student development.",
+      image: "/images/santhi_card.png",
+      images: ["/images/leadership/santhi-1.jpg", "/images/leadership/santhi-2.jpg", "/images/leadership/santhi-3.jpg"],
+      expandedContent: (
+        <div className="space-y-8 mt-8">
+          <p className="text-slate-700 leading-relaxed">
+            Dr. Santhi Vedula brings unparalleled expertise to the MentorMe Right Advisory Board. An accomplished academician and lifelong learner, she holds multiple postgraduate degrees including <strong>M.Com, MBA, MA, M.Phil, B.Ed, MA (Indian Knowledge Systems)</strong>, along with several professional diplomas. She is currently pursuing her <strong>Ph.D. in Management from SR University</strong>.
+          </p>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="flex items-start gap-3 p-4 bg-brand-blue/5 rounded-xl">
+              <BookOpen className="text-brand-orange shrink-0 mt-1" size={20} />
+              <div>
+                <h4 className="font-bold text-slate-900">Prolific Author</h4>
+                <p className="text-sm text-slate-700">26 academic textbooks for B.Com and BBA programs published by Kalyani, Himalaya, Usha, and Vikram Publishers.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-brand-blue/5 rounded-xl">
+              <Globe2 className="text-brand-orange shrink-0 mt-1" size={20} />
+              <div>
+                <h4 className="font-bold text-slate-900">Research Excellence</h4>
+                <p className="text-sm text-slate-700">42 research papers presented at national and international conferences.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-brand-blue/5 rounded-xl">
+              <Users2 className="text-brand-orange shrink-0 mt-1" size={20} />
+              <div>
+                <h4 className="font-bold text-slate-900">Thought Leader</h4>
+                <p className="text-sm text-slate-700">Contributions to newspapers, TV discussions, and All India Radio on education and career guidance.</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 bg-brand-blue/5 rounded-xl">
+              <GraduationCap className="text-brand-orange shrink-0 mt-1" size={20} />
+              <div>
+                <h4 className="font-bold text-slate-900">Academic Leadership</h4>
+                <p className="text-sm text-slate-700">Guiding academic vision and mentoring future leaders at MentorMe Right.</p>
+              </div>
+            </div>
+          </div>
+
+          <h3 className="text-2xl font-bold text-slate-900">Awards & Recognitions</h3>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {[
+              "She Inspires Award (2023)",
+              "Inspiring Women of the Year (2021)",
+              "Global Faculty Award (2022)",
+              "Vidya Siromani Award (2015)",
+              "Andhra Pradesh Ugadi Puraskaram",
+              "Stri Murthy Award for Excellence in Education",
+              "Dr. APJ Abdul Kalam Award for Educational Excellence",
+              "Best Woman Administrator Award (2026)",
+            ].map((award, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 bg-gradient-to-r from-brand-orange/10 to-brand-blue/10 rounded-xl">
+                <Award className="text-brand-orange shrink-0" size={18} />
+                <span className="text-sm font-medium text-slate-700">{award}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="bg-gradient-to-r from-brand-blue/10 to-brand-orange/10 p-6 rounded-2xl border border-brand-blue/20">
+            <h4 className="text-lg font-bold text-brand-blue mb-2">Her Message to Students</h4>
+            <p className="text-slate-700 italic leading-relaxed">
+              "Education is not merely about earning a degree. It is about discovering your strengths, building confidence, and creating a meaningful impact. The future belongs to those who continuously learn, adapt, and lead with purpose."
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-2xl font-bold text-slate-900 mb-4">Gallery</h3>
+            <div className="grid grid-cols-3 gap-4">
+              {(expandedImages.has("santhi") ? leadership[2].images : leadership[2].images.slice(0, 1)).map((img, i) => (
+                <div key={i} className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-slate-200">
+                  <Image
+                    src={img}
+                    alt={`${leadership[2].name} ${i + 1}`}
+                    fill
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              ))}
+            </div>
+            {leadership[2].images.length > 1 && (
+              <button
+                onClick={() => toggleImages("santhi")}
+                className="mt-3 flex items-center gap-2 text-brand-blue font-semibold hover:underline"
+              >
+                {expandedImages.has("santhi") ? "Show less" : `View all ${leadership[2].images.length} photos`}
+                {expandedImages.has("santhi") ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              </button>
+            )}
+          </div>
+        </div>
+      ),
+    },
   ];
 
   const features = [
@@ -31,7 +222,7 @@ export default function AboutPage() {
     "Network of Counsellors and Industry Mentors",
     "Extensive Career Database",
     "Study Abroad Support",
-    "Future-Ready Skill Development"
+    "Future-Ready Skill Development",
   ];
 
   const scrollImages = [
@@ -41,9 +232,6 @@ export default function AboutPage() {
     "/images/session-2.jpg",
     "/images/session-3.jpg",
     "/images/session-4.jpg",
-    "/images/about-screenshot.jpg",
-    "/images/guidance-session.jpg",
-    "/images/mentorme-session.jpg",
   ];
 
   return (
@@ -51,14 +239,14 @@ export default function AboutPage() {
       {/* Header */}
       <section className="bg-brand-blue/5 py-20 px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-6">
-          <motion.h1 
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-6xl font-bold text-brand-blue"
           >
             About MentorMe
           </motion.h1>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
@@ -72,7 +260,7 @@ export default function AboutPage() {
       {/* Main Content */}
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -80,10 +268,10 @@ export default function AboutPage() {
           >
             <h2 className="text-3xl font-bold">Our Philosophy</h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              At MentorMe, our advanced AI technology is instrumental in conducting comprehensive psychometric and aptitude assessments, analyzing an individual’s personality, skills, and interests with precision. 
+              At MentorMe, our advanced AI technology is instrumental in conducting comprehensive psychometric and aptitude assessments, analyzing an individual's personality, skills, and interests with precision.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Combining this deep data with the expertise of our seasoned counsellors, we ensure students and professionals make highly informed choices. We support our users from self-discovery to employability with training programs that bridge the gap between academic knowledge and industry requirements, preparing individuals for successful careers.
+              Combining this deep data with the expertise of our seasoned counsellors, we ensure students and professionals make highly informed choices. We support our users from self-discovery to employability with training programs that bridge the gap between academic knowledge and industry requirements.
             </p>
 
             <ul className="space-y-4 pt-6">
@@ -96,13 +284,13 @@ export default function AboutPage() {
             </ul>
           </motion.div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105" />
             <div className="relative rounded-3xl shadow-2xl border border-white/10 bg-white/90 p-6 overflow-hidden">
               <div className="space-y-5">
                 <div>
@@ -130,7 +318,7 @@ export default function AboutPage() {
                     <div key={index} className="min-w-[260px] flex-shrink-0 rounded-3xl overflow-hidden border border-slate-200 shadow-lg">
                       <Image
                         src={src}
-                        alt={`Our Philosophy gallery ${index % scrollImages.length + 1}`}
+                        alt={`Gallery ${index % scrollImages.length + 1}`}
                         width={320}
                         height={220}
                         className="object-cover w-full h-56"
@@ -153,48 +341,6 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
-
-      {/* Leadership Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
-        <div className="max-w-6xl mx-auto space-y-16">
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Meet Our Leadership Team</h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">The visionaries and experts driving the mission behind MentorMe Right.</p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
-            {leadership.map((leader, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
-                className="relative rounded-[2.5rem] overflow-hidden group shadow-xl hover:shadow-2xl hover:shadow-brand-blue/20 transition-all duration-500 hover:-translate-y-2 border border-slate-200/50 bg-white"
-              >
-                <div className="relative aspect-[334/423] w-full">
-                  <Image 
-                    src={leader.image} 
-                    alt={leader.name} 
-                    fill 
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.02]" 
-                  />
-                  {/* Subtle shine effect on hover */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/0 group-hover:via-white/10 transition-all duration-700"></div>
-                </div>
-                
-                {/* Hidden text for SEO/Accessibility */}
-                <div className="sr-only">
-                  <h3>{leader.name}</h3>
-                  <p>{leader.role}</p>
-                  <p>{leader.desc}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
     </div>
   );
 }

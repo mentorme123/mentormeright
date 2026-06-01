@@ -25,9 +25,193 @@ type Leader = {
 
 export default function AboutPage() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [institutionIndex, setInstitutionIndex] = useState<number | null>(null);
   const [galleryOpen, setGalleryOpen] = useState<Record<number, boolean>>({});
   const toggleGallery = (i: number) =>
     setGalleryOpen((prev) => ({ ...prev, [i]: !prev[i] }));
+
+  type InstitutionContact = {
+    label: string;
+    value: string;
+    href?: string;
+  };
+
+  type Institution = {
+    name: string;
+    logo: string;
+    description: string;
+    images: string[];
+    captions?: string[];
+    website?: string;
+    contact?: InstitutionContact[];
+  };
+
+  const institutions: Institution[] = [
+    {
+      name: "ELGI School",
+      logo: "/images/institutions/elgi-school.png",
+      description: "ELGI School, Coimbatore — Aspire & Excel. Established in 1987 with 67 students and 3 teachers, ELGI School has grown into a thriving institution with 1,400 students and 60+ teaching staff, spread across a 4-acre campus with a 200m athletic track. The school follows the CBSE syllabus and emphasizes holistic education, career guidance, club activities, sports, and global exposure.",
+      images: [],
+      website: "https://www.elgischool.com",
+      contact: [
+        { label: "Address", value: "Kovai Mahalingapuram, Vellalore, Coimbatore, Tamil Nadu 641111" },
+        { label: "Email", value: "info@elgischool.org", href: "mailto:info@elgischool.org" },
+        { label: "Phone", value: "0422 241 4194", href: "tel:04222414194" },
+      ],
+    },
+    {
+      name: "St. Joseph's Degree & PG College",
+      logo: "",
+      description: "St. Joseph's Degree & PG College, Hyderabad — A premier institution offering undergraduate and postgraduate programs, known for academic excellence, holistic student development, and strong industry connections. The college is committed to nurturing future leaders through quality education and comprehensive co-curricular programs.",
+      images: [],
+      website: "https://stjosephspgcollege.ac.in",
+      contact: [
+        { label: "Location", value: "Hyderabad, Telangana" },
+      ],
+    },
+    {
+      name: "Howard Park International",
+      logo: "/images/institutions/howard-public-school.png",
+      description: "Howard Public School CBSE, Himayathnagar, Hyderabad — Established in 1986, Howard Public School is one of the finest CBSE institutions dedicated to academic excellence, self-discipline, rational thinking, and global vision. The school offers state-of-the-art facilities including science labs, AI lab, library, sports infrastructure, and a wide range of clubs. Celebrating 40 glorious years of educational excellence.",
+      images: [],
+      website: "https://howardinstitutions.org",
+      contact: [
+        { label: "Address", value: "H. No. 3-6-568, Street No. 8, Himayathnagar, Hyderabad – 500 029" },
+        { label: "Email", value: "howardinstitutions@gmail.com", href: "mailto:howardinstitutions@gmail.com" },
+        { label: "Phone", value: "040-27630610", href: "tel:04027630610" },
+      ],
+    },
+    {
+      name: "Geetam School",
+      logo: "/images/institutions/geetam-school.png",
+      description: "Geetam The Next Gen IIT School, Kakinada — Established in 2014 by a visionary educator with decades of teaching experience, Geetam School has emerged as one of Kakinada's most unique and trusted institutions. The school integrates CBSE with IIT foundation programs, offering full-day sessions, varied classes, and a friendly learning environment. Located at 66-5-3, Narasannanagar, near Karanam garu junction, the school is committed to celebrating life and learning.",
+      images: [],
+      website: "https://www.geetamnextgeniitschool.com",
+      contact: [
+        { label: "Address", value: "66-5-3, Narasannanagar, near Karanam garu junction, Kakinada" },
+        { label: "Phone", value: "0884 235 3144 / +91 8897533222" },
+        { label: "Email", value: "geetamschoolkakinada@gmail.com", href: "mailto:geetamschoolkakinada@gmail.com" },
+        { label: "Hours", value: "Mon – Sat : 9:00 AM – 5:00 PM" },
+      ],
+    },
+    {
+      name: "Pantheon Digital",
+      logo: "",
+      description: "Pantheon Digital is a digital transformation and technology solutions partner empowering businesses with innovative strategies, branding, and digital excellence.",
+      images: [],
+      contact: [
+        { label: "Website", value: "https://www.pantheondigital.com", href: "https://www.pantheondigital.com" },
+      ],
+    },
+  ];
+
+  const renderInstitutionModal = (institution: Institution, index: number) => {
+    const overlay = (
+      <div className="fixed inset-0 z-50">
+        <div
+          className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+          onClick={() => setInstitutionIndex(null)}
+        />
+        <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-8 md:p-10">
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  {institution.logo ? (
+                    <div className="w-20 h-20 relative shrink-0 bg-slate-50 rounded-2xl overflow-hidden border border-slate-200">
+                      <img
+                        src={institution.logo}
+                        alt={institution.name}
+                        className="w-full h-full object-contain p-2"
+                      />
+                    </div>
+                  ) : null}
+                  <div>
+                    <h3 className="text-2xl font-bold text-slate-900">{institution.name}</h3>
+                    {institution.website ? (
+                      <a
+                        href={institution.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-brand-blue font-semibold hover:underline text-sm mt-1 inline-block"
+                      >
+                        Visit Website →
+                      </a>
+                    ) : null}
+                  </div>
+                </div>
+                <button
+                  onClick={() => setInstitutionIndex(null)}
+                  className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#64748b"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 6 6 18" />
+                    <path d="m6 6 12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <p className="text-slate-700 leading-relaxed whitespace-pre-line">
+                  {institution.description}
+                </p>
+
+                {institution.contact && institution.contact.length > 0 ? (
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {institution.contact.map((c, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border border-slate-100"
+                      >
+                        <Globe2 className="text-brand-orange shrink-0 mt-0.5" size={18} />
+                        <div>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{c.label}</p>
+                          {c.href ? (
+                            <a href={c.href} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-brand-blue hover:underline">
+                              {c.value}
+                            </a>
+                          ) : (
+                            <p className="text-sm font-medium text-slate-900">{c.value}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+
+                {institution.images.length > 0 ? (
+                  <div>
+                    <h4 className="text-lg font-bold text-slate-900 mb-3">Gallery</h4>
+                    <div className="grid grid-cols-3 gap-3">
+                      {institution.images.map((img, i) => (
+                        <div key={i} className="rounded-xl overflow-hidden shadow border border-slate-200">
+                          <img src={img} alt={`${institution.name} ${i + 1}`} className="w-full aspect-[4/3] object-cover hover:scale-105 transition-transform duration-500" />
+                          {institution.captions && institution.captions[i] ? (
+                            <p className="px-2 py-1.5 text-xs text-slate-600 bg-white">{institution.captions[i]}</p>
+                          ) : null}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    return <div key={`institution-${index}`}>{overlay}</div>;
+  };
 
   const leaders: Leader[] = [
     {
@@ -359,6 +543,50 @@ export default function AboutPage() {
           </div>
 
           {openIndex !== null && renderModal(leaders[openIndex], openIndex)}
+
+          <div className="text-center space-y-4 pt-8">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+              Our Trusted Partners
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Institutions and organisations we collaborate with to empower careers.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 max-w-6xl mx-auto">
+            {institutions.map((inst, i) => (
+              <div
+                key={i}
+                className="group relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-brand-blue/20 transition-all duration-500 hover:-translate-y-2 border border-slate-200/50 bg-white cursor-pointer flex flex-col items-center justify-center p-6 aspect-square"
+                onClick={() => setInstitutionIndex(i)}
+              >
+                {inst.logo ? (
+                  <div className="relative w-24 h-24 mb-4 flex items-center justify-center">
+                    <img
+                      src={inst.logo}
+                      alt={inst.name}
+                      className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                    <span className="text-2xl font-extrabold text-brand-blue">
+                      {inst.name
+                        .split(" ")
+                        .map((w) => w[0])
+                        .slice(0, 2)
+                        .join("")}
+                    </span>
+                  </div>
+                )}
+                <p className="text-sm font-bold text-slate-900 text-center leading-tight group-hover:text-brand-blue transition-colors">
+                  {inst.name}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {institutionIndex !== null && renderInstitutionModal(institutions[institutionIndex], institutionIndex)}
         </div>
       </section>
     </div>

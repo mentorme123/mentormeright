@@ -33,7 +33,13 @@ export default function AboutPage() {
       name: "Vijay Kiran Agastya",
       role: "Co-Founder & Managing Director",
       image: "/images/vijay_card.png",
-      images: ["/images/leadership/vijay-1.jpg", "/images/leadership/vijay-2.jpg", "/images/leadership/vijay-3.jpg"],
+      images: ["/images/leadership/gallery-1.jpg", "/images/leadership/gallery-2.jpg", "/images/leadership/gallery-3.jpg", "/images/leadership/gallery-4.jpg"],
+      captions: [
+        "Leadership felicitation at SNGI with faculty and industry leaders",
+        "Mou and collaboration ceremony showcasing institutional partnerships",
+        "Woxsen University alumni gathering with graduating students",
+        "Official MoU signing event marking strategic collaboration"
+      ],
       fullName: "Shri Vijay Kiran Agastya",
       designation: "Co-Founder & Managing Director",
       company: "MentorMe Career Intelligence and Training Pvt. Ltd.",
@@ -251,16 +257,19 @@ export default function AboutPage() {
                     <div className="grid grid-cols-3 gap-4">
                       {(galleryOpen[index] ? leader.images : leader.images.slice(0, 1)).map(
                         (img, i) => (
-                          <div
-                            key={i}
-                            className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-slate-200"
-                          >
-                            <img
-                              src={img}
-                              alt={`${leader.name} ${i + 1}`}
-                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                            />
-                          </div>
+                        <div
+                          key={i}
+                          className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-slate-200"
+                        >
+                          <img
+                            src={img}
+                            alt={`${leader.name} ${i + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                          />
+                          {leader.captions && leader.captions[i] ? (
+                            <p className="mt-1 text-xs text-slate-600">{leader.captions[i]}</p>
+                          ) : null}
+                        </div>
                         )
                       )}
                     </div>

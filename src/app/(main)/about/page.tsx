@@ -66,8 +66,8 @@ export default function AboutPage() {
           </div>
 
           {openIndex === 0 && (
-            <div className="max-w-4xl mx-auto p-8 bg-white rounded-3xl shadow-2xl border border-slate-200">
-              <div className="flex items-start justify-between">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-start justify-between mb-8">
                 <div>
                   <h3 className="text-3xl font-bold text-slate-900">Shri Vijay Kiran Agastya</h3>
                   <p className="text-brand-blue font-semibold text-lg mt-1">Co-Founder & Managing Director</p>
@@ -138,8 +138,8 @@ export default function AboutPage() {
           )}
 
           {openIndex === 2 && (
-            <div className="max-w-4xl mx-auto p-8 bg-white rounded-3xl shadow-2xl border border-slate-200">
-              <div className="flex items-start justify-between">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-start justify-between mb-8">
                 <div>
                   <h3 className="text-3xl font-bold text-slate-900">Dr. Santhi Vedula</h3>
                   <p className="text-brand-blue font-semibold text-lg mt-1">Advisory Board Member | Educator | Author | Academic Leader</p>

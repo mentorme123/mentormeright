@@ -155,6 +155,11 @@ export function Navbar() {
               </AnimatePresence>
             </div>
 
+            <Link href="/ai-learning-hub" className="relative group py-2">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">AI Learning Hub</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
+
             <Link href="/blogs" className="relative group py-2">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />

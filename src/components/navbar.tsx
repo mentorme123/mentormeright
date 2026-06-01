@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Menu, X, Search } from "lucide-react";
@@ -12,26 +12,9 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
-  const submenuTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  const clearSubmenuTimeout = () => {
-    if (submenuTimeoutRef.current) {
-      clearTimeout(submenuTimeoutRef.current);
-      submenuTimeoutRef.current = null;
-    }
-  };
-
-  const handleSubmenuEnter = (submenu: string) => {
-    clearSubmenuTimeout();
-    setActiveSubmenu(submenu);
-  };
-
-  const handleSubmenuLeave = () => {
-    clearSubmenuTimeout();
-    submenuTimeoutRef.current = setTimeout(() => {
-      setActiveSubmenu(null);
-      submenuTimeoutRef.current = null;
-    }, 100);
+  const handleSubmenuClick = (submenu: string) => {
+    setActiveSubmenu(prev => prev === submenu ? null : submenu);
   };
 
   const mobileLinks = [
@@ -79,12 +62,11 @@ export function Navbar() {
             </Link>
 
             {/* Dropdown */}
-            <div
-              className="relative group"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
-            >
-              <button className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300">
+            <div className="relative">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300"
+              >
                 Our Programs <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
@@ -98,14 +80,14 @@ export function Navbar() {
                     className="absolute top-[75px] left-1/2 -translate-x-1/2 w-60 bg-background border border-border rounded-2xl shadow-2xl py-3 flex flex-col z-50 overflow-hidden"
                   >
                     {/* 1. Career Counseling */}
-                    <div
-                      onMouseEnter={() => handleSubmenuEnter("career")}
-                      onMouseLeave={handleSubmenuLeave}
-                    >
-                      <div className={`px-5 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between cursor-default ${activeSubmenu === "career" ? "bg-brand-blue/5 text-brand-blue" : "hover:bg-brand-blue/5 hover:text-brand-blue"}`}>
+                    <div>
+                      <button
+                        onClick={() => handleSubmenuClick("career")}
+                        className={`w-full text-left px-5 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between hover:bg-brand-blue/5 hover:text-brand-blue ${activeSubmenu === "career" ? "bg-brand-blue/5 text-brand-blue" : ""}`}
+                      >
                         <span>Career Counseling</span>
                         <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "career" ? "rotate-180" : ""}`} />
-                      </div>
+                      </button>
                       <div className={`overflow-hidden transition-all duration-200 ${activeSubmenu === "career" ? "max-h-40" : "max-h-0"}`}>
                         <div className="flex flex-col bg-slate-50">
                           {[
@@ -129,14 +111,14 @@ export function Navbar() {
                     </div>
 
                     {/* 2. Training Programs */}
-                    <div
-                      onMouseEnter={() => handleSubmenuEnter("training")}
-                      onMouseLeave={handleSubmenuLeave}
-                    >
-                      <div className={`px-5 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between cursor-default ${activeSubmenu === "training" ? "bg-brand-blue/5 text-brand-blue" : "hover:bg-brand-blue/5 hover:text-brand-blue"}`}>
+                    <div>
+                      <button
+                        onClick={() => handleSubmenuClick("training")}
+                        className={`w-full text-left px-5 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between hover:bg-brand-blue/5 hover:text-brand-blue ${activeSubmenu === "training" ? "bg-brand-blue/5 text-brand-blue" : ""}`}
+                      >
                         <span>Training Programs</span>
                         <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "training" ? "rotate-180" : ""}`} />
-                      </div>
+                      </button>
                       <div className={`overflow-hidden transition-all duration-200 ${activeSubmenu === "training" ? "max-h-40" : "max-h-0"}`}>
                         <div className="flex flex-col bg-slate-50">
                           {[

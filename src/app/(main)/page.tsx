@@ -333,9 +333,11 @@ export default function Home() {
             {/* Right fade */}
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-blue to-transparent z-10 pointer-events-none" />
  
-            <div className="flex gap-4 partners-scroll">
+            <div className="flex gap-5 partners-scroll">
   {(() => {
     const partners = [
+      { name: "DDGD Vaishnav Chennai",            logo: "/images/partners/ddgd-vaishnav.png" },
+      { name: "Bhavan's Group",                   logo: "/images/partners/bhavans-group.png" },
       { name: "ICBM School of Business",          logo: "/images/partners/icbm.png" },
       { name: "TSWRDC Nalgonda",                  logo: "/images/partners/tswrdc.png" },
       { name: "Pragati Mahavidyalaya",            logo: "/images/partners/pragati-maha.png" },
@@ -344,22 +346,28 @@ export default function Home() {
       { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.png" },
       { name: "Howard Park International",        logo: "/images/partners/howard-park.png" },
       { name: "Geetam School",                    logo: "/images/partners/geetam.png" },
+      { name: "Pantheon Digital",                 logo: "/images/partners/pantheon-digital.png" },
+      { name: "Avanthi Degree & PG Colleges",     logo: "/images/partners/avanthi.png" },
+      { name: "HPS Nizamabad",                    logo: "/images/partners/hps-nizamabad.png" },
       { name: "IIMC Hyderabad",                   logo: "/images/partners/iimc-hyderabad.png" },
+      { name: "St Pious Hyderabad",               logo: "/images/partners/st-pious.png" },
+      { name: "Vasavi School",                    logo: "/images/partners/vasavi-school.png" },
+      { name: "VBR Group of Institutions",        logo: "/images/partners/vbr-group.png" },
+      { name: "OASIS School of Excellence",       logo: "/images/partners/oasis-excellence.png" },
+      { name: "OASIS International School",       logo: "/images/partners/oasis-international.png" },
     ];
     // Duplicate for seamless infinite scroll
     return [...partners, ...partners].map((partner, i) => (
       <div
         key={i}
-        className="flex-shrink-0 flex flex-col items-center gap-2 bg-white rounded-xl p-4 shadow-lg border border-gray-100"
-        style={{ minWidth: "150px" }}
+        className="flex-shrink-0 flex flex-col items-center justify-center gap-3 bg-white rounded-xl shadow-lg border border-gray-100"
+        style={{ width: "160px", height: "160px", padding: "16px 12px" }}
       >
-        <div className="w-16 h-16 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center w-full">
           <img
             src={partner.logo}
             alt={partner.name}
-            width={55}
-            height={55}
-            className="object-contain w-14 h-14"
+            className="object-contain max-w-[70px] max-h-[70px]"
             onError={(e) => {
               const target = e.currentTarget as HTMLImageElement;
               target.style.display = "none";
@@ -368,13 +376,13 @@ export default function Home() {
             }}
           />
           <div
-            className="hidden w-14 h-14 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-sm text-center leading-tight"
+            className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-sm text-center leading-tight"
             style={{ display: "none" }}
           >
             {partner.name.split(" ").slice(0, 2).map(w => w[0]).join("")}
           </div>
         </div>
-        <span className="text-xs font-bold text-gray-800 text-center leading-tight">{partner.name}</span>
+        <span className="text-[11px] font-bold text-gray-800 text-center leading-tight line-clamp-2">{partner.name}</span>
       </div>
     ));
   })()}
@@ -385,7 +393,7 @@ export default function Home() {
  
         <style>{`
           .partners-scroll {
-            animation: scroll-partners 20s linear infinite;
+            animation: scroll-partners 30s linear infinite;
             width: max-content;
           }
           .partners-scroll:hover {

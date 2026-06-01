@@ -137,8 +137,8 @@ export default function AboutPage() {
                     ))}
                   </div>
                   {leaders[0].images.length > 1 && (
-                    <button onClick={() => toggleGallery(0)} className="mt-3 flex items-center gap-2 text-brand-blue font-semibold hover:underline">
-                      {galleryOpen[0] ? "Show less" : `View all ${leaders[0].images.length} photos`}
+                   <div className="mt-3 flex items-center gap-2 text-brand-blue font-semibold hover:underline">
+                    {galleryOpen[0] ? "Show less" : `View all ${leaders[0].images.length} photos`}
                       <span className="text-xs">({galleryOpen[0] ? "▲" : "▼"})</span>
                     </button>
                   )}

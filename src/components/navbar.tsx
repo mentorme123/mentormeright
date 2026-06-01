@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Menu, X, Search } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { SiteSearch, useSiteSearch } from "@/components/site-search";
 
 export function Navbar() {
@@ -14,7 +13,7 @@ export function Navbar() {
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
 
   const handleSubmenuClick = (submenu: string) => {
-    setActiveSubmenu(prev => prev === submenu ? null : submenu);
+    setActiveSubmenu((prev) => (prev === submenu ? null : submenu));
   };
 
   const mobileLinks = [
@@ -34,7 +33,6 @@ export function Navbar() {
 
   return (
     <>
-      {/* Site-wide Search Modal */}
       <SiteSearch isOpen={isSearchOpen} onClose={closeSearch} />
 
       <nav className="w-full border-b border-brand-blue/10 bg-gradient-to-r from-brand-blue/[0.04] to-brand-orange/[0.04] backdrop-blur-md sticky top-0 z-50">
@@ -51,128 +49,176 @@ export function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center gap-8 text-[17px] font-bold text-slate-800">
-            <Link href="/" className="relative group py-2">
-              <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">Home</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
-            </Link>
-            <Link href="/about" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">About Us</span>
+            <Link
+              href="/"
+              className="relative group py-2"
+            >
+              <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">
+                Home
+              </span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
 
-            {/* Dropdown */}
+            <Link
+              href="/about"
+              className="relative group py-2"
+            >
+              <span className="group-hover:text-brand-blue transition-colors duration-300">
+                About Us
+              </span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
+
+            <Link
+              href="/ai-learning-hub"
+              className="relative group py-2"
+            >
+              <span className="group-hover:text-brand-blue transition-colors duration-300">
+                AI Learning Hub
+              </span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
+
             <div
-              className="relative group"
+              className="relative"
               onMouseEnter={() => setIsDropdownOpen(true)}
               onMouseLeave={() => setIsDropdownOpen(false)}
             >
-              <button className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300">
-                Our Programs <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
+              <button
+                type="button"
+                className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300"
+                aria-expanded={isDropdownOpen}
+                onFocus={() => setIsDropdownOpen(true)}
+                onBlur={() => setIsDropdownOpen(false)}
+              >
+                Our Programs{" "}
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-300 ${
+                    isDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
               </button>
 
-              <AnimatePresence>
-                {isDropdownOpen && (
-                    <motion.div
-                      initial="initial"
-                      animate="animate"
-                      exit="exit"
-                      transition={{ duration: 0.2 }}
-                      variants={{
-                        initial: { opacity: 0, y: 8, scale: 0.98 },
-                        animate: { opacity: 1, y: 0, scale: 1 },
-                        exit: { opacity: 0, y: 8, scale: 0.98 },
-                      }}
-                    className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 w-60 bg-background border border-border rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden"
-                  >
-                    {/* 1. Career Counseling */}
-                    <div>
-                      <button
-                        onClick={() => handleSubmenuClick("career")}
-                        className={`w-full text-left px-3 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between hover:bg-brand-blue/5 hover:text-brand-blue ${activeSubmenu === "career" ? "bg-brand-blue/5 text-brand-blue" : ""}`}
-                      >
-                        <span>Career Counseling</span>
-                        <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "career" ? "rotate-180" : ""}`} />
-                      </button>
-                      {activeSubmenu === "career" && (
-                        <div className="flex flex-col bg-slate-50">
-                          {[
-                            { href: "/career-library", label: "Career Library" },
-                            { href: "/career-assessment.html", label: "Career Assessment", external: true },
-                            { href: "/career-simulator", label: "Career Simulator" },
-                            { href: "/counsellors", label: "Counsellors" },
-                          ].map((item) => (
-                            <a
-                              key={item.href}
-                              href={item.href}
-                              target={item.external ? "_blank" : undefined}
-                              rel={item.external ? "noopener noreferrer" : undefined}
-                              className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-blue hover:bg-brand-blue/5 transition-all duration-200 group/item"
-                            >
-                              <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-200">{item.label}</span>
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* 2. Training Programs */}
-                    <div>
-                      <button
-                        onClick={() => handleSubmenuClick("training")}
-                        className={`w-full text-left px-3 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between hover:bg-brand-blue/5 hover:text-brand-blue ${activeSubmenu === "training" ? "bg-brand-blue/5 text-brand-blue" : ""}`}
-                      >
-                        <span>Training Programs</span>
-                        <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "training" ? "rotate-180" : ""}`} />
-                      </button>
-                      {activeSubmenu === "training" && (
-                        <div className="flex flex-col bg-slate-50">
-                          {[
-                            { href: "/k12-programs", label: "K12 Programs" },
-                            { href: "/college-programs", label: "College Programs" },
-                          ].map((item) => (
-                            <a
-                              key={item.href}
-                              href={item.href}
-                              className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-blue hover:bg-brand-blue/5 transition-all duration-200 group/item"
-                            >
-                              <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-200">{item.label}</span>
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* 3. Study Abroad */}
-                    <a
-                      href="/study-abroad"
-                      className="m-1.5 px-3 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 rounded-xl"
+              {isDropdownOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-72 bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden">
+                  <div className="p-2">
+                    <button
+                      type="button"
+                      onClick={() => handleSubmenuClick("career")}
+                      className={`w-full text-left px-3 py-2.5 text-sm font-semibold rounded-xl flex items-center justify-between transition-colors duration-200 ${
+                        activeSubmenu === "career"
+                          ? "bg-brand-blue/10 text-brand-blue"
+                          : "hover:bg-brand-blue/5 hover:text-brand-blue"
+                      }`}
                     >
-                      <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-200">🌍 Study Abroad</span>
-                    </a>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                      <span>Career Counseling</span>
+                      <ChevronDown
+                        size={14}
+                        className={`transition-transform duration-200 ${
+                          activeSubmenu === "career" ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {activeSubmenu === "career" && (
+                      <div className="flex flex-col bg-slate-50 rounded-xl mt-1">
+                        <Link
+                          href="/career-library"
+                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                        >
+                          Career Library
+                        </Link>
+                        <Link
+                          href="/career-assessment.html"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                        >
+                          Career Assessment
+                        </Link>
+                        <Link
+                          href="/career-simulator"
+                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                        >
+                          Career Simulator
+                        </Link>
+                        <Link
+                          href="/counsellors"
+                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                        >
+                          Counsellors
+                        </Link>
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleSubmenuClick("training")}
+                      className={`w-full text-left px-3 py-2.5 text-sm font-semibold rounded-xl flex items-center justify-between transition-colors duration-200 ${
+                        activeSubmenu === "training"
+                          ? "bg-brand-blue/10 text-brand-blue"
+                          : "hover:bg-brand-blue/5 hover:text-brand-blue"
+                      }`}
+                    >
+                      <span>Training Programs</span>
+                      <ChevronDown
+                        size={14}
+                        className={`transition-transform duration-200 ${
+                          activeSubmenu === "training" ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {activeSubmenu === "training" && (
+                      <div className="flex flex-col bg-slate-50 rounded-xl mt-1">
+                        <Link
+                          href="/k12-programs"
+                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                        >
+                          K12 Programs
+                        </Link>
+                        <Link
+                          href="/college-programs"
+                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                        >
+                          College Programs
+                        </Link>
+                      </div>
+                    )}
+
+                    <Link
+                      href="/study-abroad"
+                      className="mt-1 block px-3 py-2.5 text-sm font-semibold rounded-xl hover:bg-brand-blue/5 hover:text-brand-blue transition-colors duration-200"
+                    >
+                      🌍 Study Abroad
+                    </Link>
+                  </div>
+                </div>
+              )}
             </div>
 
-            <Link href="/ai-learning-hub" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">AI Learning Hub</span>
+            <Link
+              href="/blogs"
+              className="relative group py-2"
+            >
+              <span className="group-hover:text-brand-blue transition-colors duration-300">
+                Blogs
+              </span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
 
-            <Link href="/blogs" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
-            </Link>
-            <Link href="/contact" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">Contact Us</span>
+            <Link
+              href="/contact"
+              className="relative group py-2"
+            >
+              <span className="group-hover:text-brand-blue transition-colors duration-300">
+                Contact Us
+              </span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* 🔍 Search Button */}
             <button
               onClick={openSearch}
               title="Search site (Ctrl+K)"
@@ -192,14 +238,19 @@ export function Navbar() {
                 Career Assessment
               </button>
             </Link>
+
             <Link href="/register" className="hidden sm:block">
-              <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">Register</button>
-            </Link>
-            <Link href="/login">
-              <button className="hidden sm:inline-flex bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20">Log in</button>
+              <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">
+                Register
+              </button>
             </Link>
 
-            {/* Mobile Hamburger */}
+            <Link href="/login">
+              <button className="hidden sm:inline-flex bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20">
+                Log in
+              </button>
+            </Link>
+
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden p-2 rounded-xl hover:bg-muted transition-colors"
@@ -210,58 +261,63 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="lg:hidden border-t border-border bg-background overflow-hidden"
-            >
-              <div className="container mx-auto px-4 py-4 space-y-1">
-                {/* Mobile Search Bar */}
-                <button
-                  onClick={() => { setIsMobileMenuOpen(false); openSearch(); }}
-                  className="w-full flex items-center gap-3 px-4 py-3 mb-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-sm font-medium"
+        {isMobileMenuOpen && (
+          <div className="lg:hidden border-t border-border bg-background">
+            <div className="container mx-auto px-4 py-4 space-y-1">
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  openSearch();
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 mb-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-sm font-medium"
+              >
+                <Search className="w-4 h-4" />
+                <span>Ask anything about MentorMe...</span>
+              </button>
+
+              {mobileLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  target={link.external ? "_blank" : undefined}
+                  rel={link.external ? "noopener noreferrer" : undefined}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-4 py-3 rounded-xl text-sm font-semibold text-foreground hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                 >
-                  <Search className="w-4 h-4" />
-                  <span>Ask anything about MentorMe...</span>
-                </button>
+                  {link.label}
+                </Link>
+              ))}
 
-                {mobileLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
+              <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
+                <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
+                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">
+                    Career Assessment
+                  </button>
+                </Link>
+                <div className="flex gap-3">
+                  <Link
+                    href="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-3 rounded-xl text-sm font-semibold text-foreground hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                    className="flex-1"
                   >
-                    {link.label}
-                  </a>
-                ))}
-
-                <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
-                  <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
-                    <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">
-                      Career Assessment
+                    <button className="w-full font-semibold py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                      Log in
                     </button>
                   </Link>
-                  <div className="flex gap-3">
-                    <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                      <button className="w-full font-semibold py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">Log in</button>
-                    </Link>
-                    <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                      <button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold py-2.5 rounded-xl transition-all shadow-sm">Register</button>
-                    </Link>
-                  </div>
+                  <Link
+                    href="/register"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex-1"
+                  >
+                    <button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold py-2.5 rounded-xl transition-all shadow-sm">
+                      Register
+                    </button>
+                  </Link>
                 </div>
               </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+        )}
       </nav>
     </>
   );

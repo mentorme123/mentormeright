@@ -262,15 +262,17 @@ export default function AboutPage() {
                         (img, i) => (
                         <div
                           key={i}
-                          className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-slate-200"
+                          className="rounded-2xl overflow-hidden shadow-lg border border-slate-200 bg-white"
                         >
-                          <img
-                            src={img}
-                            alt={`${leader.name} ${i + 1}`}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
-                          />
+                          <div className="relative w-full aspect-[4/3]">
+                            <img
+                              src={img}
+                              alt={`${leader.name} ${i + 1}`}
+                              className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
                           {leader.captions && leader.captions[i] ? (
-                            <p className="mt-1 text-xs text-slate-600">{leader.captions[i]}</p>
+                            <p className="mt-2 px-2 pb-2 text-xs text-slate-600 text-center">{leader.captions[i]}</p>
                           ) : null}
                         </div>
                         )

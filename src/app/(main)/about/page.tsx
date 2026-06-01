@@ -341,6 +341,83 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Leadership Section */}
+      <section className="py-20 px-4 bg-gradient-to-b from-white to-slate-50">
+        <div className="max-w-6xl mx-auto space-y-16">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">Meet Our Leadership Team</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">The visionaries and experts driving the mission behind MentorMe Right.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
+            {leadership.map((leader, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
+                className="relative rounded-[2.5rem] overflow-hidden group shadow-xl hover:shadow-2xl hover:shadow-brand-blue/20 transition-all duration-500 hover:-translate-y-2 border border-slate-200/50 bg-white cursor-pointer"
+                onClick={() => toggleLeader(i)}
+              >
+                <div className="relative aspect-[334/423] w-full">
+                  <Image
+                    src={leader.image}
+                    alt={leader.name}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/0 group-hover:via-white/10 transition-all duration-700" />
+                </div>
+
+                <div className="sr-only">
+                  <h3>{leader.name}</h3>
+                  <p>{leader.role}</p>
+                  <p>{leader.tagline}</p>
+                </div>
+
+                <div className="p-6 text-center">
+                  <h3 className="text-xl font-bold text-slate-900">{leader.name}</h3>
+                  <p className="text-brand-blue font-semibold mt-1">{leader.shortRole}</p>
+                  <p className="text-sm text-slate-500 mt-2">{leader.tagline}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <AnimatePresence>
+            {[...expandedLeaders].map(index => {
+              const leader = leadership[index];
+              if (!leader || !leader.expandedContent) return null;
+              return (
+                <motion.div
+                  key={`expanded-${index}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                  className="max-w-4xl mx-auto mt-8 p-8 bg-white rounded-3xl shadow-2xl border border-slate-200"
+                >
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <h3 className="text-3xl font-bold text-slate-900">{leader.name}</h3>
+                      <p className="text-brand-blue font-semibold text-lg mt-1">{leader.role}</p>
+                    </div>
+                    <button
+                      onClick={() => toggleLeader(index)}
+                      className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+                    >
+                      <ChevronUp size={24} className="text-slate-500" />
+                    </button>
+                  </div>
+                  {leader.expandedContent}
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
+      </section>
     </div>
   );
 }

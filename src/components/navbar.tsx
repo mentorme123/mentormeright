@@ -102,29 +102,35 @@ export function Navbar() {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[560px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                  <div className="grid grid-cols-3 gap-6 p-4">
-                    <div>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Career Counseling</p>
-                      <div className="flex flex-col space-y-1">
-                        <Link href="/career-library" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Career Library</Link>
-                        <Link href="/career-assessment.html" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Career Assessment</Link>
-                        <Link href="/career-simulator" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Career Simulator</Link>
-                        <Link href="/counsellors" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Counsellors</Link>
-                      </div>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-72 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                  <div className="py-2">
+                    <div className="px-3 pt-2 pb-1">
+                      <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">Career Counseling</p>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Training Programs</p>
-                      <div className="flex flex-col space-y-1">
-                        <Link href="/k12-programs" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">K12 Programs</Link>
-                        <Link href="/college-programs" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">College Programs</Link>
-                      </div>
+                    <div className="flex flex-col pl-4">
+                      <Link href="/career-library" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">Career Library</Link>
+                      <Link href="/career-assessment.html" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">Career Assessment</Link>
+                      <Link href="/career-simulator" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">Career Simulator</Link>
+                      <Link href="/counsellors" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">Counsellors</Link>
                     </div>
-                    <div>
-                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">International</p>
-                      <div className="flex flex-col space-y-1">
-                        <Link href="/study-abroad" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Study Abroad</Link>
-                      </div>
+
+                    <div className="border-t border-slate-100 my-2" />
+
+                    <div className="px-3 pt-1 pb-1">
+                      <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">Training Programs</p>
+                    </div>
+                    <div className="flex flex-col pl-4">
+                      <Link href="/k12-programs" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">K12 Programs</Link>
+                      <Link href="/college-programs" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">College Programs</Link>
+                    </div>
+
+                    <div className="border-t border-slate-100 my-2" />
+
+                    <div className="px-3 pt-1 pb-1">
+                      <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">International</p>
+                    </div>
+                    <div className="flex flex-col pl-4">
+                      <Link href="/study-abroad" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">Study Abroad</Link>
                     </div>
                   </div>
                 </div>

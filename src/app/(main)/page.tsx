@@ -360,14 +360,15 @@ export default function Home() {
     return [...partners, ...partners].map((partner, i) => (
       <div
         key={i}
-        className="flex-shrink-0 flex flex-col items-center justify-center gap-3 bg-white rounded-xl shadow-lg border border-gray-100"
-        style={{ width: "160px", height: "160px", padding: "16px 12px" }}
+        className="flex-shrink-0 flex flex-col items-center justify-between bg-white rounded-xl shadow-lg border-2 border-blue-100"
+        style={{ width: "180px", height: "180px", padding: "18px 14px 14px" }}
       >
         <div className="flex-1 flex items-center justify-center w-full">
           <img
             src={partner.logo}
             alt={partner.name}
-            className="object-contain max-w-[70px] max-h-[70px]"
+            className="object-contain"
+            style={{ maxWidth: "100px", maxHeight: "100px", width: "auto", height: "auto" }}
             onError={(e) => {
               const target = e.currentTarget as HTMLImageElement;
               target.style.display = "none";
@@ -376,13 +377,13 @@ export default function Home() {
             }}
           />
           <div
-            className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-sm text-center leading-tight"
+            className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-lg text-center leading-tight"
             style={{ display: "none" }}
           >
             {partner.name.split(" ").slice(0, 2).map(w => w[0]).join("")}
           </div>
         </div>
-        <span className="text-[11px] font-bold text-gray-800 text-center leading-tight line-clamp-2">{partner.name}</span>
+        <span className="text-[11px] font-bold text-gray-800 text-center leading-tight line-clamp-2 mt-2">{partner.name}</span>
       </div>
     ));
   })()}

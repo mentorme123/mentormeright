@@ -85,22 +85,17 @@ export function Navbar() {
                       }}
                     className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 w-60 bg-background border border-border rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden"
                   >
-                    <div
-                      onMouseEnter={() => setActiveSubmenu("career")}
-                      onMouseLeave={() => setActiveSubmenu(null)}
-                    >
-                      <div className={`px-3 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between ${activeSubmenu === "career" ? "bg-brand-blue/5 text-brand-blue" : "hover:bg-brand-blue/5 hover:text-brand-blue"}`}>
+                    {/* 1. Career Counseling */}
+                    <div>
+                      <button
+                        onClick={() => handleSubmenuClick("career")}
+                        className={`w-full text-left px-3 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between hover:bg-brand-blue/5 hover:text-brand-blue ${activeSubmenu === "career" ? "bg-brand-blue/5 text-brand-blue" : ""}`}
+                      >
                         <span>Career Counseling</span>
                         <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "career" ? "rotate-180" : ""}`} />
-                      </div>
+                      </button>
                       {activeSubmenu === "career" && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="flex flex-col bg-slate-50 rounded-xl overflow-hidden"
-                        >
+                        <div className="flex flex-col bg-slate-50">
                           {[
                             { href: "/career-library", label: "Career Library" },
                             { href: "/career-assessment.html", label: "Career Assessment", external: true },
@@ -117,25 +112,21 @@ export function Navbar() {
                               <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-200">{item.label}</span>
                             </a>
                           ))}
-                        </motion.div>
+                        </div>
                       )}
                     </div>
-                    <div
-                      onMouseEnter={() => setActiveSubmenu("training")}
-                      onMouseLeave={() => setActiveSubmenu(null)}
-                    >
-                      <div className={`px-3 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between ${activeSubmenu === "training" ? "bg-brand-blue/5 text-brand-blue" : "hover:bg-brand-blue/5 hover:text-brand-blue"}`}>
+
+                    {/* 2. Training Programs */}
+                    <div>
+                      <button
+                        onClick={() => handleSubmenuClick("training")}
+                        className={`w-full text-left px-3 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between hover:bg-brand-blue/5 hover:text-brand-blue ${activeSubmenu === "training" ? "bg-brand-blue/5 text-brand-blue" : ""}`}
+                      >
                         <span>Training Programs</span>
                         <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "training" ? "rotate-180" : ""}`} />
-                      </div>
+                      </button>
                       {activeSubmenu === "training" && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="flex flex-col bg-slate-50 rounded-xl overflow-hidden"
-                        >
+                        <div className="flex flex-col bg-slate-50">
                           {[
                             { href: "/k12-programs", label: "K12 Programs" },
                             { href: "/college-programs", label: "College Programs" },
@@ -148,10 +139,11 @@ export function Navbar() {
                               <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-200">{item.label}</span>
                             </a>
                           ))}
-                        </motion.div>
+                        </div>
                       )}
                     </div>
-                    <a
+
+                    {/* 3. Study Abroad */}
                       href="/study-abroad"
                       className="m-1.5 px-3 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 rounded-xl"
                     >

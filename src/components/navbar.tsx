@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Menu, X, Search } from "lucide-react";
@@ -12,6 +12,27 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
+  const submenuTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+
+  const clearSubmenuTimeout = () => {
+    if (submenuTimeoutRef.current) {
+      clearTimeout(submenuTimeoutRef.current);
+      submenuTimeoutRef.current = null;
+    }
+  };
+
+  const handleSubmenuEnter = (submenu: string) => {
+    clearSubmenuTimeout();
+    setActiveSubmenu(submenu);
+  };
+
+  const handleSubmenuLeave = () => {
+    clearSubmenuTimeout();
+    submenuTimeoutRef.current = setTimeout(() => {
+      setActiveSubmenu(null);
+      submenuTimeoutRef.current = null;
+    }, 100);
+  };
 
   const mobileLinks = [
     { href: "/", label: "Home" },
@@ -78,14 +99,14 @@ export function Navbar() {
                   >
                     {/* 1. Career Counseling */}
                     <div
-                      onMouseEnter={() => setActiveSubmenu("career")}
-                      onMouseLeave={() => setActiveSubmenu(null)}
+                      onMouseEnter={() => handleSubmenuEnter("career")}
+                      onMouseLeave={handleSubmenuLeave}
                     >
-                      <div className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 flex items-center justify-between cursor-default">
+                      <div className={`px-5 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between cursor-default ${activeSubmenu === "career" ? "bg-brand-blue/5 text-brand-blue" : "hover:bg-brand-blue/5 hover:text-brand-blue"}`}>
                         <span>Career Counseling</span>
                         <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "career" ? "rotate-180" : ""}`} />
                       </div>
-                      {activeSubmenu === "career" && (
+                      <div className={`overflow-hidden transition-all duration-200 ${activeSubmenu === "career" ? "max-h-40" : "max-h-0"}`}>
                         <div className="flex flex-col bg-slate-50">
                           {[
                             { href: "/career-library", label: "Career Library" },
@@ -104,19 +125,19 @@ export function Navbar() {
                             </a>
                           ))}
                         </div>
-                      )}
+                      </div>
                     </div>
 
                     {/* 2. Training Programs */}
                     <div
-                      onMouseEnter={() => setActiveSubmenu("training")}
-                      onMouseLeave={() => setActiveSubmenu(null)}
+                      onMouseEnter={() => handleSubmenuEnter("training")}
+                      onMouseLeave={handleSubmenuLeave}
                     >
-                      <div className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 flex items-center justify-between cursor-default">
+                      <div className={`px-5 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between cursor-default ${activeSubmenu === "training" ? "bg-brand-blue/5 text-brand-blue" : "hover:bg-brand-blue/5 hover:text-brand-blue"}`}>
                         <span>Training Programs</span>
                         <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "training" ? "rotate-180" : ""}`} />
                       </div>
-                      {activeSubmenu === "training" && (
+                      <div className={`overflow-hidden transition-all duration-200 ${activeSubmenu === "training" ? "max-h-40" : "max-h-0"}`}>
                         <div className="flex flex-col bg-slate-50">
                           {[
                             { href: "/k12-programs", label: "K12 Programs" },
@@ -131,7 +152,7 @@ export function Navbar() {
                             </a>
                           ))}
                         </div>
-                      )}
+                      </div>
                     </div>
 
                     {/* 3. Study Abroad */}

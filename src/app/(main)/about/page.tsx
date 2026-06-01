@@ -34,7 +34,7 @@ export default function AboutPage() {
       name: "Vijay Kiran Agastya",
       role: "Co-Founder & Managing Director",
       image: "/images/vijay_card.png",
-      images: ["/images/vijay.jpg", "/images/sirisha.jpg", "/images/santhi.png", "/images/vijay.png", "/images/mentorme-session.jpg", "/images/guidance-session.jpg"],
+      images: ["/images/leadership/gallery-1.jpg", "/images/leadership/gallery-2.jpg", "/images/leadership/gallery-3.jpg", "/images/leadership/gallery-4.jpg", "/images/leadership/gallery-5.jpg", "/images/leadership/gallery-6.jpg"],
       captions: [
         "Leadership felicitation with faculty and industry leaders",
         "MOU and collaboration ceremony with institutional partners",

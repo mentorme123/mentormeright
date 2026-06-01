@@ -20,6 +20,7 @@ export function Navbar() {
   const mobileLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
+    { href: "/ai-learning-hub", label: "AI Learning Hub" },
     { href: "/career-library", label: "Career Library" },
     { href: "/career-assessment.html", label: "Career Assessment", external: true },
     { href: "/career-simulator", label: "Career Simulator" },
@@ -54,10 +55,6 @@ export function Navbar() {
           <div className="hidden lg:flex items-center gap-8 text-[17px] font-bold text-slate-800">
             <Link href="/" className="relative group py-2">
               <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">Home</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
-            </Link>
-            <Link href="/about" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">About Us</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
             <Link href="/about" className="relative group py-2">

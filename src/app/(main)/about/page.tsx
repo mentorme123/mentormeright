@@ -33,7 +33,7 @@ export default function AboutPage() {
       name: "Vijay Kiran Agastya",
       role: "Co-Founder & Managing Director",
       image: "/images/vijay_card.png",
-      images: ["/images/vijay.jpg", "/images/sirisha.jpg", "/images/sirisha.png", "/images/santhi.png", "/images/vijay.png", "/images/sirisha.png"],
+      images: ["/images/leadership/gallery-1.jpg", "/images/leadership/gallery-2.jpg", "/images/leadership/gallery-3.jpg", "/images/leadership/gallery-4.jpg", "/images/leadership/gallery-5.jpg", "/images/leadership/gallery-6.jpg"],
       captions: [
         "Leadership felicitation at SNGI with faculty and industry leaders",
         "Mou and collaboration ceremony showcasing institutional partnerships",

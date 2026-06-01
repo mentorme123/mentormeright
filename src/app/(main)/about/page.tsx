@@ -9,11 +9,12 @@ type Leader = {
   role: string;
   image: string;
   images: string[];
+  captions?: string[];
   fullName?: string;
   designation?: string;
   company?: string;
   sections?: {
-    heading?: string;
+    heading?: string | null;
     body?: string;
     highlights?: { title: string; detail: string }[];
     awards?: string[];
@@ -33,14 +34,14 @@ export default function AboutPage() {
       name: "Vijay Kiran Agastya",
       role: "Co-Founder & Managing Director",
       image: "/images/vijay_card.png",
-      images: ["/images/leadership/gallery-1.jpg", "/images/leadership/gallery-2.jpg", "/images/leadership/gallery-3.jpg", "/images/leadership/gallery-4.jpg", "/images/leadership/gallery-5.jpg", "/images/leadership/gallery-6.jpg"],
+      images: ["/images/vijay.jpg", "/images/sirisha.jpg", "/images/santhi.png", "/images/vijay.png", "/images/mentorme-session.jpg", "/images/guidance-session.jpg"],
       captions: [
-        "Leadership felicitation at SNGI with faculty and industry leaders",
-        "Mou and collaboration ceremony showcasing institutional partnerships",
-        "Woxsen University alumni gathering with graduating students",
-        "Official MoU signing event marking strategic collaboration",
-        "CSR initiative supporting tribal residential school students",
-        "Woxsen University alumni reunion celebrating collective achievements"
+        "Leadership felicitation with faculty and industry leaders",
+        "MOU and collaboration ceremony with institutional partners",
+        "Academic leadership and advisory board session",
+        "Strategic planning and mentorship meeting",
+        "MentorMe guided session with students",
+        "One-on-one career guidance counseling session"
       ],
       fullName: "Shri Vijay Kiran Agastya",
       designation: "Co-Founder & Managing Director",

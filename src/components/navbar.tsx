@@ -102,96 +102,30 @@ export function Navbar() {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-72 bg-white border border-slate-200 rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden">
-                  <div className="p-2">
-                    <button
-                      type="button"
-                      onClick={() => handleSubmenuClick("career")}
-                      className={`w-full text-left px-3 py-2.5 text-sm font-semibold rounded-xl flex items-center justify-between transition-colors duration-200 ${
-                        activeSubmenu === "career"
-                          ? "bg-brand-blue/10 text-brand-blue"
-                          : "hover:bg-brand-blue/5 hover:text-brand-blue"
-                      }`}
-                    >
-                      <span>Career Counseling</span>
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform duration-200 ${
-                          activeSubmenu === "career" ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    {activeSubmenu === "career" && (
-                      <div className="flex flex-col bg-slate-50 rounded-xl mt-1">
-                        <Link
-                          href="/career-library"
-                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
-                        >
-                          Career Library
-                        </Link>
-                        <Link
-                          href="/career-assessment.html"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
-                        >
-                          Career Assessment
-                        </Link>
-                        <Link
-                          href="/career-simulator"
-                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
-                        >
-                          Career Simulator
-                        </Link>
-                        <Link
-                          href="/counsellors"
-                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
-                        >
-                          Counsellors
-                        </Link>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[560px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                  <div className="grid grid-cols-3 gap-6 p-4">
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Career Counseling</p>
+                      <div className="flex flex-col space-y-1">
+                        <Link href="/career-library" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Career Library</Link>
+                        <Link href="/career-assessment.html" target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Career Assessment</Link>
+                        <Link href="/career-simulator" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Career Simulator</Link>
+                        <Link href="/counsellors" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Counsellors</Link>
                       </div>
-                    )}
-
-                    <button
-                      type="button"
-                      onClick={() => handleSubmenuClick("training")}
-                      className={`w-full text-left px-3 py-2.5 text-sm font-semibold rounded-xl flex items-center justify-between transition-colors duration-200 ${
-                        activeSubmenu === "training"
-                          ? "bg-brand-blue/10 text-brand-blue"
-                          : "hover:bg-brand-blue/5 hover:text-brand-blue"
-                      }`}
-                    >
-                      <span>Training Programs</span>
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform duration-200 ${
-                          activeSubmenu === "training" ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    {activeSubmenu === "training" && (
-                      <div className="flex flex-col bg-slate-50 rounded-xl mt-1">
-                        <Link
-                          href="/k12-programs"
-                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
-                        >
-                          K12 Programs
-                        </Link>
-                        <Link
-                          href="/college-programs"
-                          className="px-3 py-2 text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors"
-                        >
-                          College Programs
-                        </Link>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Training Programs</p>
+                      <div className="flex flex-col space-y-1">
+                        <Link href="/k12-programs" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">K12 Programs</Link>
+                        <Link href="/college-programs" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">College Programs</Link>
                       </div>
-                    )}
-
-                    <Link
-                      href="/study-abroad"
-                      className="mt-1 block px-3 py-2.5 text-sm font-semibold rounded-xl hover:bg-brand-blue/5 hover:text-brand-blue transition-colors duration-200"
-                    >
-                      🌍 Study Abroad
-                    </Link>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">International</p>
+                      <div className="flex flex-col space-y-1">
+                        <Link href="/study-abroad" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors">Study Abroad</Link>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronUp, Award, BookOpen, Globe2, Users2, GraduationCap } from "lucide-react";
+import { Award, BookOpen, Globe2, Users2, GraduationCap } from "lucide-react";
 import Image from "next/image";
 
 export default function AboutPage() {
@@ -60,23 +60,33 @@ export default function AboutPage() {
                 <div className="p-6 text-center">
                   <h3 className="text-xl font-bold text-slate-900">{leader.name}</h3>
                   <p className="text-brand-blue font-semibold mt-1">{leader.role}</p>
+                  <button 
+                    onClick={(e) => { e.stopPropagation(); setOpenIndex(openIndex === i ? null : i); }}
+                    className="mt-4 px-5 py-2 bg-brand-blue text-white rounded-full font-semibold hover:bg-brand-blue/90 transition-colors"
+                  >
+                    Read More
+                  </button>
                 </div>
               </div>
             ))}
           </div>
 
           {openIndex === 0 && (
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-start justify-between mb-8">
-                <div>
-                  <h3 className="text-3xl font-bold text-slate-900">Shri Vijay Kiran Agastya</h3>
-                  <p className="text-brand-blue font-semibold text-lg mt-1">Co-Founder & Managing Director</p>
-                  <p className="text-slate-500 mt-1">MentorMe Career Intelligence and Training Pvt. Ltd.</p>
-                </div>
-                <button onClick={() => setOpenIndex(null)} className="p-2 rounded-full hover:bg-slate-100 transition-colors">
-                  <ChevronUp size={24} className="text-slate-500" />
-                </button>
-              </div>
+            <div className="fixed inset-0 z-50">
+              <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setOpenIndex(null)} />
+              <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+                <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                  <div className="p-8 md:p-10">
+                    <div className="flex items-start justify-between mb-8">
+                      <div>
+                        <h3 className="text-3xl font-bold text-slate-900">Shri Vijay Kiran Agastya</h3>
+                        <p className="text-brand-blue font-semibold text-lg mt-1">Co-Founder & Managing Director</p>
+                        <p className="text-slate-500 mt-1">MentorMe Career Intelligence and Training Pvt. Ltd.</p>
+                      </div>
+                      <button onClick={() => setOpenIndex(null)} className="p-2 rounded-full hover:bg-slate-100 transition-colors">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                      </button>
+                    </div>
 
               <div className="mt-6 space-y-6">
                 <p className="text-lg text-brand-blue font-semibold">Empowering Careers. Enabling Future Leaders.</p>
@@ -138,16 +148,20 @@ export default function AboutPage() {
           )}
 
           {openIndex === 2 && (
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-start justify-between mb-8">
-                <div>
-                  <h3 className="text-3xl font-bold text-slate-900">Dr. Santhi Vedula</h3>
-                  <p className="text-brand-blue font-semibold text-lg mt-1">Advisory Board Member | Educator | Author | Academic Leader</p>
-                </div>
-                <button onClick={() => setOpenIndex(null)} className="p-2 rounded-full hover:bg-slate-100 transition-colors">
-                  <ChevronUp size={24} className="text-slate-500" />
-                </button>
-              </div>
+            <div className="fixed inset-0 z-50">
+              <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setOpenIndex(null)} />
+              <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+                <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                  <div className="p-8 md:p-10">
+                    <div className="flex items-start justify-between mb-8">
+                      <div>
+                        <h3 className="text-3xl font-bold text-slate-900">Dr. Santhi Vedula</h3>
+                        <p className="text-brand-blue font-semibold text-lg mt-1">Advisory Board Member | Educator | Author | Academic Leader</p>
+                      </div>
+                      <button onClick={() => setOpenIndex(null)} className="p-2 rounded-full hover:bg-slate-100 transition-colors">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                      </button>
+                    </div>
 
               <div className="mt-6 space-y-6">
                 <p className="text-slate-700 leading-relaxed">With over <strong>30 years of distinguished experience in education, academic leadership, and student development</strong>, Dr. Santhi Vedula brings unparalleled expertise to the MentorMe Right Advisory Board.</p>

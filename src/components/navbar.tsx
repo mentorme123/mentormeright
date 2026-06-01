@@ -51,12 +51,12 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-10 text-[17px] font-bold text-slate-800">
-            <Link href="/" className="relative group py-2">
+          <div className="hidden lg:flex items-center gap-5 text-[15px] font-bold text-slate-800">
+            <Link href="/" className="relative group py-2 whitespace-nowrap">
               <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">Home</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
-            <Link href="/about" className="relative group py-2">
+            <Link href="/about" className="relative group py-2 whitespace-nowrap">
               <span className="group-hover:text-brand-blue transition-colors duration-300">About Us</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
@@ -67,7 +67,7 @@ export function Navbar() {
               onMouseEnter={() => setIsDropdownOpen(true)}
               onMouseLeave={() => setIsDropdownOpen(false)}
             >
-              <button className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300">
+              <button className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300 whitespace-nowrap">
                 Our Programs <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
@@ -160,7 +160,7 @@ export function Navbar() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
 
-            <Link href="/blogs" className="relative group py-2">
+            <Link href="/blogs" className="relative group py-2 whitespace-nowrap">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>

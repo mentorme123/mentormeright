@@ -62,34 +62,45 @@ export function Navbar() {
             </Link>
 
             {/* Dropdown */}
-            <div className="relative">
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300"
-              >
+            <div
+              className="relative group"
+              onMouseEnter={() => setIsDropdownOpen(true)}
+              onMouseLeave={() => setIsDropdownOpen(false)}
+            >
+              <button className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300">
                 Our Programs <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
               </button>
 
               <AnimatePresence>
                 {isDropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-[75px] left-1/2 -translate-x-1/2 w-60 bg-background border border-border rounded-2xl shadow-2xl py-3 flex flex-col z-50 overflow-hidden"
+                    <motion.div
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      transition={{ duration: 0.2 }}
+                      variants={{
+                        initial: { opacity: 0, y: 8, scale: 0.98 },
+                        animate: { opacity: 1, y: 0, scale: 1 },
+                        exit: { opacity: 0, y: 8, scale: 0.98 },
+                      }}
+                    className="absolute top-[calc(100%+4px)] left-1/2 -translate-x-1/2 w-60 bg-background border border-border rounded-2xl shadow-2xl flex flex-col z-50 overflow-hidden"
                   >
-                    {/* 1. Career Counseling */}
-                    <div>
-                      <button
-                        onClick={() => handleSubmenuClick("career")}
-                        className={`w-full text-left px-5 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between hover:bg-brand-blue/5 hover:text-brand-blue ${activeSubmenu === "career" ? "bg-brand-blue/5 text-brand-blue" : ""}`}
-                      >
+                    <div
+                      onMouseEnter={() => setActiveSubmenu("career")}
+                      onMouseLeave={() => setActiveSubmenu(null)}
+                    >
+                      <div className={`px-3 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between ${activeSubmenu === "career" ? "bg-brand-blue/5 text-brand-blue" : "hover:bg-brand-blue/5 hover:text-brand-blue"}`}>
                         <span>Career Counseling</span>
                         <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "career" ? "rotate-180" : ""}`} />
-                      </button>
-                      <div className={`overflow-hidden transition-all duration-200 ${activeSubmenu === "career" ? "max-h-40" : "max-h-0"}`}>
-                        <div className="flex flex-col bg-slate-50">
+                      </div>
+                      {activeSubmenu === "career" && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="flex flex-col bg-slate-50 rounded-xl overflow-hidden"
+                        >
                           {[
                             { href: "/career-library", label: "Career Library" },
                             { href: "/career-assessment.html", label: "Career Assessment", external: true },
@@ -101,26 +112,30 @@ export function Navbar() {
                               href={item.href}
                               target={item.external ? "_blank" : undefined}
                               rel={item.external ? "noopener noreferrer" : undefined}
-                              className="pl-8 pr-5 py-2 text-sm font-medium text-slate-600 hover:text-brand-blue hover:bg-brand-blue/5 transition-all duration-200 group/item border-l-2 border-brand-blue/20 ml-5"
+                              className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-blue hover:bg-brand-blue/5 transition-all duration-200 group/item"
                             >
                               <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-200">{item.label}</span>
                             </a>
                           ))}
-                        </div>
-                      </div>
+                        </motion.div>
+                      )}
                     </div>
-
-                    {/* 2. Training Programs */}
-                    <div>
-                      <button
-                        onClick={() => handleSubmenuClick("training")}
-                        className={`w-full text-left px-5 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between hover:bg-brand-blue/5 hover:text-brand-blue ${activeSubmenu === "training" ? "bg-brand-blue/5 text-brand-blue" : ""}`}
-                      >
+                    <div
+                      onMouseEnter={() => setActiveSubmenu("training")}
+                      onMouseLeave={() => setActiveSubmenu(null)}
+                    >
+                      <div className={`px-3 py-2.5 text-sm font-bold transition-all duration-300 flex items-center justify-between ${activeSubmenu === "training" ? "bg-brand-blue/5 text-brand-blue" : "hover:bg-brand-blue/5 hover:text-brand-blue"}`}>
                         <span>Training Programs</span>
                         <ChevronDown size={14} className={`transition-transform duration-300 ${activeSubmenu === "training" ? "rotate-180" : ""}`} />
-                      </button>
-                      <div className={`overflow-hidden transition-all duration-200 ${activeSubmenu === "training" ? "max-h-40" : "max-h-0"}`}>
-                        <div className="flex flex-col bg-slate-50">
+                      </div>
+                      {activeSubmenu === "training" && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="flex flex-col bg-slate-50 rounded-xl overflow-hidden"
+                        >
                           {[
                             { href: "/k12-programs", label: "K12 Programs" },
                             { href: "/college-programs", label: "College Programs" },
@@ -128,19 +143,17 @@ export function Navbar() {
                             <a
                               key={item.href}
                               href={item.href}
-                              className="pl-8 pr-5 py-2 text-sm font-medium text-slate-600 hover:text-brand-blue hover:bg-brand-blue/5 transition-all duration-200 group/item border-l-2 border-brand-orange/30 ml-5"
+                              className="px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-blue hover:bg-brand-blue/5 transition-all duration-200 group/item"
                             >
                               <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-200">{item.label}</span>
                             </a>
                           ))}
-                        </div>
-                      </div>
+                        </motion.div>
+                      )}
                     </div>
-
-                    {/* 3. Study Abroad */}
                     <a
                       href="/study-abroad"
-                      className="px-5 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 group/item"
+                      className="m-1.5 px-3 py-2.5 hover:bg-brand-blue/5 text-sm font-bold hover:text-brand-blue transition-all duration-300 rounded-xl"
                     >
                       <span className="group-hover/item:translate-x-1 inline-block transition-transform duration-300">🌍 Study Abroad</span>
                     </a>

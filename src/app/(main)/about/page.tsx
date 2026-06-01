@@ -2,29 +2,19 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, ChevronDown, ChevronUp, GraduationCap, Users2, BookOpen, Award, Globe2, Lightbulb } from "lucide-react";
+import { CheckCircle2, ChevronDown, ChevronUp, GraduationCap, Users2, BookOpen, Award, Globe2 } from "lucide-react";
 import Image from "next/image";
 
 export default function AboutPage() {
-  const [expandedLeaders, setExpandedLeaders] = useState<Set<number>>(new Set());
-  const [expandedImages, setExpandedImages] = useState<Set<string>>(new Set());
+  const [expandedLeader, setExpandedLeader] = useState<number | null>(null);
+  const [expandedImages, setExpandedImages] = useState<Record<string, boolean>>({});
 
   const toggleLeader = (index: number) => {
-    setExpandedLeaders(prev => {
-      const next = new Set(prev);
-      if (next.has(index)) next.delete(index);
-      else next.add(index);
-      return next;
-    });
+    setExpandedLeader(prev => prev === index ? null : index);
   };
 
   const toggleImages = (key: string) => {
-    setExpandedImages(prev => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
+    setExpandedImages(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   const leadership = [
@@ -37,8 +27,8 @@ export default function AboutPage() {
       desc: "A distinguished entrepreneur, corporate leader, educator, and career strategist with over 24 years of experience across consulting, leadership development, digital transformation, and professional education.",
       image: "/images/vijay_card.png",
       images: ["/images/leadership/vijay-1.jpg", "/images/leadership/vijay-2.jpg", "/images/leadership/vijay-3.jpg"],
-      expandedContent: (
-        <div className="space-y-8 mt-8">
+      content: (
+        <div className="space-y-6">
           <p className="text-slate-700 leading-relaxed">
             Before co-founding MentorMe, he built an exceptional corporate career with leading organizations including <strong>Deloitte, Genpact, and Indian Immunologicals Ltd.</strong>, rising to the position of <strong>Vice President at Deloitte</strong>. Today, he combines his industry expertise with a passion for empowering students and professionals to navigate the future of work with confidence.
           </p>
@@ -81,7 +71,7 @@ export default function AboutPage() {
           <div>
             <h3 className="text-2xl font-bold text-slate-900 mb-4">Gallery</h3>
             <div className="grid grid-cols-3 gap-4">
-              {(expandedImages.has("vijay") ? leadership[0].images : leadership[0].images.slice(0, 1)).map((img, i) => (
+              {(expandedImages["vijay"] ? leadership[0].images : leadership[0].images.slice(0, 1)).map((img, i) => (
                 <div key={i} className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-slate-200">
                   <Image
                     src={img}
@@ -97,8 +87,8 @@ export default function AboutPage() {
                 onClick={() => toggleImages("vijay")}
                 className="mt-3 flex items-center gap-2 text-brand-blue font-semibold hover:underline"
               >
-                {expandedImages.has("vijay") ? "Show less" : `View all ${leadership[0].images.length} photos`}
-                {expandedImages.has("vijay") ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                {expandedImages["vijay"] ? "Show less" : `View all ${leadership[0].images.length} photos`}
+                {expandedImages["vijay"] ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </button>
             )}
           </div>
@@ -109,24 +99,22 @@ export default function AboutPage() {
       name: "Sirisha Kode",
       role: "Co-Founder & COO",
       shortRole: "Co-Founder & COO",
-      company: "MentorMe Career Intelligence and Training Pvt. Ltd.",
       tagline: "Ex-Ernst & Young | Corporate Trainer | Women Leader",
       desc: "",
       image: "/images/sirisha_card.png",
       images: [],
-      expandedContent: null,
+      content: null,
     },
     {
       name: "Santhi Vedula",
       role: "Advisory Board Member | Educator | Author | Academic Leader",
       shortRole: "Advisor - Institutional Relationships",
-      company: "MentorMe Right Advisory Board",
       tagline: "Senior Academician | Author | Research Scholar",
       desc: "With over 30 years of distinguished experience in education, academic leadership, and student development.",
       image: "/images/santhi_card.png",
       images: ["/images/leadership/santhi-1.jpg", "/images/leadership/santhi-2.jpg", "/images/leadership/santhi-3.jpg"],
-      expandedContent: (
-        <div className="space-y-8 mt-8">
+      content: (
+        <div className="space-y-6">
           <p className="text-slate-700 leading-relaxed">
             Dr. Santhi Vedula brings unparalleled expertise to the MentorMe Right Advisory Board. An accomplished academician and lifelong learner, she holds multiple postgraduate degrees including <strong>M.Com, MBA, MA, M.Phil, B.Ed, MA (Indian Knowledge Systems)</strong>, along with several professional diplomas. She is currently pursuing her <strong>Ph.D. in Management from SR University</strong>.
           </p>
@@ -191,7 +179,7 @@ export default function AboutPage() {
           <div>
             <h3 className="text-2xl font-bold text-slate-900 mb-4">Gallery</h3>
             <div className="grid grid-cols-3 gap-4">
-              {(expandedImages.has("santhi") ? leadership[2].images : leadership[2].images.slice(0, 1)).map((img, i) => (
+              {(expandedImages["santhi"] ? leadership[2].images : leadership[2].images.slice(0, 1)).map((img, i) => (
                 <div key={i} className="relative aspect-square rounded-2xl overflow-hidden shadow-lg border border-slate-200">
                   <Image
                     src={img}
@@ -207,31 +195,14 @@ export default function AboutPage() {
                 onClick={() => toggleImages("santhi")}
                 className="mt-3 flex items-center gap-2 text-brand-blue font-semibold hover:underline"
               >
-                {expandedImages.has("santhi") ? "Show less" : `View all ${leadership[2].images.length} photos`}
-                {expandedImages.has("santhi") ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                {expandedImages["santhi"] ? "Show less" : `View all ${leadership[2].images.length} photos`}
+                {expandedImages["santhi"] ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
               </button>
             )}
           </div>
         </div>
       ),
     },
-  ];
-
-  const features = [
-    "Holistic Career Guidance Extensive",
-    "Network of Counsellors and Industry Mentors",
-    "Extensive Career Database",
-    "Study Abroad Support",
-    "Future-Ready Skill Development",
-  ];
-
-  const scrollImages = [
-    "/images/session-6.jpg",
-    "/images/session-5.jpg",
-    "/images/session-1.jpg",
-    "/images/session-2.jpg",
-    "/images/session-3.jpg",
-    "/images/session-4.jpg",
   ];
 
   return (
@@ -275,7 +246,13 @@ export default function AboutPage() {
             </p>
 
             <ul className="space-y-4 pt-6">
-              {features.map((feature, idx) => (
+              {[
+                "Holistic Career Guidance Extensive",
+                "Network of Counsellors and Industry Mentors",
+                "Extensive Career Database",
+                "Study Abroad Support",
+                "Future-Ready Skill Development",
+              ].map((feature, idx) => (
                 <li key={idx} className="flex items-center gap-3 text-foreground font-medium">
                   <CheckCircle2 className="text-brand-orange" size={24} />
                   {feature}
@@ -314,11 +291,11 @@ export default function AboutPage() {
               <p className="text-xs uppercase tracking-[0.45em] text-brand-blue font-bold mb-4">Scroll through real moments</p>
               <div className="overflow-hidden rounded-3xl">
                 <div className="flex gap-4 min-w-max animate-scroll-x py-2">
-                  {[...scrollImages, ...scrollImages].map((src, index) => (
+                  {["/images/session-6.jpg", "/images/session-5.jpg", "/images/session-1.jpg", "/images/session-2.jpg", "/images/session-3.jpg", "/images/session-4.jpg"].map((src, index) => (
                     <div key={index} className="min-w-[260px] flex-shrink-0 rounded-3xl overflow-hidden border border-slate-200 shadow-lg">
                       <Image
                         src={src}
-                        alt={`Gallery ${index % scrollImages.length + 1}`}
+                        alt={`Gallery ${index + 1}`}
                         width={320}
                         height={220}
                         className="object-cover w-full h-56"
@@ -371,12 +348,6 @@ export default function AboutPage() {
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/0 group-hover:via-white/10 transition-all duration-700" />
                 </div>
 
-                <div className="sr-only">
-                  <h3>{leader.name}</h3>
-                  <p>{leader.role}</p>
-                  <p>{leader.tagline}</p>
-                </div>
-
                 <div className="p-6 text-center">
                   <h3 className="text-xl font-bold text-slate-900">{leader.name}</h3>
                   <p className="text-brand-blue font-semibold mt-1">{leader.shortRole}</p>
@@ -387,34 +358,30 @@ export default function AboutPage() {
           </div>
 
           <AnimatePresence>
-            {[...expandedLeaders].map(index => {
-              const leader = leadership[index];
-              if (!leader || !leader.expandedContent) return null;
-              return (
-                <motion.div
-                  key={`expanded-${index}`}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="max-w-4xl mx-auto mt-8 p-8 bg-white rounded-3xl shadow-2xl border border-slate-200"
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-3xl font-bold text-slate-900">{leader.name}</h3>
-                      <p className="text-brand-blue font-semibold text-lg mt-1">{leader.role}</p>
-                    </div>
-                    <button
-                      onClick={() => toggleLeader(index)}
-                      className="p-2 rounded-full hover:bg-slate-100 transition-colors"
-                    >
-                      <ChevronUp size={24} className="text-slate-500" />
-                    </button>
+            {expandedLeader !== null && leadership[expandedLeader]?.content && (
+              <motion.div
+                key={`expanded-${expandedLeader}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="max-w-4xl mx-auto p-8 bg-white rounded-3xl shadow-2xl border border-slate-200"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="text-3xl font-bold text-slate-900">{leadership[expandedLeader].name}</h3>
+                    <p className="text-brand-blue font-semibold text-lg mt-1">{leadership[expandedLeader].role}</p>
                   </div>
-                  {leader.expandedContent}
-                </motion.div>
-              );
-            })}
+                  <button
+                    onClick={() => setExpandedLeader(null)}
+                    className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+                  >
+                    <ChevronUp size={24} className="text-slate-500" />
+                  </button>
+                </div>
+                {leadership[expandedLeader].content}
+              </motion.div>
+            )}
           </AnimatePresence>
         </div>
       </section>

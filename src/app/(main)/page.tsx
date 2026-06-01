@@ -199,11 +199,10 @@ export default function Home() {
               <button
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
-                className={`h-3 rounded-full transition-all duration-300 ${
-                  idx === currentSlide
+                className={`h-3 rounded-full transition-all duration-300 ${idx === currentSlide
                     ? "w-8 bg-brand-orange"
                     : "w-3 bg-white/40 hover:bg-white/60"
-                }`}
+                  }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
             ))}
@@ -330,70 +329,70 @@ export default function Home() {
             <h2 className="text-3xl font-bold text-white">Our Recent Program Partners</h2>
             <p className="text-white/80 text-sm">These are some of our Prestigious Clients</p>
           </motion.div>
- 
+
           {/* Scrolling Carousel */}
           <div className="relative overflow-hidden">
             {/* Left fade */}
             <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-brand-blue to-transparent z-10 pointer-events-none" />
             {/* Right fade */}
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-blue to-transparent z-10 pointer-events-none" />
- 
-            <div className="flex gap-5 partners-scroll">
-  {(() => {
-    const partners = [
-      { name: "DDGD Vaishnav Chennai",            logo: "/images/partners/ddgd-vaishnav.png" },
-      { name: "Bhavan's Group",                   logo: "/images/partners/bhavans-group.png" },
-      { name: "ICBM School of Business",          logo: "/images/partners/icbm.png" },
-      { name: "TSWRDC Nalgonda",                  logo: "/images/partners/tswrdc.png" },
-      { name: "Pragati Mahavidyalaya",            logo: "/images/partners/pragati-maha.png" },
-      { name: "Keshav Memorial",                  logo: "/images/partners/keshav-memorial.png" },
-      { name: "Elgi School",                      logo: "/images/partners/elgi-school.png" },
-      { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.png" },
-      { name: "Howard Park International",        logo: "/images/partners/howard-park.png" },
-      { name: "Geetam School",                    logo: "/images/partners/geetam.png" },
-      { name: "Pantheon Digital",                 logo: "/images/partners/pantheon-digital.png" },
-      { name: "Avanthi Degree & PG Colleges",     logo: "/images/partners/avanthi.png" },
-      { name: "HPS Nizamabad",                    logo: "/images/partners/hps-nizamabad.png" },
-      { name: "IIMC Hyderabad",                   logo: "/images/partners/iimc-hyderabad.png" },
-      { name: "St Pious Hyderabad",               logo: "/images/partners/st-pious.png" },
 
-    ];
-    // Duplicate for seamless infinite scroll
-    return [...partners, ...partners].map((partner, i) => (
-      <div
-        key={i}
-        className="flex-shrink-0 flex flex-col items-center justify-between bg-white rounded-xl shadow-lg border-2 border-blue-100"
-        style={{ width: "180px", height: "180px", padding: "18px 14px 14px" }}
-      >
-        <div className="flex-1 flex items-center justify-center w-full">
-          <img
-            src={partner.logo}
-            alt={partner.name}
-            className="object-contain"
-            style={{ maxWidth: "100px", maxHeight: "100px", width: "auto", height: "auto" }}
-            onError={(e) => {
-              const target = e.currentTarget as HTMLImageElement;
-              target.style.display = "none";
-              const fallback = target.nextElementSibling as HTMLElement;
-              if (fallback) fallback.style.display = "flex";
-            }}
-          />
-          <div
-            className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-lg text-center leading-tight"
-            style={{ display: "none" }}
-          >
-            {partner.name.split(" ").slice(0, 2).map(w => w[0]).join("")}
-          </div>
-        </div>
-        <span className="text-[11px] font-bold text-gray-800 text-center leading-tight line-clamp-2 mt-2">{partner.name}</span>
-      </div>
-    ));
-  })()}
-                
+            <div className="flex gap-5 partners-scroll">
+              {(() => {
+                const partners = [
+                  { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.png" },
+                  { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.png" },
+                  { name: "ICBM School of Business", logo: "/images/partners/icbm.png" },
+                  { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.png" },
+                  { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.png" },
+                  { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.png" },
+                  { name: "Elgi School", logo: "/images/partners/elgi-school.png" },
+                  { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.png" },
+                  { name: "Howard Park International", logo: "/images/partners/howard-park.png" },
+                  { name: "Geetam School", logo: "/images/partners/geetam.png" },
+                  { name: "Pantheon Digital", logo: "/images/partners/pantheon-digital.png" },
+                  { name: "Avanthi Degree & PG Colleges", logo: "/images/partners/avanthi.png" },
+                  { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.png" },
+                  { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.png" },
+                  { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.png" },
+
+                ];
+                // Duplicate for seamless infinite scroll
+                return [...partners, ...partners].map((partner, i) => (
+                  <div
+                    key={i}
+                    className="flex-shrink-0 flex flex-col items-center justify-between bg-white rounded-xl shadow-lg border-2 border-blue-100"
+                    style={{ width: "180px", height: "180px", padding: "18px 14px 14px" }}
+                  >
+                    <div className="flex-1 flex items-center justify-center w-full">
+                      <img
+                        src={partner.logo}
+                        alt={partner.name}
+                        className="object-contain"
+                        style={{ maxWidth: "100px", maxHeight: "100px", width: "auto", height: "auto" }}
+                        onError={(e) => {
+                          const target = e.currentTarget as HTMLImageElement;
+                          target.style.display = "none";
+                          const fallback = target.nextElementSibling as HTMLElement;
+                          if (fallback) fallback.style.display = "flex";
+                        }}
+                      />
+                      <div
+                        className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-lg text-center leading-tight"
+                        style={{ display: "none" }}
+                      >
+                        {partner.name.split(" ").slice(0, 2).map(w => w[0]).join("")}
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-bold text-gray-800 text-center leading-tight line-clamp-2 mt-2">{partner.name}</span>
+                  </div>
+                ));
+              })()}
+
             </div>
           </div>
         </div>
- 
+
         <style>{`
           .partners-scroll {
             animation: scroll-partners 30s linear infinite;
@@ -613,7 +612,7 @@ export default function Home() {
               <p className="text-lg text-muted-foreground leading-relaxed">
                 Create a win-win opportunity: gain practical AI expertise and unlock new income streams with our innovative Train-the-Trainer program!
               </p>
-              
+
               <div className="grid sm:grid-cols-2 gap-4">
                 <div className="p-4 bg-background/50 rounded-2xl border border-slate-100/80 flex items-center gap-4 shadow-sm">
                   <div className="p-3 bg-brand-blue/10 text-brand-blue rounded-xl shrink-0">
@@ -622,7 +621,7 @@ export default function Home() {
                   <div>
                     <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Call us</div>
                     <div className="text-sm font-semibold text-foreground">+91-9392707596</div>
-                    <div className="text-xs text-muted-foreground">+91-8188824440</div>
+                    <div className="text-sm font-semibold text-foreground">+91-8188824440</div>
                   </div>
                 </div>
 

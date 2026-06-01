@@ -79,6 +79,16 @@ function Counter({ value }: { value: string }) {
 export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [skillTab, setSkillTab] = useState("k12");
+  const [expandedCards, setExpandedCards] = useState<Set<number>>(new Set());
+
+  const toggleCard = (index: number) => {
+    setExpandedCards(prev => {
+      const next = new Set(prev);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
 
   const slides = [
     {
@@ -497,11 +507,15 @@ export default function Home() {
                   <p className="font-medium text-brand-orange mb-6 group-hover:text-brand-blue transition-colors duration-300">
                     {item.subtitle}
                   </p>
-                  <h4 className="font-semibold text-sm uppercase tracking-wider mb-2">
-                    Key Highlights
+                  <h4
+                    className="font-semibold text-sm uppercase tracking-wider mb-2 cursor-pointer select-none flex items-center justify-between"
+                    onClick={() => toggleCard(i)}
+                  >
+                    <span>Key Highlights</span>
+                    <span className="text-xs text-brand-blue">{expandedCards.has(i) ? "▼" : "+"}</span>
                   </h4>
-                  <ul className="text-muted-foreground text-sm leading-relaxed mb-8 list-none space-y-1">
-                    {item.highlights.split(" | ").map((h, idx) => (
+                  <ul className="text-muted-foreground text-sm leading-relaxed mb-8 list-none space-y-1 overflow-hidden transition-all duration-300">
+                    {(expandedCards.has(i) ? item.highlights.split(" | ") : []).map((h, idx) => (
                       <li key={idx} className="flex items-start">
                         <span className="mr-2 text-brand-blue">•</span>
                         <span>{h}</span>

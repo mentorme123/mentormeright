@@ -218,14 +218,14 @@ export default function AboutPage() {
       name: "Vijay Kiran Agastya",
       role: "Co-Founder & Managing Director",
       image: "/images/vijay_card.png",
-      images: ["/images/leadership/gallery-1.jpg", "/images/leadership/gallery-2.jpg", "/images/leadership/gallery-3.jpg", "/images/leadership/gallery-4.jpg", "/images/leadership/gallery-5.jpg", "/images/leadership/gallery-6.jpg"],
+      images: ["/images/leadership/gallery-1.jpg", "/images/leadership/gallery-2.jpg", "/images/leadership/gallery-6.jpg", "/images/leadership/gallery-4.jpg", "/images/leadership/gallery-5.jpg", "/images/leadership/gallery-3.jpg"],
       captions: [
         "Post the panel discussion on Budget 2026 at Siva Sivani Institute of Management",
         "Meet with Governor of Telangana Jishnu Dev Varma in 2025",
-        "With the management students of Woxsen University",
+        "Meet with Shri Naveen Mittal, Commissioner, Collegiate Education and Technical, Telangana in 2023",
         "With Member of Parliament, Shri Etela Rajender",
         "Addressing a large gathering of students in Chennai",
-        "Meet with Shri Naveen Mittal, Commissioner, Collegiate Education and Technical, Telangana in 2023"
+        "With the management students of Woxsen University"
       ],
       fullName: "Shri Vijay Kiran Agastya",
       designation: "Co-Founder & Managing Director",

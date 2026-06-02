@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Phone, Mail, MapPin } from "lucide-react";
+import { CheckCircle2, Phone, Mail, MapPin, Globe2 } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
   const [count, setCount] = useState(0);
@@ -78,19 +78,10 @@ function Counter({ value }: { value: string }) {
  }
 
 export default function Home() {
-  return (
-    <Suspense fallback={<div className="min-h-screen" />}>
-      <HomeContent />
-    </Suspense>
-  );
-}
-
-function HomeContent() {
-  const searchParams = useSearchParams();
-  const tabParam = searchParams.get("tab");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [skillTab, setSkillTab] = useState<"k12" | "college">("k12");
+  const [skillTab, setSkillTab] = useState("k12");
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const [selectedInstitution, setSelectedInstitution] = useState<number | null>(null);
 
   useEffect(() => {
     if (tabParam === "college") setSkillTab("college");
@@ -100,6 +91,91 @@ function HomeContent() {
   const toggleCard = (index: number) => {
     setExpandedIndex(prev => prev === index ? null : index);
   };
+
+  const institutions = [
+    {
+      name: "DDGD Vaishnav Chennai",
+      logo: "/images/partners/ddgd-vaishnav.png",
+      description: "DDGD Vaishnav Chennai is a prestigious institution known for academic excellence and holistic student development.",
+      website: "#",
+      contact: [{ label: "Location", value: "Chennai, Tamil Nadu" }]
+    },
+    {
+      name: "ICBM School of Business",
+      logo: "/images/partners/icbm.png",
+      description: "ICBM School of Business Excellence is a premier business school offering quality management education and industry-focused programs.",
+      website: "#",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+    },
+    {
+      name: "TSWRDC Nalgonda",
+      logo: "/images/partners/tswrdc.png",
+      description: "TSWRDC Nalgonda is a government residential degree college committed to providing quality higher education to underprivileged students.",
+      website: "#",
+      contact: [{ label: "Location", value: "Nalgonda, Telangana" }]
+    },
+    {
+      name: "Pragati Mahavidyalaya",
+      logo: "/images/partners/pragati-maha.png",
+      description: "Pragati Mahavidyalaya is a leading educational institution dedicated to empowering students through quality education and career guidance.",
+      website: "#",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+    },
+    {
+      name: "Keshav Memorial",
+      logo: "/images/partners/keshav-memorial.png",
+      description: "Keshav Memorial Educational Society is a renowned group of institutions providing excellence in education from school to college level.",
+      website: "#",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+    },
+    {
+      name: "ELGI School",
+      logo: "/images/partners/elgi-school.png",
+      description: "ELGI School, Coimbatore — Aspire & Excel. Established in 1987 with 67 students and 3 teachers, ELGI School has grown into a thriving institution with 1,400 students and 60+ teaching staff, spread across a 4-acre campus with a 200m athletic track. The school follows the CBSE syllabus and emphasizes holistic education, career guidance, club activities, sports, and global exposure.",
+      website: "https://www.elgischool.com",
+      contact: [
+        { label: "Address", value: "Kovai Mahalingapuram, Vellalore, Coimbatore, Tamil Nadu 641111" },
+        { label: "Email", value: "info@elgischool.org", href: "mailto:info@elgischool.org" },
+        { label: "Phone", value: "0422 241 4194", href: "tel:04222414194" }
+      ]
+    },
+    {
+      name: "St. Joseph's Degree & PG College",
+      logo: "/images/partners/st-josephs.png",
+      description: "St. Joseph's Degree & PG College, Hyderabad — A premier institution offering undergraduate and postgraduate programs, known for academic excellence, holistic student development, and strong industry connections.",
+      website: "https://stjosephspgcollege.ac.in",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+    },
+    {
+      name: "Howard Park International",
+      logo: "/images/partners/howard-park.png",
+      description: "Howard Public School CBSE, Himayathnagar, Hyderabad — Established in 1986, Howard Public School is one of the finest CBSE institutions dedicated to academic excellence, self-discipline, rational thinking, and global vision. Celebrating 40 glorious years of educational excellence.",
+      website: "https://howardinstitutions.org",
+      contact: [
+        { label: "Address", value: "H. No. 3-6-568, Street No. 8, Himayathnagar, Hyderabad – 500 029" },
+        { label: "Email", value: "howardinstitutions@gmail.com", href: "mailto:howardinstitutions@gmail.com" },
+        { label: "Phone", value: "040-27630610", href: "tel:04027630610" }
+      ]
+    },
+    {
+      name: "Geetam School",
+      logo: "/images/partners/geetam.png",
+      description: "Geetam The Next Gen IIT School, Kakinada — Established in 2014, Geetam School has emerged as one of Kakinada's most unique and trusted institutions, integrating CBSE with IIT foundation programs.",
+      website: "https://www.geetamnextgeniitschool.com",
+      contact: [
+        { label: "Address", value: "66-5-3, Narasannanagar, near Karanam garu junction, Kakinada" },
+        { label: "Phone", value: "0884 235 3144 / +91 8897533222" },
+        { label: "Email", value: "geetamschoolkakinada@gmail.com", href: "mailto:geetamschoolkakinada@gmail.com" }
+      ]
+    },
+    {
+      name: "Pantheon Digital",
+      logo: "/images/partners/pantheon-digital.png",
+      description: "Pantheon Digital is a digital transformation and technology solutions partner empowering businesses with innovative strategies, branding, and digital excellence.",
+      website: "https://www.pantheondigital.com",
+      contact: [{ label: "Website", value: "https://www.pantheondigital.com", href: "https://www.pantheondigital.com" }]
+    }
+  ];
 
   const slides = [
     {
@@ -375,7 +451,12 @@ function HomeContent() {
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => (
-                  <Link href={partner.link ?? "/#skill-training"} key={i} className="flex-shrink-0 flex flex-col items-center justify-between bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-transform">
+                  <div
+                    key={i}
+                    onClick={() => setSelectedInstitution(i % institutions.length)}
+                    className="flex-shrink-0 flex flex-col items-center justify-between bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-transform cursor-pointer"
+                    style={{ width: "180px", height: "180px", padding: "18px 14px 14px" }}
+                  >
                     <div className="flex-1 flex items-center justify-center w-full">
                       <img
                         src={partner.logo}
@@ -397,7 +478,7 @@ function HomeContent() {
                       </div>
                     </div>
                     <span className="text-[11px] font-bold text-gray-800 text-center leading-tight line-clamp-2 mt-2">{partner.name}</span>
-                  </Link>
+                  </div>
                 ));
               })()}
 
@@ -800,6 +881,74 @@ function HomeContent() {
           </motion.div>
         </div>
       </section>
+
+      {selectedInstitution !== null && (
+        <div className="fixed inset-0 z-50">
+          <div
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setSelectedInstitution(null)}
+          />
+          <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+            <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-8">
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-20 h-20 relative shrink-0 bg-slate-50 rounded-2xl overflow-hidden border border-slate-200">
+                      <img
+                        src={institutions[selectedInstitution].logo}
+                        alt={institutions[selectedInstitution].name}
+                        className="w-full h-full object-contain p-2"
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold text-slate-900">{institutions[selectedInstitution].name}</h3>
+                      {institutions[selectedInstitution].website && (
+                        <a
+                          href={institutions[selectedInstitution].website}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-brand-blue font-semibold hover:underline text-sm mt-1 inline-block"
+                        >
+                          Visit Website →
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setSelectedInstitution(null)}
+                    className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+                  >
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M18 6 6 18" />
+                      <path d="m6 6 12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <p className="text-slate-700 leading-relaxed whitespace-pre-line">
+                  {institutions[selectedInstitution].description}
+                </p>
+                {institutions[selectedInstitution].contact && institutions[selectedInstitution].contact.length > 0 && (
+                  <div className="grid sm:grid-cols-2 gap-3 mt-4">
+                    {institutions[selectedInstitution].contact.map((c: { label: string; value: string; href?: string }, i: number) => (
+                      <div key={i} className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl border border-slate-100">
+                        <Globe2 className="text-brand-orange shrink-0 mt-0.5" size={18} />
+                        <div>
+                          <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">{c.label}</p>
+                          {c.href ? (
+                            <a href={c.href} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-brand-blue hover:underline">{c.value}</a>
+                          ) : (
+                            <p className="text-sm font-medium text-slate-900">{c.value}</p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

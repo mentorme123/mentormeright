@@ -83,11 +83,6 @@ export default function Home() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [selectedInstitution, setSelectedInstitution] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (tabParam === "college") setSkillTab("college");
-    else if (tabParam === "k12") setSkillTab("k12");
-  }, [tabParam]);
-
   const toggleCard = (index: number) => {
     setExpandedIndex(prev => prev === index ? null : index);
   };

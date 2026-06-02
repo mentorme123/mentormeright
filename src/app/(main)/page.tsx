@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Phone, Mail, MapPin } from "lucide-react";
@@ -77,9 +78,16 @@ function Counter({ value }: { value: string }) {
 }
 
 export default function Home() {
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [skillTab, setSkillTab] = useState("k12");
+  const [skillTab, setSkillTab] = useState<"k12" | "college">("k12");
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (tabParam === "college") setSkillTab("college");
+    else if (tabParam === "k12") setSkillTab("k12");
+  }, [tabParam]);
 
   const toggleCard = (index: number) => {
     setExpandedIndex(prev => prev === index ? null : index);
@@ -439,38 +447,44 @@ export default function Home() {
                 title: "Future AI Leaders Program",
                 subtitle: "AI Classes for School Students",
                 highlights: "Hands‑on projects | Generative AI ML & NLP | Ethics & responsible AI | Teacher upskilling",
-                image: "/images/programs/ai-school.png"
+                image: "/images/programs/ai-school.png",
+                link: "/programs/ai-school"
               },
               {
                 title: "Robotics & STEM Learning for Kids",
                 subtitle: "Robotics Classes for School Students",
                 highlights: "Hands‑on training | No lab investment | Robotics Expo | STEM Integration | Robotics Lab Upgrade | Teacher Training",
-                image: "/images/programs/robotics.png"
+                image: "/images/programs/robotics.png",
+                link: "/programs/robotics"
               },
               {
                 title: "Smart Maths with Vedic Techniques",
                 subtitle: "Vedic Maths Classes for School Students",
                 highlights: "Fast‑Track Mental Math | No Tools Needed | Expert‑Led Sessions | Certification",
-                image: "/images/programs/vedic-maths.png"
+                image: "/images/programs/vedic-maths.png",
+                link: "/programs/vedic-maths"
               },
             ] : [
               {
                 title: "Advanced AI & Machine Learning",
                 subtitle: "AI Certification for College Students",
                 highlights: "Deep Learning | Computer Vision | NLP Projects | Industry Capstone | Placement Assistance",
-                image: "/images/programs/ai-college.png"
+                image: "/images/programs/ai-college.png",
+                link: "/programs/ai-college"
               },
               {
                 title: "Full Stack Web Development",
                 subtitle: "Web & App Development Training",
                 highlights: "MERN Stack | Next.js | Cloud Deployment | Real-world Projects | Technical Interview Prep",
-                image: "/images/programs/python.png"
+                image: "/images/programs/python.png",
+                link: "/programs/python"
               },
               {
                 title: "Data Science & Analytics",
                 subtitle: "Data Analytics Training Program",
                 highlights: "Python & SQL | Tableau & PowerBI | Predictive Modeling | Business Analytics | Live Projects",
-                image: "/images/programs/power-bi.png"
+                image: "/images/programs/power-bi.png",
+                link: "/programs/ml"
               },
             ]).map((item, i) => (
               <motion.div
@@ -515,7 +529,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex gap-4 mt-auto">
-                  <Link href="/services" className="flex-1">
+                  <Link href={item.link} className="flex-1">
                     <button className="w-full py-3 border-2 border-brand-blue/20 text-brand-blue font-bold rounded-xl hover:bg-brand-blue hover:text-white transition-all duration-300">
                       Know more
                     </button>

@@ -24,8 +24,8 @@ export function Navbar() {
     { href: "/career-assessment.html", label: "Career Assessment", external: true },
     { href: "/career-simulator", label: "Career Simulator" },
     { href: "/counsellors", label: "Counsellors" },
-    { href: "/?tab=k12", label: "K12 Programs" },
-    { href: "/?tab=college", label: "College Programs" },
+    { href: "/k12-programs", label: "K12 Programs" },
+    { href: "/college-programs", label: "College Programs" },
     { href: "/study-abroad", label: "Study Abroad" },
     { href: "/blogs", label: "Blogs" },
     { href: "/contact", label: "Contact Us" },
@@ -120,8 +120,8 @@ export function Navbar() {
                       <p className="text-xs font-bold text-slate-800 uppercase tracking-wider">Training Programs</p>
                     </div>
                     <div className="flex flex-col pl-4">
-                      <Link href="/?tab=k12" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">K12 Programs</Link>
-                      <Link href="/?tab=college" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">College Programs</Link>
+                      <Link href="/k12-programs" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">K12 Programs</Link>
+                      <Link href="/college-programs" className="text-sm font-medium text-slate-700 hover:text-brand-blue hover:bg-brand-blue/5 transition-colors px-3 py-1.5 rounded-lg">College Programs</Link>
                     </div>
 
                     <div className="border-t border-slate-100 my-2" />

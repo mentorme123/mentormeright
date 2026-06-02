@@ -424,6 +424,54 @@ function HomeContent() {
         `}</style>
       </section>
 
+      {/* Our Trusted Partners */}
+      <section className="py-24 px-4 bg-gradient-to-b from-white to-slate-50">
+        <div className="max-w-6xl mx-auto space-y-16">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+              Our Trusted Partners
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              Institutions and organisations we collaborate with to empower careers.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 max-w-6xl mx-auto">
+            {[
+              { name: "ELGI School", logo: "/images/institutions/elgi-school.png" },
+              { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.png", initials: "SJ" },
+              { name: "Howard Park International", logo: "/images/institutions/howard-public-school.png" },
+              { name: "Geetam School", logo: "/images/institutions/geetam-school.png" },
+              { name: "Pantheon Digital", logo: "/images/partners/pantheon-digital.png", initials: "PD" },
+            ].map((inst, i) => (
+              <div
+                key={i}
+                className="group relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-brand-blue/20 transition-all duration-500 hover:-translate-y-2 border border-slate-200/50 bg-white flex flex-col items-center justify-center p-6 aspect-square"
+              >
+                {inst.logo ? (
+                  <div className="relative w-24 h-24 mb-4 flex items-center justify-center">
+                    <img
+                      src={inst.logo}
+                      alt={inst.name}
+                      className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                    <span className="text-2xl font-extrabold text-brand-blue">
+                      {inst.name.split(" ").map(w => w[0]).slice(0, 2).join("")}
+                    </span>
+                  </div>
+                )}
+                <p className="text-sm font-bold text-slate-900 text-center leading-tight group-hover:text-brand-blue transition-colors">
+                  {inst.name}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Skill Training */}
       <section className="py-24 px-4 bg-muted/20">
         <div className="max-w-6xl mx-auto space-y-12">

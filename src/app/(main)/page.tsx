@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2, Phone, Mail, MapPin } from "lucide-react";
@@ -73,13 +74,29 @@ function Counter({ value }: { value: string }) {
       {count}
       {suffix}
     </div>
-  );
+    );
+  }
 }
 
 export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen" />}>
+      <HomeContent />
+    </Suspense>
+  );
+}
+
+function HomeContent() {
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [skillTab, setSkillTab] = useState("k12");
+  const [skillTab, setSkillTab] = useState<"k12" | "college">("k12");
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (tabParam === "college") setSkillTab("college");
+    else if (tabParam === "k12") setSkillTab("k12");
+  }, [tabParam]);
 
   const toggleCard = (index: number) => {
     setExpandedIndex(prev => prev === index ? null : index);

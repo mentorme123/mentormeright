@@ -433,7 +433,7 @@ export default function Home() {
                   { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.png", link: "/k12-programs" },
                   { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.png", link: "/college-programs" },
                   { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.png", link: "/k12-programs" },
-                  { name: "Elgi School", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
+                  { name: "ELGI School", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
                   { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.png", link: "/college-programs" },
                   { name: "Howard Park International", logo: "/images/partners/howard-park.png", link: "/k12-programs" },
                   { name: "Geetam School", logo: "/images/partners/geetam.png", link: "/k12-programs" },
@@ -442,6 +442,10 @@ export default function Home() {
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.png", link: "/k12-programs" },
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.png", link: "/college-programs" },
                   { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.png", link: "/k12-programs" },
+                  { name: "Vasavi School", logo: "/images/partners/vasavi-school.png", link: "/k12-programs" },
+                  { name: "Oasis International", logo: "/images/partners/oasis-international.png", link: "/k12-programs" },
+                  { name: "VBR Group", logo: "/images/partners/vbr-group.png", link: "/college-programs" },
+                  { name: "Oasis Excellence", logo: "/images/partners/oasis-excellence.png", link: "/college-programs" },
 
                 ];
                 // Duplicate for seamless infinite scroll
@@ -449,15 +453,15 @@ export default function Home() {
                   <div
                     key={i}
                     onClick={() => setSelectedInstitution(i % institutions.length)}
-                    className="flex-shrink-0 flex flex-col items-center justify-between bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-transform cursor-pointer"
-                    style={{ width: "180px", height: "180px", padding: "18px 14px 14px" }}
+                    className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-transform cursor-pointer"
+                    style={{ width: "160px", height: "160px", padding: "20px" }}
                   >
-                    <div className="flex-1 flex items-center justify-center w-full">
+                    <div className="flex items-center justify-center w-full h-full">
                       <img
                         src={partner.logo}
                         alt={partner.name}
                         className="object-contain"
-                        style={{ maxWidth: "100px", maxHeight: "100px", width: "auto", height: "auto" }}
+                        style={{ maxWidth: "140px", maxHeight: "140px", width: "auto", height: "auto" }}
                         onError={(e) => {
                           const target = e.currentTarget as HTMLImageElement;
                           target.style.display = "none";
@@ -466,13 +470,12 @@ export default function Home() {
                         }}
                       />
                       <div
-                        className="w-20 h-20 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-lg text-center leading-tight"
+                        className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-lg text-center leading-tight"
                         style={{ display: "none" }}
                       >
                         {partner.name.split(" ").slice(0, 2).map(w => w[0]).join("")}
                       </div>
                     </div>
-                    <span className="text-[11px] font-bold text-gray-800 text-center leading-tight line-clamp-2 mt-2">{partner.name}</span>
                   </div>
                 ));
               })()}

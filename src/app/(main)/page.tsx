@@ -69,14 +69,13 @@ function Counter({ value }: { value: string }) {
     };
   }, [hasStarted, target]);
 
-  return (
-    <div ref={elementRef} className="text-5xl font-extrabold text-brand-orange">
-      {count}
-      {suffix}
-    </div>
-    );
-  }
-}
+   return (
+     <div ref={elementRef} className="text-5xl font-extrabold text-brand-orange">
+       {count}
+       {suffix}
+     </div>
+   );
+ }
 
 export default function Home() {
   return (

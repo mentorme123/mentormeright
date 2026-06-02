@@ -543,50 +543,6 @@ export default function AboutPage() {
           </div>
 
           {openIndex !== null && renderModal(leaders[openIndex], openIndex)}
-
-          <div className="text-center space-y-4 pt-8">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-              Our Trusted Partners
-            </h2>
-            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              Institutions and organisations we collaborate with to empower careers.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 max-w-6xl mx-auto">
-            {institutions.map((inst, i) => (
-              <div
-                key={i}
-                className="group relative rounded-[2rem] overflow-hidden shadow-lg hover:shadow-2xl hover:shadow-brand-blue/20 transition-all duration-500 hover:-translate-y-2 border border-slate-200/50 bg-white cursor-pointer flex flex-col items-center justify-center p-6 aspect-square"
-                onClick={() => setInstitutionIndex(i)}
-              >
-                {inst.logo ? (
-                  <div className="relative w-24 h-24 mb-4 flex items-center justify-center">
-                    <img
-                      src={inst.logo}
-                      alt={inst.name}
-                      className="max-w-full max-h-full object-contain group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-20 h-20 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                    <span className="text-2xl font-extrabold text-brand-blue">
-                      {inst.name
-                        .split(" ")
-                        .map((w) => w[0])
-                        .slice(0, 2)
-                        .join("")}
-                    </span>
-                  </div>
-                )}
-                <p className="text-sm font-bold text-slate-900 text-center leading-tight group-hover:text-brand-blue transition-colors">
-                  {inst.name}
-                </p>
-              </div>
-            ))}
-          </div>
-
-          {institutionIndex !== null && renderInstitutionModal(institutions[institutionIndex], institutionIndex)}
         </div>
       </section>
     </div>

@@ -11,47 +11,33 @@
   "icons": [
     {
       "src": "/logo.png",
-      "sizes": "192x192",
+      "sizes": "any",
       "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "categories": ["education", "productivity"],
-  "screenshots": [
-    {
-      "src": "/logo.png",
-      "sizes": "1080x1920",
-      "type": "image/png",
-      "form_factor": "narrow"
-    }
-  ],
   "shortcuts": [
     {
       "name": "Career Assessment",
       "short_name": "Assessment",
       "description": "Take the free career assessment",
       "url": "/assessment",
-      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/logo.png", "sizes": "any" }]
     },
     {
       "name": "AI Chatbot",
       "short_name": "AI Corner",
       "description": "Chat with AI Career Counselor",
       "url": "/ai-corner",
-      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/logo.png", "sizes": "any" }]
     },
     {
       "name": "Expert Counseling",
       "short_name": "Counselors",
       "description": "Book 1-on-1 expert sessions",
       "url": "/counsellors",
-      "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
+      "icons": [{ "src": "/logo.png", "sizes": "any" }]
     }
   ],
   "related_applications": [],

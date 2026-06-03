@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
@@ -18,11 +19,6 @@ export const metadata: Metadata = {
   title: "MentorMe | Empowering Careers Beyond Classrooms",
   description: "MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability.",
   manifest: "/manifest.json",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "MentorMe"
-  },
   themeColor: "#1B3A6B",
 };
 
@@ -35,18 +31,23 @@ export default function RootLayout({
     <html lang="en" className={cn("font-sans", poppins.variable)}>
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="MentorMe" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="theme-color" content="#1B3A6B" />
-        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="antialiased min-h-screen flex flex-col font-sans">
         <PathTracker />
-        <script dangerouslySetInnerHTML={{ __html: `
-          if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-              navigator.serviceWorker.register('/sw.js').catch(() => {});
-            });
-          }
-        `}} />
+        <Script
+          id="service-worker"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{ __html: `
+            if ('serviceWorker' in navigator) {
+              window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').catch(function() {});
+              });
+            }
+          `}}
+        />
         <GoogleAnalytics />
         <QueryProvider>
           {children}

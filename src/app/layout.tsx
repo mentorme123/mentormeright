@@ -19,7 +19,9 @@ export const metadata: Metadata = {
   title: "MentorMe | Empowering Careers Beyond Classrooms",
   description: "MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability.",
   manifest: "/manifest.json",
-  themeColor: "#1B3A6B",
+  // NOTE: themeColor intentionally omitted — Next.js auto-injects the deprecated
+  // apple-mobile-web-app-capable tag when set, and also duplicates our manual
+  // theme-color meta causing React hydration errors #418/#423.
 };
 
 export default function RootLayout({
@@ -28,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", poppins.variable)}>
+    <html lang="en" className={cn("font-sans", poppins.variable)} suppressHydrationWarning>
       <head>
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="MentorMe" />

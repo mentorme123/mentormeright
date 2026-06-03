@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 const PARTNERS = [
   { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.png", link: "/k12-programs" },
   { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.png", link: "/k12-programs" },
@@ -22,6 +20,9 @@ const PARTNERS = [
   { name: "Oasis Excellence", logo: "/images/partners/oasis-excellence.png", link: "/college-programs" }
 ];
 
+export const dynamic = "force-static";
+export const revalidate = false;
+
 export default function Page() {
   return (
     <section className="py-10">
@@ -38,11 +39,12 @@ export default function Page() {
                 className="group flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
               >
                 <div className="relative h-20 w-20">
-                  <Image
+                  <img
                     src={partner.logo}
                     alt={partner.name}
-                    fill
-                    className="object-contain"
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-contain"
                   />
                 </div>
               </a>

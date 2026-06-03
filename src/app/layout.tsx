@@ -17,6 +17,13 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "MentorMe | Empowering Careers Beyond Classrooms",
   description: "MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability.",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "MentorMe"
+  },
+  themeColor: "#1B3A6B",
 };
 
 export default function RootLayout({
@@ -27,15 +34,12 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", poppins.variable)}>
       <head>
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="MentorMe" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#1B3A6B" />
+        <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="antialiased min-h-screen flex flex-col font-sans">
         <PathTracker />
-        {/* BackButton is handled in sub-layouts to allow for variant control */}
         <script dangerouslySetInnerHTML={{ __html: `
           if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -48,7 +52,6 @@ export default function RootLayout({
           {children}
         </QueryProvider>
 
-        {/* WhatsApp Floating Button */}
         <a
           href="https://wa.me/919392707596"
           target="_blank"

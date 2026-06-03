@@ -1,4 +1,4 @@
-const partners = [
+const PARTNERS = [
   { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.png", link: "/k12-programs" },
   { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.png", link: "/k12-programs" },
   { name: "ICBM School of Business", logo: "/images/partners/icbm.png", link: "/college-programs" },
@@ -19,3 +19,9 @@ const partners = [
   { name: "VBR Group", logo: "/images/partners/vbr-group.png", link: "/college-programs" },
   { name: "Oasis Excellence", logo: "/images/partners/oasis-excellence.png", link: "/college-programs" }
 ];
+
+export default function Page() {
+  return null;
+}
+
+export { PARTNERS };

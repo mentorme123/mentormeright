@@ -37,8 +37,8 @@ export function Navbar() {
 
       <nav className="w-full border-b border-brand-blue/10 bg-gradient-to-r from-brand-blue/[0.04] to-brand-orange/[0.04] backdrop-blur-md sticky top-0 z-50">
         <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-6 sm:px-10 lg:px-12">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="relative h-14 w-44">
+          <Link href="/" className="flex items-center gap-2 shrink-0">
+            <div className="relative h-12 w-36 lg:h-14 lg:w-44 shrink-0">
               <Image
                 src="/logo.png"
                 alt="MentorMe Logo"
@@ -49,7 +49,7 @@ export function Navbar() {
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-8 text-[17px] font-bold text-slate-800">
+          <div className="hidden lg:flex items-center gap-4 xl:gap-8 text-[14px] xl:text-[16px] font-bold text-slate-800 whitespace-nowrap">
             <Link
               href="/"
               className="relative group py-2"

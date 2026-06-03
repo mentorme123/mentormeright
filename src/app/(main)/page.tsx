@@ -1,4 +1,4 @@
-const PARTNERS = [
+const partners = [
   { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.png", link: "/k12-programs" },
   { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.png", link: "/k12-programs" },
   { name: "ICBM School of Business", logo: "/images/partners/icbm.png", link: "/college-programs" },
@@ -14,40 +14,8 @@ const PARTNERS = [
   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.png", link: "/k12-programs" },
   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.png", link: "/college-programs" },
   { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.png", link: "/k12-programs" },
+  { name: "Vasavi School", logo: "/images/partners/vasavi-school.png", link: "/k12-programs" },
+  { name: "Oasis International", logo: "/images/partners/oasis-international.png", link: "/k12-programs" },
+  { name: "VBR Group", logo: "/images/partners/vbr-group.png", link: "/college-programs" },
+  { name: "Oasis Excellence", logo: "/images/partners/oasis-excellence.png", link: "/college-programs" }
 ];
-
-export const dynamic = "force-static";
-export const revalidate = false;
-
-export default function Page() {
-  return (
-    <section className="py-10">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-3xl font-bold text-white mb-8">
-          Our Recent Program Partners
-        </h2>
-        <div className="flex justify-center">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {PARTNERS.map((partner) => (
-              <a
-                key={partner.name}
-                href={partner.link}
-                className="group flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
-              >
-                <div className="relative h-20 w-20">
-                  <img
-                    src={partner.logo}
-                    alt={partner.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mentorme-v1';
+const CACHE_NAME = 'mentorme-v2';
 const STATIC_ASSETS = [
   '/',
   '/login',

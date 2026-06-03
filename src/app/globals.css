@@ -95,4 +95,18 @@
     @apply font-sans;
     overflow-x: hidden;
   }
+
+  .partners-scroll {
+    display: flex;
+    gap: 1.25rem;
+    animation: scroll-partners 30s linear infinite;
+    width: max-content;
+  }
+  .partners-scroll:hover {
+    animation-play-state: paused;
+  }
+  @keyframes scroll-partners {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
 }

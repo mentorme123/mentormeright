@@ -13,7 +13,7 @@ const PARTNERS = [
   { name: "Avanthi Degree & PG Colleges", logo: "/images/partners/avanthi.png", link: "/college-programs" },
   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.png", link: "/k12-programs" },
   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.png", link: "/college-programs" },
-  { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.png", link: "/k12-programs" },
+  { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.png", link: "/k12-programs" }
 ];
 
 export const dynamic = "force-static";
@@ -21,32 +21,30 @@ export const revalidate = false;
 
 export default function Page() {
   return (
-    <section className="py-10">
+    <section className="py-10 overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text-3xl font-bold text-white mb-8">
           Our Recent Program Partners
         </h2>
-        <div className="flex justify-center">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {PARTNERS.map((partner) => (
-              <a
-                key={partner.name}
-                href={partner.link}
-                className="group flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md"
-              >
-                <div className="relative h-20 w-20">
-                  <img
-                    src={partner.logo}
-                    alt={partner.name}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
+      </div>
+      <div className="partners-scroll">
+        {PARTNERS.map((partner) => (
+          <a
+            key={partner.name}
+            href={partner.link}
+            className="group flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow-md flex-shrink-0"
+          >
+            <div className="relative h-20 w-20">
+              <img
+                src={partner.logo}
+                alt={partner.name}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-contain"
+              />
+            </div>
+          </a>
+        ))}
       </div>
     </section>
   );

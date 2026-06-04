@@ -263,13 +263,16 @@ export function SiteSearch({ isOpen, onClose }: SiteSearchProps) {
 // ─── Hook to register Ctrl+K / Cmd+K globally ─────────────────────────────────
 export function useSiteSearch() {
   const [isOpen, setIsOpen] = useState(false);
-
+  
+  // Close on Escape
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-        e.preventDefault();
-        setIsOpen((prev) => !prev);
-      }
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") setIsOpen(false); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+  
+  return { isOpen, open: () => setIsOpen(true), close: () => setIsOpen(false) };
+}
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);

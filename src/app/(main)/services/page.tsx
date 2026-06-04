@@ -51,6 +51,48 @@ export default function ServicesPage() {
     ]
   };
 
+  const programHierarchy = {
+    k12: {
+      title: "K-12 Students",
+      sections: [
+        { title: "Future Readiness Skills", href: "/k12/future-readiness" },
+        { title: "Communication & Leadership", href: "/k12/communication" },
+        {
+          title: "STEM & Emerging Technologies",
+          children: [
+            { title: "Robotics", href: "/k12/stem/robotics" },
+            { title: "Coding", href: "/k12/stem/coding" },
+            { title: "IoT", href: "/k12/stem/iot" },
+            { title: "AI for School Students", href: "/k12/stem/ai" },
+            { title: "Drones", href: "/k12/stem/drones" },
+          ]
+        },
+        { title: "Digital Literacy", href: "/k12/digital-literacy" },
+        { title: "Career & Life Skills", href: "/k12/career-life" },
+      ]
+    },
+    college: {
+      title: "College Students",
+      sections: [
+        { title: "Employability Skills", href: "/college/employability" },
+        { title: "Business & Professional Skills", href: "/college/business" },
+        { title: "Digital & Analytics Skills", href: "/college/digital-analytics" },
+        { title: "Finance & Commerce Skills", href: "/college/finance" },
+        { title: "Entrepreneurship & Innovation", href: "/college/entrepreneurship" },
+      ]
+    },
+    corporate: {
+      title: "Corporate Professionals",
+      sections: [
+        { title: "Leadership Excellence", href: "/corporate/leadership" },
+        { title: "Business Excellence", href: "/corporate/business" },
+        { title: "Digital Transformation", href: "/corporate/digital" },
+        { title: "Workplace Effectiveness", href: "/corporate/workplace" },
+        { title: "Finance, Compliance & Risk", href: "/corporate/finance-compliance" },
+      ]
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-slate-50">
       {/* Header */}
@@ -61,8 +103,8 @@ export default function ServicesPage() {
             <span>|</span>
             <span>Services</span>
           </div>
-          
-          <motion.h1 
+
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-4xl md:text-5xl font-bold mb-16"
@@ -77,7 +119,7 @@ export default function ServicesPage() {
               { title: "Skill Training", icon: <BookOpen size={32} className="text-white" />, id: "skills" },
               { title: "Study Abroad", icon: <Globe2 size={32} className="text-white" />, id: "abroad" }
             ].map((service, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -94,7 +136,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-
 
 
       {/* Career Guidance Section */}
@@ -162,13 +203,13 @@ export default function ServicesPage() {
             `}</style>
 
             <div className="flex gap-4 mb-12">
-              <button 
+              <button
                 onClick={() => setGuidanceTab("institutions")}
                 className={`px-8 py-3 rounded-full border transition-all ${guidanceTab === "institutions" ? "border-blue-600 text-blue-600 bg-blue-50" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}
               >
                 For Institutions
               </button>
-              <button 
+              <button
                 onClick={() => setGuidanceTab("professionals")}
                 className={`px-8 py-3 rounded-full border transition-all ${guidanceTab === "professionals" ? "border-blue-600 text-blue-600 bg-blue-50" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}
               >
@@ -194,77 +235,72 @@ export default function ServicesPage() {
       {/* Skill Training Section */}
       <section id="skills" className="py-20 px-4">
         <div className="max-w-6xl mx-auto space-y-8">
-          <h2 className="text-4xl font-bold mb-8">Skill Training</h2>
-          
-          <div className="flex flex-wrap gap-4 mb-12">
-            {[
-              { id: "schools", label: "For Schools" },
-              { id: "colleges", label: "For Colleges" },
-              { id: "working_professionals", label: "For Working Professionals" }
-            ].map((tab) => (
-              <button 
-                key={tab.id}
-                onClick={() => setSkillTab(tab.id)}
-                className={`px-8 py-3 rounded-full border transition-all ${skillTab === tab.id ? "border-blue-600 text-blue-600 bg-blue-50" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl font-bold mb-8"
+          >
+            Skill Training
+          </motion.h2>
 
-          {/* Auto-scrolling Skill Training Cards Carousel */}
-          <div className="relative overflow-hidden">
-            {/* Left fade */}
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none" />
-            {/* Right fade */}
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none" />
+          <p className="text-slate-500 text-lg mb-8">
+            └── <span className="font-semibold text-slate-700">21st Century Skills Hub</span>
+          </p>
 
-            <div className="flex gap-8 skills-scroll">
-              {[
-                ...skillPrograms[skillTab as keyof typeof skillPrograms],
-                ...skillPrograms[skillTab as keyof typeof skillPrograms], // Duplicate for loop
-              ].map((item, i) => (
-                <div 
-                  key={i} 
-                  className="flex-shrink-0 bg-white rounded-xl border overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-[460px]"
-                  style={{ width: "320px" }}
+          <div className="space-y-10">
+            {(Object.keys(programHierarchy) as Array<keyof typeof programHierarchy>).map((key) => {
+              const category = programHierarchy[key];
+              return (
+                <motion.div
+                  key={key}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="border border-slate-200 rounded-2xl p-8 bg-white shadow-sm"
                 >
-                  <div className="h-52 relative bg-slate-200">
-                    <Image src={item.img} alt={item.title} fill className="object-cover" />
-                  </div>
-                  <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
-                    <div>
-                      <h3 className="font-bold text-lg mb-2 leading-snug">{item.title}</h3>
-                      <span className="text-xs text-slate-400 uppercase tracking-wider block mb-1">Key Highlights</span>
-                      <p className="text-sm font-medium text-slate-600 leading-relaxed">{item.highlights}</p>
-                    </div>
-                    <div className="flex gap-4 pt-4">
-                      <Link href="/contact" className="flex-1">
-                        <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50 text-sm">Know More</Button>
-                      </Link>
-                      <Link href="/contact" className="flex-1">
-                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm">Contact Us</Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                  <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                    {key !== "k12" && <span className="text-slate-400">│</span>}
+                    <span className={key === "k12" ? "text-blue-700" : key === "college" ? "text-green-700" : "text-orange-700"}>
+                      {category.title}
+                    </span>
+                  </h3>
 
-          <style>{`
-            .skills-scroll {
-              animation: scroll-skills 18s linear infinite;
-              width: max-content;
-            }
-            .skills-scroll:hover {
-              animation-play-state: paused;
-            }
-            @keyframes scroll-skills {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-          `}</style>
+                  <div className="space-y-4 ml-4">
+                    {category.sections.map((section, i) => (
+                      <div key={i}>
+                        {"children" in section ? (
+                          <div className="ml-4 space-y-1">
+                            <h4 className="font-bold text-slate-800 text-base">├── {section.title}</h4>
+                            <ul className="ml-6 space-y-1 border-l-2 border-slate-100 pl-4">
+                              {(section.children || []).map((child, j) => (
+                                <li key={j}>
+                                  <Link
+                                    href={child.href}
+                                    className="text-sm text-slate-600 hover:text-brand-blue hover:bg-brand-blue/5 rounded px-2 py-1 transition-all block"
+                                  >
+                                    {'  '}├── {child.title}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-400 text-sm">│</span>
+                            <Link
+                              href={section.href}
+                              className="text-slate-700 hover:text-brand-blue bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 px-4 py-2 rounded-lg transition-all text-sm font-medium"
+                            >
+                              {'├── '}{section.title}
+                            </Link>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
 

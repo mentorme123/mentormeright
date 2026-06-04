@@ -95,10 +95,10 @@ export function Navbar() {
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[240px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
                   <div className="p-4">
                     <ul className="space-y-1">
-                      <li><Link href="/ai-learning-hub/ai-foundations" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors px-3 py-2 rounded-lg hover:bg-brand-blue/5 block">AI Foundations</Link></li>
-                      <li><Link href="/ai-learning-hub/generative-ai" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors px-3 py-2 rounded-lg hover:bg-brand-blue/5 block">Generative AI</Link></li>
-                      <li><Link href="/ai-learning-hub/ai-for-business" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors px-3 py-2 rounded-lg hover:bg-brand-blue/5 block">AI for Business</Link></li>
-                      <li><Link href="/ai-learning-hub/ai-for-educators" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors px-3 py-2 rounded-lg hover:bg-brand-blue/5 block">AI for Educators</Link></li>
+                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">AI Foundations</span></li>
+                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">Generative AI</span></li>
+                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">AI for Business</span></li>
+                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">AI for Educators</span></li>
                     </ul>
                   </div>
                 </div>

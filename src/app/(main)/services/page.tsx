@@ -222,46 +222,46 @@ export default function ServicesPage() {
             {/* K-12 Column */}
             <div>
               <h3 className="text-xl font-bold text-slate-800 mb-6">K-12 Students</h3>
-              <ul className="space-y-5">
-                <li><span className="text-base font-medium text-slate-600 block">Future Readiness Skills</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Communication & Leadership</span></li>
-                <li className="space-y-4 pt-1">
+              <div className="space-y-5">
+                <div><span className="text-base font-medium text-slate-600 block">Future Readiness Skills</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Communication & Leadership</span></div>
+                <div className="space-y-4 pt-1">
                   <span className="text-base font-bold text-slate-800 block whitespace-nowrap">STEM & Emerging Technologies:</span>
-                  <ul className="pl-4 space-y-4 border-l-2 border-slate-200">
-                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Robotics</span></li>
-                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Coding</span></li>
-                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">IoT</span></li>
-                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">AI for School Students</span></li>
-                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Drones</span></li>
-                  </ul>
-                </li>
-                <li className="pt-2"><span className="text-base font-medium text-slate-600 block">Digital Literacy</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Career & Life Skills</span></li>
-              </ul>
+                  <div className="pl-4 space-y-4 border-l-2 border-slate-200">
+                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Robotics</span></div>
+                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Coding</span></div>
+                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">IoT</span></div>
+                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">AI for School Students</span></div>
+                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Drones</span></div>
+                  </div>
+                </div>
+                <div className="pt-2"><span className="text-base font-medium text-slate-600 block">Digital Literacy</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Career & Life Skills</span></div>
+              </div>
             </div>
 
             {/* College Column */}
             <div>
               <h3 className="text-xl font-bold text-slate-800 mb-6">College Students</h3>
-              <ul className="space-y-6">
-                <li><span className="text-base font-medium text-slate-600 block">Employability Skills</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Business & Professional Skills</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Digital & Analytics Skills</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Finance & Commerce Skills</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Entrepreneurship & Innovation</span></li>
-              </ul>
+              <div className="space-y-6">
+                <div><span className="text-base font-medium text-slate-600 block">Employability Skills</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Business & Professional Skills</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Digital & Analytics Skills</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Finance & Commerce Skills</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Entrepreneurship & Innovation</span></div>
+              </div>
             </div>
 
             {/* Corporate Column */}
             <div>
               <h3 className="text-xl font-bold text-slate-800 mb-6">Corporate Professionals</h3>
-              <ul className="space-y-6">
-                <li><span className="text-base font-medium text-slate-600 block">Leadership Excellence</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Business Excellence</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Digital Transformation</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Workplace Effectiveness</span></li>
-                <li><span className="text-base font-medium text-slate-600 block">Finance, Compliance & Risk</span></li>
-              </ul>
+              <div className="space-y-6">
+                <div><span className="text-base font-medium text-slate-600 block">Leadership Excellence</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Business Excellence</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Digital Transformation</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Workplace Effectiveness</span></div>
+                <div><span className="text-base font-medium text-slate-600 block">Finance, Compliance & Risk</span></div>
+              </div>
             </div>
           </div>
         </div>

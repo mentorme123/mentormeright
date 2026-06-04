@@ -9,31 +9,12 @@ import { Button } from "@/components/ui/button";
 
 export default function ServicesPage() {
   const [guidanceTab, setGuidanceTab] = useState("institutions");
-  const [skillTab, setSkillTab] = useState("schools");
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-  };
-
-  const skillPrograms = {
-    schools: [
-      { img: "/images/programs/vedic-maths.png", title: "Vedic Maths Training Program", highlights: "Fast-Track Mental Math | No Tools Needed | Expert-Led" },
-      { img: "/images/programs/ai-school.png", title: "AI Training Program", highlights: "Hands-on projects | Generative AI ML & NLP | Ethics & responsible AI" },
-      { img: "/images/programs/robotics.png", title: "Robotics Training Program", highlights: "Hands-on training | No lab investment | Robotics Expo" }
-    ],
-    colleges: [
-      { img: "/images/programs/ml.png", title: "Machine Learning Training", highlights: "Advanced ML training for engineering students | Practical projects" },
-      { img: "/images/programs/deep-learning.png", title: "Deep Learning Program", highlights: "Advanced AI neural networks training program | Certification" },
-      { img: "/images/programs/communication.png", title: "Communication Skills", highlights: "Essential soft skills | Corporate communication | Interview Prep" }
-    ],
-    working_professionals: [
-      { img: "/images/programs/digital-marketing.png", title: "Digital Marketing", highlights: "Comprehensive modern digital marketing strategies | SEO & SEM" },
-      { img: "/images/programs/python.png", title: "Python Full Stack", highlights: "End-to-end web development with Python | Hands-on coding" },
-      { img: "/images/programs/sap-fico.png", title: "SAP FICO / Power BI", highlights: "Financial Accounting and Controlling | Data analytics mastery" }
-    ]
   };
 
   const guidancePrograms = {
@@ -190,7 +171,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Skill Training Section - 3 Column Layout */}
+      {/* Skill Training Section - Tree Layout */}
       <section id="skills" className="py-20 px-4">
         <div className="max-w-6xl mx-auto space-y-8">
           <motion.h2
@@ -201,66 +182,119 @@ export default function ServicesPage() {
             Skill Training
           </motion.h2>
 
-          <div className="flex flex-wrap gap-4 mb-12">
-            {[
-              { id: "schools", label: "For Schools" },
-              { id: "colleges", label: "For Colleges" },
-              { id: "working_professionals", label: "For Working Professionals" }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setSkillTab(tab.id)}
-                className={`px-8 py-3 rounded-full border transition-all ${skillTab === tab.id ? "border-blue-600 text-blue-600 bg-blue-50" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}
-              >
-                {tab.label}
-              </button>
-            ))}
+          <div className="text-lg font-mono text-slate-700 mb-10">
+            └── <span className="font-bold">21st Century Skills Hub</span>
           </div>
 
-          {/* 3 Column Program List */}
-          <div className="grid md:grid-cols-3 gap-12">
-            {/* K-12 Column */}
-            <div>
-              <h3 className="text-xl font-bold text-slate-800 mb-6">K-12 Students</h3>
-              <div className="space-y-5">
-                <div><span className="text-base font-medium text-slate-600 block">Future Readiness Skills</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Communication & Leadership</span></div>
-                <div className="space-y-4 pt-1">
-                  <span className="text-base font-bold text-slate-800 block whitespace-nowrap">STEM & Emerging Technologies:</span>
-                  <div className="pl-4 space-y-4 border-l-2 border-slate-200">
-                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Robotics</span></div>
-                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Coding</span></div>
-                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">IoT</span></div>
-                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">AI for School Students</span></div>
-                    <div><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Drones</span></div>
+          <div className="space-y-1">
+            <div className="ml-6">
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">│</span>
+                <span className="text-xl font-bold text-blue-700">K-12 Students</span>
+              </div>
+              <div className="ml-6 mt-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Future Readiness Skills</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Communication & Leadership</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-slate-400">│</span>
+                  <div className="flex-1">
+                    <span className="text-base font-bold text-slate-800 block mb-2">├── STEM & Emerging Technologies:</span>
+                    <div className="ml-6 space-y-1 border-l-2 border-slate-200 pl-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-400">│</span>
+                        <span className="text-base font-medium text-slate-500">├── Robotics</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-400">│</span>
+                        <span className="text-base font-medium text-slate-500">├── Coding</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-400">│</span>
+                        <span className="text-base font-medium text-slate-500">├── IoT</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-400">│</span>
+                        <span className="text-base font-medium text-slate-500">├── AI for School Students</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-slate-400">│</span>
+                        <span className="text-base font-medium text-slate-500">└── Drones</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="pt-2"><span className="text-base font-medium text-slate-600 block">Digital Literacy</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Career & Life Skills</span></div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">└── Digital Literacy</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">└── Career & Life Skills</span>
+                </div>
               </div>
             </div>
 
-            {/* College Column */}
-            <div>
-              <h3 className="text-xl font-bold text-slate-800 mb-6">College Students</h3>
-              <div className="space-y-6">
-                <div><span className="text-base font-medium text-slate-600 block">Employability Skills</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Business & Professional Skills</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Digital & Analytics Skills</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Finance & Commerce Skills</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Entrepreneurship & Innovation</span></div>
+            <div className="ml-6 mt-6">
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">│</span>
+                <span className="text-xl font-bold text-green-700">College Students</span>
+              </div>
+              <div className="ml-6 mt-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Employability Skills</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Business & Professional Skills</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Digital & Analytics Skills</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Finance & Commerce Skills</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">└── Entrepreneurship & Innovation</span>
+                </div>
               </div>
             </div>
 
-            {/* Corporate Column */}
-            <div>
-              <h3 className="text-xl font-bold text-slate-800 mb-6">Corporate Professionals</h3>
-              <div className="space-y-6">
-                <div><span className="text-base font-medium text-slate-600 block">Leadership Excellence</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Business Excellence</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Digital Transformation</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Workplace Effectiveness</span></div>
-                <div><span className="text-base font-medium text-slate-600 block">Finance, Compliance & Risk</span></div>
+            <div className="ml-6 mt-6">
+              <div className="flex items-center gap-2">
+                <span className="text-slate-400">│</span>
+                <span className="text-xl font-bold text-orange-700">Corporate Professionals</span>
+              </div>
+              <div className="ml-6 mt-3 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Leadership Excellence</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Business Excellence</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Digital Transformation</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">├── Workplace Effectiveness</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-400">│</span>
+                  <span className="text-base font-medium text-slate-600">└── Finance, Compliance & Risk</span>
+                </div>
               </div>
             </div>
           </div>

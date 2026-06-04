@@ -87,7 +87,7 @@ export function SiteSearch({ isOpen, onClose }: SiteSearchProps) {
     if (e.key === "Enter") handleSearch(query);
   };
 
-  const useSuggestion = (s: string) => {
+  const handleSuggestionClick = (s: string) => {
     setQuery(s);
     handleSearch(s);
   };
@@ -195,7 +195,7 @@ export function SiteSearch({ isOpen, onClose }: SiteSearchProps) {
                       {SUGGESTIONS.map((s) => (
                         <button
                           key={s}
-                          onClick={() => useSuggestion(s)}
+                          onClick={() => handleSuggestionClick(s)}
                           className="px-3 py-1.5 bg-slate-50 hover:bg-brand-blue/5 border border-slate-200 hover:border-brand-blue/30 text-slate-600 hover:text-brand-blue text-xs font-semibold rounded-xl transition-all"
                         >
                           {s}
@@ -273,3 +273,4 @@ export function useSiteSearch() {
   
   return { isOpen, open: () => setIsOpen(true), close: () => setIsOpen(false) };
 }
+

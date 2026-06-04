@@ -126,13 +126,54 @@ export function Navbar() {
               </button>
 
               {isDropdownOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[260px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                  <div className="p-4">
-                    <ul className="space-y-1">
-                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">K-12 Students</span></li>
-                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">College Students</span></li>
-                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">Corporate Professionals</span></li>
-                    </ul>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[800px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                  <div className="p-6">
+                    <div className="grid grid-cols-3 gap-8">
+                      {/* K-12 */}
+                      <div>
+                        <h4 className="font-bold text-slate-800 text-[16px] mb-8">K-12 Students</h4>
+                        <div className="space-y-5">
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Future Readiness Skills</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Communication & Leadership</span></div>
+                          <div className="space-y-4 pt-1">
+                            <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM & Emerging Technologies:</span>
+                            <div className="pl-4 space-y-4 border-l-2 border-slate-200">
+                              <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Robotics</span></div>
+                              <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Coding</span></div>
+                              <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">IoT</span></div>
+                              <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">AI for School Students</span></div>
+                              <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Drones</span></div>
+                            </div>
+                          </div>
+                          <div className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Career & Life Skills</span></div>
+                        </div>
+                      </div>
+
+                      {/* College */}
+                      <div>
+                        <h4 className="font-bold text-slate-800 text-[16px] mb-8">College Students</h4>
+                        <div className="space-y-6">
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Employability Skills</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Business & Professional Skills</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital & Analytics Skills</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Finance & Commerce Skills</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Entrepreneurship & Innovation</span></div>
+                        </div>
+                      </div>
+
+                      {/* Corporate */}
+                      <div>
+                        <h4 className="font-bold text-slate-800 text-[16px] mb-8">Corporate Professionals</h4>
+                        <div className="space-y-6">
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Leadership Excellence</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Business Excellence</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Transformation</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Workplace Effectiveness</span></div>
+                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Finance, Compliance & Risk</span></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

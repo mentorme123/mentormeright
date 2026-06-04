@@ -223,36 +223,20 @@ export default function ServicesPage() {
             <div>
               <h3 className="text-xl font-bold text-slate-800 mb-6">K-12 Students</h3>
               <ul className="space-y-5">
-                <li>
-                  <Link href="/k12/future-readiness" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">
-                    Future Readiness Skills
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/k12/communication" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">
-                    Communication & Leadership
-                  </Link>
-                </li>
+                <li><span className="text-base font-medium text-slate-600 block">Future Readiness Skills</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Communication & Leadership</span></li>
                 <li className="space-y-4 pt-1">
                   <span className="text-base font-bold text-slate-800 block whitespace-nowrap">STEM & Emerging Technologies:</span>
                   <ul className="pl-4 space-y-4 border-l-2 border-slate-200">
-                    <li><Link href="/k12/stem/robotics" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Robotics</Link></li>
-                    <li><Link href="/k12/stem/coding" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Coding</Link></li>
-                    <li><Link href="/k12/stem/iot" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">IoT</Link></li>
-                    <li><Link href="/k12/stem/ai" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">AI for School Students</Link></li>
-                    <li><Link href="/k12/stem/drones" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Drones</Link></li>
+                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Robotics</span></li>
+                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Coding</span></li>
+                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">IoT</span></li>
+                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">AI for School Students</span></li>
+                    <li><span className="text-base font-medium text-slate-500 block whitespace-nowrap">Drones</span></li>
                   </ul>
                 </li>
-                <li className="pt-2">
-                  <Link href="/k12/digital-literacy" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">
-                    Digital Literacy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/k12/career-life" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">
-                    Career & Life Skills
-                  </Link>
-                </li>
+                <li className="pt-2"><span className="text-base font-medium text-slate-600 block">Digital Literacy</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Career & Life Skills</span></li>
               </ul>
             </div>
 
@@ -260,11 +244,11 @@ export default function ServicesPage() {
             <div>
               <h3 className="text-xl font-bold text-slate-800 mb-6">College Students</h3>
               <ul className="space-y-6">
-                <li><Link href="/college/employability" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Employability Skills</Link></li>
-                <li><Link href="/college/business" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Business & Professional Skills</Link></li>
-                <li><Link href="/college/digital-analytics" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Digital & Analytics Skills</Link></li>
-                <li><Link href="/college/finance" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Finance & Commerce Skills</Link></li>
-                <li><Link href="/college/entrepreneurship" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Entrepreneurship & Innovation</Link></li>
+                <li><span className="text-base font-medium text-slate-600 block">Employability Skills</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Business & Professional Skills</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Digital & Analytics Skills</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Finance & Commerce Skills</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Entrepreneurship & Innovation</span></li>
               </ul>
             </div>
 
@@ -272,11 +256,11 @@ export default function ServicesPage() {
             <div>
               <h3 className="text-xl font-bold text-slate-800 mb-6">Corporate Professionals</h3>
               <ul className="space-y-6">
-                <li><Link href="/corporate/leadership" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Leadership Excellence</Link></li>
-                <li><Link href="/corporate/business" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Business Excellence</Link></li>
-                <li><Link href="/corporate/digital" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Digital Transformation</Link></li>
-                <li><Link href="/corporate/workplace" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Workplace Effectiveness</Link></li>
-                <li><Link href="/corporate/finance-compliance" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Finance, Compliance & Risk</Link></li>
+                <li><span className="text-base font-medium text-slate-600 block">Leadership Excellence</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Business Excellence</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Digital Transformation</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Workplace Effectiveness</span></li>
+                <li><span className="text-base font-medium text-slate-600 block">Finance, Compliance & Risk</span></li>
               </ul>
             </div>
           </div>

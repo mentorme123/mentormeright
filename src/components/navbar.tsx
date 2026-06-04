@@ -133,20 +133,20 @@ export function Navbar() {
                       <div>
                         <h4 className="font-bold text-slate-800 text-[16px] mb-8">K-12 Students</h4>
                         <ul className="space-y-5">
-                          <li><Link href="/k12/future-readiness" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Future Readiness Skills</Link></li>
-                          <li><Link href="/k12/communication" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Communication & Leadership</Link></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Future Readiness Skills</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Communication & Leadership</span></li>
                           <li className="space-y-4 pt-1">
                             <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM & Emerging Technologies:</span>
                             <ul className="pl-4 space-y-4 border-l-2 border-slate-200">
-                              <li><Link href="/k12/stem/robotics" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Robotics</Link></li>
-                              <li><Link href="/k12/stem/coding" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Coding</Link></li>
-                              <li><Link href="/k12/stem/iot" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">IoT</Link></li>
-                              <li><Link href="/k12/stem/ai" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">AI for School Students</Link></li>
-                              <li><Link href="/k12/stem/drones" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Drones</Link></li>
+                              <li><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Robotics</span></li>
+                              <li><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Coding</span></li>
+                              <li><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">IoT</span></li>
+                              <li><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">AI for School Students</span></li>
+                              <li><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Drones</span></li>
                             </ul>
                           </li>
-                          <li className="pt-2"><Link href="/k12/digital-literacy" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Digital Literacy</Link></li>
-                          <li><Link href="/k12/career-life" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Career & Life Skills</Link></li>
+                          <li className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Career & Life Skills</span></li>
                         </ul>
                       </div>
 
@@ -154,11 +154,11 @@ export function Navbar() {
                       <div>
                         <h4 className="font-bold text-slate-800 text-[16px] mb-8">College Students</h4>
                         <ul className="space-y-6">
-                          <li><Link href="/college/employability" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Employability Skills</Link></li>
-                          <li><Link href="/college/business" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Business & Professional Skills</Link></li>
-                          <li><Link href="/college/digital-analytics" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Digital & Analytics Skills</Link></li>
-                          <li><Link href="/college/finance" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Finance & Commerce Skills</Link></li>
-                          <li><Link href="/college/entrepreneurship" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Entrepreneurship & Innovation</Link></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Employability Skills</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Business & Professional Skills</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital & Analytics Skills</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Finance & Commerce Skills</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Entrepreneurship & Innovation</span></li>
                         </ul>
                       </div>
 
@@ -166,11 +166,11 @@ export function Navbar() {
                       <div>
                         <h4 className="font-bold text-slate-800 text-[16px] mb-8">Corporate Professionals</h4>
                         <ul className="space-y-6">
-                          <li><Link href="/corporate/leadership" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Leadership Excellence</Link></li>
-                          <li><Link href="/corporate/business" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Business Excellence</Link></li>
-                          <li><Link href="/corporate/digital" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Digital Transformation</Link></li>
-                          <li><Link href="/corporate/workplace" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Workplace Effectiveness</Link></li>
-                          <li><Link href="/corporate/finance-compliance" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block whitespace-nowrap">Finance, Compliance & Risk</Link></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Leadership Excellence</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Business Excellence</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Transformation</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Workplace Effectiveness</span></li>
+                          <li><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Finance, Compliance & Risk</span></li>
                         </ul>
                       </div>
                     </div>

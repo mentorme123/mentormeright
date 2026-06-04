@@ -131,46 +131,46 @@ export function Navbar() {
                     <div className="grid grid-cols-3 gap-8">
                       {/* K-12 */}
                       <div>
-                        <h4 className="font-bold text-slate-800 text-sm mb-3">K-12 Students</h4>
+                        <h4 className="font-bold text-slate-800 text-[16px] mb-4 px-3">K-12 Students</h4>
                         <ul className="space-y-1">
-                          <li><Link href="/k12/future-readiness" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Future Readiness Skills</Link></li>
-                          <li><Link href="/k12/communication" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Communication & Leadership</Link></li>
-                          <li className="px-2 py-1">
-                            <span className="text-[11px] font-bold text-slate-800 block mb-1">STEM & Emerging Technologies:</span>
-                            <ul className="pl-2 space-y-0.5 border-l-2 border-brand-blue/20">
-                              <li><Link href="/k12/stem/robotics" className="text-[11px] font-medium text-slate-500 hover:text-brand-blue transition-colors px-2 py-1 rounded block hover:bg-brand-blue/5">Robotics</Link></li>
-                              <li><Link href="/k12/stem/coding" className="text-[11px] font-medium text-slate-500 hover:text-brand-blue transition-colors px-2 py-1 rounded block hover:bg-brand-blue/5">Coding</Link></li>
-                              <li><Link href="/k12/stem/iot" className="text-[11px] font-medium text-slate-500 hover:text-brand-blue transition-colors px-2 py-1 rounded block hover:bg-brand-blue/5">IoT</Link></li>
-                              <li><Link href="/k12/stem/ai" className="text-[11px] font-medium text-slate-500 hover:text-brand-blue transition-colors px-2 py-1 rounded block hover:bg-brand-blue/5">AI for School Students</Link></li>
-                              <li><Link href="/k12/stem/drones" className="text-[11px] font-medium text-slate-500 hover:text-brand-blue transition-colors px-2 py-1 rounded block hover:bg-brand-blue/5">Drones</Link></li>
+                          <li><Link href="/k12/future-readiness" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Future Readiness Skills</Link></li>
+                          <li><Link href="/k12/communication" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Communication & Leadership</Link></li>
+                          <li className="px-3 py-2">
+                            <span className="text-[14px] font-bold text-slate-800 block mb-2">STEM & Emerging Technologies:</span>
+                            <ul className="pl-4 space-y-1 border-l-2 border-slate-200">
+                              <li><Link href="/k12/stem/robotics" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block px-3 py-1.5 rounded-lg hover:bg-slate-100">Robotics</Link></li>
+                              <li><Link href="/k12/stem/coding" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block px-3 py-1.5 rounded-lg hover:bg-slate-100">Coding</Link></li>
+                              <li><Link href="/k12/stem/iot" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block px-3 py-1.5 rounded-lg hover:bg-slate-100">IoT</Link></li>
+                              <li><Link href="/k12/stem/ai" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block px-3 py-1.5 rounded-lg hover:bg-slate-100">AI for School Students</Link></li>
+                              <li><Link href="/k12/stem/drones" className="text-[13px] font-medium text-slate-500 hover:text-brand-blue transition-colors block px-3 py-1.5 rounded-lg hover:bg-slate-100">Drones</Link></li>
                             </ul>
                           </li>
-                          <li><Link href="/k12/digital-literacy" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Digital Literacy</Link></li>
-                          <li><Link href="/k12/career-life" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Career & Life Skills</Link></li>
+                          <li><Link href="/k12/digital-literacy" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Digital Literacy</Link></li>
+                          <li><Link href="/k12/career-life" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Career & Life Skills</Link></li>
                         </ul>
                       </div>
 
                       {/* College */}
                       <div>
-                        <h4 className="font-bold text-slate-800 text-sm mb-3">College Students</h4>
+                        <h4 className="font-bold text-slate-800 text-[16px] mb-4 px-3">College Students</h4>
                         <ul className="space-y-1">
-                          <li><Link href="/college/employability" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Employability Skills</Link></li>
-                          <li><Link href="/college/business" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Business & Professional Skills</Link></li>
-                          <li><Link href="/college/digital-analytics" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Digital & Analytics Skills</Link></li>
-                          <li><Link href="/college/finance" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Finance & Commerce Skills</Link></li>
-                          <li><Link href="/college/entrepreneurship" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Entrepreneurship & Innovation</Link></li>
+                          <li><Link href="/college/employability" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Employability Skills</Link></li>
+                          <li><Link href="/college/business" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Business & Professional Skills</Link></li>
+                          <li><Link href="/college/digital-analytics" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Digital & Analytics Skills</Link></li>
+                          <li><Link href="/college/finance" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Finance & Commerce Skills</Link></li>
+                          <li><Link href="/college/entrepreneurship" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Entrepreneurship & Innovation</Link></li>
                         </ul>
                       </div>
 
                       {/* Corporate */}
                       <div>
-                        <h4 className="font-bold text-slate-800 text-sm mb-3">Corporate Professionals</h4>
+                        <h4 className="font-bold text-slate-800 text-[16px] mb-4 px-3">Corporate Professionals</h4>
                         <ul className="space-y-1">
-                          <li><Link href="/corporate/leadership" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Leadership Excellence</Link></li>
-                          <li><Link href="/corporate/business" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Business Excellence</Link></li>
-                          <li><Link href="/corporate/digital" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Digital Transformation</Link></li>
-                          <li><Link href="/corporate/workplace" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Workplace Effectiveness</Link></li>
-                          <li><Link href="/corporate/finance-compliance" className="text-xs font-medium text-slate-600 hover:text-brand-blue transition-colors px-2 py-1.5 rounded-lg hover:bg-brand-blue/5 block">Finance, Compliance & Risk</Link></li>
+                          <li><Link href="/corporate/leadership" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Leadership Excellence</Link></li>
+                          <li><Link href="/corporate/business" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Business Excellence</Link></li>
+                          <li><Link href="/corporate/digital" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Digital Transformation</Link></li>
+                          <li><Link href="/corporate/workplace" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Workplace Effectiveness</Link></li>
+                          <li><Link href="/corporate/finance-compliance" className="text-[14px] font-medium text-slate-600 hover:text-brand-blue transition-colors block px-3 py-2 rounded-xl hover:bg-slate-100">Finance, Compliance & Risk</Link></li>
                         </ul>
                       </div>
                     </div>

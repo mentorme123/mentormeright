@@ -273,10 +273,3 @@ export function useSiteSearch() {
   
   return { isOpen, open: () => setIsOpen(true), close: () => setIsOpen(false) };
 }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
-
-  return { isOpen, open: () => setIsOpen(true), close: () => setIsOpen(false) };
-}

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Users, BookOpen, Globe2 } from "lucide-react";
+import { Users, BookOpen, Globe2, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 
 export default function ServicesPage() {
   const [guidanceTab, setGuidanceTab] = useState("institutions");
+  const [roboticsExpanded, setRoboticsExpanded] = useState(false);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -206,10 +207,43 @@ export default function ServicesPage() {
                   <div className="flex-1">
                     <span className="text-base font-bold text-slate-800 block mb-2">├── STEM & Emerging Technologies:</span>
                     <div className="ml-6 space-y-1 border-l-2 border-slate-200 pl-4">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 cursor-pointer" onClick={() => setRoboticsExpanded(!roboticsExpanded)}>
                         <span className="text-slate-400">│</span>
                         <span className="text-base font-medium text-slate-500">├── Robotics</span>
+                        <ChevronDown size={16} className={`text-slate-500 transition-transform ${roboticsExpanded ? "rotate-180" : ""}`} />
                       </div>
+                      {roboticsExpanded && (
+                        <div className="ml-6 space-y-1 border-l-2 border-slate-200 pl-4 mt-2">
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-300">│</span>
+                            <span className="text-sm font-medium text-slate-400">├── Introduction to Robotics & Its Applications</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-300">│</span>
+                            <span className="text-sm font-medium text-slate-400">├── Fundamentals of Electronics & Circuitry</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-300">│</span>
+                            <span className="text-sm font-medium text-slate-400">├── Practical Circuit Implementation</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-300">│</span>
+                            <span className="text-sm font-medium text-slate-400">├── Sensor Integration & Interactive Systems</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-300">│</span>
+                            <span className="text-sm font-medium text-slate-400">├── Robotics Programming & Control Systems</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-300">│</span>
+                            <span className="text-sm font-medium text-slate-400">├── Automation & Smart Robotics</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-300">│</span>
+                            <span className="text-sm font-medium text-slate-400">└── Robotics Projects & Expo</span>
+                          </div>
+                        </div>
+                      )}
                       <div className="flex items-center gap-2">
                         <span className="text-slate-400">│</span>
                         <span className="text-base font-medium text-slate-500">├── Coding</span>

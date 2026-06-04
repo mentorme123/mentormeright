@@ -51,48 +51,6 @@ export default function ServicesPage() {
     ]
   };
 
-  const programHierarchy = [
-    {
-      title: "K-12 Students",
-      items: [
-        { title: "Future Readiness Skills", href: "/k12/future-readiness" },
-        { title: "Communication & Leadership", href: "/k12/communication" },
-        {
-          title: "STEM & Emerging Technologies",
-          children: [
-            { title: "Robotics", href: "/k12/stem/robotics" },
-            { title: "Coding", href: "/k12/stem/coding" },
-            { title: "IoT", href: "/k12/stem/iot" },
-            { title: "AI for School Students", href: "/k12/stem/ai" },
-            { title: "Drones", href: "/k12/stem/drones" },
-          ]
-        },
-        { title: "Digital Literacy", href: "/k12/digital-literacy" },
-        { title: "Career & Life Skills", href: "/k12/career-life" },
-      ]
-    },
-    {
-      title: "College Students",
-      items: [
-        { title: "Employability Skills", href: "/college/employability" },
-        { title: "Business & Professional Skills", href: "/college/business" },
-        { title: "Digital & Analytics Skills", href: "/college/digital-analytics" },
-        { title: "Finance & Commerce Skills", href: "/college/finance" },
-        { title: "Entrepreneurship & Innovation", href: "/college/entrepreneurship" },
-      ]
-    },
-    {
-      title: "Corporate Professionals",
-      items: [
-        { title: "Leadership Excellence", href: "/corporate/leadership" },
-        { title: "Business Excellence", href: "/corporate/business" },
-        { title: "Digital Transformation", href: "/corporate/digital" },
-        { title: "Workplace Effectiveness", href: "/corporate/workplace" },
-        { title: "Finance, Compliance & Risk", href: "/corporate/finance-compliance" },
-      ]
-    }
-  ];
-
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-slate-50">
       {/* Header */}
@@ -232,7 +190,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Skill Training Section - Tree Layout */}
+      {/* Skill Training Section - 3 Column Layout */}
       <section id="skills" className="py-20 px-4">
         <div className="max-w-6xl mx-auto space-y-8">
           <motion.h2
@@ -243,69 +201,84 @@ export default function ServicesPage() {
             Skill Training
           </motion.h2>
 
-          <div className="text-lg text-slate-700 mb-10 font-mono leading-relaxed">
-            <span className="text-slate-500">└── </span>
-            <span className="font-bold text-slate-800 text-xl">21st Century Skills Hub</span>
+          <div className="flex flex-wrap gap-4 mb-12">
+            {[
+              { id: "schools", label: "For Schools" },
+              { id: "colleges", label: "For Colleges" },
+              { id: "working_professionals", label: "For Working Professionals" }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setSkillTab(tab.id)}
+                className={`px-8 py-3 rounded-full border transition-all ${skillTab === tab.id ? "border-blue-600 text-blue-600 bg-blue-50" : "border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+              >
+                {tab.label}
+              </button>
+            ))}
           </div>
 
-          <div className="space-y-8">
-            {programHierarchy.map((category, catIdx) => (
-              <motion.div
-                key={catIdx}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: catIdx * 0.1 }}
-                className="pl-6 border-l-2 border-slate-200"
-              >
-                <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-3">
-                  <span className="text-slate-400">│</span>
-                  <span className={
-                    catIdx === 0 ? "text-blue-700" :
-                    catIdx === 1 ? "text-green-700" :
-                    "text-orange-700"
-                  }>
-                    {category.title}
-                  </span>
-                </h3>
+          {/* 3 Column Program List */}
+          <div className="grid md:grid-cols-3 gap-12">
+            {/* K-12 Column */}
+            <div>
+              <h3 className="text-xl font-bold text-slate-800 mb-6">K-12 Students</h3>
+              <ul className="space-y-5">
+                <li>
+                  <Link href="/k12/future-readiness" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">
+                    Future Readiness Skills
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/k12/communication" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">
+                    Communication & Leadership
+                  </Link>
+                </li>
+                <li className="space-y-4 pt-1">
+                  <span className="text-base font-bold text-slate-800 block whitespace-nowrap">STEM & Emerging Technologies:</span>
+                  <ul className="pl-4 space-y-4 border-l-2 border-slate-200">
+                    <li><Link href="/k12/stem/robotics" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Robotics</Link></li>
+                    <li><Link href="/k12/stem/coding" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Coding</Link></li>
+                    <li><Link href="/k12/stem/iot" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">IoT</Link></li>
+                    <li><Link href="/k12/stem/ai" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">AI for School Students</Link></li>
+                    <li><Link href="/k12/stem/drones" className="text-base font-medium text-slate-500 hover:text-brand-blue transition-colors block whitespace-nowrap">Drones</Link></li>
+                  </ul>
+                </li>
+                <li className="pt-2">
+                  <Link href="/k12/digital-literacy" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">
+                    Digital Literacy
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/k12/career-life" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">
+                    Career & Life Skills
+                  </Link>
+                </li>
+              </ul>
+            </div>
 
-                <div className="ml-6 space-y-3">
-                  {category.items.map((item, itemIdx) => (
-                    <div key={itemIdx} className="relative">
-                      {item.children ? (
-                        <div>
-                          <div className="flex items-center gap-2 mb-2">
-                            <span className="text-slate-400 font-mono text-sm">│</span>
-                            <h4 className="font-bold text-slate-800">├── {item.title}</h4>
-                          </div>
-                          <ul className="ml-8 space-y-2 border-l-2 border-slate-100 pl-4">
-                            {item.children.map((child, childIdx) => (
-                              <li key={childIdx}>
-                                <Link
-                                  href={child.href}
-                                  className="text-slate-600 hover:text-brand-blue bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 px-4 py-2 rounded-lg transition-all text-sm font-medium inline-block"
-                                >
-                                  {'│   '}├── {child.title}
-                                </Link>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          <span className="text-slate-400 font-mono text-sm">│</span>
-                          <Link
-                            href={item.href}
-                            className="text-slate-700 hover:text-brand-blue bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 px-4 py-2 rounded-lg transition-all text-sm font-medium"
-                          >
-                            ├── {item.title}
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
+            {/* College Column */}
+            <div>
+              <h3 className="text-xl font-bold text-slate-800 mb-6">College Students</h3>
+              <ul className="space-y-6">
+                <li><Link href="/college/employability" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Employability Skills</Link></li>
+                <li><Link href="/college/business" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Business & Professional Skills</Link></li>
+                <li><Link href="/college/digital-analytics" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Digital & Analytics Skills</Link></li>
+                <li><Link href="/college/finance" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Finance & Commerce Skills</Link></li>
+                <li><Link href="/college/entrepreneurship" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Entrepreneurship & Innovation</Link></li>
+              </ul>
+            </div>
+
+            {/* Corporate Column */}
+            <div>
+              <h3 className="text-xl font-bold text-slate-800 mb-6">Corporate Professionals</h3>
+              <ul className="space-y-6">
+                <li><Link href="/corporate/leadership" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Leadership Excellence</Link></li>
+                <li><Link href="/corporate/business" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Business Excellence</Link></li>
+                <li><Link href="/corporate/digital" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Digital Transformation</Link></li>
+                <li><Link href="/corporate/workplace" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Workplace Effectiveness</Link></li>
+                <li><Link href="/corporate/finance-compliance" className="text-base font-medium text-slate-600 hover:text-brand-blue transition-colors block">Finance, Compliance & Risk</Link></li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

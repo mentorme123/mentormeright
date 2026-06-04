@@ -38,13 +38,11 @@ export function Navbar() {
       <nav className="w-full border-b border-brand-blue/10 bg-gradient-to-r from-brand-blue/[0.04] to-brand-orange/[0.04] backdrop-blur-md sticky top-0 z-50">
         <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-6 sm:px-10 lg:px-12">
           <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="relative h-12 w-36 lg:h-14 lg:w-44 shrink-0">
-              <Image
+            <div className="relative h-12 w-36 lg:h-14 lg:w-44 shrink-0 flex items-center justify-center">
+              <img
                 src="/logo.png"
                 alt="MentorMe Logo"
-                fill
-                className="object-contain"
-                priority
+                className="max-w-full max-h-full object-contain"
               />
             </div>
           </Link>
@@ -207,19 +205,19 @@ export function Navbar() {
             </button>
 
             <Link href="/assessment" className="hidden lg:block">
-              <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-black px-8 py-3.5 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all duration-300 text-[14px] tracking-tight">
+              <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
                 Career Assessment
               </button>
             </Link>
 
             <Link href="/register" className="hidden sm:block">
-              <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20">
+              <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
                 Register
               </button>
             </Link>
 
-            <Link href="/login">
-              <button className="hidden sm:inline-flex bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20">
+            <Link href="/login" className="hidden sm:block">
+              <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20 text-sm whitespace-nowrap">
                 Log in
               </button>
             </Link>

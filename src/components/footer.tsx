@@ -10,12 +10,11 @@ export function Footer() {
           
           {/* Brand & Contact */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="relative h-12 w-40">
-              <Image 
+            <div className="relative h-12 w-40 flex items-center justify-start">
+              <img 
                 src="/logo.png" 
                 alt="MentorMe Logo" 
-                fill 
-                className="object-contain"
+                className="max-w-full max-h-full object-contain"
               />
             </div>
             <p className="text-lg font-semibold text-brand-orange">

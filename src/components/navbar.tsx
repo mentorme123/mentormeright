@@ -36,7 +36,7 @@ export function Navbar() {
       <SiteSearch isOpen={isSearchOpen} onClose={closeSearch} />
 
       <nav className="w-full border-b border-brand-blue/10 bg-gradient-to-r from-brand-blue/[0.04] to-brand-orange/[0.04] backdrop-blur-md sticky top-0 z-50">
-        <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-6 sm:px-10 lg:px-12">
+        <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-12 gap-2">
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="relative h-12 w-36 lg:h-14 lg:w-44 shrink-0 flex items-center justify-center">
               <img
@@ -47,7 +47,7 @@ export function Navbar() {
             </div>
           </Link>
 
-          <div className="hidden xl:flex items-center gap-4 xl:gap-8 text-[14px] xl:text-[16px] font-bold text-slate-800 whitespace-nowrap">
+          <div className="hidden xl:flex items-center gap-3 xl:gap-5 text-[14px] font-bold text-slate-800 whitespace-nowrap shrink">
             <Link
               href="/"
               className="relative group py-2"
@@ -189,7 +189,7 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 xl:gap-3 shrink-0">
             <button
               onClick={openSearch}
               title="Search site (Ctrl+K)"

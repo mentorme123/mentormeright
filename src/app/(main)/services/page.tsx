@@ -51,10 +51,10 @@ export default function ServicesPage() {
     ]
   };
 
-  const programHierarchy = {
-    k12: {
+  const programHierarchy = [
+    {
       title: "K-12 Students",
-      sections: [
+      items: [
         { title: "Future Readiness Skills", href: "/k12/future-readiness" },
         { title: "Communication & Leadership", href: "/k12/communication" },
         {
@@ -71,9 +71,9 @@ export default function ServicesPage() {
         { title: "Career & Life Skills", href: "/k12/career-life" },
       ]
     },
-    college: {
+    {
       title: "College Students",
-      sections: [
+      items: [
         { title: "Employability Skills", href: "/college/employability" },
         { title: "Business & Professional Skills", href: "/college/business" },
         { title: "Digital & Analytics Skills", href: "/college/digital-analytics" },
@@ -81,9 +81,9 @@ export default function ServicesPage() {
         { title: "Entrepreneurship & Innovation", href: "/college/entrepreneurship" },
       ]
     },
-    corporate: {
+    {
       title: "Corporate Professionals",
-      sections: [
+      items: [
         { title: "Leadership Excellence", href: "/corporate/leadership" },
         { title: "Business Excellence", href: "/corporate/business" },
         { title: "Digital Transformation", href: "/corporate/digital" },
@@ -91,7 +91,7 @@ export default function ServicesPage() {
         { title: "Finance, Compliance & Risk", href: "/corporate/finance-compliance" },
       ]
     }
-  };
+  ];
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-slate-50">
@@ -232,7 +232,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Skill Training Section */}
+      {/* Skill Training Section - Tree Layout */}
       <section id="skills" className="py-20 px-4">
         <div className="max-w-6xl mx-auto space-y-8">
           <motion.h2
@@ -243,63 +243,69 @@ export default function ServicesPage() {
             Skill Training
           </motion.h2>
 
-          <p className="text-slate-500 text-lg mb-8">
-            └── <span className="font-semibold text-slate-700">21st Century Skills Hub</span>
-          </p>
+          <div className="text-lg text-slate-700 mb-10 font-mono leading-relaxed">
+            <span className="text-slate-500">└── </span>
+            <span className="font-bold text-slate-800 text-xl">21st Century Skills Hub</span>
+          </div>
 
-          <div className="space-y-10">
-            {(Object.keys(programHierarchy) as Array<keyof typeof programHierarchy>).map((key) => {
-              const category = programHierarchy[key];
-              return (
-                <motion.div
-                  key={key}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="border border-slate-200 rounded-2xl p-8 bg-white shadow-sm"
-                >
-                  <h3 className="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
-                    {key !== "k12" && <span className="text-slate-400">│</span>}
-                    <span className={key === "k12" ? "text-blue-700" : key === "college" ? "text-green-700" : "text-orange-700"}>
-                      {category.title}
-                    </span>
-                  </h3>
+          <div className="space-y-8">
+            {programHierarchy.map((category, catIdx) => (
+              <motion.div
+                key={catIdx}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: catIdx * 0.1 }}
+                className="pl-6 border-l-2 border-slate-200"
+              >
+                <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-3">
+                  <span className="text-slate-400">│</span>
+                  <span className={
+                    catIdx === 0 ? "text-blue-700" :
+                    catIdx === 1 ? "text-green-700" :
+                    "text-orange-700"
+                  }>
+                    {category.title}
+                  </span>
+                </h3>
 
-                  <div className="space-y-4 ml-4">
-                    {category.sections.map((section, i) => (
-                      <div key={i}>
-                        {"children" in section ? (
-                          <div className="ml-4 space-y-1">
-                            <h4 className="font-bold text-slate-800 text-base">├── {section.title}</h4>
-                            <ul className="ml-6 space-y-1 border-l-2 border-slate-100 pl-4">
-                              {(section.children || []).map((child, j) => (
-                                <li key={j}>
-                                  <Link
-                                    href={child.href}
-                                    className="text-sm text-slate-600 hover:text-brand-blue hover:bg-brand-blue/5 rounded px-2 py-1 transition-all block"
-                                  >
-                                    {'  '}├── {child.title}
-                                  </Link>
-                                </li>
-                              ))}
-                            </ul>
+                <div className="ml-6 space-y-3">
+                  {category.items.map((item, itemIdx) => (
+                    <div key={itemIdx} className="relative">
+                      {item.children ? (
+                        <div>
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="text-slate-400 font-mono text-sm">│</span>
+                            <h4 className="font-bold text-slate-800">├── {item.title}</h4>
                           </div>
-                        ) : (
-                          <div className="flex items-center gap-2">
-                            <span className="text-slate-400 text-sm">│</span>
-                            <Link
-                              href={section.href}
-                              className="text-slate-700 hover:text-brand-blue bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 px-4 py-2 rounded-lg transition-all text-sm font-medium"
-                            >
-                              {'├── '}{section.title}
-                            </Link>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              );
-            })}
+                          <ul className="ml-8 space-y-2 border-l-2 border-slate-100 pl-4">
+                            {item.children.map((child, childIdx) => (
+                              <li key={childIdx}>
+                                <Link
+                                  href={child.href}
+                                  className="text-slate-600 hover:text-brand-blue bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 px-4 py-2 rounded-lg transition-all text-sm font-medium inline-block"
+                                >
+                                  {'│   '}├── {child.title}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <span className="text-slate-400 font-mono text-sm">│</span>
+                          <Link
+                            href={item.href}
+                            className="text-slate-700 hover:text-brand-blue bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-200 px-4 py-2 rounded-lg transition-all text-sm font-medium"
+                          >
+                            ├── {item.title}
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>

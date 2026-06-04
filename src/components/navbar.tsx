@@ -8,6 +8,7 @@ import { SiteSearch, useSiteSearch } from "@/components/site-search";
 
 export function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isAiDropdownOpen, setIsAiDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
@@ -68,15 +69,42 @@ export function Navbar() {
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
 
-            <Link
-              href="/ai-learning-hub"
-              className="relative group py-2"
+            <div
+              className="relative"
+              onMouseEnter={() => setIsAiDropdownOpen(true)}
+              onMouseLeave={() => setIsAiDropdownOpen(false)}
             >
-              <span className="group-hover:text-brand-blue transition-colors duration-300">
-                AI Learning Hub
-              </span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
-            </Link>
+              <button
+                type="button"
+                className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300"
+                aria-expanded={isAiDropdownOpen}
+                onFocus={() => setIsAiDropdownOpen(true)}
+                onBlur={() => setIsAiDropdownOpen(false)}
+              >
+                <Link href="/ai-learning-hub" className="hover:text-brand-blue">
+                  AI Learning Hub
+                </Link>
+                <ChevronDown
+                  size={14}
+                  className={`transition-transform duration-300 ${
+                    isAiDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isAiDropdownOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[240px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                  <div className="p-4">
+                    <ul className="space-y-1">
+                      <li><Link href="/ai-learning-hub/ai-foundations" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors px-3 py-2 rounded-lg hover:bg-brand-blue/5 block">AI Foundations</Link></li>
+                      <li><Link href="/ai-learning-hub/generative-ai" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors px-3 py-2 rounded-lg hover:bg-brand-blue/5 block">Generative AI</Link></li>
+                      <li><Link href="/ai-learning-hub/ai-for-business" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors px-3 py-2 rounded-lg hover:bg-brand-blue/5 block">AI for Business</Link></li>
+                      <li><Link href="/ai-learning-hub/ai-for-educators" className="text-sm font-medium text-slate-700 hover:text-brand-blue transition-colors px-3 py-2 rounded-lg hover:bg-brand-blue/5 block">AI for Educators</Link></li>
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <div
               className="relative"

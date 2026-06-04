@@ -40,14 +40,14 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="relative h-12 w-36 lg:h-14 lg:w-44 shrink-0 flex items-center justify-center">
               <img
-                src="/logo.png"
+                src="/logo.png?v=2"
                 alt="MentorMe Logo"
                 className="max-w-full max-h-full object-contain"
               />
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center gap-4 xl:gap-8 text-[14px] xl:text-[16px] font-bold text-slate-800 whitespace-nowrap">
+          <div className="hidden xl:flex items-center gap-4 xl:gap-8 text-[14px] xl:text-[16px] font-bold text-slate-800 whitespace-nowrap">
             <Link
               href="/"
               className="relative group py-2"
@@ -224,7 +224,7 @@ export function Navbar() {
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-muted transition-colors"
+              className="xl:hidden p-2 rounded-xl hover:bg-muted transition-colors"
               aria-label="Toggle mobile menu"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -233,7 +233,7 @@ export function Navbar() {
         </div>
 
         {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-border bg-background">
+          <div className="xl:hidden border-t border-border bg-background">
             <div className="container mx-auto px-4 py-4 space-y-1">
               <button
                 onClick={() => {

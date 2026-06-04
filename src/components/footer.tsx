@@ -12,7 +12,7 @@ export function Footer() {
           <div className="lg:col-span-2 space-y-6">
             <div className="relative h-12 w-40 flex items-center justify-start">
               <img 
-                src="/logo.png" 
+                src="/logo.png?v=2" 
                 alt="MentorMe Logo" 
                 className="max-w-full max-h-full object-contain"
               />

@@ -183,6 +183,41 @@ export default function Home() {
         "/images/partners/iimc-session-4.jpg",
         "/images/partners/iimc-session-5.jpg"
       ]
+    },
+    {
+      name: "Avanthi Degree & PG Colleges",
+      logo: "/images/partners/avanthi.png",
+      description: "Avanthi Degree & PG Colleges is committed to providing quality education with a focus on innovation, industry exposure, and holistic student development.",
+      website: "#",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+    },
+    {
+      name: "HPS Nizamabad",
+      logo: "/images/partners/hps-nizamabad.png",
+      description: "HPS Nizamabad is a well-established educational institution providing holistic schooling with a strong emphasis on academics, discipline, and extracurricular excellence.",
+      website: "#",
+      contact: [{ label: "Location", value: "Nizamabad, Telangana" }]
+    },
+    {
+      name: "St Pious Hyderabad",
+      logo: "/images/partners/st-pious.jpg",
+      description: "St Pious Hyderabad is a reputed institution dedicated to academic excellence, character formation, and comprehensive student development.",
+      website: "#",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+    },
+    {
+      name: "Edify School Tirupati",
+      logo: "/images/partners/edify-school.webp",
+      description: "Edify School Tirupati provides world-class K-12 education with a focus on conceptual learning, life skills, and global citizenship.",
+      website: "#",
+      contact: [{ label: "Location", value: "Tirupati, Andhra Pradesh" }]
+    },
+    {
+      name: "Shree Daksha",
+      logo: "/images/partners/shree-daksha.png",
+      description: "Shree Daksha is a forward-thinking educational institution focused on nurturing young minds through value-based education and modern teaching methodologies.",
+      website: "#",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
     }
   ];
 

@@ -256,10 +256,10 @@ export default function Home() {
         "/images/partners/edify-session-4.jpg"
       ],
       imageCrops: [
-        "center 10%", // Photo 1: shift up to not cut heads
-        "center 20%", // Photo 2: shift up slightly
-        "center 10%", // Photo 3: keep heads of people on stage
-        "center 10%"  // Photo 4: keep speaker at podium
+        "center 80%", // Photo 1: focus on students at the bottom
+        "center 80%", // Photo 2: focus on the audience
+        "center 90%", // Photo 3: vertical photo, subjects are at the bottom
+        "center 70%"  // Photo 4: lady at podium is in the lower-middle
       ]
     },
     {

@@ -908,7 +908,7 @@ export default function Home() {
                       <img
                         src={institutions[selectedInstitution].logo}
                         alt={institutions[selectedInstitution].name}
-                        className="w-full h-full object-contain p-2"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                     <div>

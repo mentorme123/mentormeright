@@ -90,35 +90,35 @@ export default function Home() {
   const institutions = [
     {
       name: "DDGD Vaishnav Chennai",
-      logo: "/images/partners/ddgd-vaishnav.png",
+      logo: "/images/partners/ddgd-vaishnav</newString>",
       description: "DDGD Vaishnav Chennai is a prestigious institution known for academic excellence and holistic student development.",
       website: "#",
       contact: [{ label: "Location", value: "Chennai, Tamil Nadu" }]
     },
     {
       name: "ICBM School of Business",
-      logo: "/images/partners/icbm.png",
+      logo: "/images/partners/icbm.jpg",
       description: "ICBM School of Business Excellence is a premier business school offering quality management education and industry-focused programs.",
       website: "#",
       contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
     },
     {
       name: "TSWRDC Nalgonda",
-      logo: "/images/partners/tswrdc.png",
+      logo: "/images/partners/tswrdc.jpg",
       description: "TSWRDC Nalgonda is a government residential degree college committed to providing quality higher education to underprivileged students.",
       website: "#",
       contact: [{ label: "Location", value: "Nalgonda, Telangana" }]
     },
     {
       name: "Pragati Mahavidyalaya",
-      logo: "/images/partners/pragati-maha.png",
+      logo: "/images/partners/pragati-maha.jpg",
       description: "Pragati Mahavidyalaya is a leading educational institution dedicated to empowering students through quality education and career guidance.",
       website: "#",
       contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
     },
     {
       name: "Keshav Memorial",
-      logo: "/images/partners/keshav-memorial.png",
+      logo: "/images/partners/keshav-memorial.jpg",
       description: "Keshav Memorial Educational Society is a renowned group of institutions providing excellence in education from school to college level.",
       website: "#",
       contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
@@ -136,7 +136,7 @@ export default function Home() {
     },
     {
       name: "St. Joseph's Degree & PG College",
-      logo: "/images/partners/st-josephs.png",
+      logo: "/images/partners/st-josephs.jpg",
       description: "St. Joseph's Degree & PG College, Hyderabad — A premier institution offering undergraduate and postgraduate programs, known for academic excellence, holistic student development, and strong industry connections.",
       website: "https://stjosephspgcollege.ac.in",
       contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
@@ -427,14 +427,14 @@ export default function Home() {
             <div className="flex gap-5 partners-scroll">
               {(() => {
                 const partners = [
-                  { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.png", link: "/k12-programs" },
+                  { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav</newString>", link: "/k12-programs" },
                   { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.png", link: "/k12-programs" },
-                  { name: "ICBM School of Business", logo: "/images/partners/icbm.png", link: "/college-programs" },
-                  { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.png", link: "/k12-programs" },
-                  { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.png", link: "/college-programs" },
-                  { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.png", link: "/k12-programs" },
+                  { name: "ICBM School of Business", logo: "/images/partners/icbm.jpg", link: "/college-programs" },
+                  { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },
+                  { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
+                  { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.jpg", link: "/k12-programs" },
                   { name: "ELGI School", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
-                  { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.png", link: "/college-programs" },
+                  { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
                   { name: "Howard Park International", logo: "/images/partners/howard-park.png", link: "/k12-programs" },
                   { name: "Geetam School", logo: "/images/partners/geetam.png", link: "/k12-programs" },
                   { name: "Pantheon Digital", logo: "/images/partners/pantheon-digital.png", link: "/college-programs" },

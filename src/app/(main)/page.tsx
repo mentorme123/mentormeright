@@ -178,8 +178,6 @@ export default function Home() {
       outcomes: ["Improved interview confidence and communication skills", "Enhanced job application and placement readiness", "Practical exposure through mock interview simulations", "Better understanding of employer expectations and recruitment processes"],
       partnershipHighlights: "This collaboration demonstrates MentorMe's capability to design and deliver structured employability and career development programs for higher education institutions. Our programs are tailored to bridge the gap between academic learning and industry requirements.",
       images: [
-        "/images/partners/iimc-event-1.jpg",
-        "/images/partners/iimc-event-2.jpg",
         "/images/partners/iimc-session-2.jpg",
         "/images/partners/iimc-session-3.jpg",
         "/images/partners/iimc-session-4.jpg",
@@ -990,32 +988,17 @@ export default function Home() {
                 {(institutions[selectedInstitution] as any).images && (institutions[selectedInstitution] as any).images.length > 0 && (
                   <div className="mt-5 space-y-3">
                     <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Program Gallery</p>
-                    {/* Top row: 2 new event photos side by side */}
                     <div className="grid grid-cols-2 gap-3">
-                      {(institutions[selectedInstitution] as any).images.slice(0, 2).map((src: string, i: number) => (
+                      {(institutions[selectedInstitution] as any).images.map((src: string, i: number) => (
                         <div key={i} className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
                           <img
                             src={src}
-                            alt={`${institutions[selectedInstitution].name} - Event ${i + 1}`}
+                            alt={`${institutions[selectedInstitution].name} - Photo ${i + 1}`}
                             className="w-full h-44 object-cover"
                           />
                         </div>
                       ))}
                     </div>
-                    {/* Bottom grid: 4 session photos */}
-                    {(institutions[selectedInstitution] as any).images.length > 2 && (
-                      <div className="grid grid-cols-2 gap-3">
-                        {(institutions[selectedInstitution] as any).images.slice(2).map((src: string, i: number) => (
-                          <div key={i} className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
-                            <img
-                              src={src}
-                              alt={`${institutions[selectedInstitution].name} - Session ${i + 1}`}
-                              className="w-full h-36 object-cover"
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    )}
                   </div>
                 )}
                 {institutions[selectedInstitution].contact && institutions[selectedInstitution].contact.length > 0 && (

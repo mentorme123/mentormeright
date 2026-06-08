@@ -456,7 +456,10 @@ export default function Home() {
                 return [...partners, ...partners].map((partner, i) => (
                   <div
                     key={i}
-                    onClick={() => setSelectedInstitution(i % institutions.length)}
+                    onClick={() => {
+                      const idx = institutions.findIndex(inst => inst.name === partner.name);
+                      if (idx >= 0) setSelectedInstitution(idx);
+                    }}
                     className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-transform cursor-pointer"
                     style={{ width: "160px", height: "160px", padding: "20px" }}
                   >
@@ -945,6 +948,36 @@ export default function Home() {
                         </ul>
                       </div>
                     )}
+                  </div>
+                )}
+                {(institutions[selectedInstitution] as any).keyAreas && (institutions[selectedInstitution] as any).keyAreas.length > 0 && (
+                  <div className="mt-5">
+                    <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Key Areas Covered</p>
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      {(institutions[selectedInstitution] as any).keyAreas.map((item: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700 bg-white p-2.5 rounded-lg border border-slate-100">
+                          <span className="text-blue-500 mt-0.5 shrink-0">◆</span> {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {(institutions[selectedInstitution] as any).outcomes && (institutions[selectedInstitution] as any).outcomes.length > 0 && (
+                  <div className="mt-5">
+                    <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Outcomes</p>
+                    <div className="grid gap-2">
+                      {(institutions[selectedInstitution] as any).outcomes.map((item: string, i: number) => (
+                        <div key={i} className="flex items-start gap-2 text-sm text-slate-700 bg-green-50 p-2.5 rounded-lg border border-green-100">
+                          <span className="text-green-600 mt-0.5 shrink-0">✓</span> {item}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {(institutions[selectedInstitution] as any).partnershipHighlights && (
+                  <div className="mt-5 p-5 bg-blue-50 rounded-2xl border border-blue-100">
+                    <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Partnership Highlights</p>
+                    <p className="text-sm text-slate-700 leading-relaxed">{(institutions[selectedInstitution] as any).partnershipHighlights}</p>
                   </div>
                 )}
                 {(institutions[selectedInstitution] as any).images && (institutions[selectedInstitution] as any).images.length > 0 && (

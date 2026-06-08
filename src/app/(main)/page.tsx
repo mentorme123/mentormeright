@@ -456,7 +456,7 @@ export default function Home() {
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.png", link: "/k12-programs" },
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
                   { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
-                  { name: "Edify School Tirupati", logo: "/images/partners/edify-school.WEBP", link: "/k12-programs" },
+                  { name: "Edify School Tirupati", logo: "/images/partners/edify-school.webp", link: "/k12-programs" },
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => (

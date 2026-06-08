@@ -69,13 +69,13 @@ function Counter({ value }: { value: string }) {
     };
   }, [hasStarted, target]);
 
-   return (
-     <div ref={elementRef} className="text-5xl font-extrabold text-brand-orange">
-       {count}
-       {suffix}
-     </div>
-   );
- }
+  return (
+    <div ref={elementRef} className="text-5xl font-extrabold text-brand-orange">
+      {count}
+      {suffix}
+    </div>
+  );
+}
 
 export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -301,8 +301,8 @@ export default function Home() {
                 key={idx}
                 onClick={() => setCurrentSlide(idx)}
                 className={`h-3 rounded-full transition-all duration-300 ${idx === currentSlide
-                    ? "w-8 bg-brand-orange"
-                    : "w-3 bg-white/40 hover:bg-white/60"
+                  ? "w-8 bg-brand-orange"
+                  : "w-3 bg-white/40 hover:bg-white/60"
                   }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
@@ -456,6 +456,7 @@ export default function Home() {
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.png", link: "/k12-programs" },
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
                   { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
+                  { name: "Edify School Tirupati", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => (

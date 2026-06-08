@@ -210,7 +210,7 @@ export default function Home() {
       logo: "/images/partners/edify-school.webp",
       tagline: "Edify School, Tirupati",
       description: "MentorMe partnered with Edify School, Tirupati to design and deliver a structured, outcome-driven Career Guidance Ecosystem for students from Grades 8–12. The program combines psychometric assessments, career exploration, academic planning, parent engagement, and personalized counseling to help students make informed decisions about their future careers and education pathways.",
-      website: "#",
+      website: "http://edifyschooltirupati.com/",
       contact: [{ label: "Location", value: "Tirupati, Andhra Pradesh" }],
       program: "The Career Compass Program",
       programOverview: [

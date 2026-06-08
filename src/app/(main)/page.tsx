@@ -90,7 +90,7 @@ export default function Home() {
   const institutions = [
     {
       name: "DDGD Vaishnav Chennai",
-      logo: "/images/partners/ddgd-vaishnav</newString>",
+      logo: "/images/partners/ddgd-vaishnav.jpg",
       description: "DDGD Vaishnav Chennai is a prestigious institution known for academic excellence and holistic student development.",
       website: "#",
       contact: [{ label: "Location", value: "Chennai, Tamil Nadu" }]
@@ -427,7 +427,7 @@ export default function Home() {
             <div className="flex gap-5 partners-scroll">
               {(() => {
                 const partners = [
-                  { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav</newString>", link: "/k12-programs" },
+                  { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.jpg", link: "/k12-programs" },
                   { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.png", link: "/k12-programs" },
                   { name: "ICBM School of Business", logo: "/images/partners/icbm.jpg", link: "/college-programs" },
                   { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },

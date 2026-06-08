@@ -200,9 +200,45 @@ export default function Home() {
     {
       name: "HPS Nizamabad",
       logo: "/images/partners/hps-nizamabad.png",
-      description: "HPS Nizamabad is a well-established educational institution providing holistic schooling with a strong emphasis on academics, discipline, and extracurricular excellence.",
+      tagline: "HPS Nizamabad School",
+      description: "MentorMe partnered with HPS Nizamabad School to deliver a comprehensive Artificial Intelligence (AI) Certification Program designed to equip students with future-ready technology skills, practical AI knowledge, and hands-on learning experiences.",
       website: "#",
-      contact: [{ label: "Location", value: "Nizamabad, Telangana" }]
+      contact: [{ label: "Location", value: "Nizamabad, Telangana" }],
+      program: "Artificial Intelligence Certification Program",
+      programOverview: [
+        "Academic Year 2025-26",
+        "Monthly Training Sessions",
+        "Two Consecutive Training Days Every Month",
+        "Average Batch Size of 200 Students",
+        "Future Skills & Emerging Technology Education"
+      ],
+      keyAreas: [
+        "Introduction to Artificial Intelligence & Ethics",
+        "Machine Learning Fundamentals",
+        "Computer Vision & Image Processing",
+        "Natural Language Processing (NLP)",
+        "AI Chatbots & Conversational AI",
+        "AI in Robotics",
+        "AI for Social Good & Sustainability",
+        "Hands-On Learning Experience & Innovation Projects"
+      ],
+      outcomes: [
+        "Foundational Understanding of Artificial Intelligence",
+        "Exposure to Machine Learning Concepts",
+        "Practical Experience with AI Tools & Technologies",
+        "Enhanced Problem-Solving and Analytical Skills",
+        "Increased Awareness of Future Career Opportunities in Technology",
+        "Development of Innovation and Design Thinking Capabilities"
+      ],
+      partnershipHighlights: "This collaboration demonstrates MentorMe's expertise in delivering advanced technology education programs for schools. By introducing students to Artificial Intelligence, Machine Learning, Computer Vision, and Natural Language Processing, MentorMe helps institutions prepare learners for the digital future.",
+      images: [
+        "/images/partners/hps-session-1.jpg",
+        "/images/partners/hps-session-2.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center"
+      ]
     },
     {
       name: "St Pious Hyderabad",

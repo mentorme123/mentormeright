@@ -994,7 +994,7 @@ export default function Home() {
                           <img
                             src={src}
                             alt={`${institutions[selectedInstitution].name} - Photo ${i + 1}`}
-                            className="w-full h-44 object-cover"
+                            className="w-full h-60 object-cover"
                           />
                         </div>
                       ))}

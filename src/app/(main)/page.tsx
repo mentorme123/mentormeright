@@ -208,9 +208,47 @@ export default function Home() {
     {
       name: "Edify School Tirupati",
       logo: "/images/partners/edify-school.webp",
-      description: "Edify School Tirupati provides world-class K-12 education with a focus on conceptual learning, life skills, and global citizenship.",
+      tagline: "Edify School, Tirupati",
+      description: "MentorMe partnered with Edify School, Tirupati to design and deliver a structured, outcome-driven Career Guidance Ecosystem for students from Grades 8–12. The program combines psychometric assessments, career exploration, academic planning, parent engagement, and personalized counseling to help students make informed decisions about their future careers and education pathways.",
       website: "#",
-      contact: [{ label: "Location", value: "Tirupati, Andhra Pradesh" }]
+      contact: [{ label: "Location", value: "Tirupati, Andhra Pradesh" }],
+      program: "The Career Compass Program",
+      programOverview: [
+        "Career Guidance Program for Grades 8–12",
+        "Psychometric Career Assessments",
+        "Career Awareness Workshops",
+        "Stream Selection Guidance",
+        "Parent Orientation & Engagement",
+        "Industry Expert Career Sessions",
+        "College & Study Abroad Guidance",
+        "One-on-One Career Counseling",
+        "Digital Career Library Access"
+      ],
+      keyAreas: [
+        "Self-Discovery & Assessments",
+        "Career Awareness Workshops",
+        "Parent Orientation Program",
+        "Industry Expert Sessions",
+        "Digital Career Library",
+        "Student Well-Being & Life Skills"
+      ],
+      outcomes: [
+        "Clear Career Roadmaps for Students",
+        "Data-Driven Career Decisions",
+        "Improved Parent Engagement",
+        "Enhanced Student Confidence",
+        "Better Subject & Stream Selection",
+        "Increased Career Awareness",
+        "Stronger College & Career Planning",
+        "Future-Ready Skill Development"
+      ],
+      partnershipHighlights: "Through this structured and holistic career development ecosystem, Edify School strengthens its position as a future-ready institution while empowering students with the clarity, confidence, and direction needed to make successful academic and career choices.",
+      images: [
+        "/images/partners/edify-session-1.jpg",
+        "/images/partners/edify-session-2.jpg",
+        "/images/partners/edify-session-3.jpg",
+        "/images/partners/edify-session-4.jpg"
+      ]
     },
     {
       name: "Shree Daksha",

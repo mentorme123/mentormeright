@@ -182,6 +182,12 @@ export default function Home() {
         "/images/partners/iimc-session-3.jpg",
         "/images/partners/iimc-session-4.jpg",
         "/images/partners/iimc-session-5.jpg"
+      ],
+      imageCrops: [
+        "center 50%",   // Photo 1: orange-wall classroom
+        "center 65%",   // Photo 2: hall Q&A – shift down to show all seated students
+        "center 25%",   // Photo 3: large classroom – keep top students visible
+        "center 35%"    // Photo 4: projector room
       ]
     },
     {
@@ -248,6 +254,12 @@ export default function Home() {
         "/images/partners/edify-session-2.jpg",
         "/images/partners/edify-session-3.jpg",
         "/images/partners/edify-session-4.jpg"
+      ],
+      imageCrops: [
+        "center 10%", // Photo 1: shift up to not cut heads
+        "center 20%", // Photo 2: shift up slightly
+        "center 10%", // Photo 3: keep heads of people on stage
+        "center 10%"  // Photo 4: keep speaker at podium
       ]
     },
     {
@@ -1065,13 +1077,8 @@ export default function Home() {
                     <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Program Gallery</p>
                     <div className="grid grid-cols-2 gap-3">
                       {(institutions[selectedInstitution] as any).images.map((src: string, i: number) => {
-                        // Per-photo crop position to minimise empty benches/chairs
-                        const cropPos = [
-                          "center 50%",   // Photo 1: orange-wall classroom
-                          "center 65%",   // Photo 2: hall Q&A – shift down to show all seated students
-                          "center 25%",   // Photo 3: large classroom – keep top students visible
-                          "center 35%",   // Photo 4: projector room
-                        ][i] ?? "center";
+                        // Read per-photo crop position from institution data or default to center
+                        const cropPos = (institutions[selectedInstitution] as any).imageCrops?.[i] || "center";
                         return (
                           <div key={i} className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
                             <img

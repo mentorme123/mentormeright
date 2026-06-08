@@ -292,10 +292,10 @@ export default function Home() {
         "/images/partners/edify-session-4.jpg"
       ],
       imageCrops: [
-        "center 80%", // Photo 1: focus on students at the bottom
-        "center 80%", // Photo 2: focus on the audience
-        "center 90%", // Photo 3: vertical photo, subjects are at the bottom
-        "center 70%"  // Photo 4: lady at podium is in the lower-middle
+        "center 60%", // Photo 1: focus slightly lower than center
+        "center 60%", // Photo 2: focus slightly lower than center
+        "center 40%", // Photo 3: vertical photo, focus slightly higher than center to keep heads
+        "center 30%"  // Photo 4: lady at podium, focus higher to keep head
       ]
     },
     {

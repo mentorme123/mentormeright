@@ -899,7 +899,7 @@ export default function Home() {
             onClick={() => setSelectedInstitution(null)}
           />
           <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
-            <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <div className="p-8">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center gap-4">

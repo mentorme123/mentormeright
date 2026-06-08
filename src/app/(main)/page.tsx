@@ -989,15 +989,25 @@ export default function Home() {
                   <div className="mt-5 space-y-3">
                     <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Program Gallery</p>
                     <div className="grid grid-cols-2 gap-3">
-                      {(institutions[selectedInstitution] as any).images.map((src: string, i: number) => (
-                        <div key={i} className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
-                          <img
-                            src={src}
-                            alt={`${institutions[selectedInstitution].name} - Photo ${i + 1}`}
-                            className="w-full h-60 object-cover"
-                          />
-                        </div>
-                      ))}
+                      {(institutions[selectedInstitution] as any).images.map((src: string, i: number) => {
+                        // Per-photo crop position to minimise empty benches/chairs
+                        const cropPos = [
+                          "center 50%",   // Photo 1: orange-wall classroom – centre on students
+                          "left 40%",     // Photo 2: hall Q&A – crop right-side empty chairs
+                          "center 25%",   // Photo 3: large classroom – cut foreground empty benches
+                          "center 35%",   // Photo 4: projector room – focus on students, hide front benches
+                        ][i] ?? "center";
+                        return (
+                          <div key={i} className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
+                            <img
+                              src={src}
+                              alt={`${institutions[selectedInstitution].name} - Photo ${i + 1}`}
+                              className="w-full h-60 object-cover"
+                              style={{ objectPosition: cropPos }}
+                            />
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

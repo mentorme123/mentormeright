@@ -992,10 +992,10 @@ export default function Home() {
                       {(institutions[selectedInstitution] as any).images.map((src: string, i: number) => {
                         // Per-photo crop position to minimise empty benches/chairs
                         const cropPos = [
-                          "center 50%",   // Photo 1: orange-wall classroom – centre on students
-                          "left 40%",     // Photo 2: hall Q&A – crop right-side empty chairs
-                          "center 25%",   // Photo 3: large classroom – cut foreground empty benches
-                          "center 35%",   // Photo 4: projector room – focus on students, hide front benches
+                          "center 50%",   // Photo 1: orange-wall classroom
+                          "center 65%",   // Photo 2: hall Q&A – shift down to show all seated students
+                          "center 25%",   // Photo 3: large classroom – keep top students visible
+                          "center 35%",   // Photo 4: projector room
                         ][i] ?? "center";
                         return (
                           <div key={i} className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">

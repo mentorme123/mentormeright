@@ -178,8 +178,6 @@ export default function Home() {
       outcomes: ["Improved interview confidence and communication skills", "Enhanced job application and placement readiness", "Practical exposure through mock interview simulations", "Better understanding of employer expectations and recruitment processes"],
       partnershipHighlights: "This collaboration demonstrates MentorMe's capability to design and deliver structured employability and career development programs for higher education institutions. Our programs are tailored to bridge the gap between academic learning and industry requirements.",
       images: [
-        "/images/partners/iimc-hyderabad.jpg",
-        "/images/partners/iimc-session-1.jpg",
         "/images/partners/iimc-session-2.jpg",
         "/images/partners/iimc-session-3.jpg",
         "/images/partners/iimc-session-4.jpg",
@@ -987,21 +985,21 @@ export default function Home() {
                     <p className="text-sm text-slate-700 leading-relaxed">{(institutions[selectedInstitution] as any).partnershipHighlights}</p>
                   </div>
                 )}
-                {(institutions[selectedInstitution] as any).images && (institutions[selectedInstitution] as any).images.length > 1 && (
+                {(institutions[selectedInstitution] as any).images && (institutions[selectedInstitution] as any).images.length > 0 && (
                   <div className="mt-5 space-y-3">
                     <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Program Gallery</p>
                     {/* First session photo spans full width */}
                     <div className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
                       <img
-                        src={(institutions[selectedInstitution] as any).images[1]}
+                        src={(institutions[selectedInstitution] as any).images[0]}
                         alt={`${institutions[selectedInstitution].name} - Session 1`}
                         className="w-full h-52 object-cover"
                       />
                     </div>
                     {/* Remaining session photos in 2-column grid */}
-                    {(institutions[selectedInstitution] as any).images.length > 2 && (
+                    {(institutions[selectedInstitution] as any).images.length > 1 && (
                       <div className="grid grid-cols-2 gap-3">
-                        {(institutions[selectedInstitution] as any).images.slice(2).map((src: string, i: number) => (
+                        {(institutions[selectedInstitution] as any).images.slice(1).map((src: string, i: number) => (
                           <div key={i} className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-900">
                             <img
                               src={src}

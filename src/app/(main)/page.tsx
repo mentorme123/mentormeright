@@ -125,7 +125,7 @@ export default function Home() {
     },
     {
       name: "ELGI School",
-      logo: "/images/partners/elgi-school.png",
+      logo: "/images/partners/elgi-school.jpg",
       description: "ELGI School, Coimbatore — Aspire & Excel. Established in 1987 with 67 students and 3 teachers, ELGI School has grown into a thriving institution with 1,400 students and 60+ teaching staff, spread across a 4-acre campus with a 200m athletic track. The school follows the CBSE syllabus and emphasizes holistic education, career guidance, club activities, sports, and global exposure.",
       website: "https://www.elgischool.com",
       contact: [
@@ -143,7 +143,7 @@ export default function Home() {
     },
     {
       name: "Howard Park International",
-      logo: "/images/partners/howard-park.png",
+      logo: "/images/partners/howard-park.jpg",
       description: "Howard Public School CBSE, Himayathnagar, Hyderabad — Established in 1986, Howard Public School is one of the finest CBSE institutions dedicated to academic excellence, self-discipline, rational thinking, and global vision. Celebrating 40 glorious years of educational excellence.",
       website: "https://howardinstitutions.org",
       contact: [
@@ -154,7 +154,7 @@ export default function Home() {
     },
     {
       name: "Geetam School",
-      logo: "/images/partners/geetam.png",
+      logo: "/images/partners/geetam.jpg",
       description: "Geetam The Next Gen IIT School, Kakinada — Established in 2014, Geetam School has emerged as one of Kakinada's most unique and trusted institutions, integrating CBSE with IIT foundation programs.",
       website: "https://www.geetamnextgeniitschool.com",
       contact: [
@@ -165,7 +165,7 @@ export default function Home() {
     },
     {
       name: "Pantheon Digital",
-      logo: "/images/partners/pantheon-digital.png",
+      logo: "/images/partners/pantheon-digital.jpg",
       description: "Pantheon Digital is a digital transformation and technology solutions partner empowering businesses with innovative strategies, branding, and digital excellence.",
       website: "https://www.pantheondigital.com",
       contact: [{ label: "Website", value: "https://www.pantheondigital.com", href: "https://www.pantheondigital.com" }]
@@ -428,20 +428,20 @@ export default function Home() {
               {(() => {
                 const partners = [
                   { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.jpg", link: "/k12-programs" },
-                  { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.png", link: "/k12-programs" },
+                  { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.jpg", link: "/k12-programs" },
                   { name: "ICBM School of Business", logo: "/images/partners/icbm.jpg", link: "/college-programs" },
                   { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },
                   { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
                   { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.jpg", link: "/k12-programs" },
-                  { name: "ELGI School", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
+                  { name: "ELGI School", logo: "/images/partners/elgi-school.jpg", link: "/k12-programs" },
                   { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
-                  { name: "Howard Park International", logo: "/images/partners/howard-park.png", link: "/k12-programs" },
-                  { name: "Geetam School", logo: "/images/partners/geetam.png", link: "/k12-programs" },
-                  { name: "Pantheon Digital", logo: "/images/partners/pantheon-digital.png", link: "/college-programs" },
+                  { name: "Howard Park International", logo: "/images/partners/howard-park.jpg", link: "/k12-programs" },
+                  { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
+                  { name: "Pantheon Digital", logo: "/images/partners/pantheon-digital.jpg", link: "/college-programs" },
                   { name: "Avanthi Degree & PG Colleges", logo: "/images/partners/avanthi.png", link: "/college-programs" },
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.png", link: "/k12-programs" },
-                  { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.png", link: "/college-programs" },
-                  { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.png", link: "/k12-programs" },
+                  { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
+                  { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => (

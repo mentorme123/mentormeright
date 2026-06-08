@@ -164,11 +164,20 @@ export default function Home() {
       ]
     },
     {
-      name: "Pantheon Digital",
-      logo: "/images/partners/pantheon-digital.jpg",
-      description: "Pantheon Digital is a digital transformation and technology solutions partner empowering businesses with innovative strategies, branding, and digital excellence.",
-      website: "https://www.pantheondigital.com",
-      contact: [{ label: "Website", value: "https://www.pantheondigital.com", href: "https://www.pantheondigital.com" }]
+      name: "IIMC Hyderabad",
+      logo: "/images/partners/iimc-hyderabad.jpg",
+      tagline: "Indian Institute of Management & Commerce (IIMC), Hyderabad",
+      description: "Established in 1973, IIMC Hyderabad is a premier institution offering undergraduate, postgraduate, and professional programs, known for academic excellence, holistic student development, and strong industry connections.",
+      website: "https://iimchyderabad.com",
+      contact: [
+        { label: "Location", value: "Hyderabad, Telangana" }
+      ],
+      program: "Interview Skills Certification Program",
+      programOverview: ["30 Hours of Instructor-Led Training", "On-Campus Delivery Model", "50-60 Students per Batch", "Industry-Oriented Curriculum", "Certification-Based Learning"],
+      keyAreas: ["Interview Preparation Techniques", "Tailored Job Application Strategies", "Group Discussions", "HR Mock Interviews", "Professional Interview Techniques"],
+      outcomes: ["Improved interview confidence and communication skills", "Enhanced job application and placement readiness", "Practical exposure through mock interview simulations", "Better understanding of employer expectations and recruitment processes"],
+      partnershipHighlights: "This collaboration demonstrates MentorMe's capability to design and deliver structured employability and career development programs for higher education institutions. Our programs are tailored to bridge the gap between academic learning and industry requirements.",
+      images: ["/images/partners/iimc-hyderabad.jpg", "/images/partners/iimc-program-1.jpg", "/images/partners/iimc-program-2.jpg"]
     }
   ];
 
@@ -920,6 +929,33 @@ export default function Home() {
                 <p className="text-slate-700 leading-relaxed whitespace-pre-line">
                   {institutions[selectedInstitution].description}
                 </p>
+                {(institutions[selectedInstitution] as any).program && (
+                  <div className="mt-4 p-5 bg-slate-50 rounded-2xl border border-slate-200">
+                    <h4 className="text-lg font-bold text-slate-900 mb-1">{(institutions[selectedInstitution] as any).tagline}</h4>
+                    <h4 className="text-xl font-bold text-brand-blue mb-3">{(institutions[selectedInstitution] as any).program}</h4>
+                    {(institutions[selectedInstitution] as any).programOverview && (institutions[selectedInstitution] as any).programOverview.length > 0 && (
+                      <div>
+                        <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Program Overview</p>
+                        <ul className="grid sm:grid-cols-2 gap-2">
+                          {(institutions[selectedInstitution] as any).programOverview.map((item: string, i: number) => (
+                            <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                              <span className="text-brand-orange mt-0.5">✓</span> {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {(institutions[selectedInstitution] as any).images && (institutions[selectedInstitution] as any).images.length > 0 && (
+                  <div className="mt-4 grid grid-cols-2 gap-3">
+                    {(institutions[selectedInstitution] as any).images.map((src: string, i: number) => (
+                      <div key={i} className="rounded-2xl overflow-hidden border border-slate-200 bg-slate-50">
+                        <img src={src} alt={`${institutions[selectedInstitution].name} - Photo ${i+1}`} className="w-full h-auto object-contain" />
+                      </div>
+                    ))}
+                  </div>
+                )}
                 {institutions[selectedInstitution].contact && institutions[selectedInstitution].contact.length > 0 && (
                   <div className="grid sm:grid-cols-2 gap-3 mt-4">
                     {institutions[selectedInstitution].contact.map((c: { label: string; value: string; href?: string }, i: number) => (

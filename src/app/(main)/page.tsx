@@ -484,9 +484,11 @@ export default function Home() {
         "/images/partners/shree-daksha.png",
         "/images/partners/shree-daksha-1.jpg",
         "/images/partners/shree-daksha-2.jpg",
-        "/images/partners/shree-daksha-3.jpg"
+        "/images/partners/shree-daksha-3.jpg",
+        "/images/partners/shree-daksha-4.jpg"
       ],
       imageCrops: [
+        "center top",
         "center top",
         "center top",
         "center top",

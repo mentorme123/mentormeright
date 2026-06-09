@@ -232,7 +232,7 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration demonstrates MentorMe's expertise in delivering advanced technology education programs for schools. By introducing students to Artificial Intelligence, Machine Learning, Computer Vision, and Natural Language Processing, MentorMe helps institutions prepare learners for the digital future.",
       images: [
-        "/images/partners/hps-nizamabad.jpg",
+
         "/images/partners/hps-session-1.jpg",
         "/images/partners/hps-session-2.jpg"
       ],
@@ -628,7 +628,7 @@ export default function Home() {
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
                   { name: "Pantheon Digital", logo: "/images/partners/pantheon-digital.jpg", link: "/college-programs" },
                   { name: "Avanthi Degree & PG Colleges", logo: "/images/partners/avanthi.png", link: "/college-programs" },
-                  { name: "HPS Nizamabad",       logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
+                  { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
                   { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
                   { name: "Edify School Tirupati", logo: "/images/partners/edify-school.webp", link: "/k12-programs" },

@@ -467,10 +467,10 @@ export default function Home() {
       ],
       imageCrops: [
         "center",
-        "center 40%",
-        "center 50%",
-        "center 50%",
-        "center 50%"
+        "center",
+        "center",
+        "center",
+        "center"
       ]
     },
   ];

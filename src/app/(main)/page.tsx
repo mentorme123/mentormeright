@@ -476,7 +476,7 @@ export default function Home() {
       name: "Sri Aurobindo International School (SAIS), Hyderabad",
       logo: "/images/partners/sri%20aurobindo.webp",
       description: "MentorMe partnered with Sri Aurobindo International School (SAIS), Hyderabad, to deliver a comprehensive Robotics & Artificial Intelligence After School Program designed to equip students with future-ready technology skills through experiential learning, innovation, and hands-on project development.",
-      website: "#",
+      website: "https://sriaurobindointernationalschool.org/home.html/",
       tagline: "Robotics & Artificial Intelligence After School Program",
       contact: [{ label: "Location", value: "Hyderabad, Telangana" }],
       program: "Robotics & Artificial Intelligence After School Program",

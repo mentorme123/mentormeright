@@ -124,14 +124,49 @@ export default function Home() {
       contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
     },
     {
-      name: "ELGI School",
+      name: "ELGI Matriculation Higher Secondary School, Coimbatore",
       logo: "/images/partners/elgi-school.png",
-      description: "ELGI School, Coimbatore — Aspire & Excel. Established in 1987 with 67 students and 3 teachers, ELGI School has grown into a thriving institution with 1,400 students and 60+ teaching staff, spread across a 4-acre campus with a 200m athletic track. The school follows the CBSE syllabus and emphasizes holistic education, career guidance, club activities, sports, and global exposure.",
+      description: "MentorMe partnered with ELGI Matriculation Higher Secondary School, Coimbatore, to deliver a comprehensive Career Guidance Program designed to help students make informed academic and career decisions through scientific assessments, expert counseling, and personalized career planning.",
       website: "https://www.elgischool.com",
       contact: [
         { label: "Address", value: "Kovai Mahalingapuram, Vellalore, Coimbatore, Tamil Nadu 641111" },
         { label: "Email", value: "info@elgischool.org", href: "mailto:info@elgischool.org" },
         { label: "Phone", value: "0422 241 4194", href: "tel:04222414194" }
+      ],
+      program: "Career Guidance & Career Planning Program",
+      programOverview: [
+        "Career Guidance Program for Grades 10 & 11",
+        "166 Students Benefited",
+        "Psychometric Career Assessments",
+        "Parent & Student Career Orientation",
+        "Career Planning and Stream Selection Support",
+        "Digital Career Exploration Platform"
+      ],
+      keyAreas: [
+        "Individualized Psychometric & Career Assessment",
+        "Career Stream Selection Guidance",
+        "Academic and Career Planning Support",
+        "Access to 250+ Career Pathways",
+        "College & Course Guidance Sessions",
+        "Industry Expert Career Webinars",
+        "Parent Awareness & Orientation Programs"
+      ],
+      outcomes: [
+        "Improved Career Awareness and Decision-Making",
+        "Better Academic Stream Selection",
+        "Increased Understanding of Future Career Opportunities",
+        "Enhanced Parent Involvement in Career Planning",
+        "Personalized Career Roadmaps for Students",
+        "Access to Long-Term Career Development Resources"
+      ],
+      partnershipHighlights: "This collaboration highlights MentorMe's expertise in delivering large-scale Career Guidance and Career Planning programs that combine psychometric assessments, counseling, technology, and expert mentorship to help students make confident educational and career choices.",
+      images: [
+        "/images/partners/elgi-school.png",
+        "/images/partners/elgi-school.png"
+      ],
+      imageCrops: [
+        "center",
+        "center"
       ]
     },
     {
@@ -789,7 +824,7 @@ export default function Home() {
                   { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },
                   { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
                   { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.jpg", link: "/k12-programs" },
-                  { name: "ELGI School", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
+                  { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
                   { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
                   { name: "Howard Park International", logo: "/images/partners/howard-park.jpg", link: "/k12-programs" },
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },

@@ -243,11 +243,58 @@ export default function Home() {
       ]
     },
     {
-      name: "St Pious Hyderabad",
+      name: "St. Pious X Degree & PG College for Women",
       logo: "/images/partners/st-pious.jpg",
-      description: "St Pious Hyderabad is a reputed institution dedicated to academic excellence, character formation, and comprehensive student development.",
+      description: "MentorMe Career Intelligence and Training Pvt. Ltd. partnered with St. Pious X Degree & PG College for Women, Hyderabad, to deliver industry-relevant certification programs designed to enhance employability, strengthen technical competencies, and equip students with practical skills aligned with modern workplace requirements.",
       website: "#",
-      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+      tagline: "St. Pious X Degree & PG College for Women, Hyderabad",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }],
+      program: "Industry-Oriented Value-Added Certification Programs",
+      programOverview: [
+        "Industry-Oriented Certification Programs",
+        "Hands-On Learning Approach",
+        "Commerce Student Skill Development",
+        "Technology-Focused Curriculum",
+        "Employability Enhancement Initiatives",
+        "Expert Faculty-Led Training",
+        "Practical Application-Based Learning",
+        "Career Readiness Framework"
+      ],
+      keyAreas: [
+        "Advanced Excel 2021 with Tableau",
+        "Power BI",
+        "Data Analysis Techniques",
+        "Dashboard Creation",
+        "Business Reporting",
+        "Data Visualization",
+        "Business Intelligence Fundamentals",
+        "Data Modeling",
+        "Reporting Automation",
+        "Industry-Based Projects"
+      ],
+      outcomes: [
+        "Industry-Relevant Technical Skills",
+        "Enhanced Employability",
+        "Data Analysis Capabilities",
+        "Business Intelligence Knowledge",
+        "Practical Tool Proficiency",
+        "Certification Credentials",
+        "Career Advancement Opportunities",
+        "Improved Workplace Readiness"
+      ],
+      partnershipHighlights: "This collaborative framework ensures a productive and structured learning environment for all participants. Modern employers increasingly seek graduates who possess both academic knowledge and practical tool expertise. Certifications in Advanced Excel, Tableau, and Power BI help students build strong analytical, reporting, and business intelligence capabilities.",
+      images: [
+        "/images/partners/st-pious.jpg",
+        "/images/partners/st-pious.jpg",
+        "/images/partners/st-pious.jpg",
+        "/images/partners/st-pious.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center 40%",
+        "center 50%",
+        "center 50%"
+      ]
     },
     {
       name: "Edify School Tirupati",
@@ -630,7 +677,7 @@ export default function Home() {
                   { name: "Avanthi Degree & PG Colleges", logo: "/images/partners/avanthi.png", link: "/college-programs" },
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
-                  { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
+                  { name: "St. Pious X Degree & PG College for Women", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
                   { name: "Edify School Tirupati", logo: "/images/partners/edify-school.webp", link: "/k12-programs" },
                   { name: "Shree Daksha Academy, Bengaluru", logo: "/images/partners/shree-daksha.png", link: "/k12-programs" },
                 ];

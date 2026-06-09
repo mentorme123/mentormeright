@@ -124,6 +124,44 @@ export default function Home() {
       contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
     },
     {
+      name: "Janani Public School, Bengaluru",
+      logo: "/images/partners/Janani%20Public.jpg",
+      description: "MentorMe partnered with Janani Public School, Bengaluru, to deliver a comprehensive Career Awareness Workshop and Robotics Program designed to equip students with future-ready skills, career clarity, and hands-on technology exposure.",
+      website: "#",
+      tagline: "Career Awareness & Robotics Excellence Program",
+      contact: [{ label: "Location", value: "Bengaluru, Karnataka" }],
+      program: "Career Awareness & Robotics Excellence Program",
+      programOverview: [
+        "Career Awareness Workshop for Grades 9-11",
+        "Robotics Training Program",
+        "Hands-On STEM Learning Experience",
+        "Robotics Expo & Project Showcase",
+        "Industry-Aligned Future Skills Development"
+      ],
+      keyAreas: [
+        "Career Opportunities Across Science, Commerce & Arts",
+        "Emerging Career Pathways",
+        "Future Skills and Industry Trends",
+        "Academic Planning & Career Decision-Making"
+      ],
+      outcomes: [
+        "Enhanced Career Awareness and Academic Planning",
+        "Improved Problem-Solving and Critical Thinking Skills",
+        "Practical Robotics and Programming Experience",
+        "Increased Student Engagement in STEM Learning",
+        "Exposure to Innovation, Design Thinking, and Technology"
+      ],
+      partnershipHighlights: "This collaboration showcases MentorMe's ability to deliver integrated Career Guidance and STEM Education programs that prepare students for future academic and professional success. By combining career exploration with experiential robotics learning, MentorMe helps students develop both clarity and capability for the future.",
+      images: [
+        "/images/partners/Janani%20Public.jpg",
+        "/images/partners/Janani%20Public.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center"
+      ]
+    },
+    {
       name: "ELGI Matriculation Higher Secondary School, Coimbatore",
       logo: "/images/partners/elgi-school.png",
       description: "MentorMe partnered with ELGI Matriculation Higher Secondary School, Coimbatore, to deliver a comprehensive Career Guidance Program designed to help students make informed academic and career decisions through scientific assessments, expert counseling, and personalized career planning.",
@@ -509,7 +547,7 @@ export default function Home() {
     },
     {
       name: "Sri Aurobindo International School (SAIS), Hyderabad",
-      logo: "/images/partners/sri%20aurobindo.webp",
+      logo: "/images/partners/sri aurobindo.webp",
       description: "MentorMe partnered with Sri Aurobindo International School (SAIS), Hyderabad, to deliver a comprehensive Robotics & Artificial Intelligence After School Program designed to equip students with future-ready technology skills through experiential learning, innovation, and hands-on project development.",
       website: "https://sriaurobindointernationalschool.org/home.html/",
       tagline: "Robotics & Artificial Intelligence After School Program",

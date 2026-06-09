@@ -299,12 +299,64 @@ export default function Home() {
       ]
     },
     {
-      name: "Shree Daksha",
+      name: "Shree Daksha Academy, Bengaluru",
       logo: "/images/partners/shree-daksha.png",
-      description: "Shree Daksha is a forward-thinking educational institution focused on nurturing young minds through value-based education and modern teaching methodologies.",
-      website: "#",
-      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
-    }
+      description: "MentorMe partnered with Shree Daksha Academy, Bengaluru, to deliver a comprehensive Value-Added Training Program designed to bridge the gap between academic learning and industry expectations. The initiative focused on developing technical, accounting, analytical, and employability skills required for a successful transition from campus to corporate careers.",
+      website: "https://shreedakshaacademyedu.in/",
+      tagline: "Shree Daksha Academy, Bengaluru",
+      contact: [
+        { label: "Address", value: "Bengaluru, Karnataka" },
+        { label: "Email", value: "info@shreedakshaacademyedu.in", href: "mailto:info@shreedakshaacademyedu.in" }
+      ],
+      program: "Value-Added Training & Employability Enhancement Program",
+      programOverview: [
+        "Value-Added Training Programs for B.Com Students",
+        "Advanced Excel Certification",
+        "Comprehensive Accounting & GST Training",
+        "Campus Recruitment Training (CRT)",
+        "Profile Building & Career Readiness",
+        "Industry-Oriented Curriculum",
+        "Practical Learning Framework",
+        "Corporate Readiness Development"
+      ],
+      keyAreas: [
+        "Data Handling & Data Cleaning",
+        "Advanced Sorting & Filtering",
+        "Excel Formulas & Functions",
+        "VLOOKUP, XLOOKUP & INDEX-MATCH",
+        "Dynamic Arrays & Data Validation",
+        "Pivot Tables & Dashboards",
+        "Power Query Fundamentals",
+        "Macros & VBA Automation",
+        "Tally ERP / Tally Prime",
+        "GST Compliance & Filing",
+        "Financial Accounting Processes",
+        "ATS-Compliant Resume Development",
+        "Personal Branding & LinkedIn Optimization"
+      ],
+      outcomes: [
+        "Advanced Excel & Data Analytics Skills",
+        "Business Intelligence Capabilities",
+        "Accounting & GST Expertise",
+        "Financial Reporting Knowledge",
+        "Corporate Readiness Skills",
+        "Enhanced Employability",
+        "Industry-Relevant Technical Competencies"
+      ],
+      partnershipHighlights: "This collaboration demonstrates MentorMe's expertise in delivering outcome-driven employability and professional certification programs that combine technical training, accounting excellence, and career readiness development. Through structured learning pathways and practical exposure, students are empowered with the skills required to excel in today's competitive job market.",
+      images: [
+        "/images/partners/shree-daksha.png",
+        "/images/partners/shree-daksha-session-1.jpg",
+        "/images/partners/shree-daksha-session-2.jpg",
+        "/images/partners/shree-daksha-session-3.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center 40%",
+        "center 50%",
+        "center 50%"
+      ]
+    },
   ];
 
   const slides = [
@@ -578,7 +630,7 @@ export default function Home() {
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
                   { name: "St Pious Hyderabad", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
                   { name: "Edify School Tirupati", logo: "/images/partners/edify-school.webp", link: "/k12-programs" },
-                  { name: "Shree Daksha", logo: "/images/partners/shree-daksha.png", link: "/k12-programs" },
+                  { name: "Shree Daksha Academy, Bengaluru", logo: "/images/partners/shree-daksha.png", link: "/k12-programs" },
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => (

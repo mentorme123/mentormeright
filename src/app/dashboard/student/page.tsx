@@ -464,7 +464,9 @@ export default function StudentDashboard() {
                   />
                 ) : (
                   <span className="text-2xl sm:text-3xl font-black text-white uppercase">
-                    {(profile?.name || authUser?.email || "S").charAt(0)}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor" className="w-2/3 h-2/3 text-white">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                  </svg>
                   </span>
                 )}
               </div>
@@ -849,7 +851,9 @@ export default function StudentDashboard() {
                     <div key={booking.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-5 bg-slate-50 rounded-2xl border border-slate-100 gap-4 group hover:bg-white hover:border-brand-blue/20 hover:shadow-md transition-all">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-brand-blue/10 rounded-xl flex items-center justify-center text-brand-blue font-black">
-                          {booking.counsellors?.name?.charAt(0) || 'C'}
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-5 h-5 text-brand-blue">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                          </svg>
                         </div>
                         <div>
                           <h4 className="font-bold text-slate-800">{booking.counsellors?.name}</h4>

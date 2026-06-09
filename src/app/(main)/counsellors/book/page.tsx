@@ -240,7 +240,9 @@ export default function CounsellorMarketplace() {
                 <div className="p-8 space-y-6">
                   <div className="flex items-start gap-4">
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-orange flex items-center justify-center text-white text-2xl font-black flex-shrink-0">
-                      {counsellor.name.charAt(0)}
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-6 h-6 text-white">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                      </svg>
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-black text-xl text-slate-800 truncate group-hover:text-brand-blue transition-colors">{counsellor.name}</h3>

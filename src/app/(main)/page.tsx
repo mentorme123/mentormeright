@@ -284,10 +284,10 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaborative framework ensures a productive and structured learning environment for all participants. Modern employers increasingly seek graduates who possess both academic knowledge and practical tool expertise. Certifications in Advanced Excel, Tableau, and Power BI help students build strong analytical, reporting, and business intelligence capabilities.",
       images: [
-        "/images/partners/st-pious.jpg",
-        "/images/partners/st-pious.jpg",
-        "/images/partners/st-pious.jpg",
-        "/images/partners/st-pious.jpg"
+        "/images/partners/st-pious-1.jpg",
+        "/images/partners/st-pious-2.jpg",
+        "/images/partners/st-pious-3.jpg",
+        "/images/partners/st-pious-4.jpg"
       ],
       imageCrops: [
         "center",

@@ -410,7 +410,7 @@ export default function Home() {
       name: "Iqra International School",
       logo: "/images/partners/Iqra%20International.jpg",
       description: "MentorMe partnered with Iqra International School to deliver a comprehensive Career Guidance Program focused on helping students discover their strengths, explore career opportunities, make informed academic decisions, and prepare for future success through assessments, mentoring, workshops, and personalized guidance.",
-      website: "#",
+      website: "https://www.iqrainternationalschool.com/",
       tagline: "Iqra International School",
       contact: [{ label: "Location", value: "India" }],
       program: "Career Guidance & Future Readiness Program",

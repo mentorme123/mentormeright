@@ -394,10 +394,76 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration demonstrates MentorMe's expertise in delivering outcome-driven employability and professional certification programs that combine technical training, accounting excellence, and career readiness development. Through structured learning pathways and practical exposure, students are empowered with the skills required to excel in today's competitive job market.",
       images: [
+        "/images/partners/shree-daksha.png",
         "/images/partners/shree-daksha-1.jpg",
         "/images/partners/shree-daksha-2.jpg",
-        "/images/partners/shree-daksha-3.jpg",
-        "/images/partners/shree-daksha-4.jpg"
+        "/images/partners/shree-daksha-3.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center 40%",
+        "center 50%",
+        "center 50%"
+      ]
+    },
+    {
+      name: "Iqra International School",
+      logo: "/images/partners/Iqra%20International.jpg",
+      description: "MentorMe partnered with Iqra International School to deliver a comprehensive Career Guidance Program focused on helping students discover their strengths, explore career opportunities, make informed academic decisions, and prepare for future success through assessments, mentoring, workshops, and personalized guidance.",
+      website: "#",
+      tagline: "Iqra International School",
+      contact: [{ label: "Location", value: "India" }],
+      program: "Career Guidance & Future Readiness Program",
+      programOverview: [
+        "Comprehensive Career Guidance Ecosystem",
+        "NEP 2020 Aligned Framework",
+        "Students from Grades 8–10",
+        "AI-Powered Career Assessments",
+        "Personalized Career Counseling",
+        "Parent Engagement & Orientation",
+        "Industry Expert Sessions",
+        "Career Awareness Workshops",
+        "Study Abroad Guidance"
+      ],
+      keyAreas: [
+        "Personality Profiling using the 5E Model",
+        "RIASEC Interest Assessment",
+        "Aptitude Evaluation",
+        "Skill Proficiency Analysis",
+        "Career Recommendation Reports",
+        "Subject Stream Suggestions",
+        "Career Mapping & Planning",
+        "Digital Career Library with 250+ Careers",
+        "Stream-Specific Career Awareness Sessions",
+        "Emerging Career Insights",
+        "Entrance Examination Guidance",
+        "College & Course Selection Support",
+        "Study Abroad Opportunities",
+        "Industry Trends and Future Careers",
+        "One-on-One Career Counseling",
+        "Group Guidance Sessions",
+        "Admission Guidance",
+        "Career Planning Support",
+        "Goal Setting Workshops",
+        "Academic Pathway Selection",
+        "Future Career Roadmaps"
+      ],
+      outcomes: [
+        "Enhanced Self-Awareness",
+        "Informed Career Decision-Making",
+        "Stream Selection Clarity",
+        "Improved Academic Planning",
+        "Increased Career Awareness",
+        "Better Parent-Student Alignment",
+        "Future-Ready Mindset",
+        "Strong Career Roadmaps"
+      ],
+      partnershipHighlights: "This holistic approach ensures students receive continuous support from self-discovery to career planning and higher education readiness. The program follows a structured framework comprising Psychometric Assessments, Career Guidance Workshops, Career Exploration through Digital Career Library, Industry Expert Sessions, New Age Learning Programs, and Entrance Exam & College Guidance.",
+      images: [
+        "/images/partners/Iqra%20International.jpg",
+        "/images/partners/Iqra%20International.jpg",
+        "/images/partners/Iqra%20International.jpg",
+        "/images/partners/Iqra%20International.jpg"
       ],
       imageCrops: [
         "center",
@@ -680,6 +746,7 @@ export default function Home() {
                   { name: "St. Pious X Degree & PG College for Women", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
                   { name: "Edify School Tirupati", logo: "/images/partners/edify-school.webp", link: "/k12-programs" },
                   { name: "Shree Daksha Academy, Bengaluru", logo: "/images/partners/shree-daksha.png", link: "/k12-programs" },
+                  { name: "Iqra International School", logo: "/images/partners/Iqra%20International.jpg", link: "/k12-programs" },
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => (

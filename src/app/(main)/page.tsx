@@ -345,10 +345,10 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration demonstrates MentorMe's expertise in delivering outcome-driven employability and professional certification programs that combine technical training, accounting excellence, and career readiness development. Through structured learning pathways and practical exposure, students are empowered with the skills required to excel in today's competitive job market.",
       images: [
-        "/images/partners/shree-daksha.png",
-        "/images/partners/shree-daksha.png",
-        "/images/partners/shree-daksha.png",
-        "/images/partners/shree-daksha.png"
+        "/images/partners/shree-daksha-session-1.jpg",
+        "/images/partners/shree-daksha-session-2.jpg",
+        "/images/partners/shree-daksha-session-3.jpg",
+        "/images/partners/shree-daksha-session-4.jpg"
       ],
       imageCrops: [
         "center",

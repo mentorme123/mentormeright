@@ -290,10 +290,10 @@ export default function Home() {
         "/images/partners/st-pious-4.jpg"
       ],
       imageCrops: [
-        "center",
-        "center 40%",
-        "center 50%",
-        "center 50%"
+        "center top",
+        "center top",
+        "center top",
+        "center top"
       ]
     },
     {
@@ -400,10 +400,10 @@ export default function Home() {
         "/images/partners/shree-daksha-3.jpg"
       ],
       imageCrops: [
-        "center",
-        "center 40%",
-        "center 50%",
-        "center 50%"
+        "center top",
+        "center top",
+        "center top",
+        "center top"
       ]
     },
     {

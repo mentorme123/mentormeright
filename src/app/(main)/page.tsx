@@ -125,7 +125,7 @@ export default function Home() {
     },
     {
       name: "ELGI School",
-      logo: "/images/partners/elgi-school.jpg",
+      logo: "/images/partners/elgi-school.png",
       description: "ELGI School, Coimbatore — Aspire & Excel. Established in 1987 with 67 students and 3 teachers, ELGI School has grown into a thriving institution with 1,400 students and 60+ teaching staff, spread across a 4-acre campus with a 200m athletic track. The school follows the CBSE syllabus and emphasizes holistic education, career guidance, club activities, sports, and global exposure.",
       website: "https://www.elgischool.com",
       contact: [

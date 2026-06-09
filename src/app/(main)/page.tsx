@@ -408,7 +408,7 @@ export default function Home() {
     },
     {
       name: "Iqra International School",
-      logo: "/images/partners/Iqra%20International.jpg",
+      logo: "/images/partners/Iqra International.jpg",
       description: "MentorMe partnered with Iqra International School to deliver a comprehensive Career Guidance Program focused on helping students discover their strengths, explore career opportunities, make informed academic decisions, and prepare for future success through assessments, mentoring, workshops, and personalized guidance.",
       website: "https://www.iqrainternationalschool.com/",
       tagline: "Iqra International School",
@@ -470,6 +470,60 @@ export default function Home() {
         "center top",
         "center top",
         "center top"
+      ]
+    },
+    {
+      name: "Sri Aurobindo International School (SAIS), Hyderabad",
+      logo: "/images/partners/sri%20aurobindo.webp",
+      description: "MentorMe partnered with Sri Aurobindo International School (SAIS), Hyderabad, to deliver a comprehensive Robotics & Artificial Intelligence After School Program designed to equip students with future-ready technology skills through experiential learning, innovation, and hands-on project development.",
+      website: "#",
+      tagline: "Robotics & Artificial Intelligence After School Program",
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }],
+      program: "Robotics & Artificial Intelligence After School Program",
+      programOverview: [
+        "Robotics & AI After School Program",
+        "Students from Grades 5–12",
+        "ICSE Curriculum-Aligned Learning",
+        "Hands-On Project-Based Training",
+        "Design Thinking & DIY Methodology",
+        "Robotics & Artificial Intelligence Integration"
+      ],
+      keyAreas: [
+        "Introduction to Robotics & Evolution of Robots",
+        "Sensors, Actuators & Controllers",
+        "Motion Mechanisms & Degrees of Freedom",
+        "AI-Enabled Robot Development",
+        "Robotics Project Design",
+        "Final Project Showcase",
+        "Introduction to Artificial Intelligence",
+        "AI Applications in Real Life",
+        "Computer Vision",
+        "Natural Language Processing (NLP)",
+        "Python Programming Fundamentals",
+        "AI Ethics & Sustainability",
+        "AI Project Framework & Prototyping"
+      ],
+      outcomes: [
+        "Strong Foundation in Robotics & AI",
+        "Practical Engineering & Programming Skills",
+        "Enhanced Problem-Solving Abilities",
+        "Exposure to Emerging Technologies",
+        "Innovation and Design Thinking Mindset",
+        "Real-World Project Development Experience",
+        "Future Career Readiness in Technology"
+      ],
+      partnershipHighlights: "This collaboration demonstrates MentorMe's expertise in delivering advanced STEM and Emerging Technology programs that combine Robotics, Artificial Intelligence, Programming, and Innovation. Through structured learning pathways and hands-on experiences, students gain the skills needed to thrive in the technology-driven future.",
+      images: [
+        "/images/partners/sri-aurobindo-1.jpg",
+        "/images/partners/sri-aurobindo-2.jpg",
+        "/images/partners/sri-aurobindo-3.jpg",
+        "/images/partners/sri-aurobindo-4.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center",
+        "center",
+        "center"
       ]
     },
   ];
@@ -747,6 +801,7 @@ export default function Home() {
                   { name: "Edify School Tirupati", logo: "/images/partners/edify-school.webp", link: "/k12-programs" },
                   { name: "Shree Daksha Academy, Bengaluru", logo: "/images/partners/shree-daksha.png", link: "/k12-programs" },
                   { name: "Iqra International School", logo: "/images/partners/Iqra%20International.jpg", link: "/k12-programs" },
+                  { name: "Sri Aurobindo International School (SAIS), Hyderabad", logo: "/images/partners/sri aurobindo.webp", link: "/k12-programs" },
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => (

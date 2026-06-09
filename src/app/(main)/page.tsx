@@ -736,7 +736,7 @@ export default function Home() {
                   { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },
                   { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
                   { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.jpg", link: "/k12-programs" },
-                  { name: "ELGI School", logo: "/images/partners/elgi-school.jpg", link: "/k12-programs" },
+                  { name: "ELGI School", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
                   { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
                   { name: "Howard Park International", logo: "/images/partners/howard-park.jpg", link: "/k12-programs" },
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },

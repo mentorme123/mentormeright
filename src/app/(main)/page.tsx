@@ -460,14 +460,15 @@ export default function Home() {
       ],
       partnershipHighlights: "This holistic approach ensures students receive continuous support from self-discovery to career planning and higher education readiness. The program follows a structured framework comprising Psychometric Assessments, Career Guidance Workshops, Career Exploration through Digital Career Library, Industry Expert Sessions, New Age Learning Programs, and Entrance Exam & College Guidance.",
       images: [
-        "/images/partners/Iqra%20International.jpg",
-        "/images/partners/Iqra%20International.jpg",
-        "/images/partners/Iqra%20International.jpg",
-        "/images/partners/Iqra%20International.jpg"
+        "/images/partners/Iqra-session-1.jpg",
+        "/images/partners/Iqra-session-2.jpg",
+        "/images/partners/Iqra-session-3.jpg",
+        "/images/partners/Iqra-session-4.jpg"
       ],
       imageCrops: [
         "center",
         "center 40%",
+        "center 50%",
         "center 50%",
         "center 50%"
       ]

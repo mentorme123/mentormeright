@@ -466,11 +466,10 @@ export default function Home() {
         "/images/partners/Iqra-session-4.jpg"
       ],
       imageCrops: [
-        "center",
-        "center",
-        "center",
-        "center",
-        "center"
+        "center top",
+        "center top",
+        "center top",
+        "center top"
       ]
     },
   ];
@@ -662,10 +661,10 @@ export default function Home() {
             />
           </motion.div>
           <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 1.6 }}
             className="space-y-6 order-1 lg:order-2 lg:col-span-7"
           >
             <h2 className="text-4xl font-bold">Career Guidance for All Stages</h2>

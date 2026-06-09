@@ -163,12 +163,16 @@ export default function Home() {
         "Soil Dry Alarm"
       ],
       images: [
-        "/images/partners/Janani%20Public.jpg",
-        "/images/partners/Janani%20Public.jpg"
+        "/images/partners/Janani-Public-1.jpg",
+        "/images/partners/Janani-Public-2.jpg",
+        "/images/partners/Janani-Public-3.jpg",
+        "/images/partners/Janani-Public-4.jpg"
       ],
       imageCrops: [
-        "center",
-        "center"
+        "center top",
+        "center top",
+        "center top",
+        "center top"
       ]
     },
     {

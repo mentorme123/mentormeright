@@ -138,7 +138,7 @@ export function Navbar() {
                           <div className="space-y-4 pt-1">
                             <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM & Emerging Technologies:</span>
                             <div className="pl-4 space-y-4 border-l-2 border-slate-200">
-                              <Link href="/k12-programs"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Robotics</span></Link>
+                              <Link href="/programs/robotics"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Robotics</span></Link>
                               <Link href="/k12-programs"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Coding</span></Link>
                               <Link href="/k12-programs"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">IoT</span></Link>
                               <Link href="/k12-programs"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for School Students</span></Link>

@@ -382,10 +382,6 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration showcases MentorMe's expertise in delivering advanced technology education programs that bridge the gap between academic learning and industry requirements. Through structured training and practical exposure, students gain valuable insights into Artificial Intelligence and Machine Learning while building a strong foundation for future careers in technology.",
       images: [
-        "/images/partners/st-josephs.jpg",
-        "/images/partners/st-josephs.jpg",
-        "/images/partners/st-josephs.jpg",
-        "/images/partners/st-josephs.jpg"
       ],
       imageCrops: [
         "center",
@@ -1056,34 +1052,34 @@ export default function Home() {
                 return [...partners, ...partners].map((partner, i) => {
                   const instIdx = institutions.findIndex(inst => inst.name === partner.name);
                   return (
-                  <div
-                    key={i}
-                    onClick={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
-                    onMouseEnter={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
-                    className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-all cursor-pointer"
-                    style={{ width: "160px", height: "160px", padding: "20px" }}
-                  >
-                    <div className="flex items-center justify-center w-full h-full">
-                      <img
-                        src={partner.logo}
-                        alt={partner.name}
-                        className="object-contain"
-                        style={{ maxWidth: "140px", maxHeight: "140px", width: "auto", height: "auto" }}
-                        onError={(e) => {
-                          const target = e.currentTarget as HTMLImageElement;
-                          target.style.display = "none";
-                          const fallback = target.nextElementSibling as HTMLElement;
-                          if (fallback) fallback.style.display = "flex";
-                        }}
-                      />
-                      <div
-                        className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-lg text-center leading-tight"
-                        style={{ display: "none" }}
-                      >
-                        {partner.name.split(" ").slice(0, 2).map(w => w[0]).join("")}
+                    <div
+                      key={i}
+                      onClick={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
+                      onMouseEnter={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
+                      className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-all cursor-pointer"
+                      style={{ width: "160px", height: "160px", padding: "20px" }}
+                    >
+                      <div className="flex items-center justify-center w-full h-full">
+                        <img
+                          src={partner.logo}
+                          alt={partner.name}
+                          className="object-contain"
+                          style={{ maxWidth: "140px", maxHeight: "140px", width: "auto", height: "auto" }}
+                          onError={(e) => {
+                            const target = e.currentTarget as HTMLImageElement;
+                            target.style.display = "none";
+                            const fallback = target.nextElementSibling as HTMLElement;
+                            if (fallback) fallback.style.display = "flex";
+                          }}
+                        />
+                        <div
+                          className="w-16 h-16 rounded-full bg-gradient-to-br from-brand-blue to-brand-orange items-center justify-center text-white font-bold text-lg text-center leading-tight"
+                          style={{ display: "none" }}
+                        >
+                          {partner.name.split(" ").slice(0, 2).map(w => w[0]).join("")}
+                        </div>
                       </div>
                     </div>
-                  </div>
                   );
                 })
               })()}

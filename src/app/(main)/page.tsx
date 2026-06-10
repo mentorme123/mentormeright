@@ -391,7 +391,7 @@ export default function Home() {
       ]
     },
     {
-      name: "Howard Park International",
+      name: "Howard Park International School",
       logo: "/images/partners/howard-park.jpg",
       tagline: "Howard Park International School",
       description: "MentorMe Career Intelligence and Training Pvt. Ltd. partnered with Howard Park International School to deliver a hands-on Robotics & Innovation Program designed to inspire young learners through experiential STEM education, robotics engineering, programming, and real-world problem-solving.",
@@ -1147,7 +1147,7 @@ export default function Home() {
                   { name: "Janani Public School, Bengaluru", logo: "/images/partners/Janani%20Public.jpg", link: "/k12-programs" },
                   { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
                   { name: "St. Joseph's Degree & PG College, Hyderabad", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
-                  { name: "Howard Park International", logo: "/images/partners/howard-park.jpg", link: "/k12-programs" },
+                   { name: "Howard Park International School", logo: "/images/partners/howard-park.jpg", link: "/programs/robotics" },
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
 
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },

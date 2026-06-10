@@ -958,10 +958,10 @@ export default function Home() {
             <div className="flex gap-5 partners-scroll">
               {(() => {
                 const partners = [
-                  { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.jpg", link: "/k12-programs" },
+                  { name: "DG Vaishnav College, Chennai", logo: "/images/partners/ddgd-vaishnav.jpg", link: "/college-programs" },
                   { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.jpg", link: "/k12-programs" },
                   { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },
-                  { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
+                  { name: "Pragati Mahavidyalaya Junior College, Hyderabad", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
                   { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.jpg", link: "/k12-programs" },
                   { name: "Janani Public School, Bengaluru", logo: "/images/partners/Janani%20Public.jpg", link: "/k12-programs" },
                   { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },

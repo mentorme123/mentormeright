@@ -89,11 +89,55 @@ export default function Home() {
 
   const institutions = [
     {
-      name: "DDGD Vaishnav Chennai",
+      name: "DG Vaishnav College, Chennai",
       logo: "/images/partners/ddgd-vaishnav.jpg",
-      description: "DDGD Vaishnav Chennai is a prestigious institution known for academic excellence and holistic student development.",
+      tagline: "Dwaraka Doss Goverdhan Doss Vaishnav College (DG Vaishnav College), Chennai",
+      description: "MentorMe partnered with Dwaraka Doss Goverdhan Doss Vaishnav College (DG Vaishnav College), Chennai, to deliver industry-focused value-added certification programs aimed at strengthening students' analytical thinking, problem-solving abilities, and data analytics competencies required in today's professional landscape.",
       website: "#",
-      contact: [{ label: "Location", value: "Chennai, Tamil Nadu" }]
+      contact: [{ label: "Location", value: "Chennai, Tamil Nadu" }],
+      program: "Critical Thinking, Problem Solving & Data Analytics Certification Programs",
+      programOverview: [
+        "30-Hour Critical Thinking & Problem Solving Certification",
+        "42-Hour MS Excel & Power BI Certification",
+        "Industry-Oriented Learning Framework",
+        "Hands-On Skill Development",
+        "Practical Business Applications",
+        "Employability Enhancement Initiative",
+        "Future-Ready Professional Skills"
+      ],
+      keyAreas: [
+        "Critical Thinking Frameworks",
+        "Analytical Reasoning",
+        "Logical Decision-Making",
+        "Problem Identification & Analysis",
+        "Root Cause Analysis",
+        "Creative Problem Solving",
+        "Strategic Thinking",
+        "Real-World Case Studies",
+        "Innovation & Design Thinking",
+        "Workplace Problem-Solving Techniques",
+        "Advanced MS Excel",
+        "Data Cleaning & Transformation",
+        "Excel Formulas & Functions",
+        "Pivot Tables & Dashboards",
+        "Data Visualization Techniques",
+        "Business Reporting",
+        "Power BI Fundamentals",
+        "Interactive Dashboard Development",
+        "Data Modeling",
+        "Business Intelligence & Analytics"
+      ],
+      outcomes: [
+        "Strong Critical Thinking Skills",
+        "Enhanced Problem-Solving Abilities",
+        "Data Analysis Competencies",
+        "Business Intelligence Knowledge",
+        "Analytical Decision-Making Skills",
+        "Dashboard & Reporting Expertise",
+        "Professional Readiness",
+        "Industry-Relevant Technical Skills"
+      ],
+      partnershipHighlights: "This collaboration demonstrates MentorMe's commitment to empowering students with both cognitive and technical skills. By combining Critical Thinking, Problem Solving, MS Excel, and Power BI training, students gain the ability to analyze challenges, derive insights from data, and make informed decisions in dynamic professional environments."
     },
 
     {
@@ -104,11 +148,66 @@ export default function Home() {
       contact: [{ label: "Location", value: "Nalgonda, Telangana" }]
     },
     {
-      name: "Pragati Mahavidyalaya",
+      name: "Pragati Mahavidyalaya Junior College, Hyderabad",
       logo: "/images/partners/pragati-maha.jpg",
-      description: "Pragati Mahavidyalaya is a leading educational institution dedicated to empowering students through quality education and career guidance.",
+      tagline: "Pragati Mahavidyalaya Junior College, Hyderabad",
+      description: "MentorMe partnered with Pragati Mahavidyalaya Junior College, Hyderabad, to design and deliver a comprehensive 21st Century Skills Development Program focused on building entrepreneurial thinking, digital capabilities, analytical skills, financial literacy, and future career readiness among students.",
       website: "#",
-      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }],
+      program: "21st Century Skills Development Program",
+      programOverview: [
+        "300+ Hours of Skill Development Training",
+        "Entrepreneurship & Digital Marketing Program",
+        "Excel & Power BI Analytics Program",
+        "Digital & Financial Literacy Program",
+        "Hands-On Project-Based Learning",
+        "Industry Expert Sessions",
+        "Continuous Assessments & Certifications",
+        "Career Readiness & Employability Development"
+      ],
+      keyAreas: [
+        "Entrepreneurship Fundamentals",
+        "Business Model Development",
+        "Innovation & Design Thinking",
+        "Startup Ecosystem Awareness",
+        "Digital Marketing Strategies",
+        "Social Media Marketing",
+        "Personal Branding",
+        "Business Communication",
+        "Marketing Analytics",
+        "Business Growth Frameworks",
+        "Advanced MS Excel",
+        "Data Cleaning & Transformation",
+        "Excel Formulas & Functions",
+        "Data Visualization",
+        "Dashboard Development",
+        "Pivot Tables & Reporting",
+        "Business Analytics",
+        "Power BI Fundamentals",
+        "Interactive Reports",
+        "Data-Driven Decision Making",
+        "Digital Literacy",
+        "Online Productivity Tools",
+        "Cyber Safety & Digital Responsibility",
+        "Financial Planning Basics",
+        "Budgeting & Savings",
+        "Banking Fundamentals",
+        "Financial Decision Making",
+        "Responsible Digital Citizenship",
+        "Communication Skills",
+        "Personal Effectiveness"
+      ],
+      outcomes: [
+        "Entrepreneurial Thinking Skills",
+        "Digital Marketing Knowledge",
+        "Data Analytics Competencies",
+        "Business Intelligence Skills",
+        "Financial Literacy Awareness",
+        "Digital Readiness",
+        "Problem-Solving Abilities",
+        "Career & Employability Skills"
+      ],
+      partnershipHighlights: "This collaboration demonstrates MentorMe's commitment to delivering holistic student development programs that combine entrepreneurship, technology, analytics, and life skills. Through structured training pathways and practical learning experiences, students are equipped with the competencies required to succeed in the rapidly evolving digital economy."
     },
     {
       name: "Keshav Memorial",

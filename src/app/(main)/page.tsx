@@ -139,7 +139,6 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration demonstrates MentorMe's commitment to empowering students with both cognitive and technical skills. By combining Critical Thinking, Problem Solving, MS Excel, and Power BI training, students gain the ability to analyze challenges, derive insights from data, and make informed decisions in dynamic professional environments.",
       images: [
-        "/images/partners/ddgd-vaishnav.jpg",
         "/images/partners/ddgd-vaishnav-session-1.jpeg"
       ],
       imageCrops: [
@@ -217,7 +216,6 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration demonstrates MentorMe's commitment to delivering holistic student development programs that combine entrepreneurship, technology, analytics, and life skills. Through structured training pathways and practical learning experiences, students are equipped with the competencies required to succeed in the rapidly evolving digital economy.",
       images: [
-        "/images/partners/pragati-maha.jpg",
         "/images/partners/pragati-session-1.jpeg",
         "/images/partners/pragati-session-2.jpeg",
         "/images/partners/pragati-session-3.jpeg",

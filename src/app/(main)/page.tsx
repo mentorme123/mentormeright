@@ -992,7 +992,7 @@ export default function Home() {
                   { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
                   { name: "Howard Park International", logo: "/images/partners/howard-park.jpg", link: "/k12-programs" },
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
-                  { name: "Pantheon Digital", logo: "/images/partners/pantheon-digital.jpg", link: "/college-programs" },
+
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
                   { name: "St. Pious X Degree & PG College for Women", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },

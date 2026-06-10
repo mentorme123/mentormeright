@@ -490,7 +490,7 @@ export default function Home() {
     },
     {
       name: "Edify School Tirupati",
-      logo: "/images/partners/edify-school.webp",
+      logo: "/images/partners/edify-school.png",
       tagline: "Edify School, Tirupati",
       description: "MentorMe partnered with Edify School, Tirupati to design and deliver a structured, outcome-driven Career Guidance Ecosystem for students from Grades 8–12. The program combines psychometric assessments, career exploration, academic planning, parent engagement, and personalized counseling to help students make informed decisions about their future careers and education pathways.",
       website: "http://edifyschooltirupati.com/",
@@ -993,7 +993,7 @@ export default function Home() {
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
                   { name: "St. Pious X Degree & PG College for Women", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
-                  { name: "Edify School Tirupati", logo: "/images/partners/edify-school.webp", link: "/k12-programs" },
+                  { name: "Edify School Tirupati", logo: "/images/partners/edify-school.png", link: "/k12-programs" },
                   { name: "Shree Daksha Academy, Bengaluru", logo: "/images/partners/shree-daksha.png", link: "/k12-programs" },
                   { name: "Iqra International School", logo: "/images/partners/Iqra%20International.jpg", link: "/k12-programs" },
                   { name: "Sri Aurobindo International School (SAIS), Hyderabad", logo: "/images/partners/sri aurobindo.webp", link: "/k12-programs" },

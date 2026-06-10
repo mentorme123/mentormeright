@@ -1147,7 +1147,7 @@ export default function Home() {
                   { name: "Janani Public School, Bengaluru", logo: "/images/partners/Janani%20Public.jpg", link: "/k12-programs" },
                   { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
                   { name: "St. Joseph's Degree & PG College, Hyderabad", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
-                   { name: "Howard Park International School", logo: "/images/partners/howard-park.jpg", link: "/programs/robotics" },
+                  { name: "Howard Park International School", logo: "/images/partners/howard-park.jpg", link: "/programs/robotics" },
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
 
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
@@ -1162,12 +1162,12 @@ export default function Home() {
                 return [...partners, ...partners].map((partner, i) => {
                   const instIdx = institutions.findIndex(inst => inst.name === partner.name);
                   return (
-                    <div
-                      key={i}
-                      onClick={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
-                      onMouseEnter={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
-                      className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-all cursor-pointer"
-                      style={{ width: "160px", height: "160px", padding: "20px" }}
+                  <div
+                    key={i}
+                    onClick={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
+                    onMouseEnter={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
+                    className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-all cursor-pointer"
+                    style={{ width: "160px", height: "160px", padding: "20px" }}
                     >
                       <div className="flex items-center justify-center w-full h-full">
                         <img

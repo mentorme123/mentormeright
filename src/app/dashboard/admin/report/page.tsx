@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Download, Search, Users, GraduationCap, Building2, UserCircle, LogIn, Shield, X, FileSpreadsheet, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchAllUsers } from "../dashboard/admin/actions";
+import { fetchAllUsers } from "../actions";
 
 type UserType = "all" | "individual" | "institutional" | "admin";
 

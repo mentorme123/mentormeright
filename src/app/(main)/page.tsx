@@ -999,14 +999,18 @@ export default function Home() {
                   { name: "Sri Aurobindo International School (SAIS), Hyderabad", logo: "/images/partners/sri aurobindo.webp", link: "/k12-programs" },
                 ];
                 // Duplicate for seamless infinite scroll
-                return [...partners, ...partners].map((partner, i) => (
+                return [...partners, ...partners].map((partner, i) => {
+                  const partnerIdx = institutions.findIndex(inst => inst.name === partner.name);
+                  const openPartner = () => {
+                    if (partnerIdx >= 0) setSelectedInstitution(partnerIdx);
+                  };
+                  return (
                   <div
                     key={i}
-                    onClick={() => {
-                      const idx = institutions.findIndex(inst => inst.name === partner.name);
-                      if (idx >= 0) setSelectedInstitution(idx);
-                    }}
-                    className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-transform cursor-pointer"
+                    onClick={openPartner}
+                    onMouseEnter={openPartner}
+                    onMouseLeave={() => { if (selectedInstitution === partnerIdx) setSelectedInstitution(-1); }}
+                    className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-all cursor-pointer"
                     style={{ width: "160px", height: "160px", padding: "20px" }}
                   >
                     <div className="flex items-center justify-center w-full h-full">
@@ -1030,7 +1034,8 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                ));
+                  );
+                })
               })()}
 
             </div>

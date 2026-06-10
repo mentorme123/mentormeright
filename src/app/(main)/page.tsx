@@ -93,7 +93,7 @@ export default function Home() {
       logo: "/images/partners/ddgd-vaishnav.jpg",
       tagline: "Dwaraka Doss Goverdhan Doss Vaishnav College (DG Vaishnav College), Chennai",
       description: "MentorMe partnered with Dwaraka Doss Goverdhan Doss Vaishnav College (DG Vaishnav College), Chennai, to deliver industry-focused value-added certification programs aimed at strengthening students' analytical thinking, problem-solving abilities, and data analytics competencies required in today's professional landscape.",
-      website: "#",
+      website: "https://www.dgvaishnavcollege.edu.in/",
       contact: [{ label: "Location", value: "Chennai, Tamil Nadu" }],
       program: "Critical Thinking, Problem Solving & Data Analytics Certification Programs",
       programOverview: [
@@ -139,7 +139,6 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration demonstrates MentorMe's commitment to empowering students with both cognitive and technical skills. By combining Critical Thinking, Problem Solving, MS Excel, and Power BI training, students gain the ability to analyze challenges, derive insights from data, and make informed decisions in dynamic professional environments.",
       images: [
-        "/images/partners/ddgd-vaishnav.jpg",
         "/images/partners/ddgd-vaishnav-session-1.jpeg"
       ],
       imageCrops: [
@@ -160,7 +159,7 @@ export default function Home() {
       logo: "/images/partners/pragati-maha.jpg",
       tagline: "Pragati Mahavidyalaya Junior College, Hyderabad",
       description: "MentorMe partnered with Pragati Mahavidyalaya Junior College, Hyderabad, to design and deliver a comprehensive 21st Century Skills Development Program focused on building entrepreneurial thinking, digital capabilities, analytical skills, financial literacy, and future career readiness among students.",
-      website: "#",
+      website: "https://www.pragatimahavidyalaya.in/",
       contact: [{ label: "Location", value: "Hyderabad, Telangana" }],
       program: "21st Century Skills Development Program",
       programOverview: [
@@ -217,7 +216,6 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration demonstrates MentorMe's commitment to delivering holistic student development programs that combine entrepreneurship, technology, analytics, and life skills. Through structured training pathways and practical learning experiences, students are equipped with the competencies required to succeed in the rapidly evolving digital economy.",
       images: [
-        "/images/partners/pragati-maha.jpg",
         "/images/partners/pragati-session-1.jpeg",
         "/images/partners/pragati-session-2.jpeg",
         "/images/partners/pragati-session-3.jpeg",

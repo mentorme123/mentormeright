@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle } from "lucide-react";
+import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers } from "./actions";
@@ -306,13 +306,22 @@ export default function AdminDashboard() {
              </h1>
              <p className="text-slate-500 font-medium">Live global overview and database management.</p>
            </div>
-           <Button 
-             onClick={handleExportData}
-             disabled={isExporting || loading}
-             className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all"
-           >
-              {isExporting ? "Compiling Backup..." : <><Download size={18} className="mr-2" /> Download Full Database</>}
-           </Button>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                onClick={() => window.location.href = "/dashboard/admin/report"}
+                className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
+              >
+                <BarChart3 size={16} className="mr-1.5" />
+                Student Report
+              </Button>
+              <Button 
+                onClick={handleExportData}
+                disabled={isExporting || loading}
+                className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all text-xs"
+              >
+               {isExporting ? "Compiling Backup..." : <><Download size={16} className="mr-1.5" /> Download DB</>}
+              </Button>
+            </div>
         </div>
 
         {/* Global Analytics */}

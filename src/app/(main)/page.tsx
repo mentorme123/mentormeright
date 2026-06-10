@@ -393,23 +393,133 @@ export default function Home() {
     {
       name: "Howard Park International",
       logo: "/images/partners/howard-park.jpg",
-      description: "Howard Public School CBSE, Himayathnagar, Hyderabad — Established in 1986, Howard Public School is one of the finest CBSE institutions dedicated to academic excellence, self-discipline, rational thinking, and global vision. Celebrating 40 glorious years of educational excellence.",
+      tagline: "Howard Park International School",
+      description: "MentorMe Career Intelligence and Training Pvt. Ltd. partnered with Howard Park International School to deliver a hands-on Robotics & Innovation Program designed to inspire young learners through experiential STEM education, robotics engineering, programming, and real-world problem-solving.",
       website: "https://howardinstitutions.org",
       contact: [
         { label: "Address", value: "H. No. 3-6-568, Street No. 8, Himayathnagar, Hyderabad – 500 029" },
         { label: "Email", value: "howardinstitutions@gmail.com", href: "mailto:howardinstitutions@gmail.com" },
         { label: "Phone", value: "040-27630610", href: "tel:04027630610" }
+      ],
+      program: "Robotics & Innovation Program",
+      programOverview: [
+        "Robotics & STEM Education Program",
+        "Hands-On Learning Methodology",
+        "Project-Based Learning",
+        "Innovation & Design Thinking",
+        "Future Skills Development",
+        "Technology Exploration Program",
+        "Robotics Project Showcase",
+        "Certification-Based Learning"
+      ],
+      keyAreas: [
+        "Introduction to Robotics",
+        "Electronics & Circuit Fundamentals",
+        "Sensors & Actuators",
+        "Robotics Assembly Techniques",
+        "Programming Fundamentals",
+        "Automation Concepts",
+        "Engineering Design Process",
+        "Innovation & Creativity",
+        "Problem-Solving Techniques",
+        "Real-World Robotics Applications",
+        "Smart Automation Systems",
+        "Sensor-Based Applications",
+        "Alarm Systems",
+        "Environmental Monitoring Solutions",
+        "Robotics-Based Problem Solving",
+        "Innovation Challenges"
+      ],
+      outcomes: [
+        "Robotics Fundamentals",
+        "STEM & Engineering Skills",
+        "Creativity and Innovation Mindset",
+        "Programming Awareness",
+        "Logical Thinking Skills",
+        "Teamwork & Collaboration",
+        "Problem-Solving Abilities",
+        "Confidence in Technology Applications"
+      ],
+      partnershipHighlights: "This collaboration reflects MentorMe's commitment to empowering students with future-ready STEM and robotics education. Through hands-on experiences, innovation-driven learning, and practical project development, students gain the confidence and skills needed to thrive in a technology-driven world.",
+      images: [
+        "/images/partners/howard-park.jpg",
+        "/images/partners/howard-park-1.jpg",
+        "/images/partners/howard-park-2.jpg",
+        "/images/partners/howard-park-3.jpg",
+        "/images/partners/howard-park-4.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center",
+        "center",
+        "center",
+        "center"
       ]
     },
     {
       name: "Geetam School",
       logo: "/images/partners/geetam.jpg",
-      description: "Geetam The Next Gen IIT School, Kakinada — Established in 2014, Geetam School has emerged as one of Kakinada's most unique and trusted institutions, integrating CBSE with IIT foundation programs.",
+      tagline: "Geetam School, Kakinada",
+      description: "MentorMe Career Intelligence and Training Pvt. Ltd. partnered with Geetam School to deliver a comprehensive Robotics & STEM Innovation Program aimed at fostering creativity, problem-solving abilities, and future-ready technology skills through hands-on learning and experiential education.",
       website: "https://www.geetamnextgeniitschool.com",
       contact: [
         { label: "Address", value: "66-5-3, Narasannanagar, near Karanam garu junction, Kakinada" },
         { label: "Phone", value: "0884 235 3144 / +91 8897533222" },
         { label: "Email", value: "geetamschoolkakinada@gmail.com", href: "mailto:geetamschoolkakinada@gmail.com" }
+      ],
+      program: "Robotics & STEM Innovation Program",
+      programOverview: [
+        "Robotics & STEM Education Program",
+        "Hands-On Project-Based Learning",
+        "Innovation & Design Thinking Framework",
+        "Technology Exploration Workshops",
+        "Practical Engineering Concepts",
+        "Robotics Project Development",
+        "Future Skills Enhancement",
+        "Certification-Based Learning"
+      ],
+      keyAreas: [
+        "Introduction to Robotics",
+        "Electronics & Circuit Design",
+        "Sensors and Actuators",
+        "Robotics Assembly",
+        "Programming Fundamentals",
+        "Automation & Smart Systems",
+        "Engineering Design Process",
+        "Innovation & Creative Thinking",
+        "Real-World Technology Applications",
+        "Problem-Solving Methodologies",
+        "Building Functional Robotics Models",
+        "Sensor-Based Automation Projects",
+        "Electronics Experiments",
+        "Interactive Robotics Challenges",
+        "Team-Based Engineering Activities",
+        "Prototype Development",
+        "Innovation Projects",
+        "Project Demonstrations"
+      ],
+      outcomes: [
+        "Robotics & Engineering Fundamentals",
+        "STEM Knowledge and Application Skills",
+        "Critical Thinking Abilities",
+        "Creativity & Innovation Mindset",
+        "Programming Awareness",
+        "Teamwork & Collaboration Skills",
+        "Analytical Problem-Solving Skills",
+        "Confidence in Emerging Technologies"
+      ],
+      partnershipHighlights: "This collaboration demonstrates MentorMe's commitment to nurturing young innovators through practical STEM education and robotics learning. By combining technology, creativity, and hands-on experiences, students gain valuable exposure to future technologies and develop skills essential for the careers of tomorrow.",
+      images: [
+        "/images/partners/geetam.jpg",
+        "/images/partners/geetam.jpg",
+        "/images/partners/geetam.jpg",
+        "/images/partners/geetam.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center",
+        "center",
+        "center"
       ]
     },
     {

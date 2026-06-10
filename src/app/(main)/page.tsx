@@ -334,11 +334,65 @@ export default function Home() {
       ]
     },
     {
-      name: "St. Joseph's Degree & PG College",
+      name: "St. Joseph's Degree & PG College, Hyderabad",
       logo: "/images/partners/st-josephs.jpg",
-      description: "St. Joseph's Degree & PG College, Hyderabad — A premier institution offering undergraduate and postgraduate programs, known for academic excellence, holistic student development, and strong industry connections.",
+      tagline: "St. Joseph’s Degree & PG College (Autonomous), Hyderabad",
+      description: "MentorMe Career Intelligence and Training Pvt. Ltd. partnered with St. Joseph’s Degree & PG College (Autonomous), Hyderabad, affiliated with Osmania University and re-accredited by NAAC, to deliver a comprehensive Artificial Intelligence & Machine Learning Value-Added Certification Program designed to equip students with future-ready technology skills and industry-relevant knowledge.",
       website: "https://stjosephspgcollege.ac.in",
-      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
+      contact: [{ label: "Location", value: "Hyderabad, Telangana" }],
+      program: "Artificial Intelligence & Machine Learning Value-Added Certification Program",
+      programOverview: [
+        "30-Hour Value-Added Certification Program",
+        "Artificial Intelligence & Machine Learning Training",
+        "Industry-Oriented Curriculum",
+        "Hands-On Learning Methodology",
+        "Emerging Technology Education",
+        "Future Skills Development",
+        "Certification-Based Learning",
+        "Career Readiness Enhancement"
+      ],
+      keyAreas: [
+        "Introduction to Artificial Intelligence",
+        "Machine Learning Fundamentals",
+        "Data-Driven Decision Making",
+        "AI Applications Across Industries",
+        "Predictive Analytics Concepts",
+        "Machine Learning Algorithms",
+        "AI Ethics & Responsible Innovation",
+        "Problem-Solving Using AI",
+        "Emerging Technology Trends",
+        "Future Career Opportunities in AI",
+        "Practical AI Demonstrations",
+        "Real-World Use Cases",
+        "Interactive Workshops",
+        "Project-Based Learning",
+        "Industry-Oriented Assignments",
+        "Technology Exploration Activities",
+        "Innovation Challenges"
+      ],
+      outcomes: [
+        "Foundational AI & Machine Learning Knowledge",
+        "Analytical & Critical Thinking Skills",
+        "Problem-Solving Capabilities",
+        "Technology Awareness",
+        "Data Interpretation Skills",
+        "Innovation Mindset",
+        "Future Career Readiness",
+        "Emerging Technology Competencies"
+      ],
+      partnershipHighlights: "This collaboration showcases MentorMe's expertise in delivering advanced technology education programs that bridge the gap between academic learning and industry requirements. Through structured training and practical exposure, students gain valuable insights into Artificial Intelligence and Machine Learning while building a strong foundation for future careers in technology.",
+      images: [
+        "/images/partners/st-josephs.jpg",
+        "/images/partners/st-josephs.jpg",
+        "/images/partners/st-josephs.jpg",
+        "/images/partners/st-josephs.jpg"
+      ],
+      imageCrops: [
+        "center",
+        "center",
+        "center",
+        "center"
+      ]
     },
     {
       name: "Howard Park International",
@@ -986,7 +1040,7 @@ export default function Home() {
                   { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.jpg", link: "/k12-programs" },
                   { name: "Janani Public School, Bengaluru", logo: "/images/partners/Janani%20Public.jpg", link: "/k12-programs" },
                   { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
-                  { name: "St. Joseph's Degree & PG College", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
+                  { name: "St. Joseph's Degree & PG College, Hyderabad", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
                   { name: "Howard Park International", logo: "/images/partners/howard-park.jpg", link: "/k12-programs" },
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
 

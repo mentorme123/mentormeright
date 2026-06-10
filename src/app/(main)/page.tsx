@@ -326,8 +326,7 @@ export default function Home() {
       ],
       partnershipHighlights: "This collaboration highlights MentorMe's expertise in delivering large-scale Career Guidance and Career Planning programs that combine psychometric assessments, counseling, technology, and expert mentorship to help students make confident educational and career choices.",
       images: [
-        "/images/partners/elgi-school.png",
-        "/images/partners/elgi-school.png"
+
       ],
       imageCrops: [
         "center",

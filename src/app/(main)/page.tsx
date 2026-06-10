@@ -95,13 +95,7 @@ export default function Home() {
       website: "#",
       contact: [{ label: "Location", value: "Chennai, Tamil Nadu" }]
     },
-    {
-      name: "ICBM School of Business",
-      logo: "/images/partners/icbm.jpg",
-      description: "ICBM School of Business Excellence is a premier business school offering quality management education and industry-focused programs.",
-      website: "#",
-      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
-    },
+
     {
       name: "TSWRDC Nalgonda",
       logo: "/images/partners/tswrdc.jpg",
@@ -276,13 +270,6 @@ export default function Home() {
         "center 25%",   // Photo 3: large classroom – keep top students visible
         "center 35%"    // Photo 4: projector room
       ]
-    },
-    {
-      name: "Avanthi Degree & PG Colleges",
-      logo: "/images/partners/avanthi.png",
-      description: "Avanthi Degree & PG Colleges is committed to providing quality education with a focus on innovation, industry exposure, and holistic student development.",
-      website: "#",
-      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
     },
     {
       name: "HPS Nizamabad",
@@ -874,7 +861,6 @@ export default function Home() {
                 const partners = [
                   { name: "DDGD Vaishnav Chennai", logo: "/images/partners/ddgd-vaishnav.jpg", link: "/k12-programs" },
                   { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.jpg", link: "/k12-programs" },
-                  { name: "ICBM School of Business", logo: "/images/partners/icbm.jpg", link: "/college-programs" },
                   { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },
                   { name: "Pragati Mahavidyalaya", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
                   { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.jpg", link: "/k12-programs" },
@@ -884,7 +870,6 @@ export default function Home() {
                   { name: "Howard Park International", logo: "/images/partners/howard-park.jpg", link: "/k12-programs" },
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
                   { name: "Pantheon Digital", logo: "/images/partners/pantheon-digital.jpg", link: "/college-programs" },
-                  { name: "Avanthi Degree & PG Colleges", logo: "/images/partners/avanthi.png", link: "/college-programs" },
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
                   { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
                   { name: "St. Pious X Degree & PG College for Women", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },

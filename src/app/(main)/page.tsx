@@ -230,13 +230,6 @@ export default function Home() {
       ]
     },
     {
-      name: "Keshav Memorial",
-      logo: "/images/partners/keshav-memorial.jpg",
-      description: "Keshav Memorial Educational Society is a renowned group of institutions providing excellence in education from school to college level.",
-      website: "#",
-      contact: [{ label: "Location", value: "Hyderabad, Telangana" }]
-    },
-    {
       name: "Janani Public School, Bengaluru",
       logo: "/images/partners/Janani%20Public.jpg",
       description: "MentorMe partnered with Janani Public School, Bengaluru, to deliver a comprehensive Career Awareness Workshop and Robotics Program designed to equip students with future-ready skills, career clarity, and hands-on technology exposure.",
@@ -1143,7 +1136,6 @@ export default function Home() {
                   { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.jpg", link: "/k12-programs" },
                   { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },
                   { name: "Pragati Mahavidyalaya Junior College, Hyderabad", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
-                  { name: "Keshav Memorial", logo: "/images/partners/keshav-memorial.jpg", link: "/k12-programs" },
                   { name: "Janani Public School, Bengaluru", logo: "/images/partners/Janani%20Public.jpg", link: "/k12-programs" },
                   { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
                   { name: "St. Joseph's Degree & PG College, Hyderabad", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
@@ -1162,12 +1154,12 @@ export default function Home() {
                 return [...partners, ...partners].map((partner, i) => {
                   const instIdx = institutions.findIndex(inst => inst.name === partner.name);
                   return (
-                  <div
-                    key={i}
-                    onClick={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
-                    onMouseEnter={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
-                    className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-all cursor-pointer"
-                    style={{ width: "160px", height: "160px", padding: "20px" }}
+                    <div
+                      key={i}
+                      onClick={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
+                      onMouseEnter={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
+                      className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-all cursor-pointer"
+                      style={{ width: "160px", height: "160px", padding: "20px" }}
                     >
                       <div className="flex items-center justify-center w-full h-full">
                         <img

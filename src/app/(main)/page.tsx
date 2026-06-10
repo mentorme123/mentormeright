@@ -1000,16 +1000,13 @@ export default function Home() {
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => {
-                  const partnerIdx = institutions.findIndex(inst => inst.name === partner.name);
-                  const openPartner = () => {
-                    if (partnerIdx >= 0) setSelectedInstitution(partnerIdx);
-                  };
+                  const instIdx = institutions.findIndex(inst => inst.name === partner.name);
                   return (
                   <div
                     key={i}
-                    onClick={openPartner}
-                    onMouseEnter={openPartner}
-                    onMouseLeave={() => { if (selectedInstitution === partnerIdx) setSelectedInstitution(-1); }}
+                    onClick={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
+                    onMouseEnter={() => { if (instIdx >= 0) setSelectedInstitution(instIdx); }}
+                    onMouseLeave={() => { if (selectedInstitution === instIdx && instIdx >= 0) setSelectedInstitution(null); }}
                     className="flex-shrink-0 flex items-center justify-center bg-white rounded-xl shadow-lg border-2 border-blue-100 hover:-translate-y-1 transition-all cursor-pointer"
                     style={{ width: "160px", height: "160px", padding: "20px" }}
                   >

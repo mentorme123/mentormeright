@@ -1221,7 +1221,7 @@ export default function Home() {
               onClick={() => setSkillTab("k12")}
               className={`px-8 py-3 rounded-full font-bold transition-all shadow-sm ${skillTab === "k12" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
             >
-              K-12 Programs
+              AI Learning Hub
             </button>
             <button
               onClick={() => setSkillTab("college")}

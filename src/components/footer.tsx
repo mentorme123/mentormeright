@@ -45,7 +45,7 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* School & College Programs */}
+          {/* AI Learning Hub & 21st Century Skills Hub */}
           <div className="space-y-4">
             <h4 className="font-bold text-foreground">AI Learning Hub</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">

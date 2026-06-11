@@ -1129,7 +1129,12 @@ export default function Home() {
             {/* Right fade */}
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-brand-blue to-transparent z-10 pointer-events-none" />
 
-            <div className="flex gap-5 partners-scroll">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 4 }}
+              className="flex gap-5"
+            >
               {(() => {
                 const partners = [
                   { name: "DG Vaishnav College, Chennai", logo: "/images/partners/ddgd-vaishnav.jpg", link: "/college-programs" },
@@ -1185,8 +1190,7 @@ export default function Home() {
                   );
                 })
               })()}
-
-            </div>
+            </motion.div>
           </div>
         </div>
 
@@ -1718,7 +1722,8 @@ export default function Home() {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
+
           </div>
         </div>
       )}

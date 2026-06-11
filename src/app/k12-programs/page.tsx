@@ -30,7 +30,7 @@ export default function K12ProgramsPage() {
                 : "bg-white text-slate-700 border border-slate-200 hover:bg-slate-50"
             }`}
           >
-            College Programs
+            21st Century Skills Hub
           </button>
         </div>
 

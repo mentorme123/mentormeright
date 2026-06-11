@@ -15,8 +15,8 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
   // Determine accent color based on category
   const getAccentColor = () => {
     switch (program.category) {
-      case "School Programs": return "text-brand-orange";
-      case "College Programs": return "text-brand-blue";
+      case "AI Learning Hub": return "text-brand-orange";
+      case "21st Century Skills Hub": return "text-brand-blue";
       case "Corporate Programs": return "text-purple-600";
       default: return "text-brand-blue";
     }
@@ -24,8 +24,8 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
 
   const getBgColor = () => {
     switch (program.category) {
-      case "School Programs": return "bg-brand-orange";
-      case "College Programs": return "bg-brand-blue";
+      case "AI Learning Hub": return "bg-brand-orange";
+      case "21st Century Skills Hub": return "bg-brand-blue";
       case "Corporate Programs": return "bg-purple-600";
       default: return "bg-brand-blue";
     }

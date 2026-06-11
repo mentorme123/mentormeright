@@ -1,7 +1,7 @@
 export interface Program {
   slug: string;
   title: string;
-  category: 'School Programs' | 'College Programs' | 'Corporate Programs';
+  category: 'AI Learning Hub' | '21st Century Skills Hub' | 'Corporate Programs';
   image: string;
   subtitle: string;
   description: string;
@@ -14,7 +14,7 @@ export const programsData: Record<string, Program> = {
   "robotics": {
     slug: "robotics",
     title: "Robotics Training for Schools",
-    category: "School Programs",
+    category: "AI Learning Hub",
     image: "/images/programs/robotics.png",
     subtitle: "Building the innovators of tomorrow through hands-on robotics engineering.",
     description: "Our Robotics program is designed to transform middle and high school students from passive technology consumers into active creators. By engaging with real-world engineering challenges, students develop critical thinking, spatial awareness, and a deep understanding of mechanics and coding.",
@@ -34,7 +34,7 @@ export const programsData: Record<string, Program> = {
   "ai-school": {
     slug: "ai-school",
     title: "Artificial Intelligence for Schools",
-    category: "School Programs",
+    category: "AI Learning Hub",
     image: "/images/programs/ai-school.png",
     subtitle: "Demystifying AI for the next generation of digital natives.",
     description: "Artificial Intelligence is no longer the future; it is the present. Our AI program for schools introduces young minds to the foundational concepts of machine learning, natural language processing, and generative AI in a safe, engaging, and highly interactive environment.",
@@ -54,7 +54,7 @@ export const programsData: Record<string, Program> = {
   "vedic-maths": {
     slug: "vedic-maths",
     title: "Vedic Mathematics",
-    category: "School Programs",
+    category: "AI Learning Hub",
     image: "/images/programs/vedic-maths.png",
     subtitle: "Unlock the power of high-speed mental calculation.",
     description: "Vedic Mathematics is an ancient Indian system of calculation that dramatically increases computational speed and accuracy. This program eliminates the fear of math, replacing it with confidence, agility, and a profound appreciation for numbers.",
@@ -76,7 +76,7 @@ export const programsData: Record<string, Program> = {
   "ml": {
     slug: "ml",
     title: "Machine Learning Masterclass",
-    category: "College Programs",
+    category: "21st Century Skills Hub",
     image: "/images/programs/ml.png",
     subtitle: "From data to decisions: Mastering predictive analytics.",
     description: "Designed for engineering and computer science students, this intensive Machine Learning program bridges the gap between academic theory and industry application. Students will learn to design, train, and deploy predictive models using real-world datasets.",
@@ -96,7 +96,7 @@ export const programsData: Record<string, Program> = {
   "ai-college": {
     slug: "ai-college",
     title: "Advanced Artificial Intelligence",
-    category: "College Programs",
+    category: "21st Century Skills Hub",
     image: "/images/programs/ai-college.png",
     subtitle: "Architecting the intelligent systems of the future.",
     description: "Take your technical skills to the cutting edge. This advanced program dives deep into the architecture of modern AI systems, focusing on large language models, computer vision, and autonomous decision-making.",
@@ -116,7 +116,7 @@ export const programsData: Record<string, Program> = {
   "deep-learning": {
     slug: "deep-learning",
     title: "Deep Learning Neural Networks",
-    category: "College Programs",
+    category: "21st Century Skills Hub",
     image: "/images/programs/deep-learning.png",
     subtitle: "Mastering the algorithms that power modern AI.",
     description: "Deep Learning is the engine driving today's AI revolution. This rigorous program covers the mathematics and programming behind deep neural networks, teaching students how to build solutions using TensorFlow and PyTorch.",
@@ -136,7 +136,7 @@ export const programsData: Record<string, Program> = {
   "communication": {
     slug: "communication",
     title: "Corporate Communication Skills",
-    category: "College Programs",
+    category: "21st Century Skills Hub",
     image: "/images/programs/communication.png",
     subtitle: "The critical soft skills required for corporate success.",
     description: "Technical skills get you the interview; communication skills get you the job—and the promotion. This program transforms students into articulate, confident professionals ready to excel in the global corporate landscape.",

@@ -1227,7 +1227,7 @@ export default function Home() {
               onClick={() => setSkillTab("college")}
               className={`px-8 py-3 rounded-full font-bold transition-all shadow-sm ${skillTab === "college" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
             >
-              College Programs
+              21st Century Skills Hub
             </button>
           </div>
           <div className="grid lg:grid-cols-3 gap-8">
@@ -1550,13 +1550,13 @@ export default function Home() {
                     <label className="text-sm font-medium">Interested Course / Department <span className="text-red-500">*</span></label>
                     <select required className="w-full p-3 rounded-xl border bg-background focus:ring-2 focus:ring-brand-blue focus:outline-none text-sm">
                       <option value="">Select your interest...</option>
-                      <optgroup label="School Programs">
+                      <optgroup label="AI Learning Hub">
                         <option value="ai-school">Future AI Leaders Program</option>
                         <option value="robotics">Robotics &amp; STEM Learning</option>
                         <option value="vedic-maths">Smart Maths with Vedic Techniques</option>
                         <option value="career-counseling-school">Career Counseling (School)</option>
                       </optgroup>
-                      <optgroup label="College Programs">
+                      <optgroup label="21st Century Skills Hub">
                         <option value="ai-college">Advanced AI &amp; Machine Learning</option>
                         <option value="fullstack">Full Stack Web Development</option>
                         <option value="data-science">Data Science &amp; Analytics</option>

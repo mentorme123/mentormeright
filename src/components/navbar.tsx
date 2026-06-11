@@ -26,7 +26,7 @@ export function Navbar() {
     { href: "/career-simulator", label: "Career Simulator" },
     { href: "/counsellors", label: "Counsellors" },
     { href: "/k12-programs", label: "K12 Programs" },
-    { href: "/college-programs", label: "College Programs" },
+    { href: "/college-programs", label: "21st Century Skills Hub" },
     { href: "/study-abroad", label: "Study Abroad" },
     { href: "/blogs", label: "Blogs" },
     { href: "/contact", label: "Contact Us" },

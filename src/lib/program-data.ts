@@ -7,6 +7,10 @@ export interface Program {
   description: string;
   howWeOffer: string[];
   keyHighlights: string[];
+  benefits?: string[];
+  usp?: string[];
+  modules?: string[];
+  seoKeywords?: string[];
 }
 
 export const programsData: Record<string, Program> = {
@@ -233,6 +237,209 @@ export const programsData: Record<string, Program> = {
       "Advanced DAX functions and time intelligence",
       "Interactive dashboard design and UI/UX",
       "Publishing and sharing insights securely"
+    ]
+  },
+
+  // --- K12 PROGRAMS ---
+  "ai-foundations-k12": {
+    slug: "ai-foundations-k12",
+    title: "AI Foundations for School Students",
+    category: "AI Learning Hub",
+    image: "/images/programs/ai-school.png",
+    subtitle: "A beginner-friendly introduction to Artificial Intelligence for young learners.",
+    description: "A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society. This course builds awareness of emerging technologies, develops logical thinking, encourages innovation and creativity, and improves problem-solving skills.",
+    howWeOffer: [
+      "Age-Appropriate Curriculum: Designed specifically for school students with no prior coding experience.",
+      "Interactive Activities & Games: Learning through play and hands-on experimentation.",
+      "No Coding Required: Focus on concepts and applications rather than syntax.",
+      "Industry-Designed Content: Curriculum crafted with input from AI professionals and educators."
+    ],
+    keyHighlights: [
+      "Introduction to AI and its real-world applications",
+      "Machine Learning Basics",
+      "Generative AI Tools exploration",
+      "AI Ethics and responsible use",
+      "AI Mini Projects for hands-on learning"
+    ]
+  },
+  "generative-ai-k12": {
+    slug: "generative-ai-k12",
+    title: "Generative AI & Prompt Engineering for Students",
+    category: "AI Learning Hub",
+    image: "/images/programs/ai-school.png",
+    subtitle: "Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools.",
+    description: "Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools for learning, creativity, research, and productivity. This program helps students achieve faster learning, better project work, improved communication skills, and enhanced creativity through responsible AI practices.",
+    howWeOffer: [
+      "Ready-to-Use Prompt Library: Access to hundreds of academic and creative prompts.",
+      "Academic Applications: Using AI for research, essays, and presentations.",
+      "Hands-On Exercises: Daily practice sessions with immediate feedback.",
+      "Responsible AI Practices: Understanding AI safety, bias, and ethical use."
+    ],
+    keyHighlights: [
+      "Understanding Generative AI fundamentals",
+      "Prompt Engineering techniques and best practices",
+      "AI for Research and academic writing",
+      "AI for Presentations and content creation",
+      "AI Safety and digital citizenship"
+    ]
+  },
+  "ai-robotics-k12": {
+    slug: "ai-robotics-k12",
+    title: "AI + Robotics Explorer Program",
+    category: "AI Learning Hub",
+    image: "/images/programs/robotics.png",
+    subtitle: "A future-focused program combining AI, Robotics, Sensors, and Automation.",
+    description: "A future-focused program combining Artificial Intelligence, Robotics, Sensors, and Automation to help students become creators rather than consumers of technology. The program provides hands-on STEM learning, improves innovation mindset, builds engineering thinking, and encourages teamwork through project-based learning.",
+    howWeOffer: [
+      "Project-Based Learning: Every session involves building and programming a robot.",
+      "Robotics Kits Provided: All hardware and tools included for the program duration.",
+      "AI-Powered Robotics Projects: Combine traditional robotics with intelligent automation.",
+      "School Exhibition Support: Guidance and mentorship for showcasing projects."
+    ],
+    keyHighlights: [
+      "Robotics Fundamentals and mechanics",
+      "Sensors & Actuators hands-on exploration",
+      "Introduction to Coding for robotics",
+      "AI in Robotics and automation concepts",
+      "Capstone Project to demonstrate learning",
+      "STEM Education with real-world applications"
+    ]
+  },
+
+  // --- COLLEGE PROGRAMS ---
+  "ai-career-accelerator": {
+    slug: "ai-career-accelerator",
+    title: "AI Career Accelerator Program",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/ai-college.png",
+    subtitle: "An employability-focused program for career readiness in the AI era.",
+    description: "An employability-focused program helping students use AI to enhance productivity, communication, research, and career readiness. This program builds AI-ready workforce skills, provides better placement opportunities, enhances professional communication, and supports portfolio development with industry mentors.",
+    howWeOffer: [
+      "Industry Mentors: Learn from professionals working at top tech companies.",
+      "Employability Focus: Curriculum designed around real job requirements.",
+      "Real-World Assignments: Practical projects that build a strong portfolio.",
+      "Interview Preparation: Mock interviews, aptitude prep, and resume reviews."
+    ],
+    keyHighlights: [
+      "AI Fundamentals for all domains",
+      "Productivity with AI tools",
+      "Research & Analysis with AI assistance",
+      "AI Communication Tools",
+      "Resume Building with AI",
+      "Placement Readiness training"
+    ]
+  },
+  "ai-data-analytics": {
+    slug: "ai-data-analytics",
+    title: "AI & Data Analytics Professional Program",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/power-bi.png",
+    subtitle: "A practical program covering AI-powered analytics and business intelligence.",
+    description: "A practical program covering AI-powered analytics, business intelligence, dashboards, and data-driven decision-making. Students gain a strong analytics foundation, dashboard development skills, better business decision-making ability, and industry-relevant project experience with Power BI integration and real datasets.",
+    howWeOffer: [
+      "Power BI Integration: Full proficiency in Microsoft's leading BI tool.",
+      "Real Datasets: Work with messy, real-world data from actual businesses.",
+      "Business Case Studies: Analyze scenarios from finance, retail, and healthcare.",
+      "Capstone Projects: End-to-end analytics projects for your portfolio."
+    ],
+    keyHighlights: [
+      "Data Analytics Fundamentals",
+      "AI for Data Analysis",
+      "Excel & Power BI mastery",
+      "Data Visualization techniques",
+      "Predictive Analytics",
+      "Industry Project with real business impact"
+    ]
+  },
+  "ai-business-management": {
+    slug: "ai-business-management",
+    title: "AI for Business, Finance & Management",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/ai-college.png",
+    subtitle: "Designed for MBA, BBA, Commerce, Economics, and Management students.",
+    description: "Designed for MBA, BBA, Commerce, Economics, and Management students to understand how AI is transforming business functions. Gain future-ready management skills, better decision-making capability, exposure to AI-driven businesses, and increased employability through business-focused curriculum and case-study methodology.",
+    howWeOffer: [
+      "Business-Focused Curriculum: Tailored for management and commerce students.",
+      "Finance and Marketing Applications: Real use cases from industry leaders.",
+      "Case-Study Methodology: Learn from real business transformations.",
+      "Industry Expert Sessions: Interactive sessions with AI business leaders."
+    ],
+    keyHighlights: [
+      "AI in Business strategy and operations",
+      "AI in Finance and accounting",
+      "AI in Marketing and customer engagement",
+      "AI in HR and talent management",
+      "AI in Operations and supply chain",
+      "AI Strategy Fundamentals for executives"
+    ]
+  },
+
+  // --- CORPORATE PROGRAMS ---
+  "generative-ai-workplace": {
+    slug: "generative-ai-workplace",
+    title: "Generative AI for Workplace Productivity",
+    category: "Corporate Professionals",
+    image: "/images/programs/ai-college.png",
+    subtitle: "Help employees leverage AI to automate routine work and boost productivity.",
+    description: "Help employees leverage AI to automate routine work, improve communication, enhance productivity, and reduce turnaround times. This program delivers productivity improvement, faster report generation, better communication, and reduced manual effort through function-specific examples and practical implementation.",
+    howWeOffer: [
+      "Function-Specific Examples: Use cases tailored to your team's role.",
+      "Practical Implementation: Hands-on exercises with the tools you use daily.",
+      "Immediate Workplace Impact: Apply learnings from day one.",
+      "Customizable Workshops: Content adapted to your industry and processes."
+    ],
+    keyHighlights: [
+      "Generative AI Overview and capabilities",
+      "ChatGPT for Business applications",
+      "AI for Communication and collaboration",
+      "AI for Reporting and documentation",
+      "AI for Presentations and visuals",
+      "Responsible AI in the workplace"
+    ]
+  },
+  "ai-finance-accounting": {
+    slug: "ai-finance-accounting",
+    title: "AI for Finance & Accounting Professionals",
+    category: "Corporate Professionals",
+    image: "/images/programs/sap-fico.png",
+    subtitle: "A specialized program for Finance, Accounting, Costing, Audit, and Tax professionals.",
+    description: "A specialized program for Finance, Accounting, Costing, Audit, and Tax professionals to leverage AI in analysis, reporting, forecasting, and compliance. Benefits include faster financial reporting, better forecasting accuracy, improved compliance, and enhanced productivity with CMA/CA-oriented examples and real financial datasets.",
+    howWeOffer: [
+      "CMA/CA-Oriented Examples: Use cases aligned with professional accounting standards.",
+      "Real Financial Datasets: Practice with actual company financial data.",
+      "Industry Use Cases: Learn from how top firms use AI in finance.",
+      "Expert Faculty: Taught by finance professionals with AI expertise."
+    ],
+    keyHighlights: [
+      "AI in Accounting and bookkeeping",
+      "AI in Financial Analysis and reporting",
+      "AI for Budgeting and forecasting",
+      "AI in Audit and compliance",
+      "AI for Cost Management",
+      "AI Governance and ethics"
+    ]
+  },
+  "ai-leadership": {
+    slug: "ai-leadership",
+    title: "AI Leadership & Digital Transformation Program",
+    category: "Corporate Professionals",
+    image: "/images/programs/ai-college.png",
+    subtitle: "A strategic program for business leaders and senior managers.",
+    description: "A strategic program for business leaders, entrepreneurs, and senior managers to understand AI adoption, governance, risk management, and business transformation. Develop AI strategy development skills, improved competitiveness, better technology investments, and organizational readiness through leadership-focused framework and industry transformation case studies.",
+    howWeOffer: [
+      "Leadership-Focused Framework: Strategic thinking for AI adoption.",
+      "Industry Transformation Case Studies: Learn from successful AI implementations.",
+      "AI Roadmap Development: Build a customized AI strategy for your organization.",
+      "Executive Learning Approach: Peer discussions, boardroom simulations, and expert panels."
+    ],
+    keyHighlights: [
+      "AI Landscape & Trends overview",
+      "AI Strategy development and execution",
+      "Digital Transformation leadership",
+      "AI Governance and compliance",
+      "Risk & Compliance management",
+      "Change Management for AI initiatives",
+      "AI Roadmap Workshop for your organization"
     ]
   }
 };

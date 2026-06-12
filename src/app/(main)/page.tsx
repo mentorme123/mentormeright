@@ -1144,7 +1144,7 @@ export default function Home() {
                   { name: "Janani Public School, Bengaluru", logo: "/images/partners/Janani%20Public.jpg", link: "/k12-programs" },
                   { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
                   { name: "St. Joseph's Degree & PG College, Hyderabad", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
-                  { name: "Howard Park International School", logo: "/images/partners/howard-park.jpg", link: "/programs/robotics" },
+                   { name: "Howard Park International School", logo: "/images/partners/howard-park.jpg", link: "/programs/ai-robotics-k12" },
                   { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
 
                   { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
@@ -1250,21 +1250,21 @@ export default function Home() {
                 subtitle: "Introduction to AI for Young Learners",
                 highlights: "Understand how AI works | Impacts everyday life and future careers | Builds logical thinking and creativity | No coding required | Age‑appropriate learning",
                 image: "/images/programs/ai-school.png",
-                link: "/programs/ai-school"
+                link: "/programs/ai-foundations-k12"
               },
               {
                 title: "Generative AI & Prompt Engineering for Students",
                 subtitle: "Use AI Tools for Learning & Creativity",
                 highlights: "Master ChatGPT, Gemini & Claude | Faster learning and research | Better project work | Academic prompt library | Responsible AI practices",
                 image: "/images/programs/ai-school.png",
-                link: "/programs/ai-school"
+                link: "/programs/generative-ai-k12"
               },
               {
                 title: "AI + Robotics Explorer Program",
                 subtitle: "STEM Learning with AI & Robotics",
                 highlights: "Hands‑on robotics projects | Sensors and automation | Project‑based learning | Robotics kits provided | Capstone project | Exhibition support",
                 image: "/images/programs/robotics.png",
-                link: "/programs/robotics"
+                link: "/programs/ai-robotics-k12"
               }
             ] : skillTab === "college" ? [
               {
@@ -1272,21 +1272,21 @@ export default function Home() {
                 subtitle: "Employability & Career Readiness",
                 highlights: "AI‑ready workforce skills | Productivity with AI | Research & analysis tools | Resume building with AI | Placement readiness | Industry mentors",
                 image: "/images/programs/ai-college.png",
-                link: "/programs/ai-college"
+                link: "/programs/ai-career-accelerator"
               },
               {
                 title: "AI & Data Analytics Professional Program",
                 subtitle: "AI‑Powered Analytics & Business Intelligence",
                 highlights: "Data analytics fundamentals | Excel & Power BI | AI for data analysis | Predictive analytics | Real datasets | Industry capstone project",
                 image: "/images/programs/power-bi.png",
-                link: "/programs/ml"
+                link: "/programs/ai-data-analytics"
               },
               {
                 title: "AI for Business, Finance & Management",
                 subtitle: "AI Transforming Business Functions",
                 highlights: "AI in business, finance & marketing | AI in HR & operations | Finance & management focus | Case‑study methodology | Industry expert sessions | MBA/BBA/Commerce relevant",
                 image: "/images/programs/ai-college.png",
-                link: "/programs/ai-college"
+                link: "/programs/ai-business-management"
               }
             ] : [
               {
@@ -1294,21 +1294,21 @@ export default function Home() {
                 subtitle: "Automate Work & Boost Productivity",
                 highlights: "Automate routine work | Improve communication | Faster report generation | Function‑specific examples | Immediate workplace impact | Customizable workshops",
                 image: "/images/programs/ai-college.png",
-                link: "/programs/ai-college"
+                link: "/programs/generative-ai-workplace"
               },
               {
                 title: "AI for Finance & Accounting Professionals",
                 subtitle: "AI in Analysis, Reporting & Compliance",
                 highlights: "Faster financial reporting | Better forecasting | Audit & compliance | Cost management | CMA/CA‑oriented examples | Real financial datasets",
                 image: "/images/programs/sap-fico.png",
-                link: "/programs/ml"
+                link: "/programs/ai-finance-accounting"
               },
               {
                 title: "AI Leadership & Digital Transformation Program",
                 subtitle: "Strategic AI Adoption for Leaders",
                 highlights: "AI strategy development | Digital transformation | Governance & risk management | Change management | AI roadmap workshop | Executive learning",
                 image: "/images/programs/ai-college.png",
-                link: "/programs/ai-college"
+                link: "/programs/ai-leadership"
               }
             ]).map((item, i) => (
               <motion.div

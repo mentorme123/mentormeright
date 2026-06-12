@@ -160,11 +160,9 @@ export function Navbar() {
                           <div className="space-y-4 pt-1">
                             <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM & Emerging Technologies:</span>
                             <div className="pl-4 space-y-4 border-l-2 border-slate-200">
-                              <Link href="/programs/robotics"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Robotics</span></Link>
-                              <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Coding</span></div>
-                              <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">IoT</span></div>
-                              <Link href="/programs/ai-school"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for School Students</span></Link>
-                              <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Drones</span></div>
+                              <Link href="/programs/ai-robotics-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</span></Link>
+                              <Link href="/programs/ai-foundations-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Foundations for School Students</span></Link>
+                              <Link href="/programs/generative-ai-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI & Prompt Engineering</span></Link>
                             </div>
                           </div>
                           <div className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></div>
@@ -172,29 +170,29 @@ export function Navbar() {
                         </div>
                       </div>
 
-                      {/* College */}
-                      <div>
-                        <h4 className="font-bold text-slate-800 text-[16px] mb-8">College Students</h4>
-                        <div className="space-y-6">
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Employability Skills</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Business & Professional Skills</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital & Analytics Skills</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Finance & Commerce Skills</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Entrepreneurship & Innovation</span></div>
-                        </div>
-                      </div>
+                       {/* College */}
+                       <div>
+                         <h4 className="font-bold text-slate-800 text-[16px] mb-8">College Students</h4>
+                         <div className="space-y-6">
+                           <Link href="/programs/ai-career-accelerator"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Employability Skills</span></Link>
+                           <Link href="/programs/ai-business-management"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Business & Professional Skills</span></Link>
+                           <Link href="/programs/ai-data-analytics"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Digital & Analytics Skills</span></Link>
+                           <Link href="/programs/ai-business-management"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Finance & Commerce Skills</span></Link>
+                           <Link href="/programs/ai-career-accelerator"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Entrepreneurship & Innovation</span></Link>
+                         </div>
+                       </div>
 
-                      {/* Corporate */}
-                      <div>
-                        <h4 className="font-bold text-slate-800 text-[16px] mb-8">Corporate Professionals</h4>
-                        <div className="space-y-6">
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Leadership Excellence</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Business Excellence</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Transformation</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Workplace Effectiveness</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Finance, Compliance & Risk</span></div>
-                        </div>
-                      </div>
+                       {/* Corporate */}
+                       <div>
+                         <h4 className="font-bold text-slate-800 text-[16px] mb-8">Corporate Professionals</h4>
+                         <div className="space-y-6">
+                           <Link href="/programs/ai-leadership"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Leadership Excellence</span></Link>
+                           <Link href="/programs/generative-ai-workplace"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Business Excellence</span></Link>
+                           <Link href="/programs/ai-leadership"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Digital Transformation</span></Link>
+                           <Link href="/programs/generative-ai-workplace"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Workplace Effectiveness</span></Link>
+                           <Link href="/programs/ai-finance-accounting"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Finance, Compliance & Risk</span></Link>
+                         </div>
+                       </div>
                     </div>
                   </div>
                 </div>

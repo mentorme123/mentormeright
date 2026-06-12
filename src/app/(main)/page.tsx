@@ -1720,11 +1720,19 @@ export default function Home() {
                       </div>
                     ))}
                   </div>
-                )}
-              </div>
-            </div>
+                 )}
+                 <div className="mt-8 flex justify-center">
+                   <button
+                     onClick={() => setSelectedInstitution(null)}
+                     className="flex items-center gap-2 px-8 py-3 bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl transition-all shadow-md"
+                   >
+                     Close
+                   </button>
+                 </div>
+               </div>
+             </div>
 
-          </div>
+           </div>
         </div>
       )}
 

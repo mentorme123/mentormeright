@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { fetchAllUsers } from "./actions";
+import { fetchAllUsers, fetchRoleCounts } from "./actions";
 
 // Types
 type DBUser = {
@@ -31,6 +31,7 @@ const sanitizeText = (text: string | null) => {
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState<DBUser[]>([]);
+  const [roleCounts, setRoleCounts] = useState<Record<string, number>>({ total: 0, individual: 0, institutional: 0, admin: 0, counselor: 0 });
   const [loading, setLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
   
@@ -46,11 +47,10 @@ export default function AdminDashboard() {
   useEffect(() => {
     async function fetchDashboardData() {
       try {
-        const data = await fetchAllUsers();
+        const [data, counts] = await Promise.all([fetchAllUsers(), fetchRoleCounts()]);
         if (data) setUsers(data);
+        if (counts) setRoleCounts(counts);
         
-        // Show tour if this is their first time seeing the dashboard
-        // In a real app, this would be saved in local storage or the database.
         const hasSeenTour = localStorage.getItem('mentorme_admin_tour');
         if (!hasSeenTour) {
           setShowTour(true);
@@ -65,10 +65,12 @@ export default function AdminDashboard() {
     fetchDashboardData();
   }, []);
 
-  // Derived Stats
-  const totalStudents = users.filter(u => u.role === 'individual').length;
-  const totalInstitutions = users.filter(u => u.role === 'institutional').length;
-  const totalAdmins = users.filter(u => u.role === 'admin').length;
+  // Stats from DB role counts
+  const totalUsers = roleCounts.total ?? 0;
+  const totalStudents = roleCounts.individual ?? 0;
+  const totalInstitutions = roleCounts.institutional ?? 0;
+  const totalAdmins = roleCounts.admin ?? 0;
+  const totalCounselors = roleCounts.counselor ?? 0;
   
   // Filtering
   const filteredUsers = users.filter(u => {
@@ -325,44 +327,52 @@ export default function AdminDashboard() {
         </div>
 
         {/* Global Analytics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue">
-                <Users size={24} />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Students</p>
-                <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalStudents}</p>
-              </div>
-           </div>
-           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-brand-orange">
-                <Building2 size={24} />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Institutions</p>
-                <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalInstitutions}</p>
-              </div>
-           </div>
-           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
-                <ShieldAlert size={24} />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Admins</p>
-                <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalAdmins}</p>
-              </div>
-           </div>
-           <div className="bg-purple-600 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden flex items-center gap-4">
-              <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-xl"></div>
-              <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white relative z-10">
-                <Settings size={24} />
-              </div>
-              <div className="relative z-10">
-                <p className="text-xs font-bold text-purple-200 uppercase tracking-wider">System Status</p>
-                <p className="text-2xl font-black text-white">Live & Healthy</p>
-              </div>
-           </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center text-brand-blue">
+              <Users size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Users</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalUsers}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue">
+              <Users size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Students</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalStudents}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-brand-orange">
+              <Building2 size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Institutions</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalInstitutions}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+              <UserCircle size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Counselors</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalCounselors}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+              <ShieldAlert size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Admins</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalAdmins}</p>
+            </div>
+          </div>
         </div>
 
         {/* User Management Table */}

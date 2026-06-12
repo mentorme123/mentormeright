@@ -388,15 +388,16 @@ export default function AdminDashboard() {
 
            <div className="overflow-x-auto">
              <table className="w-full text-left border-collapse min-w-[600px]">
-               <thead>
-                 <tr className="bg-white text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
-                   <th className="px-6 py-4 font-bold">Name</th>
-                   <th className="px-6 py-4 font-bold">Email</th>
-                   <th className="px-6 py-4 font-bold">Role</th>
-                   <th className="px-6 py-4 font-bold">Joined</th>
-                   <th className="px-6 py-4 font-bold text-right">Actions</th>
-                 </tr>
-               </thead>
+                <thead>
+                  <tr className="bg-white text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
+                    <th className="px-6 py-4 font-bold">#</th>
+                    <th className="px-6 py-4 font-bold">Name</th>
+                    <th className="px-6 py-4 font-bold">Email</th>
+                    <th className="px-6 py-4 font-bold">Role</th>
+                    <th className="px-6 py-4 font-bold">Joined</th>
+                    <th className="px-6 py-4 font-bold text-right">Actions</th>
+                  </tr>
+                </thead>
                <tbody className="divide-y divide-slate-100">
                  {loading ? (
                    <tr>
@@ -413,10 +414,11 @@ export default function AdminDashboard() {
                        No users found matching &quot;{searchTerm}&quot;
                      </td>
                    </tr>
-                 ) : (
-                   filteredUsers.map((user) => (
-                     <tr key={user.id} className="hover:bg-slate-50 transition-colors group">
-                       <td className="px-6 py-4 font-bold text-slate-800">
+                  ) : (
+                    filteredUsers.map((user, idx) => (
+                      <tr key={user.id} className="hover:bg-slate-50 transition-colors group">
+                        <td className="px-6 py-4 text-slate-500 font-mono text-sm">{idx + 1}</td>
+                        <td className="px-6 py-4 font-bold text-slate-800">
                          <div className="flex items-center gap-3">
                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">

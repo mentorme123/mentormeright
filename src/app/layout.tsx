@@ -30,8 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-sans", poppins.variable)} suppressHydrationWarning>
-      <head />
+    <html lang="en" className={cn("font-sans", poppins.variable)}>
       <body className="antialiased min-h-screen flex flex-col font-sans">
         <PathTracker />
         <Script
@@ -40,7 +39,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: `
             if ('serviceWorker' in navigator) {
               window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js').catch(function() {});
+                navigator.serviceWorker.getRegistrations().then((regs) => {
+                  regs.forEach((r) => r.unregister().catch(() => {}));
+                });
               });
             }
           `}}

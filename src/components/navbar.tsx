@@ -1,17 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, Menu, X, Search } from "lucide-react";
 import { SiteSearch, useSiteSearch } from "@/components/site-search";
+import { createClient } from "@/lib/supabase";
 
 export function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAiDropdownOpen, setIsAiDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
+  const [user, setUser] = useState<any>(null);
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
+
+  useEffect(() => {
+    const supabase = createClient();
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    fetchUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setUser(session?.user || null);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleSubmenuClick = (submenu: string) => {
     setActiveSubmenu((prev) => (prev === submenu ? null : submenu));
@@ -221,17 +240,33 @@ export function Navbar() {
               </button>
             </Link>
 
-            <Link href="/register" className="hidden sm:block">
-              <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
-                Register
-              </button>
-            </Link>
+             {user ? (
+               <Link href="/dashboard/admin" className="hidden sm:block">
+                 <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
+                   Dashboard
+                 </button>
+               </Link>
+             ) : (
+               <Link href="/register" className="hidden sm:block">
+                 <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
+                   Register
+                 </button>
+               </Link>
+             )}
 
-            <Link href="/login" className="hidden sm:block">
-              <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20 text-sm whitespace-nowrap">
-                Log in
-              </button>
-            </Link>
+             {user ? (
+               <Link href="/dashboard/admin" className="hidden sm:block">
+                 <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20 text-sm whitespace-nowrap">
+                   Admin Panel
+                 </button>
+               </Link>
+             ) : (
+               <Link href="/login" className="hidden sm:block">
+                 <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20 text-sm whitespace-nowrap">
+                   Log in
+                 </button>
+               </Link>
+             )}
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

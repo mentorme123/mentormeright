@@ -32,8 +32,16 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Skip non-GET requests and API calls
-  if (event.request.method !== 'GET' || event.request.url.includes('/api/')) {
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
+  const url = new URL(event.request.url);
+  const isApi = url.pathname.startsWith('/api/');
+  const isHtml = event.request.headers.get('accept')?.includes('text/html');
+  const isNavigation = event.request.mode === 'navigate';
+
+  if (isApi || isHtml || isNavigation) {
     return;
   }
 

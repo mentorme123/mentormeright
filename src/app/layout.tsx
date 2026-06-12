@@ -31,12 +31,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={cn("font-sans", poppins.variable)} suppressHydrationWarning>
-      <head>
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-title" content="MentorMe" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="theme-color" content="#1B3A6B" />
-      </head>
+      <head />
       <body className="antialiased min-h-screen flex flex-col font-sans">
         <PathTracker />
         <Script

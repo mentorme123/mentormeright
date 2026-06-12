@@ -26,26 +26,20 @@ export function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Hide on homepage — no need for a back button on the landing page
   if (pathname === "/") return null;
 
   const handleBack = () => {
-    // Fire-and-forget analytics
     fetch("/api/analytics", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ event_type: "back_button_click", path: pathname }),
     }).catch(() => {});
 
-    if (pathname.startsWith("/assessment")) {
-      const lastContentPage = typeof window !== "undefined" ? sessionStorage.getItem("mentorme_last_content_page") : null;
-      if (lastContentPage) {
-        router.push(lastContentPage);
-      } else {
-        router.push("/");
-      }
+    const lastContentPage = typeof window !== "undefined" ? sessionStorage.getItem("mentorme_last_content_page") : null;
+    if (lastContentPage && lastContentPage !== pathname) {
+      router.push(lastContentPage);
     } else {
-      router.back();
+      router.push("/");
     }
   };
 
@@ -64,28 +58,22 @@ export function BackButton() {
   );
 }
 
-/** Variant for layouts with a shorter header (e.g. assessment, dashboard) */
 export function BackButtonCompact() {
   const router = useRouter();
   const pathname = usePathname();
 
   const handleBack = () => {
-    // Fire-and-forget analytics
     fetch("/api/analytics", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ event_type: "back_button_click", path: pathname }),
     }).catch(() => {});
 
-    if (pathname.startsWith("/assessment")) {
-      const lastContentPage = typeof window !== "undefined" ? sessionStorage.getItem("mentorme_last_content_page") : null;
-      if (lastContentPage) {
-        router.push(lastContentPage);
-      } else {
-        router.push("/");
-      }
+    const lastContentPage = typeof window !== "undefined" ? sessionStorage.getItem("mentorme_last_content_page") : null;
+    if (lastContentPage && lastContentPage !== pathname) {
+      router.push(lastContentPage);
     } else {
-      router.back();
+      router.push("/");
     }
   };
 

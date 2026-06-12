@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, Menu, X, Search } from "lucide-react";
+import { ChevronDown, Menu, X, Search, User, LogOut, ClipboardList, ChevronRight } from "lucide-react";
 import { SiteSearch, useSiteSearch } from "@/components/site-search";
 import { createClient } from "@/lib/supabase";
 
@@ -13,6 +13,9 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [profileOpen, setProfileOpen] = useState(false);
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
 
   useEffect(() => {

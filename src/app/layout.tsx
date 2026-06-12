@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import Script from "next/script";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
@@ -33,19 +32,6 @@ export default function RootLayout({
     <html lang="en" className={cn("font-sans", poppins.variable)}>
       <body className="antialiased min-h-screen flex flex-col font-sans">
         <PathTracker />
-        <Script
-          id="service-worker"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{ __html: `
-            if ('serviceWorker' in navigator) {
-              window.addEventListener('load', function() {
-                navigator.serviceWorker.getRegistrations().then((regs) => {
-                  regs.forEach((r) => r.unregister().catch(() => {}));
-                });
-              });
-            }
-          `}}
-        />
         <GoogleAnalytics />
         <QueryProvider>
           {children}

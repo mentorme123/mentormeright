@@ -163,7 +163,7 @@ export function Navbar() {
                               <Link href="/programs/robotics"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Robotics</span></Link>
                               <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Coding</span></div>
                               <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">IoT</span></div>
-                              <Link href="https://mentormeright-52evahr3a-mentorme123s-projects.vercel.app/programs/ai-school"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for School Students</span></Link>
+                              <Link href="/programs/ai-school"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for School Students</span></Link>
                               <div><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap">Drones</span></div>
                             </div>
                           </div>

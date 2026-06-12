@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle2, Phone, Mail, MapPin, Globe2 } from "lucide-react";
+import { CheckCircle2, Phone, Mail, MapPin, Globe2, GraduationCap, Briefcase } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
   const [count, setCount] = useState(0);
@@ -1223,62 +1223,93 @@ export default function Home() {
           <div className="flex flex-wrap items-center gap-4 mb-8">
             <button
               onClick={() => setSkillTab("k12")}
-              className={`px-8 py-3 rounded-full font-bold transition-all shadow-sm ${skillTab === "k12" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
+              className={`px-6 py-3 rounded-full font-bold transition-all shadow-sm flex items-center gap-2 ${skillTab === "k12" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
             >
-              AI Learning Hub
+              <GraduationCap className="w-4 h-4" />
+              School Students
             </button>
             <button
               onClick={() => setSkillTab("college")}
-              className={`px-8 py-3 rounded-full font-bold transition-all shadow-sm ${skillTab === "college" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
+              className={`px-6 py-3 rounded-full font-bold transition-all shadow-sm flex items-center gap-2 ${skillTab === "college" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
             >
-              21st Century Skills Hub
+              <GraduationCap className="w-4 h-4" />
+              College Students
+            </button>
+            <button
+              onClick={() => setSkillTab("corporate")}
+              className={`px-6 py-3 rounded-full font-bold transition-all shadow-sm flex items-center gap-2 ${skillTab === "corporate" ? "bg-gradient-to-r from-pink-400 to-purple-400 text-white shadow-md scale-105" : "bg-white text-muted-foreground border hover:bg-muted"}`}
+            >
+              <Briefcase className="w-4 h-4" />
+              Corporate Professionals
             </button>
           </div>
           <div className="grid lg:grid-cols-3 gap-8">
             {(skillTab === "k12" ? [
               {
-                title: "Future AI Leaders Program",
-                subtitle: "AI Classes for School Students",
-                highlights: "Hands‑on projects | Generative AI ML & NLP | Ethics & responsible AI | Teacher upskilling",
+                title: "AI Foundations for School Students",
+                subtitle: "Introduction to AI for Young Learners",
+                highlights: "Understand how AI works | Impacts everyday life and future careers | Builds logical thinking and creativity | No coding required | Age‑appropriate learning",
                 image: "/images/programs/ai-school.png",
                 link: "/programs/ai-school"
               },
               {
-                title: "Robotics & STEM Learning for Kids",
-                subtitle: "Robotics Classes for School Students",
-                highlights: "Hands‑on training | No lab investment | Robotics Expo | STEM Integration | Robotics Lab Upgrade | Teacher Training",
+                title: "Generative AI & Prompt Engineering for Students",
+                subtitle: "Use AI Tools for Learning & Creativity",
+                highlights: "Master ChatGPT, Gemini & Claude | Faster learning and research | Better project work | Academic prompt library | Responsible AI practices",
+                image: "/images/programs/ai-school.png",
+                link: "/programs/ai-school"
+              },
+              {
+                title: "AI + Robotics Explorer Program",
+                subtitle: "STEM Learning with AI & Robotics",
+                highlights: "Hands‑on robotics projects | Sensors and automation | Project‑based learning | Robotics kits provided | Capstone project | Exhibition support",
                 image: "/images/programs/robotics.png",
                 link: "/programs/robotics"
-              },
+              }
+            ] : skillTab === "college" ? [
               {
-                title: "Smart Maths with Vedic Techniques",
-                subtitle: "Vedic Maths Classes for School Students",
-                highlights: "Fast‑Track Mental Math | No Tools Needed | Expert‑Led Sessions | Certification",
-                image: "/images/programs/vedic-maths.png",
-                link: "/programs/vedic-maths"
-              },
-            ] : [
-              {
-                title: "Advanced AI & Machine Learning",
-                subtitle: "AI Certification for College Students",
-                highlights: "Deep Learning | Computer Vision | NLP Projects | Industry Capstone | Placement Assistance",
+                title: "AI Career Accelerator Program",
+                subtitle: "Employability & Career Readiness",
+                highlights: "AI‑ready workforce skills | Productivity with AI | Research & analysis tools | Resume building with AI | Placement readiness | Industry mentors",
                 image: "/images/programs/ai-college.png",
                 link: "/programs/ai-college"
               },
               {
-                title: "Full Stack Web Development",
-                subtitle: "Web & App Development Training",
-                highlights: "MERN Stack | Next.js | Cloud Deployment | Real-world Projects | Technical Interview Prep",
-                image: "/images/programs/python.png",
-                link: "/programs/python"
-              },
-              {
-                title: "Data Science & Analytics",
-                subtitle: "Data Analytics Training Program",
-                highlights: "Python & SQL | Tableau & PowerBI | Predictive Modeling | Business Analytics | Live Projects",
+                title: "AI & Data Analytics Professional Program",
+                subtitle: "AI‑Powered Analytics & Business Intelligence",
+                highlights: "Data analytics fundamentals | Excel & Power BI | AI for data analysis | Predictive analytics | Real datasets | Industry capstone project",
                 image: "/images/programs/power-bi.png",
                 link: "/programs/ml"
               },
+              {
+                title: "AI for Business, Finance & Management",
+                subtitle: "AI Transforming Business Functions",
+                highlights: "AI in business, finance & marketing | AI in HR & operations | Finance & management focus | Case‑study methodology | Industry expert sessions | MBA/BBA/Commerce relevant",
+                image: "/images/programs/ai-college.png",
+                link: "/programs/ai-college"
+              }
+            ] : [
+              {
+                title: "Generative AI for Workplace Productivity",
+                subtitle: "Automate Work & Boost Productivity",
+                highlights: "Automate routine work | Improve communication | Faster report generation | Function‑specific examples | Immediate workplace impact | Customizable workshops",
+                image: "/images/programs/ai-college.png",
+                link: "/programs/ai-college"
+              },
+              {
+                title: "AI for Finance & Accounting Professionals",
+                subtitle: "AI in Analysis, Reporting & Compliance",
+                highlights: "Faster financial reporting | Better forecasting | Audit & compliance | Cost management | CMA/CA‑oriented examples | Real financial datasets",
+                image: "/images/programs/sap-fico.png",
+                link: "/programs/ml"
+              },
+              {
+                title: "AI Leadership & Digital Transformation Program",
+                subtitle: "Strategic AI Adoption for Leaders",
+                highlights: "AI strategy development | Digital transformation | Governance & risk management | Change management | AI roadmap workshop | Executive learning",
+                image: "/images/programs/ai-college.png",
+                link: "/programs/ai-college"
+              }
             ]).map((item, i) => (
               <motion.div
                 key={i}
@@ -1335,6 +1366,114 @@ export default function Home() {
                 </div>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Programs Showcase */}
+      <section className="py-24 px-4 bg-background relative overflow-hidden">
+        <div className="absolute -top-24 -right-24 w-[400px] h-[400px] bg-brand-orange/10 blur-[100px] rounded-full z-0" />
+        <div className="absolute -bottom-24 -left-24 w-[400px] h-[400px] bg-brand-blue/10 blur-[100px] rounded-full z-0" />
+        <div className="max-w-6xl mx-auto relative z-10">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl font-extrabold text-center mb-4"
+          >
+            Explore Our <span className="text-brand-orange">Programs</span>
+          </motion.h2>
+          <p className="text-center text-muted-foreground text-lg max-w-2xl mx-auto mb-16">
+            Comprehensive learning journeys for every stage — from school students to corporate leaders.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* K-12 Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="group relative rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-lg hover:shadow-[0_30px_60px_rgba(27,58,107,0.15)] transition-all duration-500 hover:-translate-y-3 cursor-pointer"
+            >
+              <div className="relative h-56 overflow-hidden">
+                <Image src="/images/programs/ai-school.png" alt="K-12 Programs" fill className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-4 left-4">
+                  <span className="px-3 py-1 bg-brand-orange text-white text-xs font-bold rounded-full uppercase tracking-wider">K-12</span>
+                </div>
+              </div>
+              <div className="p-6 space-y-4">
+                <h3 className="text-xl font-bold text-brand-blue group-hover:text-brand-orange transition-colors">School Students</h3>
+                <ul className="text-sm text-slate-600 space-y-2">
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> AI Foundations for School Students</li>
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> Generative AI & Prompt Engineering</li>
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> AI + Robotics Explorer Program</li>
+                </ul>
+                <p className="text-xs text-muted-foreground leading-relaxed">Age-appropriate learning, interactive activities, no coding required. Build future-ready skills with AI and robotics.</p>
+                <div className="pt-2">
+                  <span className="inline-flex items-center text-brand-blue font-bold text-sm group-hover:text-brand-orange transition-colors">Explore K-12 Programs →</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* College Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.25 }}
+              className="group relative rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-lg hover:shadow-[0_30px_60px_rgba(27,58,107,0.15)] transition-all duration-500 hover:-translate-y-3 cursor-pointer"
+            >
+              <div className="relative h-56 overflow-hidden">
+                <Image src="/images/programs/ai-college.png" alt="College Programs" fill className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-4 left-4">
+                  <span className="px-3 py-1 bg-brand-blue text-white text-xs font-bold rounded-full uppercase tracking-wider">College</span>
+                </div>
+              </div>
+              <div className="p-6 space-y-4">
+                <h3 className="text-xl font-bold text-brand-blue group-hover:text-brand-orange transition-colors">College Students</h3>
+                <ul className="text-sm text-slate-600 space-y-2">
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> AI Career Accelerator Program</li>
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> AI & Data Analytics Professional</li>
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> AI for Business, Finance & Management</li>
+                </ul>
+                <p className="text-xs text-muted-foreground leading-relaxed">Industry-designed curriculum with real-world assignments, mentors, and placement readiness support.</p>
+                <div className="pt-2">
+                  <span className="inline-flex items-center text-brand-blue font-bold text-sm group-hover:text-brand-orange transition-colors">Explore College Programs →</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Corporate Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="group relative rounded-3xl overflow-hidden bg-white border border-slate-100 shadow-lg hover:shadow-[0_30px_60px_rgba(27,58,107,0.15)] transition-all duration-500 hover:-translate-y-3 cursor-pointer"
+            >
+              <div className="relative h-56 overflow-hidden">
+                <Image src="/images/programs/sap-fico.png" alt="Corporate Programs" fill className="object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                <div className="absolute bottom-4 left-4">
+                  <span className="px-3 py-1 bg-brand-orange text-white text-xs font-bold rounded-full uppercase tracking-wider">Corporate</span>
+                </div>
+              </div>
+              <div className="p-6 space-y-4">
+                <h3 className="text-xl font-bold text-brand-blue group-hover:text-brand-orange transition-colors">Corporate Professionals</h3>
+                <ul className="text-sm text-slate-600 space-y-2">
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> Generative AI for Workplace Productivity</li>
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> AI for Finance & Accounting Professionals</li>
+                  <li className="flex items-start gap-2"><span className="text-brand-blue mt-0.5">•</span> AI Leadership & Digital Transformation</li>
+                </ul>
+                <p className="text-xs text-muted-foreground leading-relaxed">Function-specific training to boost productivity, communication, and strategic AI adoption in the workplace.</p>
+                <div className="pt-2">
+                  <span className="inline-flex items-center text-brand-blue font-bold text-sm group-hover:text-brand-orange transition-colors">Explore Corporate Programs →</span>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>

@@ -63,9 +63,9 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Corporate Programs */}
+          {/* Corporate Professionals */}
           <div className="space-y-4">
-            <h4 className="font-bold text-foreground">Corporate Programs</h4>
+            <h4 className="font-bold text-foreground">Corporate Professionals</h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li><Link href="/programs/digital-marketing" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Digital Marketing</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>
               <li><Link href="/programs/python" className="relative group inline-block"><span className="group-hover:text-brand-blue transition-colors">Python Full Stack</span><span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full"></span></Link></li>

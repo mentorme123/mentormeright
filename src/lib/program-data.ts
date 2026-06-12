@@ -1,7 +1,7 @@
 export interface Program {
   slug: string;
   title: string;
-  category: 'AI Learning Hub' | '21st Century Skills Hub' | 'Corporate Programs';
+  category: 'AI Learning Hub' | '21st Century Skills Hub' | 'Corporate Professionals';
   image: string;
   subtitle: string;
   description: string;
@@ -158,7 +158,7 @@ export const programsData: Record<string, Program> = {
   "digital-marketing": {
     slug: "digital-marketing",
     title: "Advanced Digital Marketing",
-    category: "Corporate Programs",
+    category: "Corporate Professionals",
     image: "/images/programs/digital-marketing.png",
     subtitle: "Drive growth through data-driven marketing strategies.",
     description: "A comprehensive immersion into modern digital marketing. This corporate program is designed to upskill marketing teams, teaching them how to leverage SEO, paid media, and analytics to drive exponential business growth.",
@@ -178,7 +178,7 @@ export const programsData: Record<string, Program> = {
   "python": {
     slug: "python",
     title: "Python Full Stack Development",
-    category: "Corporate Programs",
+    category: "Corporate Professionals",
     image: "/images/programs/python.png",
     subtitle: "End-to-end web architecture for modern enterprises.",
     description: "Empower your engineering teams to build robust, scalable web applications. This intensive bootcamp covers everything from responsive frontend design to secure, high-performance Python backend architecture.",
@@ -198,7 +198,7 @@ export const programsData: Record<string, Program> = {
   "sap-fico": {
     slug: "sap-fico",
     title: "SAP FICO (Finance & Controlling)",
-    category: "Corporate Programs",
+    category: "Corporate Professionals",
     image: "/images/programs/sap-fico.png",
     subtitle: "Master the backbone of enterprise financial management.",
     description: "Our SAP FICO training provides corporate finance teams with the technical proficiency to manage complex financial accounting and reporting within the SAP ERP environment, ensuring global compliance and operational efficiency.",
@@ -218,7 +218,7 @@ export const programsData: Record<string, Program> = {
   "power-bi": {
     slug: "power-bi",
     title: "Data Analytics with Power BI",
-    category: "Corporate Programs",
+    category: "Corporate Professionals",
     image: "/images/programs/power-bi.png",
     subtitle: "Transform raw data into actionable business intelligence.",
     description: "Data is a company's most valuable asset. This program equips professionals with the skills to clean complex data, build dynamic dashboards, and extract insights that drive strategic business decisions using Microsoft Power BI.",

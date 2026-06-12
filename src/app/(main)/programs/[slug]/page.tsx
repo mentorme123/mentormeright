@@ -17,7 +17,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
     switch (program.category) {
       case "AI Learning Hub": return "text-brand-orange";
       case "21st Century Skills Hub": return "text-brand-blue";
-      case "Corporate Programs": return "text-purple-600";
+      case "Corporate Professionals": return "text-purple-600";
       default: return "text-brand-blue";
     }
   };
@@ -26,7 +26,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
     switch (program.category) {
       case "AI Learning Hub": return "bg-brand-orange";
       case "21st Century Skills Hub": return "bg-brand-blue";
-      case "Corporate Programs": return "bg-purple-600";
+      case "Corporate Professionals": return "bg-purple-600";
       default: return "bg-brand-blue";
     }
   };

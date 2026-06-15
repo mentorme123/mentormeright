@@ -153,21 +153,21 @@ export function Navbar() {
                     {/* Accordion style vertical menu */}
                     <div className="space-y-4">
                       {/* K-12 Section */}
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('k12')}>
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onMouseEnter={() => setActiveSubmenu('k12')}>
                         1. K-12 Students
                       </button>
                       {activeSubmenu === 'k12' && (
-                        <div className={`pl-4 space-y-5 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'k12' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`}>
+                        <div className={`pl-4 space-y-5 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'k12' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`} onMouseLeave={() => setActiveSubmenu(null)}>
                           <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Future Readiness Skills</span></div>
                           <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Communication & Leadership</span></div>
                           <div className="space-y-4 pt-1">
                             <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM & Emerging Technologies:</span>
                             <div className="pl-6 space-y-2">
-                              <Link href="/programs/ai-robotics-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Robotics</span></Link>
-                              <Link href="/programs/coding-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Coding</span></Link>
-                              <Link href="/programs/iot-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">IoT</span></Link>
-                              <Link href="/programs/ai-foundations-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for School Students</span></Link>
-                              <Link href="/programs/drones-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Drones</span></Link>
+                              <Link href="/programs/ai-robotics-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Robotics</span></Link>
+                              <Link href="/programs/coding-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Coding</span></Link>
+                              <Link href="/programs/iot-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">IoT</span></Link>
+                              <Link href="/programs/ai-foundations-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for School Students</span></Link>
+                              <Link href="/programs/drones-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Drones</span></Link>
                             </div>
                           </div>
                           <div className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></div>
@@ -176,26 +176,26 @@ export function Navbar() {
                       )}
 
                       {/* College Section */}
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('college')}>
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onMouseEnter={() => setActiveSubmenu('college')}>
                         2. College Students
                       </button>
                       {activeSubmenu === 'college' && (
-                        <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'college' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`}>
-                          <Link href="/programs/ai-career-accelerator"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Employability Skills</span></Link>
-                          <Link href="/programs/ai-business-management"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Business & Professional Skills</span></Link>
-                          <Link href="/programs/ai-data-analytics"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Digital & Analytics Skills</span></Link>
-                          <Link href="/programs/ai-business-management"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Finance & Commerce Skills</span></Link>
-                          <Link href="/programs/ai-career-accelerator"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Entrepreneurship & Innovation</span></Link>
+                        <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'college' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`} onMouseLeave={() => setActiveSubmenu(null)}>
+                          <Link href="/programs/ai-career-accelerator" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Employability Skills</span></Link>
+                          <Link href="/programs/ai-business-management" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Business & Professional Skills</span></Link>
+                          <Link href="/programs/ai-data-analytics" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Digital & Analytics Skills</span></Link>
+                          <Link href="/programs/ai-business-management" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Finance & Commerce Skills</span></Link>
+                          <Link href="/programs/ai-career-accelerator" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Entrepreneurship & Innovation</span></Link>
                         </div>
                       )}
 
                       {/* Corporate Section */}
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('corporate')}>
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onMouseEnter={() => setActiveSubmenu('corporate')}>
                         3. Corporate Professionals
                       </button>
                       {activeSubmenu === 'corporate' && (
-                        <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'corporate' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`}>
-                          <Link href="/programs/ai-leadership"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Leadership Excellence</span></Link>
+                        <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'corporate' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`} onMouseLeave={() => setActiveSubmenu(null)}>
+                          <Link href="/programs/ai-leadership" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Leadership Excellence</span></Link>
                           <Link href="/programs/generative-ai-workplace"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Business Excellence</span></Link>
                           <Link href="/programs/ai-leadership"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Digital Transformation</span></Link>
                           <Link href="/programs/generative-ai-workplace"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Workplace Effectiveness</span></Link>

@@ -3,11 +3,11 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer className="w-full bg-gray-50 border-t border-gray-200 pt-12 pb-6">
-      <div className="container mx-auto px-4 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-10">
+      <div className="container mx-auto px-4 sm:px-8 max-w-7xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-10">
 
           {/* Left Column – Brand Info */}
-          <div className="md:col-span-1 space-y-4">
+          <div className="space-y-4">
             <Link href="/">
               <img
                 src="/logo.png?v=6"

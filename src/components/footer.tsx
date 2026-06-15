@@ -25,50 +25,33 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Company + Support */}
+          {/* K-12 Students */}
           <div className="space-y-3">
-            <h4 className="text-sm font-bold text-gray-900 mb-3">Company</h4>
+            <h4 className="text-sm font-bold text-gray-900 mb-3">K-12 Students</h4>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link></li>
-              <li><Link href="/services" className="hover:text-brand-blue transition-colors">Our Services</Link></li>
-              <li><Link href="/careers" className="hover:text-brand-blue transition-colors">Careers</Link></li>
-            </ul>
-
-            <h4 className="text-sm font-bold text-gray-900 mt-6 mb-3">Support</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/contact" className="hover:text-brand-blue transition-colors">Contact Us</Link></li>
-              <li><Link href="/terms" className="hover:text-brand-blue transition-colors">Terms &amp; Conditions</Link></li>
-              <li><Link href="/privacy" className="hover:text-brand-blue transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/refund" className="hover:text-brand-blue transition-colors">Refund Policy</Link></li>
+              <li><Link href="/programs/ai-foundations-k12" className="hover:text-brand-blue transition-colors">AI Foundations for School Students</Link></li>
+              <li><Link href="/programs/generative-ai-k12" className="hover:text-brand-blue transition-colors">Generative AI &amp; Prompt Engineering for Students</Link></li>
+              <li><Link href="/programs/ai-robotics-k12" className="hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</Link></li>
             </ul>
           </div>
 
-          {/* AI Learning Hub */}
+          {/* College Students */}
           <div className="space-y-3">
-            <h4 className="text-sm font-bold text-gray-900 mb-3">AI Learning Hub</h4>
+            <h4 className="text-sm font-bold text-gray-900 mb-3">College Students</h4>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/programs/robotics" className="hover:text-brand-blue transition-colors">Robotics</Link></li>
-              <li><Link href="/programs/ai" className="hover:text-brand-blue transition-colors">AI</Link></li>
-              <li><Link href="/programs/vedic-maths" className="hover:text-brand-blue transition-colors">Vedic Maths</Link></li>
-            </ul>
-
-            <h4 className="text-sm font-bold text-gray-900 mt-6 mb-3">21st Century Skills Hub</h4>
-            <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/programs/machine-learning" className="hover:text-brand-blue transition-colors">Machine Learning</Link></li>
-              <li><Link href="/programs/artificial-intelligence" className="hover:text-brand-blue transition-colors">Artificial Intelligence</Link></li>
-              <li><Link href="/programs/deep-learning" className="hover:text-brand-blue transition-colors">Deep Learning</Link></li>
-              <li><Link href="/programs/communication-skills" className="hover:text-brand-blue transition-colors">Communication Skills</Link></li>
+              <li><Link href="/programs/ai-career-accelerator" className="hover:text-brand-blue transition-colors">AI Career Accelerator Program</Link></li>
+              <li><Link href="/programs/ai-data-analytics" className="hover:text-brand-blue transition-colors">AI &amp; Data Analytics Professional Program</Link></li>
+              <li><Link href="/programs/ai-business-management" className="hover:text-brand-blue transition-colors">AI for Business, Finance &amp; Management</Link></li>
             </ul>
           </div>
 
-          {/* Corporate Programs */}
+          {/* Corporate Professionals */}
           <div className="space-y-3">
-            <h4 className="text-sm font-bold text-gray-900 mb-3">Corporate Programs</h4>
+            <h4 className="text-sm font-bold text-gray-900 mb-3">Corporate Professionals</h4>
             <ul className="space-y-2 text-sm text-gray-600">
-              <li><Link href="/programs/digital-marketing" className="hover:text-brand-blue transition-colors">Digital Marketing</Link></li>
-              <li><Link href="/programs/python-full-stack" className="hover:text-brand-blue transition-colors">Python Full Stack</Link></li>
-              <li><Link href="/programs/sap-fico" className="hover:text-brand-blue transition-colors">SAP FICO</Link></li>
-              <li><Link href="/programs/power-bi" className="hover:text-brand-blue transition-colors">Power BI</Link></li>
+              <li><Link href="/programs/generative-ai-workplace" className="hover:text-brand-blue transition-colors">Generative AI for Workplace Productivity</Link></li>
+              <li><Link href="/programs/ai-finance-accounting" className="hover:text-brand-blue transition-colors">AI for Finance &amp; Accounting Professionals</Link></li>
+              <li><Link href="/programs/ai-leadership" className="hover:text-brand-blue transition-colors">AI Leadership &amp; Digital Transformation Program</Link></li>
             </ul>
           </div>
 

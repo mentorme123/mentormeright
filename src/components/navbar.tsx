@@ -163,7 +163,22 @@ export function Navbar() {
                           <div className="space-y-4 pt-1">
                             <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM & Emerging Technologies:</span>
                             <div className="pl-6 space-y-2">
-                              <Link href="/programs/ai-foundations-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Foundations for School Students</span></Link>
+<Link href="/programs/ai-foundations-k12" className="block hover:bg-gray-100 rounded-md">
+  <span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">
+    AI Foundations for School Students
+  </span>
+</Link>
+<div className="ml-4 text-sm text-slate-600 space-y-1">
+  <p>A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society.</p>
+  <ul className="list-disc list-inside">
+    <li>Builds awareness of emerging technologies</li>
+    <li>Develops logical thinking</li>
+    <li>Encourages innovation and creativity</li>
+    <li>Improves problem-solving skills</li>
+  </ul>
+  <p><strong>MentorMe USP:</strong> Age-appropriate learning, Interactive activities and games, No coding required, Industry-designed curriculum</p>
+  <p><strong>Modules:</strong> Introduction to AI, AI Around Us, Machine Learning Basics, Generative AI Tools, AI Ethics, AI Mini Projects</p>
+</div>
                               <Link href="/programs/generative-ai-prompt-students" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI & Prompt Engineering for Students</span></Link>
                               <Link href="/programs/ai-robotics-explorer" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</span></Link>
                             </div>

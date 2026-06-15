@@ -162,11 +162,9 @@ export function Navbar() {
                       </button>
                       {activeSubmenu === 'corporate' && (
                         <div className="pl-4 space-y-2 bg-gray-50 p-2">
-                          <Link href="/programs/ai-leadership" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Leadership Excellence</span></Link>
-                          <Link href="/programs/generative-ai-workplace" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Business Excellence</span></Link>
-                          <Link href="/programs/ai-leadership" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Digital Transformation</span></Link>
-                          <Link href="/programs/generative-ai-workplace" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Workplace Effectiveness</span></Link>
-                          <Link href="/programs/ai-finance-accounting" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Finance, Compliance &amp; Risk</span></Link>
+                          <Link href="/programs/generative-ai-workplace" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI for Workplace Productivity</span></Link>
+                          <Link href="/programs/ai-finance-accounting" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Finance &amp; Accounting Professionals</span></Link>
+                          <Link href="/programs/ai-leadership" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Leadership &amp; Digital Transformation Program</span></Link>
                         </div>
                       )}
                     </div>

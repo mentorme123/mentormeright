@@ -137,80 +137,105 @@ export function Navbar() {
                       <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('k12')}>
                         1. K-12 Students
                       </button>
-                      {activeSubmenu === 'k12' && (
-                        <div className="pl-4 space-y-5 bg-gray-50 p-2">
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Future Readiness Skills</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Communication &amp; Leadership</span></div>
-                          <div className="space-y-4 pt-1">
-                            <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM &amp; Emerging Technologies:</span>
-                            <div className="pl-4 space-y-3">
-                              
-                              {/* Program 1 */}
-                              <div>
-                                <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'prog1' ? null : 'prog1')}>
-                                  1. AI Foundations for School Students
-                                  <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'prog1' ? "rotate-180" : ""}`} />
-                                </button>
-                                {activeK12Program === 'prog1' && (
-                                  <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
-                                    <p><strong>Short Description:</strong> A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society.</p>
-                                    <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Builds awareness of emerging technologies</li><li>Develops logical thinking</li><li>Encourages innovation and creativity</li><li>Improves problem-solving skills</li></ul></div>
-                                    <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Age-appropriate learning</li><li>Interactive activities and games</li><li>No coding required</li><li>Industry-designed curriculum</li></ul></div>
-                                    <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>Introduction to AI</li><li>AI Around Us</li><li>Machine Learning Basics</li><li>Generative AI Tools</li><li>AI Ethics</li><li>AI Mini Projects</li></ul></div>
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Program 2 */}
-                              <div>
-                                <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'prog2' ? null : 'prog2')}>
-                                  2. Generative AI &amp; Prompt Engineering for Students
-                                  <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'prog2' ? "rotate-180" : ""}`} />
-                                </button>
-                                {activeK12Program === 'prog2' && (
-                                  <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
-                                    <p><strong>Short Description:</strong> Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools for learning, creativity, research, and productivity.</p>
-                                    <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Faster learning</li><li>Better project work</li><li>Improved communication skills</li><li>Enhanced creativity</li></ul></div>
-                                    <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Ready-to-use prompt library</li><li>Academic applications</li><li>Hands-on exercises</li><li>Responsible AI practices</li></ul></div>
-                                    <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>Understanding Generative AI</li><li>Prompt Engineering Fundamentals</li><li>AI for Research</li><li>AI for Presentations</li><li>AI for Content Creation</li><li>AI Safety</li></ul></div>
-                                  </div>
-                                )}
-                              </div>
-
-                              {/* Program 3 */}
-                              <div>
-                                <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'prog3' ? null : 'prog3')}>
-                                  3. AI + Robotics Explorer Program
-                                  <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'prog3' ? "rotate-180" : ""}`} />
-                                </button>
-                                {activeK12Program === 'prog3' && (
-                                  <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
-                                    <p><strong>Short Description:</strong> A future-focused program combining Artificial Intelligence, Robotics, Sensors, and Automation to help students become creators rather than consumers of technology.</p>
-                                    <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Hands-on STEM learning</li><li>Improves innovation mindset</li><li>Builds engineering thinking</li><li>Encourages teamwork</li></ul></div>
-                                    <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Project-based learning</li><li>Robotics kits provided</li><li>AI-powered robotics projects</li><li>School exhibition support</li></ul></div>
-                                    <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>Robotics Fundamentals</li><li>Sensors &amp; Actuators</li><li>Introduction to Coding</li><li>AI in Robotics</li><li>Automation Concepts</li><li>Capstone Project</li></ul></div>
-                                  </div>
-                                )}
-                              </div>
-
-                            </div>
+                       {activeSubmenu === 'k12' && (
+                         <div className="pl-4 space-y-4 bg-gray-50 p-2">
+                           <div className="pl-4 space-y-3">
+                             <div>
+                               <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'prog1' ? null : 'prog1')}>
+                                 1. AI Foundations for School Students
+                                 <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'prog1' ? "rotate-180" : ""}`} />
+                               </button>
+                               {activeK12Program === 'prog1' && (
+                                 <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
+                                   <p><strong>Short Description:</strong> A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society.</p>
+                                   <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Builds awareness of emerging technologies</li><li>Develops logical thinking</li><li>Encourages innovation and creativity</li><li>Improves problem-solving skills</li></ul></div>
+                                   <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Age-appropriate learning</li><li>Interactive activities and games</li><li>No coding required</li><li>Industry-designed curriculum</li></ul></div>
+                                   <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>Introduction to AI</li><li>AI Around Us</li><li>Machine Learning Basics</li><li>Generative AI Tools</li><li>AI Ethics</li><li>AI Mini Projects</li></ul></div>
+                                 </div>
+                               )}
+                             </div>
+                             <div>
+                               <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'prog2' ? null : 'prog2')}>
+                                 2. Generative AI &amp; Prompt Engineering for Students
+                                 <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'prog2' ? "rotate-180" : ""}`} />
+                               </button>
+                               {activeK12Program === 'prog2' && (
+                                 <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
+                                   <p><strong>Short Description:</strong> Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools for learning, creativity, research, and productivity.</p>
+                                   <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Faster learning</li><li>Better project work</li><li>Improved communication skills</li><li>Enhanced creativity</li></ul></div>
+                                   <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Ready-to-use prompt library</li><li>Academic applications</li><li>Hands-on exercises</li><li>Responsible AI practices</li></ul></div>
+                                   <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>Understanding Generative AI</li><li>Prompt Engineering Fundamentals</li><li>AI for Research</li><li>AI for Presentations</li><li>AI for Content Creation</li><li>AI Safety</li></ul></div>
+                                 </div>
+                               )}
+                             </div>
+                             <div>
+                               <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'prog3' ? null : 'prog3')}>
+                                 3. AI + Robotics Explorer Program
+                                 <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'prog3' ? "rotate-180" : ""}`} />
+                               </button>
+                               {activeK12Program === 'prog3' && (
+                                 <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
+                                   <p><strong>Short Description:</strong> A future-focused program combining Artificial Intelligence, Robotics, Sensors, and Automation to help students become creators rather than consumers of technology.</p>
+                                   <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Hands-on STEM learning</li><li>Improves innovation mindset</li><li>Builds engineering thinking</li><li>Encourages teamwork</li></ul></div>
+                                   <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Project-based learning</li><li>Robotics kits provided</li><li>AI-powered robotics projects</li><li>School exhibition support</li></ul></div>
+                                   <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>Robotics Fundamentals</li><li>Sensors &amp; Actuators</li><li>Introduction to Coding</li><li>AI in Robotics</li><li>Automation Concepts</li><li>Capstone Project</li></ul></div>
+                                 </div>
+                               )}
+                             </div>
+                           </div>
                           </div>
-                          <div className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Career &amp; Life Skills</span></div>
-                        </div>
-                      )}
+                        )}
 
-                      {/* College Section */}
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('college')}>
-                        2. College Students
-                      </button>
-                      {activeSubmenu === 'college' && (
-                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
-                          <Link href="/programs/ai-career-accelerator" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Career Accelerator Program</span></Link>
-                          <Link href="/programs/ai-data-analytics" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI &amp; Data Analytics Professional Program</span></Link>
-                          <Link href="/programs/ai-business-management" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Business, Finance &amp; Management</span></Link>
-                        </div>
-                      )}
+                       {/* College Section */}
+                       <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('college')}>
+                         2. College Students
+                       </button>
+                       {activeSubmenu === 'college' && (
+                         <div className="space-y-4 bg-gray-50 p-2">
+                           <div>
+                             <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'college1' ? null : 'college1')}>
+                               1. AI Career Accelerator Program
+                               <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'college1' ? "rotate-180" : ""}`} />
+                             </button>
+                             {activeK12Program === 'college1' && (
+                               <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
+                                 <p><strong>Short Description:</strong> An employability-focused program helping students use AI to enhance productivity, communication, research, and career readiness. Builds AI-ready workforce skills with industry mentors.</p>
+                                 <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Builds AI-ready workforce skills</li><li>Better placement opportunities</li><li>Enhanced professional communication</li><li>Portfolio development</li></ul></div>
+                                 <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Industry mentors</li><li>Employability focus</li><li>Real-world assignments</li><li>Interview preparation</li></ul></div>
+                                 <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>AI Fundamentals for all domains</li><li>Productivity with AI tools</li><li>Research &amp; Analysis with AI</li><li>AI Communication Tools</li><li>Resume Building with AI</li><li>Placement Readiness training</li></ul></div>
+                               </div>
+                             )}
+                           </div>
+                           <div>
+                             <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'college2' ? null : 'college2')}>
+                               2. AI &amp; Data Analytics Professional Program
+                               <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'college2' ? "rotate-180" : ""}`} />
+                             </button>
+                             {activeK12Program === 'college2' && (
+                               <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
+                                 <p><strong>Short Description:</strong> A practical program covering AI-powered analytics, business intelligence, dashboards, and data-driven decision-making with Power BI integration and real datasets.</p>
+                                 <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Strong analytics foundation</li><li>Dashboard development skills</li><li>Better business decision-making</li><li>Industry-relevant project experience</li></ul></div>
+                                 <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Power BI integration</li><li>Real datasets</li><li>Business case studies</li><li>Capstone projects</li></ul></div>
+                                 <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>Data Analytics Fundamentals</li><li>AI for Data Analysis</li><li>Excel &amp; Power BI mastery</li><li>Data Visualization techniques</li><li>Predictive Analytics</li><li>Industry Project with real business impact</li></ul></div>
+                               </div>
+                             )}
+                           </div>
+                           <div>
+                             <button type="button" className="text-[13px] font-semibold text-brand-blue hover:underline text-left w-full flex justify-between items-center" onClick={() => setActiveK12Program(activeK12Program === 'college3' ? null : 'college3')}>
+                               3. AI for Business, Finance &amp; Management
+                               <ChevronDown size={12} className={`transition-transform duration-300 ${activeK12Program === 'college3' ? "rotate-180" : ""}`} />
+                             </button>
+                             {activeK12Program === 'college3' && (
+                               <div className="mt-2 pl-2 space-y-2 text-[12px] text-slate-600 border-l-2 border-brand-blue/20">
+                                 <p><strong>Short Description:</strong> Designed for MBA, BBA, Commerce, Economics, and Management students to understand how AI is transforming business functions. Gain future-ready management skills and increased employability.</p>
+                                 <div><strong>Benefits:</strong><ul className="list-disc pl-4 mt-1"><li>Future-ready management skills</li><li>Better decision-making capability</li><li>Exposure to AI-driven businesses</li><li>Increased employability</li></ul></div>
+                                 <div><strong>MentorMe USP:</strong><ul className="list-disc pl-4 mt-1"><li>Business-focused curriculum</li><li>Finance and marketing applications</li><li>Case-study methodology</li><li>Industry expert sessions</li></ul></div>
+                                 <div><strong>Modules:</strong><ul className="list-disc pl-4 mt-1"><li>AI in Business strategy and operations</li><li>AI in Finance and accounting</li><li>AI in Marketing and customer engagement</li><li>AI in HR and talent management</li><li>AI in Operations and supply chain</li><li>AI Strategy Fundamentals for executives</li></ul></div>
+                               </div>
+                             )}
+                           </div>
+                         </div>
+                       )}
 
                       {/* Corporate Section */}
                       <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('corporate')}>

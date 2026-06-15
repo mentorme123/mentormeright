@@ -1,6 +1,17 @@
 import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase";
 
 export function Footer() {
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
   return (
     <footer className="w-full border-t border-gray-200 pt-12 pb-8 bg-white">
       <div className="container mx-auto px-4 sm:px-8">
@@ -57,6 +68,21 @@ export function Footer() {
               <li><Link href="/programs/workplace-effectiveness" className="hover:text-brand-blue transition-colors">Workplace Effectiveness</Link></li>
               <li><Link href="/programs/finance-compliance" className="hover:text-brand-blue transition-colors">Finance, Compliance & Risk</Link></li>
             </ul>
+
+{/* Auth Buttons */}
+<div className="flex items-center gap-4 mt-8">
+  {user ? (
+    <>
+      <Link href="/dashboard/admin"><button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg text-sm whitespace-nowrap">Dashboard</button></Link>
+      <Link href="/dashboard/admin"><button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg text-sm whitespace-nowrap">Admin Panel</button></Link>
+    </>
+  ) : (
+    <>
+      <Link href="/register"><button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg text-sm whitespace-nowrap">Register</button></Link>
+      <Link href="/login"><button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg text-sm whitespace-nowrap">Log in</button></Link>
+    </>
+  )}
+</div>
           </div>
         </div>
 

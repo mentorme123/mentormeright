@@ -162,10 +162,12 @@ export function Navbar() {
                           <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Communication & Leadership</span></div>
                           <div className="space-y-4 pt-1">
                             <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM & Emerging Technologies:</span>
-                            <div className="pl-4 space-y-4 border-l-2 border-slate-200">
-                              <Link href="/programs/ai-robotics-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</span></Link>
-                              <Link href="/programs/ai-foundations-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Foundations for School Students</span></Link>
-                              <Link href="/programs/generative-ai-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI & Prompt Engineering</span></Link>
+                            <div className="pl-6 space-y-2">
+                              <Link href="/programs/ai-robotics-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Robotics</span></Link>
+                              <Link href="/programs/coding-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Coding</span></Link>
+                              <Link href="/programs/iot-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">IoT</span></Link>
+                              <Link href="/programs/ai-foundations-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for School Students</span></Link>
+                              <Link href="/programs/drones-k12"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Drones</span></Link>
                             </div>
                           </div>
                           <div className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></div>

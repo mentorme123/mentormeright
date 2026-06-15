@@ -179,8 +179,30 @@ export function Navbar() {
   <p><strong>MentorMe USP:</strong> Age-appropriate learning, Interactive activities and games, No coding required, Industry-designed curriculum</p>
   <p><strong>Modules:</strong> Introduction to AI, AI Around Us, Machine Learning Basics, Generative AI Tools, AI Ethics, AI Mini Projects</p>
 </div>
-                              <Link href="/programs/generative-ai-prompt-students" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI & Prompt Engineering for Students</span></Link>
+<Link href="/programs/generative-ai-prompt-students" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI & Prompt Engineering for Students</span></Link>
+<div className="ml-4 text-sm text-slate-600 space-y-1">
+  <p>Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools for learning, creativity, research, and productivity.</p>
+  <ul className="list-disc list-inside">
+    <li>Faster learning</li>
+    <li>Better project work</li>
+    <li>Improved communication skills</li>
+    <li>Enhanced creativity</li>
+  </ul>
+  <p><strong>MentorMe USP:</strong> Ready-to-use prompt library, Academic applications, Hands-on exercises, Responsible AI practices</p>
+  <p><strong>Modules:</strong> Understanding Generative AI, Prompt Engineering Fundamentals, AI for Research, AI for Presentations, AI for Content Creation, AI Safety</p>
+</div>
                               <Link href="/programs/ai-robotics-explorer" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</span></Link>
+                               <div className="ml-4 text-sm text-slate-600 space-y-1">
+                                 <p>A future-focused program combining Artificial Intelligence, Robotics, Sensors, and Automation to help students become creators rather than consumers of technology.</p>
+                                 <ul className="list-disc list-inside">
+                                   <li>Hands-on STEM learning</li>
+                                   <li>Improves innovation mindset</li>
+                                   <li>Builds engineering thinking</li>
+                                   <li>Encourages teamwork</li>
+                                 </ul>
+                                 <p><strong>MentorMe USP:</strong> Project-based learning, Robotics kits provided, AI-powered robotics projects, School exhibition support</p>
+                                 <p><strong>Modules:</strong> Robotics Fundamentals, Sensors &amp; Actuators, Introduction to Coding, AI in Robotics, Automation Concepts, Capstone Project</p>
+                               </div>
                             </div>
                           </div>
                           <div className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></div>

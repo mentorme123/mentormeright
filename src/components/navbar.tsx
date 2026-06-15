@@ -153,7 +153,7 @@ export function Navbar() {
                     {/* Accordion style vertical menu */}
                     <div className="space-y-4">
                       {/* K-12 Section */}
-                      <button type="button" className="w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('k12')}>
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('k12')}>
                         1. K-12 Students
                       </button>
                       {activeSubmenu === 'k12' && (
@@ -176,7 +176,7 @@ export function Navbar() {
                       )}
 
                       {/* College Section */}
-                      <button type="button" className="w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('college')}>
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('college')}>
                         2. College Students
                       </button>
                       {activeSubmenu === 'college' && (
@@ -190,7 +190,7 @@ export function Navbar() {
                       )}
 
                       {/* Corporate Section */}
-                      <button type="button" className="w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('corporate')}>
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('corporate')}>
                         3. Corporate Professionals
                       </button>
                       {activeSubmenu === 'corporate' && (

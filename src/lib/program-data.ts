@@ -247,19 +247,28 @@ export const programsData: Record<string, Program> = {
     category: "AI Learning Hub",
     image: "/images/programs/ai-school.png",
     subtitle: "A beginner-friendly introduction to Artificial Intelligence for young learners.",
-    description: "A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society. This course builds awareness of emerging technologies, develops logical thinking, encourages innovation and creativity, and improves problem-solving skills.",
-    howWeOffer: [
-      "Age-Appropriate Curriculum: Designed specifically for school students with no prior coding experience.",
-      "Interactive Activities & Games: Learning through play and hands-on experimentation.",
-      "No Coding Required: Focus on concepts and applications rather than syntax.",
-      "Industry-Designed Content: Curriculum crafted with input from AI professionals and educators."
+    description: "A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Builds awareness of emerging technologies",
+      "Develops logical thinking",
+      "Encourages innovation and creativity",
+      "Improves problem-solving skills"
     ],
-    keyHighlights: [
-      "Introduction to AI and its real-world applications",
+    usp: [
+      "Age-appropriate learning",
+      "Interactive activities and games",
+      "No coding required",
+      "Industry-designed curriculum"
+    ],
+    modules: [
+      "Introduction to AI",
+      "AI Around Us",
       "Machine Learning Basics",
-      "Generative AI Tools exploration",
-      "AI Ethics and responsible use",
-      "AI Mini Projects for hands-on learning"
+      "Generative AI Tools",
+      "AI Ethics",
+      "AI Mini Projects"
     ]
   },
   "generative-ai-k12": {
@@ -268,19 +277,28 @@ export const programsData: Record<string, Program> = {
     category: "AI Learning Hub",
     image: "/images/programs/ai-school.png",
     subtitle: "Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools.",
-    description: "Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools for learning, creativity, research, and productivity. This program helps students achieve faster learning, better project work, improved communication skills, and enhanced creativity through responsible AI practices.",
-    howWeOffer: [
-      "Ready-to-Use Prompt Library: Access to hundreds of academic and creative prompts.",
-      "Academic Applications: Using AI for research, essays, and presentations.",
-      "Hands-On Exercises: Daily practice sessions with immediate feedback.",
-      "Responsible AI Practices: Understanding AI safety, bias, and ethical use."
+    description: "Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools for learning, creativity, research, and productivity.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Faster learning",
+      "Better project work",
+      "Improved communication skills",
+      "Enhanced creativity"
     ],
-    keyHighlights: [
-      "Understanding Generative AI fundamentals",
-      "Prompt Engineering techniques and best practices",
-      "AI for Research and academic writing",
-      "AI for Presentations and content creation",
-      "AI Safety and digital citizenship"
+    usp: [
+      "Ready-to-use prompt library",
+      "Academic applications",
+      "Hands-on exercises",
+      "Responsible AI practices"
+    ],
+    modules: [
+      "Understanding Generative AI",
+      "Prompt Engineering Fundamentals",
+      "AI for Research",
+      "AI for Presentations",
+      "AI for Content Creation",
+      "AI Safety"
     ]
   },
   "ai-robotics-k12": {
@@ -289,20 +307,33 @@ export const programsData: Record<string, Program> = {
     category: "AI Learning Hub",
     image: "/images/programs/robotics.png",
     subtitle: "A future-focused program combining AI, Robotics, Sensors, and Automation.",
-    description: "A future-focused program combining Artificial Intelligence, Robotics, Sensors, and Automation to help students become creators rather than consumers of technology. The program provides hands-on STEM learning, improves innovation mindset, builds engineering thinking, and encourages teamwork through project-based learning.",
-    howWeOffer: [
-      "Project-Based Learning: Every session involves building and programming a robot.",
-      "Robotics Kits Provided: All hardware and tools included for the program duration.",
-      "AI-Powered Robotics Projects: Combine traditional robotics with intelligent automation.",
-      "School Exhibition Support: Guidance and mentorship for showcasing projects."
+    description: "A future-focused program combining Artificial Intelligence, Robotics, Sensors, and Automation to help students become creators rather than consumers of technology.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Hands-on STEM learning",
+      "Improves innovation mindset",
+      "Builds engineering thinking",
+      "Encourages teamwork"
     ],
-    keyHighlights: [
-      "Robotics Fundamentals and mechanics",
-      "Sensors & Actuators hands-on exploration",
-      "Introduction to Coding for robotics",
-      "AI in Robotics and automation concepts",
-      "Capstone Project to demonstrate learning",
-      "STEM Education with real-world applications"
+    usp: [
+      "Project-based learning",
+      "Robotics kits provided",
+      "AI-powered robotics projects",
+      "School exhibition support"
+    ],
+    modules: [
+      "Robotics Fundamentals",
+      "Sensors & Actuators",
+      "Introduction to Coding",
+      "AI in Robotics",
+      "Automation Concepts",
+      "Capstone Project"
+    ],
+    seoKeywords: [
+      "AI Robotics Course for Students",
+      "Robotics Training for Schools",
+      "STEM Education India"
     ]
   },
 
@@ -313,20 +344,28 @@ export const programsData: Record<string, Program> = {
     category: "21st Century Skills Hub",
     image: "/images/programs/ai-college.png",
     subtitle: "An employability-focused program for career readiness in the AI era.",
-    description: "An employability-focused program helping students use AI to enhance productivity, communication, research, and career readiness. This program builds AI-ready workforce skills, provides better placement opportunities, enhances professional communication, and supports portfolio development with industry mentors.",
-    howWeOffer: [
-      "Industry Mentors: Learn from professionals working at top tech companies.",
-      "Employability Focus: Curriculum designed around real job requirements.",
-      "Real-World Assignments: Practical projects that build a strong portfolio.",
-      "Interview Preparation: Mock interviews, aptitude prep, and resume reviews."
+    description: "An employability-focused program helping students use AI to enhance productivity, communication, research, and career readiness.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "AI-ready workforce skills",
+      "Better placement opportunities",
+      "Enhanced professional communication",
+      "Portfolio development"
     ],
-    keyHighlights: [
-      "AI Fundamentals for all domains",
-      "Productivity with AI tools",
-      "Research & Analysis with AI assistance",
+    usp: [
+      "Industry mentors",
+      "Employability focus",
+      "Real-world assignments",
+      "Interview preparation"
+    ],
+    modules: [
+      "AI Fundamentals",
+      "Productivity with AI",
+      "Research & Analysis",
       "AI Communication Tools",
       "Resume Building with AI",
-      "Placement Readiness training"
+      "Placement Readiness"
     ]
   },
   "ai-data-analytics": {
@@ -335,20 +374,28 @@ export const programsData: Record<string, Program> = {
     category: "21st Century Skills Hub",
     image: "/images/programs/power-bi.png",
     subtitle: "A practical program covering AI-powered analytics and business intelligence.",
-    description: "A practical program covering AI-powered analytics, business intelligence, dashboards, and data-driven decision-making. Students gain a strong analytics foundation, dashboard development skills, better business decision-making ability, and industry-relevant project experience with Power BI integration and real datasets.",
-    howWeOffer: [
-      "Power BI Integration: Full proficiency in Microsoft's leading BI tool.",
-      "Real Datasets: Work with messy, real-world data from actual businesses.",
-      "Business Case Studies: Analyze scenarios from finance, retail, and healthcare.",
-      "Capstone Projects: End-to-end analytics projects for your portfolio."
+    description: "A practical program covering AI-powered analytics, business intelligence, dashboards, and data-driven decision-making.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Strong analytics foundation",
+      "Dashboard development skills",
+      "Better business decision-making",
+      "Industry-relevant project experience"
     ],
-    keyHighlights: [
+    usp: [
+      "Power BI integration",
+      "Real datasets",
+      "Business case studies",
+      "Capstone projects"
+    ],
+    modules: [
       "Data Analytics Fundamentals",
       "AI for Data Analysis",
-      "Excel & Power BI mastery",
-      "Data Visualization techniques",
+      "Excel & Power BI",
+      "Data Visualization",
       "Predictive Analytics",
-      "Industry Project with real business impact"
+      "Industry Project"
     ]
   },
   "ai-business-management": {
@@ -357,20 +404,33 @@ export const programsData: Record<string, Program> = {
     category: "21st Century Skills Hub",
     image: "/images/programs/ai-college.png",
     subtitle: "Designed for MBA, BBA, Commerce, Economics, and Management students.",
-    description: "Designed for MBA, BBA, Commerce, Economics, and Management students to understand how AI is transforming business functions. Gain future-ready management skills, better decision-making capability, exposure to AI-driven businesses, and increased employability through business-focused curriculum and case-study methodology.",
-    howWeOffer: [
-      "Business-Focused Curriculum: Tailored for management and commerce students.",
-      "Finance and Marketing Applications: Real use cases from industry leaders.",
-      "Case-Study Methodology: Learn from real business transformations.",
-      "Industry Expert Sessions: Interactive sessions with AI business leaders."
+    description: "Designed for MBA, BBA, Commerce, Economics, and Management students to understand how AI is transforming business functions.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Future-ready management skills",
+      "Better decision-making capability",
+      "Exposure to AI-driven businesses",
+      "Increased employability"
     ],
-    keyHighlights: [
-      "AI in Business strategy and operations",
-      "AI in Finance and accounting",
-      "AI in Marketing and customer engagement",
-      "AI in HR and talent management",
-      "AI in Operations and supply chain",
-      "AI Strategy Fundamentals for executives"
+    usp: [
+      "Business-focused curriculum",
+      "Finance and marketing applications",
+      "Case-study methodology",
+      "Industry expert sessions"
+    ],
+    modules: [
+      "AI in Business",
+      "AI in Finance",
+      "AI in Marketing",
+      "AI in HR",
+      "AI in Operations",
+      "AI Strategy Fundamentals"
+    ],
+    seoKeywords: [
+      "AI for MBA Students",
+      "AI for Commerce Students",
+      "AI in Business Management"
     ]
   },
 

@@ -58,18 +58,6 @@ export function Navbar() {
     <>
       <SiteSearch isOpen={isSearchOpen} onClose={closeSearch} />
 
-      <nav className="w-full border-b border-brand-blue/10 bg-gradient-to-r from-brand-blue/[0.04] to-brand-orange/[0.04] backdrop-blur-md sticky top-0 z-50">
-        <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-12 gap-2">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="relative h-12 w-36 lg:h-14 lg:w-44 shrink-0 flex items-center justify-center">
-              <img
-                src="/logo.png?v=2"
-                alt="MentorMe Logo"
-                className="max-w-full max-h-full object-contain"
-              />
-            </div>
-          </Link>
-
           <div className="hidden xl:flex items-center gap-3 xl:gap-5 text-[14px] font-bold text-slate-800 whitespace-nowrap shrink">
             <Link
               href="/"
@@ -312,30 +300,6 @@ export function Navbar() {
                 </Link>
               ))}
 
-              <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
-                <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">
-                    Career Assessment
-                  </button>
-                </Link>
-                <div className="flex gap-3">
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex-1"
-                  >
-                    <button className="w-full font-semibold py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
-                      Log in
-                    </button>
-                  </Link>
-                  <Link
-                    href="/register"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="flex-1"
-                  >
-                    <button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold py-2.5 rounded-xl transition-all shadow-sm">
-                      Register
-                    </button>
                   </Link>
                 </div>
               </div>

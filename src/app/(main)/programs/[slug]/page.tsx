@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { programsData } from "@/lib/program-data";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, ChevronRight, ArrowRight, Star, Award, Target, Rocket, Users } from "lucide-react";
+import { CheckCircle2, ArrowRight, Star, Award, Target, Rocket, Users } from "lucide-react";
 
 const uspIcons: Record<string, React.ReactNode> = {
   "Age-appropriate learning": <Users className="w-5 h-5" />,
@@ -135,9 +135,9 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
       {/* Main Content */}
       <section className="container mx-auto px-4 py-12 md:py-16 max-w-6xl">
         
-        {/* Program Overview */}
-        <div className="max-w-4xl mx-auto mb-12">
-          <h2 className="text-3xl font-bold mb-4 text-slate-800">Program Overview</h2>
+        {/* Short Description */}
+        <div className="max-w-4xl mx-auto mb-10">
+          <h2 className="text-2xl font-bold mb-3 text-slate-800">Short Description</h2>
           <p className="text-lg text-slate-600 leading-relaxed">
             {program.description}
           </p>
@@ -181,30 +181,11 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* How We Offer */}
-        {program.howWeOffer && program.howWeOffer.length > 0 && (
-          <div className="max-w-4xl mx-auto mb-10">
-            <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4">
-              <ChevronRight className={accentColor} /> How We Offer It
-            </h3>
-            <div className="grid sm:grid-cols-2 gap-4">
-              {program.howWeOffer.map((item, idx) => (
-                <div key={idx} className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex flex-col gap-2">
-                  <div className={`w-8 h-8 rounded-full bg-gradient-to-br ${gradient} text-white flex items-center justify-center text-sm font-bold`}>
-                    {idx + 1}
-                  </div>
-                  <p className="text-slate-700 font-medium leading-snug">{item}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Modules */}
         {program.modules && program.modules.length > 0 && (
           <div className="max-w-4xl mx-auto mb-10">
             <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-2 mb-4">
-              <Rocket className={accentColor} /> Curriculum Modules
+              <Rocket className={accentColor} /> Modules
             </h3>
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
               {program.modules.map((module, idx) => (

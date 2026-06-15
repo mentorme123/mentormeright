@@ -1,31 +1,16 @@
-"use client";
-
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase";
 
 export function Footer() {
-  const [user, setUser] = useState<any>(null);
-
-  useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-    return () => subscription.unsubscribe();
-  }, []);
-
   return (
     <footer className="w-full bg-gray-50 border-t border-gray-200 pt-12 pb-6">
       <div className="container mx-auto px-4 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-10">
 
           {/* Left Column – Brand Info */}
           <div className="md:col-span-1 space-y-4">
             <Link href="/">
               <img
-                src="/logo.png?v=4"
+                src="/logo.png"
                 alt="MentorMe Logo"
                 className="h-14 w-auto object-contain"
               />
@@ -33,14 +18,14 @@ export function Footer() {
             <p className="text-brand-orange font-semibold text-sm leading-snug">
               Turning Passions into Professions
             </p>
-            <div className="text-xs text-gray-600 space-y-1 pt-2">
-              <p><span className="font-semibold text-gray-800">Call us at:</span> +91-9392707596, +91-8188824440</p>
-              <p><span className="font-semibold text-gray-800">Mail us at:</span> admin@mentormeright.in</p>
-              <p><span className="font-semibold text-gray-800">Location:</span> Hyderabad, India</p>
+            <div className="text-xs text-gray-700 space-y-1 pt-2">
+              <p><span className="font-semibold text-gray-900">Call us at:</span> +91-9392707596, +91-8188824440</p>
+              <p><span className="font-semibold text-gray-900">Mail us at:</span> admin@mentormeright.in</p>
+              <p><span className="font-semibold text-gray-900">Location:</span> Hyderabad, India</p>
             </div>
           </div>
 
-          {/* Company */}
+          {/* Company + Support */}
           <div className="space-y-3">
             <h4 className="text-sm font-bold text-gray-900 mb-3">Company</h4>
             <ul className="space-y-2 text-sm text-gray-600">
@@ -85,37 +70,6 @@ export function Footer() {
               <li><Link href="/programs/sap-fico" className="hover:text-brand-blue transition-colors">SAP FICO</Link></li>
               <li><Link href="/programs/power-bi" className="hover:text-brand-blue transition-colors">Power BI</Link></li>
             </ul>
-          </div>
-
-          {/* Auth Buttons */}
-          <div className="space-y-3 md:col-span-2 flex flex-col justify-start items-start">
-            {user ? (
-              <>
-                <Link href="/dashboard/admin">
-                  <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg text-sm whitespace-nowrap">
-                    Dashboard
-                  </button>
-                </Link>
-                <Link href="/dashboard/admin">
-                  <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg text-sm whitespace-nowrap">
-                    Admin Panel
-                  </button>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link href="/register">
-                  <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg text-sm whitespace-nowrap">
-                    Register
-                  </button>
-                </Link>
-                <Link href="/login">
-                  <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg text-sm whitespace-nowrap">
-                    Log in
-                  </button>
-                </Link>
-              </>
-            )}
           </div>
 
         </div>

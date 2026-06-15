@@ -65,7 +65,7 @@ export function Navbar() {
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <div className="relative h-12 w-36 lg:h-14 lg:w-44 shrink-0 flex items-center justify-center">
               <img
-                src="/logo.png"
+                src="/logo.png?v=6"
                 alt="MentorMe Logo"
                 className="max-w-full max-h-full object-contain"
               />

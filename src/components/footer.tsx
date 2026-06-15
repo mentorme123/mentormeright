@@ -10,7 +10,7 @@ export function Footer() {
           <div className="md:col-span-1 space-y-4">
             <Link href="/">
               <img
-                src="/logo.png"
+                src="/logo.png?v=6"
                 alt="MentorMe Logo"
                 className="h-14 w-auto object-contain"
               />

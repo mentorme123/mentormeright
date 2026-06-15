@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer className="w-full border-t border-gray-200 pt-12 pb-8 bg-white">
       <div className="container mx-auto px-4 sm:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           {/* K-12 Students */}
           <div className="space-y-3">
             <h4 className="text-base font-semibold text-gray-900 mb-4">K-12 Students</h4>
@@ -14,9 +14,9 @@ export function Footer() {
             </ul>
             <h4 className="text-sm font-medium text-gray-900 mt-4 mb-2">STEM & Emerging Technologies:</h4>
             <ul className="space-y-2 text-sm text-gray-600 ml-0">
-              <li><Link href="/programs/ai-robotics" className="hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</Link></li>
-              <li><Link href="/programs/ai-foundations" className="hover:text-brand-blue transition-colors">AI Foundations for School Students</Link></li>
-              <li><Link href="/programs/generative-ai" className="hover:text-brand-blue transition-colors">Generative AI & Prompt Engineering</Link></li>
+              <li><Link href="/programs/robotics" className="hover:text-brand-blue transition-colors">Robotics</Link></li>
+              <li><Link href="/programs/ai" className="hover:text-brand-blue transition-colors">AI</Link></li>
+              <li><Link href="/programs/vedic-maths" className="hover:text-brand-blue transition-colors">Vedic Maths</Link></li>
             </ul>
             <ul className="space-y-2 text-sm text-gray-600 mt-2">
               <li><Link href="/programs/digital-literacy" className="hover:text-brand-blue transition-colors">Digital Literacy</Link></li>
@@ -36,9 +36,20 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Corporate Professionals */}
+          {/* 21st Century Skills Hub */}
           <div className="space-y-3">
-            <h4 className="text-base font-semibold text-gray-900 mb-4">Corporate Professionals</h4>
+            <h4 className="text-base font-semibold text-gray-900 mb-4">21st Century Skills Hub</h4>
+            <ul className="space-y-2 text-sm text-gray-600">
+              <li><Link href="/programs/machine-learning" className="hover:text-brand-blue transition-colors">Machine Learning</Link></li>
+              <li><Link href="/programs/artificial-intelligence" className="hover:text-brand-blue transition-colors">Artificial Intelligence</Link></li>
+              <li><Link href="/programs/deep-learning" className="hover:text-brand-blue transition-colors">Deep Learning</Link></li>
+              <li><Link href="/programs/communication-skills" className="hover:text-brand-blue transition-colors">Communication Skills</Link></li>
+            </ul>
+          </div>
+
+          {/* Corporate Programs */}
+          <div className="space-y-3">
+            <h4 className="text-base font-semibold text-gray-900 mb-4">Corporate Programs</h4>
             <ul className="space-y-2 text-sm text-gray-600">
               <li><Link href="/programs/leadership" className="hover:text-brand-blue transition-colors">Leadership Excellence</Link></li>
               <li><Link href="/programs/business-excellence" className="hover:text-brand-blue transition-colors">Business Excellence</Link></li>

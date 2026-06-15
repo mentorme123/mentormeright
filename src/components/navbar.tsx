@@ -163,52 +163,109 @@ export function Navbar() {
                           <div className="space-y-4 pt-1">
                             <span className="text-[14px] font-bold text-slate-800 block mb-4 whitespace-nowrap">STEM & Emerging Technologies:</span>
                             <div className="pl-6 space-y-2">
-<Link href="/programs/ai-school" className="block hover:bg-gray-100 rounded-md">
-  <span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">
-    AI Foundations for School Students
-  </span>
-</Link>
-<div className="ml-4 text-sm text-slate-600 space-y-1">
-  <p>A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society.</p>
-  <ul className="list-disc list-inside">
-    <li>Builds awareness of emerging technologies</li>
-    <li>Develops logical thinking</li>
-    <li>Encourages innovation and creativity</li>
-    <li>Improves problem-solving skills</li>
-  </ul>
-  <p><strong>MentorMe USP:</strong> Age-appropriate learning, Interactive activities and games, No coding required, Industry-designed curriculum</p>
-  <p><strong>Modules:</strong> Introduction to AI, AI Around Us, Machine Learning Basics, Generative AI Tools, AI Ethics, AI Mini Projects</p>
-</div>
-<Link href="/programs/generative-ai-prompt-students" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI & Prompt Engineering for Students</span></Link>
-<div className="ml-4 text-sm text-slate-600 space-y-1">
-  <p>Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools for learning, creativity, research, and productivity.</p>
-  <ul className="list-disc list-inside">
-    <li>Faster learning</li>
-    <li>Better project work</li>
-    <li>Improved communication skills</li>
-    <li>Enhanced creativity</li>
-  </ul>
-  <p><strong>MentorMe USP:</strong> Ready-to-use prompt library, Academic applications, Hands-on exercises, Responsible AI practices</p>
-  <p><strong>Modules:</strong> Understanding Generative AI, Prompt Engineering Fundamentals, AI for Research, AI for Presentations, AI for Content Creation, AI Safety</p>
-</div>
-                              <Link href="/programs/ai-robotics-explorer" className="block hover:bg-gray-100 rounded-md"><span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</span></Link>
-                               <div className="ml-4 text-sm text-slate-600 space-y-1">
-                                 <p>A future-focused program combining Artificial Intelligence, Robotics, Sensors, and Automation to help students become creators rather than consumers of technology.</p>
-                                 <ul className="list-disc list-inside">
-                                   <li>Hands-on STEM learning</li>
-                                   <li>Improves innovation mindset</li>
-                                   <li>Builds engineering thinking</li>
-                                   <li>Encourages teamwork</li>
-                                 </ul>
-                                 <p><strong>MentorMe USP:</strong> Project-based learning, Robotics kits provided, AI-powered robotics projects, School exhibition support</p>
-                                 <p><strong>Modules:</strong> Robotics Fundamentals, Sensors &amp; Actuators, Introduction to Coding, AI in Robotics, Automation Concepts, Capstone Project</p>
-                               </div>
+                              <Link href="/programs/ai-foundations-k12" className="block hover:bg-gray-100 rounded-md">
+                                <span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">
+                                  1. AI Foundations for School Students
+                                </span>
+                              </Link>
+                              <div className="ml-4 text-sm text-slate-600 space-y-1">
+                                <p>A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society.</p>
+                                <p className="font-semibold text-slate-700">Benefits</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Builds awareness of emerging technologies</li>
+                                  <li>Develops logical thinking</li>
+                                  <li>Encourages innovation and creativity</li>
+                                  <li>Improves problem-solving skills</li>
+                                </ul>
+                                <p className="font-semibold text-slate-700">MentorMe USP</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Age-appropriate learning</li>
+                                  <li>Interactive activities and games</li>
+                                  <li>No coding required</li>
+                                  <li>Industry-designed curriculum</li>
+                                </ul>
+                                <p className="font-semibold text-slate-700">Modules</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Introduction to AI</li>
+                                  <li>AI Around Us</li>
+                                  <li>Machine Learning Basics</li>
+                                  <li>Generative AI Tools</li>
+                                  <li>AI Ethics</li>
+                                  <li>AI Mini Projects</li>
+                                </ul>
+                              </div>
+
+                              <Link href="/programs/generative-ai-k12" className="block hover:bg-gray-100 rounded-md">
+                                <span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">
+                                  2. Generative AI & Prompt Engineering for Students
+                                </span>
+                              </Link>
+                              <div className="ml-4 text-sm text-slate-600 space-y-1">
+                                <p>Learn how to effectively use ChatGPT, Gemini, Claude, and other AI tools for learning, creativity, research, and productivity.</p>
+                                <p className="font-semibold text-slate-700">Benefits</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Faster learning</li>
+                                  <li>Better project work</li>
+                                  <li>Improved communication skills</li>
+                                  <li>Enhanced creativity</li>
+                                </ul>
+                                <p className="font-semibold text-slate-700">MentorMe USP</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Ready-to-use prompt library</li>
+                                  <li>Academic applications</li>
+                                  <li>Hands-on exercises</li>
+                                  <li>Responsible AI practices</li>
+                                </ul>
+                                <p className="font-semibold text-slate-700">Modules</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Understanding Generative AI</li>
+                                  <li>Prompt Engineering Fundamentals</li>
+                                  <li>AI for Research</li>
+                                  <li>AI for Presentations</li>
+                                  <li>AI for Content Creation</li>
+                                  <li>AI Safety</li>
+                                </ul>
+                              </div>
+
+                              <Link href="/programs/ai-robotics-k12" className="block hover:bg-gray-100 rounded-md">
+                                <span className="text-[13px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">
+                                  3. AI + Robotics Explorer Program
+                                </span>
+                              </Link>
+                              <div className="ml-4 text-sm text-slate-600 space-y-1">
+                                <p>A future-focused program combining Artificial Intelligence, Robotics, Sensors, and Automation to help students become creators rather than consumers of technology.</p>
+                                <p className="font-semibold text-slate-700">Benefits</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Hands-on STEM learning</li>
+                                  <li>Improves innovation mindset</li>
+                                  <li>Builds engineering thinking</li>
+                                  <li>Encourages teamwork</li>
+                                </ul>
+                                <p className="font-semibold text-slate-700">MentorMe USP</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Project-based learning</li>
+                                  <li>Robotics kits provided</li>
+                                  <li>AI-powered robotics projects</li>
+                                  <li>School exhibition support</li>
+                                </ul>
+                                <p className="font-semibold text-slate-700">Modules</p>
+                                <ul className="list-disc list-inside">
+                                  <li>Robotics Fundamentals</li>
+                                  <li>Sensors &amp; Actuators</li>
+                                  <li>Introduction to Coding</li>
+                                  <li>AI in Robotics</li>
+                                  <li>Automation Concepts</li>
+                                  <li>Capstone Project</li>
+                                </ul>
+                                <p className="text-xs text-slate-500 mt-2 italic">SEO Keywords: AI Robotics Course for Students, Robotics Training for Schools, STEM Education India</p>
+                              </div>
                             </div>
                           </div>
-                          <div className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></div>
-                          <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Career & Life Skills</span></div>
-                        </div>
-                      )}
+
+                           <div className="pt-2"><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Digital Literacy</span></div>
+                           <div><span className="text-[14px] font-medium text-slate-600 block whitespace-nowrap">Career & Life Skills</span></div>
+                         </div>
+                       )}
 
                       {/* College Section */}
                       <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onMouseEnter={() => setActiveSubmenu('college')}>
@@ -217,8 +274,8 @@ export function Navbar() {
                       {activeSubmenu === 'college' && (
                         <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'college' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`} onMouseLeave={() => setActiveSubmenu(null)}>
                           <Link href="/programs/ai-career-accelerator" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Career Accelerator Program</span></Link>
-                          <Link href="/programs/ai-data-analytics-professional" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI & Data Analytics Professional Program</span></Link>
-                          <Link href="/programs/ai-business-finance-management" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Business, Finance & Management</span></Link>
+                          <Link href="/programs/ai-data-analytics" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI & Data Analytics Professional Program</span></Link>
+                          <Link href="/programs/ai-business-management" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Business, Finance & Management</span></Link>
                         </div>
                       )}
 

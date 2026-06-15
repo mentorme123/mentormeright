@@ -53,7 +53,6 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
     notFound();
   }
 
-  // Determine accent color based on category
   const getAccentColor = () => {
     switch (program.category) {
       case "AI Learning Hub": return "text-brand-orange";
@@ -146,7 +145,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
 
         {/* Benefits & USP Grid */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {program.benefits && (
+          {(program.benefits && program.benefits.length > 0) && (
             <div className="bg-gradient-to-br from-brand-blue/5 to-brand-orange/5 p-8 rounded-3xl border border-slate-100">
               <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <Star className={`w-6 h-6 ${accentColor}`} />
@@ -163,7 +162,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
             </div>
           )}
 
-          {program.usp && (
+          {(program.usp && program.usp.length > 0) && (
             <div className="bg-gradient-to-br from-brand-orange/5 to-purple-500/5 p-8 rounded-3xl border border-slate-100">
               <h3 className="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
                 <Award className={`w-6 h-6 ${accentColor}`} />

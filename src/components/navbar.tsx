@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase";
 
 export function Navbar() {
   const [isAiDropdownOpen, setIsAiDropdownOpen] = useState(false);
+  const [is21stDropdownOpen, setIs21stDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
@@ -135,6 +136,79 @@ export function Navbar() {
                           <Link href="/programs/generative-ai-workplace" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI for Workplace Productivity</span></Link>
                           <Link href="/programs/ai-finance-accounting" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Finance &amp; Accounting Professionals</span></Link>
                           <Link href="/programs/ai-leadership" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Leadership &amp; Digital Transformation Program</span></Link>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 21st Century Skills Hub Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setIs21stDropdownOpen(true)}
+              onMouseLeave={() => setIs21stDropdownOpen(false)}
+            >
+              <button
+                type="button"
+                className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300"
+                aria-expanded={is21stDropdownOpen}
+              >
+                21st Century Skills Hub
+                <ChevronDown size={14} className={`transition-transform duration-300 ${is21stDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {is21stDropdownOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[500px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                  <div className="p-6 max-h-[80vh] overflow-y-auto">
+                    <div className="space-y-4">
+                      {/* K-12 Section */}
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('skill-k12')}>
+                        1. K-12 Students
+                      </button>
+                       {activeSubmenu === 'skill-k12' && (
+                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
+                          <span className="block text-[14px] font-semibold text-brand-blue px-3 py-2">Future Readiness Skills</span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Communication &amp; Leadership</span></span>
+                          <span className="block text-[14px] font-semibold text-brand-blue px-3 py-2">STEM &amp; Emerging Technologies</span>
+                          <div className="pl-4 space-y-1">
+                            <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Robotics</span></span>
+                            <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Coding</span></span>
+                            <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">IoT</span></span>
+                            <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">AI for School Students</span></span>
+                            <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Drones</span></span>
+                          </div>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Digital Literacy</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Career &amp; Life Skills</span></span>
+                        </div>
+                      )}
+
+                      {/* College Section */}
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('skill-college')}>
+                        2. College Students
+                      </button>
+                      {activeSubmenu === 'skill-college' && (
+                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Employability Skills</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Business &amp; Professional Skills</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Digital &amp; Analytics Skills</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Finance &amp; Commerce Skills</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Entrepreneurship &amp; Innovation</span></span>
+                        </div>
+                      )}
+
+                      {/* Corporate Section */}
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('skill-corporate')}>
+                        3. Corporate Professionals
+                      </button>
+                      {activeSubmenu === 'skill-corporate' && (
+                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Leadership Excellence</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Business Excellence</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Digital Transformation</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Workplace Effectiveness</span></span>
+                          <span className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block px-3 py-2 hover:text-brand-blue transition-colors">Finance, Compliance &amp; Risk</span></span>
                         </div>
                       )}
                     </div>

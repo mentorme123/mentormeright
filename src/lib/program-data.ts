@@ -395,6 +395,26 @@ export const programsData: Record<string, Program> = {
       "AI for Reporting and documentation",
       "AI for Presentations and visuals",
       "Responsible AI in the workplace"
+    ],
+    benefits: [
+      "Productivity improvement",
+      "Faster report generation",
+      "Better communication",
+      "Reduced manual effort"
+    ],
+    usp: [
+      "Function-specific examples",
+      "Practical implementation",
+      "Immediate workplace impact",
+      "Customizable workshops"
+    ],
+    modules: [
+      "Generative AI Overview",
+      "ChatGPT for Business",
+      "AI for Communication",
+      "AI for Reporting",
+      "AI for Presentations",
+      "Responsible AI"
     ]
   },
   "ai-finance-accounting": {
@@ -417,6 +437,31 @@ export const programsData: Record<string, Program> = {
       "AI in Audit and compliance",
       "AI for Cost Management",
       "AI Governance and ethics"
+    ],
+    benefits: [
+      "Faster financial reporting",
+      "Better forecasting accuracy",
+      "Improved compliance",
+      "Enhanced productivity"
+    ],
+    usp: [
+      "CMA/CA-oriented examples",
+      "Real financial datasets",
+      "Industry use cases",
+      "Expert faculty"
+    ],
+    modules: [
+      "AI in Accounting",
+      "AI in Financial Analysis",
+      "AI for Budgeting",
+      "AI in Audit",
+      "AI for Cost Management",
+      "AI Governance"
+    ],
+    seoKeywords: [
+      "AI for Accountants",
+      "AI for Finance Professionals",
+      "AI for CMA and CA Students"
     ]
   },
   "ai-leadership": {
@@ -440,6 +485,27 @@ export const programsData: Record<string, Program> = {
       "Risk & Compliance management",
       "Change Management for AI initiatives",
       "AI Roadmap Workshop for your organization"
+    ],
+    benefits: [
+      "AI strategy development",
+      "Improved competitiveness",
+      "Better technology investments",
+      "Organizational readiness"
+    ],
+    usp: [
+      "Leadership-focused framework",
+      "Industry transformation case studies",
+      "AI roadmap development",
+      "Executive learning approach"
+    ],
+    modules: [
+      "AI Landscape & Trends",
+      "AI Strategy",
+      "Digital Transformation",
+      "AI Governance",
+      "Risk & Compliance",
+      "Change Management",
+      "AI Roadmap Workshop"
     ]
   }
 };

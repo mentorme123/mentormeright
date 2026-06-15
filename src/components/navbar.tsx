@@ -8,7 +8,6 @@ import { SiteSearch, useSiteSearch } from "@/components/site-search";
 import { createClient } from "@/lib/supabase";
 
 export function Navbar() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isAiDropdownOpen, setIsAiDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
@@ -100,35 +99,6 @@ export function Navbar() {
               </button>
 
               {isAiDropdownOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[240px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                  <div className="p-4">
-                    <ul className="space-y-1">
-                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">AI Foundations</span></li>
-                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">Generative AI</span></li>
-                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">AI for Business</span></li>
-                      <li><span className="text-sm font-medium text-slate-700 px-3 py-2 rounded-lg block">AI for Educators</span></li>
-                    </ul>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* 21st Century Skills Hub Dropdown */}
-            <div
-              className="relative"
-              onMouseEnter={() => setIsDropdownOpen(true)}
-              onMouseLeave={() => setIsDropdownOpen(false)}
-            >
-              <button
-                type="button"
-                className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300"
-                aria-expanded={isDropdownOpen}
-              >
-                21st Century Skills Hub{" "}
-                <ChevronDown size={14} className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
-
-              {isDropdownOpen && (
                 <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[500px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
                   <div className="p-6 max-h-[80vh] overflow-y-auto">
                     <div className="space-y-4">
@@ -137,27 +107,27 @@ export function Navbar() {
                         1. K-12 Students
                       </button>
                        {activeSubmenu === 'k12' && (
-                         <div className="pl-4 space-y-2 bg-gray-50 p-2">
-                           <Link href="/programs/ai-foundations-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Foundations for School Students</span></Link>
-                           <Link href="/programs/generative-ai-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI &amp; Prompt Engineering for Students</span></Link>
-                           <Link href="/programs/ai-robotics-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</span></Link>
-                         </div>
-                       )}
+                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
+                          <Link href="/programs/ai-foundations-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Foundations for School Students</span></Link>
+                          <Link href="/programs/generative-ai-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI &amp; Prompt Engineering for Students</span></Link>
+                          <Link href="/programs/ai-robotics-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</span></Link>
+                        </div>
+                      )}
 
                        {/* College Section */}
                        <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('college')}>
-                         2. College Students
-                       </button>
-                       {activeSubmenu === 'college' && (
-                         <div className="pl-4 space-y-2 bg-gray-50 p-2">
-                           <Link href="/programs/ai-career-accelerator" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Career Accelerator Program</span></Link>
-                           <Link href="/programs/ai-data-analytics" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI &amp; Data Analytics Professional Program</span></Link>
-                           <Link href="/programs/ai-business-management" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Business, Finance &amp; Management</span></Link>
-                         </div>
-                       )}
+                        2. College Students
+                      </button>
+                      {activeSubmenu === 'college' && (
+                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
+                          <Link href="/programs/ai-career-accelerator" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Career Accelerator Program</span></Link>
+                          <Link href="/programs/ai-data-analytics" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI &amp; Data Analytics Professional Program</span></Link>
+                          <Link href="/programs/ai-business-management" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Business, Finance &amp; Management</span></Link>
+                        </div>
+                      )}
 
-                      {/* Corporate Section */}
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('corporate')}>
+                       {/* Corporate Section */}
+                       <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('corporate')}>
                         3. Corporate Professionals
                       </button>
                       {activeSubmenu === 'corporate' && (

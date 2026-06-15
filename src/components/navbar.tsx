@@ -154,7 +154,7 @@ export function Navbar() {
                     <div className="space-y-4">
                       {/* K-12 Section */}
                       <button type="button" className="w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('k12')}>
-                        K-12 Students
+                        1. K-12 Students
                       </button>
                       {activeSubmenu === 'k12' && (
                         <div className={`pl-4 space-y-5 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'k12' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`}>
@@ -177,7 +177,7 @@ export function Navbar() {
 
                       {/* College Section */}
                       <button type="button" className="w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('college')}>
-                        College Students
+                        2. College Students
                       </button>
                       {activeSubmenu === 'college' && (
                         <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'college' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`}>
@@ -191,7 +191,7 @@ export function Navbar() {
 
                       {/* Corporate Section */}
                       <button type="button" className="w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('corporate')}>
-                        Corporate Professionals
+                        3. Corporate Professionals
                       </button>
                       {activeSubmenu === 'corporate' && (
                         <div className={`pl-4 space-y-2 overflow-hidden transition-all duration-300 ease-out origin-top ${activeSubmenu === 'corporate' ? 'scale-y-100' : 'scale-y-0'} bg-gray-50 p-2`}>

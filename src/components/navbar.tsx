@@ -100,7 +100,7 @@ export function Navbar() {
               </button>
 
               {isAiDropdownOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-0 w-[500px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                <div className="absolute top-full left-0 mt-0 w-[500px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
                   <div className="p-6 max-h-[80vh] overflow-y-auto">
                     <div className="space-y-4">
                       {/* K-12 Section */}

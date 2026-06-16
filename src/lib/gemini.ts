@@ -10,11 +10,10 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 export const getModel = (modelName: string = 'gemini-1.5-flash'): GenerativeModel => {
-  // Use v1 for stable models, v1beta for experimental ones
-  const isExperimental = modelName.includes('2.0') || modelName.includes('exp') || modelName.includes('beta') || modelName.includes('1.5-pro');
+  // v1beta supports the latest and experimental models reliably.
   return genAI.getGenerativeModel(
     { model: modelName },
-    { apiVersion: isExperimental ? 'v1beta' : 'v1' }
+    { apiVersion: 'v1beta' }
   );
 };
 
@@ -28,10 +27,10 @@ export async function generateWithRetry(
 ) {
   let lastError: any;
   const modelsToTry = [
-    modelName, // Try the requested model first
+    modelName,
     'gemini-1.5-flash',
-    'gemini-2.0-flash',
-    'gemini-1.5-pro-latest'
+    'gemini-1.5-pro',
+    'gemini-1.5-flash-8b'
   ].filter((v, i, a) => a.indexOf(v) === i); // Remove duplicates
 
   if (!apiKey) {

@@ -83,7 +83,7 @@ Do not return any markdown. Return strictly valid JSON only.
     // Real API Call using Gemini with retry logic
     let text;
     try {
-      text = await generateWithRetry(prompt, 'gemini-2.0-flash', 3);
+      text = await generateWithRetry(prompt, 'gemini-1.5-flash', 3);
     } catch (err: any) {
       console.error('Gemini generation failed after retries:', err);
       if (err.message && (err.message.includes('429') || err.message.includes('quota') || err.message.includes('exhausted'))) {

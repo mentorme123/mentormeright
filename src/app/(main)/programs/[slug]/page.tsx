@@ -86,11 +86,11 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white pt-20">
-      
+
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <Image 
+          <Image
             src={program.image}
             alt={program.title}
             fill
@@ -98,7 +98,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
             priority
           />
         </div>
-        
+
         <div className="relative z-30 container mx-auto px-4 text-center max-w-4xl text-white space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase mb-2">
             <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
@@ -123,7 +123,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
             </Link>
           </div>
         </div>
-        
+
         {/* Curved Bottom Edge */}
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
           <svg className="relative block w-[calc(133%+1.3px)] h-[40px] md:h-[80px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
@@ -134,7 +134,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
 
       {/* Main Content */}
       <section className="container mx-auto px-4 py-12 md:py-16 max-w-6xl">
-        
+
         {/* Short Description */}
         <div className="max-w-4xl mx-auto mb-10">
           <h2 className="text-2xl font-bold mb-3 text-slate-800">Short Description</h2>
@@ -215,7 +215,6 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
               </Link>
               <Link href="/assessment">
                 <Button variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-slate-900 backdrop-blur-md px-8 py-5 rounded-full text-base font-bold">
-                  Take Career Assessment
                 </Button>
               </Link>
             </div>

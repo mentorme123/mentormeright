@@ -159,7 +159,7 @@ export default function ReportPage() {
       `}</style>
 
       {/* Floating Web Print Controls */}
-      <div className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-[200] print:hidden flex flex-col items-end gap-3 max-w-sm">
+      <div className="fixed bottom-6 left-6 md:bottom-8 md:left-8 z-[200] print:hidden flex flex-col items-start gap-3 max-w-sm">
         {/* Helper Card */}
         <div className="hidden md:flex bg-white/95 backdrop-blur-md border border-slate-200/80 p-4 rounded-2xl shadow-2xl flex-col gap-2 text-slate-700 animate-in fade-in slide-in-from-bottom-5 duration-300">
           <div className="flex gap-2 items-center text-brand-blue font-bold text-sm">

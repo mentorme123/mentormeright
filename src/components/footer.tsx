@@ -4,7 +4,7 @@ export function Footer() {
   return (
     <footer className="w-full bg-gray-50 border-t border-gray-200 pt-12 pb-6">
       <div className="container mx-auto px-4 sm:px-8 max-w-7xl">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-8 mb-10">
 
           {/* Left Column – Brand Info */}
           <div className="space-y-4">
@@ -22,6 +22,28 @@ export function Footer() {
               <p><span className="font-semibold text-gray-900">Call us at:</span> +91-9392707596, +91-8188824440</p>
               <p><span className="font-semibold text-gray-900">Mail us at:</span> admin@mentormeright.in</p>
               <p><span className="font-semibold text-gray-900">Location:</span> Hyderabad, India</p>
+            </div>
+          </div>
+
+          {/* Company & Support */}
+          <div className="space-y-8">
+            <div className="space-y-3">
+              <h4 className="text-sm font-bold text-gray-900 mb-3">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link></li>
+                <li><Link href="/services" className="hover:text-brand-blue transition-colors">Our Services</Link></li>
+                <li><Link href="/careers" className="hover:text-brand-blue transition-colors">Careers</Link></li>
+              </ul>
+            </div>
+            
+            <div className="space-y-3">
+              <h4 className="text-sm font-bold text-gray-900 mb-3">Support</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><Link href="/contact" className="hover:text-brand-blue transition-colors">Contact Us</Link></li>
+                <li><Link href="/terms" className="hover:text-brand-blue transition-colors">Terms &amp; Conditions</Link></li>
+                <li><Link href="/privacy" className="hover:text-brand-blue transition-colors">Privacy Policy</Link></li>
+                <li><Link href="/refund-policy" className="hover:text-brand-blue transition-colors">Refund Policy</Link></li>
+              </ul>
             </div>
           </div>
 

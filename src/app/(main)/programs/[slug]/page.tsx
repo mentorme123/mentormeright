@@ -213,10 +213,6 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
                   Contact Us <ArrowRight className="ml-2" />
                 </Button>
               </Link>
-              <Link href="/assessment">
-                <Button variant="outline" className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-slate-900 backdrop-blur-md px-8 py-5 rounded-full text-base font-bold">
-                </Button>
-              </Link>
             </div>
           </div>
         </div>

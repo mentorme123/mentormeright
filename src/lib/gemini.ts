@@ -29,8 +29,7 @@ export async function generateWithRetry(
   const modelsToTry = [
     modelName,
     'gemini-1.5-flash',
-    'gemini-1.5-pro',
-    'gemini-1.5-flash-8b'
+    'gemini-1.5-pro'
   ].filter((v, i, a) => a.indexOf(v) === i); // Remove duplicates
 
   if (!apiKey) {

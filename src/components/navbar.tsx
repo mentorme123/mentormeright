@@ -144,10 +144,82 @@ export function Navbar() {
               )}
             </div>
 
-            <Link href="/college-programs" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">21st Century Skills Hub</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
-            </Link>
+            {/* 21st Century Skills Hub Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => setIs21stDropdownOpen(true)}
+              onMouseLeave={() => setIs21stDropdownOpen(false)}
+            >
+              <button
+                type="button"
+                className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300"
+                aria-expanded={is21stDropdownOpen}
+              >
+                <Link href="/college-programs" className="hover:text-brand-blue">21st Century Skills Hub</Link>
+                <ChevronDown size={14} className={`transition-transform duration-300 ${is21stDropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {is21stDropdownOpen && (
+                <div className="absolute top-full left-0 mt-0 w-[500px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                  <div className="p-6 max-h-[80vh] overflow-y-auto">
+                    <div className="space-y-4">
+                      {/* K-12 Section */}
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('21st-k12')}>
+                        1. K-12 Students
+                      </button>
+                      {activeSubmenu === '21st-k12' && (
+                        <div className="pl-4 space-y-2 bg-gray-50 p-2 rounded-md">
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Future Readiness Skills</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Communication &amp; Leadership</span></Link>
+                          
+                          <div className="pt-2 pb-1">
+                            <span className="text-[14px] font-bold text-slate-700 block px-1">STEM &amp; Emerging Technologies</span>
+                            <div className="pl-4 space-y-1 mt-1 border-l-2 border-gray-200 ml-1">
+                              <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[13px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Robotics</span></Link>
+                              <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[13px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Coding</span></Link>
+                              <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[13px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">IoT</span></Link>
+                              <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[13px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">AI for School Students</span></Link>
+                              <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[13px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Drones</span></Link>
+                            </div>
+                          </div>
+                          
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Digital Literacy</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Career &amp; Life Skills</span></Link>
+                        </div>
+                      )}
+
+                      {/* College Section */}
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('21st-college')}>
+                        2. College Students
+                      </button>
+                      {activeSubmenu === '21st-college' && (
+                        <div className="pl-4 space-y-2 bg-gray-50 p-2 rounded-md">
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Employability Skills</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Business &amp; Professional Skills</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Digital &amp; Analytics Skills</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Finance &amp; Commerce Skills</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Entrepreneurship &amp; Innovation</span></Link>
+                        </div>
+                      )}
+
+                      {/* Corporate Section */}
+                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick('21st-corporate')}>
+                        3. Corporate Professionals
+                      </button>
+                      {activeSubmenu === '21st-corporate' && (
+                        <div className="pl-4 space-y-2 bg-gray-50 p-2 rounded-md">
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Leadership Excellence</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Business Excellence</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Digital Transformation</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Workplace Effectiveness</span></Link>
+                          <Link href="#" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Finance, Compliance &amp; Risk</span></Link>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
             <Link href="/blogs" className="relative group py-2">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>

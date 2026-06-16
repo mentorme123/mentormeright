@@ -20,6 +20,7 @@ export default function AssessmentPage() {
   const [saving, setSaving] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [processingTime, setProcessingTime] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   // Onboarding form state
   const [formPhone, setFormPhone] = useState("");
@@ -82,6 +83,17 @@ export default function AssessmentPage() {
     };
   }, [router]);
 
+  // Safety net to correct out-of-bounds index
+  useEffect(() => {
+    if (isLoaded && questions.length > 0) {
+      if (currentIndex < 0) {
+        setCurrentIndex(0);
+      } else if (currentIndex >= questions.length) {
+        setCurrentIndex(questions.length - 1);
+      }
+    }
+  }, [currentIndex, questions, isLoaded]);
+
   // Global Session Timer Handler
   useEffect(() => {
     if (!isLoaded || isSubmitting || showOnboarding) {
@@ -131,16 +143,25 @@ export default function AssessmentPage() {
   }, [currentIndex, isLoaded, isSubmitting, showOnboarding]);
 
   const handleSelectOption = (optionKey: string) => {
+    if (isTransitioning) return;
+
     const currentQ = questions[currentIndex];
+    if (!currentQ) return;
+
+    setIsTransitioning(true);
     const newAnswers = { ...answers, [currentQ.id]: optionKey };
     setAnswers(newAnswers);
     localStorage.setItem("mentorme_assessment_progress", JSON.stringify(newAnswers));
     
     // Smooth transition
     setTimeout(() => {
-      if (currentIndex < questions.length - 1) {
-        setCurrentIndex(prev => prev + 1);
-      }
+      setCurrentIndex(prev => {
+        if (prev < questions.length - 1) {
+          return prev + 1;
+        }
+        return prev;
+      });
+      setIsTransitioning(false);
     }, 300);
   };
 
@@ -171,15 +192,18 @@ export default function AssessmentPage() {
     setSaving(false);
   };
   const handleNext = () => {
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-    }
+    if (isTransitioning) return;
+    setCurrentIndex(prev => {
+      if (prev < questions.length - 1) {
+        return prev + 1;
+      }
+      return prev;
+    });
   };
 
   const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(prev => prev - 1);
-    }
+    if (isTransitioning) return;
+    setCurrentIndex(prev => (prev > 0 ? prev - 1 : 0));
   };
 
 
@@ -230,16 +254,16 @@ export default function AssessmentPage() {
     }
   };
 
-  if (!isLoaded || questions.length === 0) {
+  const currentQ = questions[currentIndex];
+  if (!isLoaded || questions.length === 0 || !currentQ) {
     return <div className="flex-1 flex items-center justify-center min-h-screen bg-slate-50">
       <div className="flex flex-col items-center gap-4">
         <Loader2 className="animate-spin text-brand-blue" size={40} />
-        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Authenticating...</p>
+        <p className="text-slate-400 font-bold uppercase tracking-widest text-xs">Loading...</p>
       </div>
     </div>;
   }
 
-  const currentQ = questions[currentIndex];
   const progressPercent = Math.round(((currentIndex) / questions.length) * 100);
   const sectionQuestions = questions.filter(q => q.section === currentQ.section);
   const sectionIndex = sectionQuestions.findIndex(q => q.id === currentQ.id) + 1;
@@ -438,11 +462,11 @@ export default function AssessmentPage() {
         </div>
 
         <div className="flex items-center justify-between pt-4">
-          <Button variant="ghost" onClick={handlePrev} disabled={currentIndex === 0} className="font-bold text-slate-400">Previous</Button>
+          <Button variant="ghost" onClick={handlePrev} disabled={currentIndex === 0 || isTransitioning} className="font-bold text-slate-400">Previous</Button>
           {isLastQuestion ? (
-            <Button onClick={handleSubmit} disabled={!isCurrentAnswered || isSubmitting} className="bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-10 py-6 rounded-2xl shadow-xl">SUBMIT TEST</Button>
+            <Button onClick={handleSubmit} disabled={!isCurrentAnswered || isSubmitting || isTransitioning} className="bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-10 py-6 rounded-2xl shadow-xl">SUBMIT TEST</Button>
           ) : (
-            <Button onClick={handleNext} disabled={!isCurrentAnswered} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-black px-10 py-6 rounded-2xl shadow-xl">NEXT</Button>
+            <Button onClick={handleNext} disabled={!isCurrentAnswered || isTransitioning} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-black px-10 py-6 rounded-2xl shadow-xl">NEXT</Button>
           )}
         </div>
       </div>

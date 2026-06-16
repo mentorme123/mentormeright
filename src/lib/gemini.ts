@@ -38,7 +38,7 @@ export async function generateWithRetry(
     throw new Error('GEMINI_API_KEY is missing or undefined. Please ensure it is set in your environment variables (Vercel/Local).');
   }
 
-  for (let attempt = 0; attempt < 10; attempt++) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
     // Alternate models on persistent failure to find one with available quota
     const currentModelName = modelsToTry[attempt % modelsToTry.length];
     console.log(`Attempting generation with model: ${currentModelName} (attempt ${attempt + 1})`);

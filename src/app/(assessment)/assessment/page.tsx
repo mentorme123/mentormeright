@@ -211,10 +211,18 @@ export default function AssessmentPage() {
           userId: user?.id || null 
         })
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Failed to generate report');
-      localStorage.setItem("mentorme_ai_report", JSON.stringify(data.report));
-      router.push("/report");
+      
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to generate report');
+        localStorage.setItem("mentorme_ai_report", JSON.stringify(data.report));
+        router.push("/report");
+      } else {
+        const errorText = await response.text();
+        console.error("Non-JSON error from server:", errorText);
+        throw new Error("The AI server is experiencing high traffic or took too long to respond. Please try submitting again in a moment.");
+      }
     } catch (error) {
       console.error("Error submitting assessment:", error);
       alert(error instanceof Error ? error.message : "Error generating report.");

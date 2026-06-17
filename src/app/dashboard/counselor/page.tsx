@@ -7,14 +7,19 @@ import {
   CalendarDays, 
   FileText, 
   User, 
-  Loader2
+  Loader2,
+  LogOut,
+  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase";
 
 export default function CounselorDashboard() {
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [counselorName, setCounselorName] = useState("Counselor");
+  const [counselorEmail, setCounselorEmail] = useState("");
   const [sessions, setSessions] = useState<any[]>([]);
   const [isJoining, setIsJoining] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState<string | null>(null);
@@ -22,9 +27,13 @@ export default function CounselorDashboard() {
   useEffect(() => {
     async function fetchCounsellorData() {
       const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setCounselorName(user.user_metadata?.full_name || user.email?.split('@')[0] || 'Counselor');
+        setCounselorEmail(user.email || '');
+      }
+
       if (!user) return;
 
-      // 1. Find the counsellor record for this user
       const { data: counsellor } = await supabase
         .from('counsellors')
         .select('id')
@@ -36,7 +45,6 @@ export default function CounselorDashboard() {
         return;
       }
 
-      // 2. Fetch bookings for this counsellor
       const { data: bookings } = await supabase
         .from('bookings')
         .select(`
@@ -60,6 +68,23 @@ export default function CounselorDashboard() {
     }
     fetchCounsellorData();
   }, [supabase]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (profileMenuOpen && !(event.target as Element).closest('.profile-dropdown')) {
+        setProfileMenuOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [profileMenuOpen]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    if (typeof window !== 'undefined') {
+      window.location.href = '/';
+    }
+  };
 
   const handleJoinVideo = async (jitsiUrl: string, sessionId: string) => {
     setIsJoining(sessionId);
@@ -98,18 +123,69 @@ export default function CounselorDashboard() {
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8">
-      <div className="max-w-6xl mx-auto space-y-8">
-        
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-           <div>
-             <h1 className="text-3xl font-black text-emerald-700 uppercase tracking-tight">Counselor Portal</h1>
-             <p className="text-slate-500 font-medium">Welcome back. You have {sessions.filter(s => s.slots?.date === new Date().toISOString().split('T')[0]).length} sessions scheduled for today.</p>
-           </div>
-           <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md">
-              <CalendarDays size={18} className="mr-2" /> Sync with Google Calendar
-           </Button>
-        </div>
+       <div className="max-w-6xl mx-auto space-y-8">
+         
+         {/* Header */}
+         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-3xl font-black text-emerald-700 uppercase tracking-tight">Counselor Portal</h1>
+              <p className="text-slate-500 font-medium">Welcome back. You have {sessions.filter(s => s.slots?.date === new Date().toISOString().split('T')[0]).length} sessions scheduled for today.</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="relative profile-dropdown">
+                <button
+                  type="button"
+                  onClick={() => setProfileMenuOpen((prev) => !prev)}
+                  className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-1 pr-3 py-1 hover:border-brand-blue/40 transition-all"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">
+                    {counselorName.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="hidden md:inline text-sm font-bold text-slate-700">Hi, {counselorName.split(' ')[0]}</span>
+                </button>
+
+                {profileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                    <div className="p-4 border-b border-slate-100 bg-slate-50">
+                      <p className="font-bold text-slate-800 text-sm truncate">{counselorName}</p>
+                      <p className="text-xs text-slate-500 truncate">{counselorEmail}</p>
+                    </div>
+                    <div className="p-2">
+                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
+                        <User size={18} className="text-brand-blue" />
+                        <div>
+                          <p className="text-sm font-bold text-slate-700">My Profile</p>
+                          <p className="text-xs text-slate-500">Account settings and more</p>
+                        </div>
+                        <ChevronRight size={16} className="ml-auto text-slate-400" />
+                      </button>
+                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
+                        <CalendarDays size={18} className="text-brand-orange" />
+                        <div>
+                          <p className="text-sm font-bold text-slate-700">My Tasks</p>
+                          <p className="text-xs text-slate-500">Assigned sessions</p>
+                        </div>
+                        <ChevronRight size={16} className="ml-auto text-slate-400" />
+                      </button>
+                    </div>
+                    <div className="p-2 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => { setProfileMenuOpen(false); handleLogout(); }}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left border border-red-200"
+                      >
+                        <LogOut size={18} className="text-red-600" />
+                        <span className="text-sm font-bold text-red-600">SIGN OUT</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold shadow-md">
+               <CalendarDays size={18} className="mr-2" /> Sync with Google Calendar
+              </Button>
+            </div>
+         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
            

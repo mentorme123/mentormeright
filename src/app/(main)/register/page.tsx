@@ -25,6 +25,15 @@ export default function RegisterPage() {
 
     try {
       console.log("Starting registration for:", email);
+
+      if (!email || !password || !name) {
+        throw new Error("Please fill in all required fields.");
+      }
+
+      if (password.length < 6) {
+        throw new Error("Password must be at least 6 characters.");
+      }
+
       const { data, error: authError } = await supabase.auth.signUp({
         email,
         password,
@@ -34,19 +43,24 @@ export default function RegisterPage() {
         },
       });
 
-      if (authError) throw authError;
+      if (authError) {
+        const message = authError.message || "Registration failed.";
+        if (message.toLowerCase().includes("rate limit") || message.toLowerCase().includes("email rate limit")) {
+          throw new Error("Too many sign-up attempts. Please wait a few minutes and try again.");
+        }
+        throw authError;
+      }
+
       if (!data.user) throw new Error("Registration failed to return user data.");
 
       console.log("Auth signup successful. Provisioning profile...");
 
-      // Force Profile Creation
       const { error: upsertError } = await supabase
         .from('users')
         .upsert([{ id: data.user.id, email: email, name: name, role: role }], { onConflict: 'id' });
 
       if (upsertError) {
         console.warn("Profile upsert delay:", upsertError.message);
-        // We don't block here because Login page has self-healing
       }
 
       if (role === 'individual') {

@@ -388,13 +388,25 @@ export default function AdminDashboard() {
                    </div>
                  </div>
                )}
+              </div>
+              <div className="flex flex-wrap gap-2">
+               <Button
+                 onClick={() => window.location.href = "/dashboard/admin/report"}
+                 className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
+               >
+                 <BarChart3 size={16} className="mr-1.5" />
+                 Student Report
+               </Button>
+               <Button 
+                 onClick={handleExportData}
+                 disabled={isExporting || loading}
+                 className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all text-xs"
+               >
+                {isExporting ? "Compiling Backup..." : <><Download size={16} className="mr-1.5" /> Download DB</>}
+               </Button>
              </div>
-             <div className="flex flex-wrap gap-2">
-
-
-
-
-        {/* Global Analytics */}
+           </div>
+        </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">
           <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
             <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center text-brand-blue">

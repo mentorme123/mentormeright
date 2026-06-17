@@ -250,6 +250,18 @@ export function Navbar() {
               </button>
             </Link>
 
+            <Link href="/login" className="hidden sm:block">
+              <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
+                Login
+              </button>
+            </Link>
+
+            <Link href="/register" className="hidden sm:block">
+              <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20 text-sm whitespace-nowrap">
+                Register
+              </button>
+            </Link>
+
 
 
             <button

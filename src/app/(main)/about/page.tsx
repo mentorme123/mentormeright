@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Award, BookOpen, Globe2, Users2, GraduationCap } from "lucide-react";
+import { Award, BookOpen, Globe2, Users2, GraduationCap, Brain, Compass, Database, Plane, Sparkles, Target, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
 type Leader = {
@@ -489,12 +489,138 @@ export default function AboutPage() {
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
-      <section className="bg-brand-blue/5 py-20 px-4 text-center">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <h1 className="text-4xl md:text-6xl font-bold text-brand-blue">About MentorMe</h1>
-          <p className="text-xl text-muted-foreground leading-relaxed">
+      {/* ── Hero Section ── */}
+      <section className="relative bg-gradient-to-br from-brand-blue via-brand-blue/95 to-brand-blue/85 py-24 px-4 text-center overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-10 left-10 w-72 h-72 bg-brand-orange rounded-full blur-3xl animate-pulse" />
+          <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl" />
+        </div>
+        <div className="max-w-4xl mx-auto space-y-6 relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 text-white/90 text-sm font-medium mb-4">
+            <Sparkles size={16} className="text-brand-orange" />
+            Science-Driven Career Intelligence
+          </div>
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">About MentorMe</h1>
+          <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
             We prioritize using a scientific approach rooted in deep self-awareness to guide career decisions.
           </p>
+        </div>
+      </section>
+
+      {/* ── Mission & AI Approach Section ── */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            {/* Left — Mission */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 text-brand-orange font-semibold text-sm uppercase tracking-wider">
+                <Target size={16} />
+                Our Mission
+              </div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 leading-tight">
+                From Self-Discovery to Employability
+              </h2>
+              <p className="text-lg text-slate-600 leading-relaxed">
+                At MentorMe, we prioritize using a scientific approach rooted in deep self-awareness to guide career decisions. Our advanced AI technology is instrumental in conducting comprehensive psychometric and aptitude assessments, analyzing an individual&apos;s personality, skills, and interests with precision.
+              </p>
+              <p className="text-lg text-slate-600 leading-relaxed">
+                Combining this with the expertise of our counsellors, we ensure students and professionals make informed choices.
+              </p>
+              <p className="text-lg text-slate-600 leading-relaxed">
+                At MentorMe, we support from self-discovery to employability with our training programs that bridge the gap between academic knowledge and industry requirements, preparing individuals for successful careers.
+              </p>
+            </div>
+
+            {/* Right — AI Highlight Card */}
+            <div className="relative">
+              <div className="bg-gradient-to-br from-brand-blue/5 via-brand-orange/5 to-brand-blue/5 rounded-3xl p-8 border border-slate-200/80 shadow-lg">
+                <div className="w-16 h-16 bg-gradient-to-br from-brand-blue to-brand-blue/80 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-brand-blue/20">
+                  <Brain size={32} className="text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Assessments</h3>
+                <p className="text-slate-600 leading-relaxed mb-6">
+                  Our advanced AI technology conducts comprehensive psychometric and aptitude assessments, analyzing personality, skills, and interests with precision — combined with expert counsellor guidance.
+                </p>
+                <div className="space-y-3">
+                  {[
+                    "Psychometric Profiling",
+                    "Aptitude Analysis",
+                    "Personality Mapping",
+                    "Interest Alignment",
+                  ].map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0">
+                        <ChevronRight size={14} className="text-brand-orange" />
+                      </div>
+                      <span className="text-sm font-medium text-slate-700">{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-brand-orange/10 rounded-full blur-2xl" />
+              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-brand-blue/10 rounded-full blur-2xl" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5 Key Pillars Section ── */}
+      <section className="py-20 px-4 bg-gradient-to-b from-slate-50 to-white">
+        <div className="max-w-6xl mx-auto space-y-14">
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
+              What Sets Us Apart
+            </h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              A comprehensive ecosystem designed to empower every stage of your career journey.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                icon: Compass,
+                title: "Holistic Career Guidance",
+                description: "End-to-end career support combining psychometric assessments, expert counselling, and AI-driven insights to help you discover your ideal career path.",
+                gradient: "from-brand-blue to-blue-700",
+              },
+              {
+                icon: Users2,
+                title: "Extensive Network of Counsellors & Industry Mentors",
+                description: "Access to a wide network of experienced career counsellors and industry professionals who provide real-world guidance and mentorship.",
+                gradient: "from-brand-orange to-orange-600",
+              },
+              {
+                icon: Database,
+                title: "Extensive Career Database",
+                description: "Explore a vast, curated database of career options, industry trends, and role-specific insights to make data-backed career decisions.",
+                gradient: "from-emerald-600 to-teal-600",
+              },
+              {
+                icon: Plane,
+                title: "Study Abroad Support",
+                description: "Complete guidance for international education — from university selection and application support to visa assistance and pre-departure preparation.",
+                gradient: "from-violet-600 to-purple-600",
+              },
+              {
+                icon: Sparkles,
+                title: "Future-Ready Skill Development",
+                description: "Training programs that bridge the gap between academic knowledge and industry requirements, preparing individuals with 21st-century skills for successful careers.",
+                gradient: "from-rose-600 to-pink-600",
+              },
+            ].map((pillar, i) => (
+              <div
+                key={i}
+                className={`group relative rounded-2xl bg-white border border-slate-200/80 p-8 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 hover:-translate-y-1 ${i === 4 ? "sm:col-span-2 lg:col-span-1 sm:max-w-md sm:mx-auto lg:max-w-none" : ""}`}
+              >
+                <div className={`w-14 h-14 bg-gradient-to-br ${pillar.gradient} rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  <pillar.icon size={26} className="text-white" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mb-3 leading-snug">{pillar.title}</h3>
+                <p className="text-slate-600 text-sm leading-relaxed">{pillar.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 

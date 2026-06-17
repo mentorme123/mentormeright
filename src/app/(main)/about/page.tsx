@@ -521,11 +521,25 @@ export default function AboutPage() {
                 From Self-Discovery to Employability
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed">
-                At MentorMe, we prioritize using a scientific approach rooted in deep self-awareness to guide career decisions. Our advanced AI technology is instrumental in conducting comprehensive psychometric and aptitude assessments, analyzing an individual&apos;s personality, skills, and interests with precision.
+                At MentorMe, we prioritize using a scientific approach rooted in deep self-awareness to guide career decisions. Our advanced AI technology is instrumental in conducting comprehensive psychometric and aptitude assessments, analyzing an individual&apos;s personality, skills, and interests with precision. Combining this with the expertise of our counsellors, we ensure students and professionals make informed choices.
               </p>
               <p className="text-lg text-slate-600 leading-relaxed">
-                Combining this with the expertise of our counsellors, we ensure students and professionals make informed choices.
+                At MentorMe, we support from self-discovery to employability with our training programs that bridge the gap between academic knowledge and industry requirements, preparing individuals for successful careers.
               </p>
+              <ul className="space-y-3 pt-4">
+                {[
+                  "Holistic Career Guidance",
+                  "Extensive Network of Counsellors and Industry Mentors",
+                  "Extensive Career Database",
+                  "Study Abroad Support",
+                  "Future-Ready Skill Development",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <ChevronRight size={18} className="text-brand-orange mt-0.5 shrink-0" />
+                    <span className="text-base font-medium text-slate-700">{item}</span>
+                  </li>
+                ))}
+              </ul>
               <p className="text-lg text-slate-600 leading-relaxed">
                 At MentorMe, we support from self-discovery to employability with our training programs that bridge the gap between academic knowledge and industry requirements, preparing individuals for successful careers.
               </p>

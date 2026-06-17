@@ -6,7 +6,6 @@ export async function syncUserProfile(user: any) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-  // Use service role key to bypass RLS
   const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
     auth: {
       autoRefreshToken: false,
@@ -14,7 +13,6 @@ export async function syncUserProfile(user: any) {
     }
   });
 
-  // 1. Get profile
   let { data: userProfile, error: fetchError } = await supabaseAdmin
     .from('users')
     .select('role')
@@ -26,7 +24,6 @@ export async function syncUserProfile(user: any) {
     throw new Error(`Failed to fetch profile: ${fetchError.message}`);
   }
 
-  // 2. If not exists, create
   if (!userProfile) {
     console.log("Profile not found, creating one for ID:", user.id);
     const { data: newProfile, error: createError } = await supabaseAdmin
@@ -51,7 +48,6 @@ export async function syncUserProfile(user: any) {
 
     userProfile = newProfile;
   } else if (!userProfile.role) {
-    // 3. If exists but role is null, update it to 'individual'
     console.log("Profile found but role is null, updating to 'individual' for ID:", user.id);
     const { data: updatedProfile, error: updateError } = await supabaseAdmin
       .from('users')
@@ -62,7 +58,6 @@ export async function syncUserProfile(user: any) {
 
     if (updateError) {
       console.error("Profile update error:", updateError);
-      // Even if update fails, we can just return the default so user can login
       userProfile.role = 'individual';
     } else {
       userProfile = updatedProfile;
@@ -70,4 +65,27 @@ export async function syncUserProfile(user: any) {
   }
 
   return userProfile;
+}
+
+export async function confirmUserEmail(userId: string, email: string) {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+
+  const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  });
+
+  const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+    email_confirm: true
+  });
+
+  if (error) {
+    console.error("Email confirmation error:", error);
+    return { success: false, error: error.message };
+  }
+
+  return { success: true };
 }

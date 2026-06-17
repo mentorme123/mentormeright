@@ -16,7 +16,7 @@ import {
   Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 interface Student {
   id: string;

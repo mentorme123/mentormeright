@@ -5,7 +5,7 @@ import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, 
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
-import { createClient } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 
 // Types
 type DBUser = {
@@ -31,6 +31,7 @@ const sanitizeText = (text: string | null) => {
 };
 
 export default function AdminDashboard() {
+  const supabase = createClient();
   const [users, setUsers] = useState<DBUser[]>([]);
   const [roleCounts, setRoleCounts] = useState<Record<string, number>>({ total: 0, individual: 0, institutional: 0, admin: 0, counselor: 0 });
   const [loading, setLoading] = useState(true);

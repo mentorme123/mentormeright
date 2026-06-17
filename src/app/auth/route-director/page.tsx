@@ -12,8 +12,9 @@ export default function RouteDirector() {
   useEffect(() => {
     async function directTraffic() {
       console.log("🚦 Route Director: Initializing Handshake...");
+      const routeSupabase = createClient();
       
-      const { data: { user }, error: authError } = await supabase.auth.getUser();
+      const { data: { user }, error: authError } = await routeSupabase.auth.getUser();
 
       if (authError || !user) {
         console.error("❌ Auth Failure. Redirecting to Login.");
@@ -23,7 +24,7 @@ export default function RouteDirector() {
 
       try {
         // 1. Fetch/Self-Heal Profile
-        let { data: profile, error: profileError } = await supabase
+        let { data: profile, error: profileError } = await routeSupabase
           .from('users')
           .select('role')
           .eq('id', user.id)
@@ -31,7 +32,7 @@ export default function RouteDirector() {
 
         if (!profile || profileError) {
           console.warn("⚠️ Profile missing. Attempting self-healing...");
-          const { data: newProfile, error: createError } = await supabase
+          const { data: newProfile, error: createError } = await routeSupabase
             .from('users')
             .upsert({
               id: user.id,
@@ -52,7 +53,7 @@ export default function RouteDirector() {
         // 2. Strict Role-Based Routing
         if (profile.role === 'individual') {
           // Check for completed assessment (Condition B)
-          const { data: assessment } = await supabase
+          const { data: assessment } = await routeSupabase
             .from('assessment_results')
             .select('id')
             .eq('user_id', user.id)
@@ -86,7 +87,7 @@ export default function RouteDirector() {
     }
 
     directTraffic();
-  }, [router, supabase]);
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center">

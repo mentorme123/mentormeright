@@ -498,35 +498,47 @@ export default function StudentDashboard() {
           </div>
         </div>
         {/* Global Toolkit - THE "WINNING" TOOLS */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {[
-            { label: "AI Simulator", icon: <MessageSquare className="text-brand-blue" />, sub: "Talk to Pros", link: "/career-library", badge: "NEW" },
-            { label: "Exam War Room", icon: <Timer className="text-brand-orange" />, sub: "JEE/NEET/CUET", link: "/dashboard/student/exams", badge: "LIVE" },
-            { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", badge: "HOT" },
-            { label: "Career ROI", icon: <IndianRupee className="text-purple-500" />, sub: "Salary Insights", link: "/career-library" }
-          ].map((tool, i) => (
-            <motion.div 
-              whileHover={{ y: -5 }}
-              key={i}
-              className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm hover:border-brand-blue hover:shadow-xl transition-all cursor-pointer group relative overflow-hidden"
-            >
-              {tool.badge && (
-                <div className="absolute top-0 right-0 px-2 py-1 bg-brand-orange text-[8px] font-black text-white rounded-bl-lg">
-                  {tool.badge}
-                </div>
-              )}
-              <Link href={tool.link || "#"} className="space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-brand-blue/10 transition-colors">
-                  {tool.icon}
-                </div>
-                <div>
-                  <p className="text-sm font-black text-slate-800">{tool.label}</p>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">{tool.sub}</p>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </section>
+        {assessmentStatus === 'completed' ? (
+          <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: "AI Simulator", icon: <MessageSquare className="text-brand-blue" />, sub: "Talk to Pros", link: "/career-library", badge: "NEW" },
+              { label: "Exam War Room", icon: <Timer className="text-brand-orange" />, sub: "JEE/NEET/CUET", link: "/dashboard/student/exams", badge: "LIVE" },
+              { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", badge: "HOT" },
+              { label: "Career ROI", icon: <IndianRupee className="text-purple-500" />, sub: "Salary Insights", link: "/career-library" }
+            ].map((tool, i) => (
+              <motion.div 
+                whileHover={{ y: -5 }}
+                key={i}
+                className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm hover:border-brand-blue hover:shadow-xl transition-all cursor-pointer group relative overflow-hidden"
+              >
+                {tool.badge && (
+                  <div className="absolute top-0 right-0 px-2 py-1 bg-brand-orange text-[8px] font-black text-white rounded-bl-lg">
+                    {tool.badge}
+                  </div>
+                )}
+                <Link href={tool.link || "#"} className="space-y-3">
+                  <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-brand-blue/10 transition-colors">
+                    {tool.icon}
+                  </div>
+                  <div>
+                    <p className="text-sm font-black text-slate-800">{tool.label}</p>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">{tool.sub}</p>
+                  </div>
+                </Link>
+              </motion.div>
+            ))}
+          </section>
+        ) : (
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <h3 className="text-lg font-black text-slate-800">App Resources</h3>
+            <p className="text-sm text-slate-500 mt-2">Complete the assessment to unlock AI Simulator, Exam War Room, NEP Certificates, and Career ROI.</p>
+            <Link href="/assessment" className="inline-block mt-4">
+              <button className="bg-brand-orange text-white font-bold px-6 py-3 rounded-xl shadow-lg text-sm">
+                Complete Assessment
+              </button>
+            </Link>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           

@@ -35,14 +35,16 @@ export default function AdminDashboard() {
   const [roleCounts, setRoleCounts] = useState<Record<string, number>>({ total: 0, individual: 0, institutional: 0, admin: 0, counselor: 0 });
   const [loading, setLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
-  
+   
   // Search and Filter
   const [searchTerm, setSearchTerm] = useState("");
-  
+   
   // Modals
   const [selectedUser, setSelectedUser] = useState<DBUser | null>(null);
   const [showTour, setShowTour] = useState(false);
   const [tourStep, setTourStep] = useState(0);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [currentAdmin, setCurrentAdmin] = useState<{ name: string; email: string } | null>(null);
 
   // Fetch Live Data
   useEffect(() => {
@@ -65,6 +67,34 @@ export default function AdminDashboard() {
     
     fetchDashboardData();
   }, []);
+
+  useEffect(() => {
+    async function loadCurrentAdmin() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setCurrentAdmin({
+          name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Admin',
+          email: user.email || ''
+        });
+      }
+    }
+    loadCurrentAdmin();
+  }, [supabase]);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = '/';
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (showProfileMenu && !(event.target as Element).closest('.relative')) {
+        setShowProfileMenu(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showProfileMenu]);
 
   // Stats from DB role counts
   const totalUsers = roleCounts.total ?? 0;
@@ -309,23 +339,60 @@ export default function AdminDashboard() {
              </h1>
              <p className="text-slate-500 font-medium">Live global overview and database management.</p>
            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button
-                onClick={() => window.location.href = "/dashboard/admin/report"}
-                className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
-              >
-                <BarChart3 size={16} className="mr-1.5" />
-                Student Report
-              </Button>
-              <Button 
-                onClick={handleExportData}
-                disabled={isExporting || loading}
-                className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all text-xs"
-              >
-               {isExporting ? "Compiling Backup..." : <><Download size={16} className="mr-1.5" /> Download DB</>}
-              </Button>
-            </div>
-        </div>
+           <div className="flex items-center gap-3">
+             <div className="relative">
+               <button
+                 type="button"
+                 onClick={() => setShowProfileMenu((v) => !v)}
+                 className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-2.5 hover:border-brand-blue/30 transition-all shadow-sm"
+               >
+                 <div className="w-8 h-8 bg-brand-blue text-white rounded-full flex items-center justify-center font-bold text-sm">
+                   {currentAdmin?.name?.charAt(0)?.toUpperCase() || 'A'}
+                 </div>
+                 <span className="text-sm font-bold text-slate-700">Hi, {currentAdmin?.name?.split(' ')[0] || 'Admin'}</span>
+               </button>
+
+               {showProfileMenu && (
+                 <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                   <div className="p-4 border-b border-slate-100 bg-slate-50">
+                     <p className="font-bold text-slate-800 text-sm truncate">{currentAdmin?.name || 'Admin'}</p>
+                     <p className="text-xs text-slate-500 truncate">{currentAdmin?.email || ''}</p>
+                   </div>
+                   <div className="p-2">
+                     <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
+                       <User size={18} className="text-brand-blue" />
+                       <div>
+                         <p className="text-sm font-bold text-slate-700">My Profile</p>
+                         <p className="text-xs text-slate-500">Account settings and more</p>
+                       </div>
+                       <ChevronRight size={16} className="ml-auto text-slate-400" />
+                     </button>
+                     <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
+                       <Settings size={18} className="text-brand-orange" />
+                       <div>
+                         <p className="text-sm font-bold text-slate-700">Settings</p>
+                         <p className="text-xs text-slate-500">Preferences and configuration</p>
+                       </div>
+                       <ChevronRight size={16} className="ml-auto text-slate-400" />
+                     </button>
+                   </div>
+                   <div className="p-2 border-t border-slate-100">
+                     <button
+                       type="button"
+                       onClick={handleLogout}
+                       className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left border border-red-200"
+                     >
+                       <LogOut size={18} className="text-red-600" />
+                       <span className="text-sm font-bold text-red-600">SIGN OUT</span>
+                     </button>
+                   </div>
+                 </div>
+               )}
+             </div>
+             <div className="flex flex-wrap gap-2">
+
+
+
 
         {/* Global Analytics */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">

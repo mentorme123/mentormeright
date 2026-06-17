@@ -94,24 +94,27 @@ export default function LoginPage() {
           </div>
 
           {error && (
-            <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm font-bold flex flex-col gap-2">
+            <div className="mb-6 p-5 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm font-bold flex flex-col gap-3">
               <p>{error}</p>
               {error.toLowerCase().includes("not confirmed") && (
-                <button 
-                  onClick={async () => {
-                    setLoading(true);
-                    const { error: resendError } = await supabase.auth.resend({
-                      type: 'signup',
-                      email: email,
-                    });
-                    setLoading(false);
-                    if (resendError) setError(resendError.message);
-                    else setError("Confirmation email resent! Please check your inbox (and spam).");
-                  }}
-                  className="text-brand-blue hover:underline text-xs text-left"
-                >
-                  Resend confirmation link?
+                <div className="space-y-2">
+                  <p className="text-red-700 text-xs">Please confirm your email before signing in. Check your inbox (and spam) for the confirmation link.</p>
+                  <button 
+                    onClick={async () => {
+                      setLoading(true);
+                      const { error: resendError } = await supabase.auth.resend({
+                        type: 'signup',
+                        email: email,
+                      });
+                      setLoading(false);
+                      if (resendError) setError(resendError.message);
+                      else setError("Confirmation email resent! Please check your inbox (and spam).");
+                    }}
+                    className="text-brand-blue hover:underline text-xs font-bold"
+                  >
+                    Resend confirmation link?
                 </button>
+                </div>
               )}
             </div>
           )}

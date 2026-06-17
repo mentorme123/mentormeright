@@ -32,7 +32,8 @@ import {
   MessageSquare,
   Timer,
   Sparkles,
-  IndianRupee
+  IndianRupee,
+  LogOut
 } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { Button } from "@/components/ui/button";
@@ -96,6 +97,11 @@ export default function StudentDashboard() {
     counsellors: { name: string; specialization: string | null };
   }>>([]);
   const [bookingsLoading, setBookingsLoading] = useState(true);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/");
+  };
 
   // Onboarding form state
   const [formPhone, setFormPhone] = useState("");
@@ -482,6 +488,13 @@ export default function StudentDashboard() {
                 </Button>
               </Link>
             )}
+            <button
+              onClick={handleLogout}
+              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 hover:border-white/40 font-bold px-6 py-3 rounded-xl transition-all text-sm"
+            >
+              <LogOut className="inline mr-2" size={16} />
+              Logout
+            </button>
           </div>
         </div>
         {/* Global Toolkit - THE "WINNING" TOOLS */}

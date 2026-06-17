@@ -4,10 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import { registerUser } from "./actions";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const supabase = createClient();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,57 +26,34 @@ export default function RegisterPage() {
     try {
       console.log("Starting registration for:", email);
 
-      if (!email || !password || !name) {
-        throw new Error("Please fill in all required fields.");
-      }
+      const result = await registerUser({ email, password, fullName: name, role });
 
-      if (password.length < 6) {
-        throw new Error("Password must be at least 6 characters.");
-      }
-
-      const { data, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${typeof window !== 'undefined' ? window.location.origin : ''}/auth/callback`,
-          data: { full_name: name }
-        },
-      });
-
-      if (authError) {
-        const message = authError.message || "Registration failed.";
-        if (message.toLowerCase().includes("rate limit") || message.toLowerCase().includes("email rate limit")) {
-          throw new Error("Too many sign-up attempts. Please wait a few minutes and try again.");
+      if (!result.success || !result.user) {
+        if (result.error?.toLowerCase().includes("rate limit") || result.error?.toLowerCase().includes("email rate limit exceeded")) {
+          throw new Error("Too many sign-up attempts. Please wait a few minutes and then try again.");
         }
-        throw authError;
+        throw new Error(result.error || "Registration failed.");
       }
 
-      if (!data.user) throw new Error("Registration failed to return user data.");
+      console.log("Registration complete for:", result.user.id);
 
-      console.log("Auth signup successful. Provisioning profile...");
-
-      const { error: upsertError } = await supabase
-        .from('users')
-        .upsert([{ id: data.user.id, email: email, name: name, role: role }], { onConflict: 'id' });
-
-      if (upsertError) {
-        console.warn("Profile upsert delay:", upsertError.message);
-      }
-
-      if (role === 'individual') {
+      if (role === "individual") {
         localStorage.setItem("mentorme_audience", audienceType);
       }
 
-      if (data.session) {
-        console.log("Registration complete. Handing over to Route Director...");
+      if (result.emailConfirmed) {
         router.push("/auth/route-director");
       } else {
-        console.log("Confirmation required.");
         setSuccess(true);
       }
     } catch (err: unknown) {
       console.error("Registration Error:", err);
-      setError(err instanceof Error ? err.message : "Registration failed. Try again.");
+      const message = err instanceof Error ? err.message : "Registration failed. Try again.";
+      if (message.toLowerCase().includes("rate limit")) {
+        setError("Too many sign-up attempts. Please wait a few minutes and try again.");
+      } else {
+        setError(message);
+      }
     } finally {
       setLoading(false);
     }

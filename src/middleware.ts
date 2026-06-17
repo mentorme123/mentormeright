@@ -75,6 +75,10 @@ export async function middleware(request: NextRequest) {
 
   // If user IS logged in and trying to access login/register
   if (user && isAuthPage) {
+    const userRole = (user.user_metadata as Record<string, string> | undefined)?.role;
+    if (userRole === 'admin') {
+      return response;
+    }
     const url = request.nextUrl.clone()
     // Handover to the Smart Router
     url.pathname = '/auth/route-director' 

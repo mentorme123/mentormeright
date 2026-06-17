@@ -10,7 +10,7 @@ import { X } from "lucide-react";
 export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
-  const [activeTab, setActiveTab] = useState<'student' | 'institution' | 'counselor' | 'admin'>('student');
+  const [activeTab, setActiveTab] = useState<'student' | 'institution' | 'counselor'>('student');
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -82,7 +82,7 @@ export default function LoginPage() {
         <div className="p-8">
           {/* Simple Tab Switcher */}
           <div className="flex bg-slate-100 p-1 rounded-xl mb-8 border border-slate-200">
-            {(['student', 'institution', 'counselor', 'admin'] as const).map((tab) => (
+            {(['student', 'institution', 'counselor'] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}

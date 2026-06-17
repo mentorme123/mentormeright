@@ -250,33 +250,7 @@ export function Navbar() {
               </button>
             </Link>
 
-            {user ? (
-              <Link href="/dashboard/admin" className="hidden sm:block">
-                <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
-                  Dashboard
-                </button>
-              </Link>
-            ) : (
-              <Link href="/register" className="hidden sm:block">
-                <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
-                  Register
-                </button>
-              </Link>
-            )}
 
-            {user ? (
-              <Link href="/dashboard/admin" className="hidden sm:block">
-                <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20 text-sm whitespace-nowrap">
-                  Admin Panel
-                </button>
-              </Link>
-            ) : (
-              <Link href="/login" className="hidden sm:block">
-                <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20 text-sm whitespace-nowrap">
-                  Log in
-                </button>
-              </Link>
-            )}
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -324,12 +298,12 @@ export function Navbar() {
                 </Link>
                 <div className="flex gap-3">
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                    <button className="w-full font-semibold py-2.5 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors">
+                    <button className="w-full font-bold py-3 bg-brand-blue text-white hover:bg-brand-blue/90 rounded-xl transition-all shadow-md">
                       Log in
                     </button>
                   </Link>
                   <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                    <button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-semibold py-2.5 rounded-xl transition-all shadow-sm">
+                    <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl transition-all shadow-md">
                       Register
                     </button>
                   </Link>

@@ -9,6 +9,8 @@ const skillPrograms = {
       shortDesc: "This program helps students develop structured thinking, logical reasoning, analytical skills, and problem-solving abilities through case studies, puzzles, and real-world challenges.",
       benefits: ["Improves analytical thinking", "Enhances academic performance", "Builds decision-making ability", "Encourages independent thinking"],
       modules: ["Understanding Problems", "Root Cause Analysis", "Logical Reasoning", "Creative Problem Solving", "Decision-Making Frameworks", "Real-Life Simulations"],
+      learningOutcomes: "Students can evaluate situations logically, solve problems systematically, and make better decisions.",
+      mentorMeAdvantage: ["Gamified learning", "Industry-inspired case studies", "Age-appropriate simulations"],
       keywords: ["Critical Thinking Course for Students", "Problem Solving Skills Training", "Future Skills for School Students"]
     },
     {
@@ -17,6 +19,8 @@ const skillPrograms = {
       shortDesc: "A practical program that helps students overcome stage fear, improve communication skills, and become confident speakers through presentations, storytelling, debates, and public speaking exercises.",
       benefits: ["Builds confidence", "Improves communication", "Develops leadership qualities", "Enhances presentation skills"],
       modules: ["Fundamentals of Public Speaking", "Voice and Body Language", "Storytelling Techniques", "Presentation Skills", "Debate and Persuasion", "Stage Performance"],
+      learningOutcomes: "Students confidently communicate ideas in classrooms, competitions, and public forums.",
+      mentorMeAdvantage: ["Extensive practice sessions", "Individual feedback", "Video-based assessments"],
       keywords: ["Public Speaking for Students", "Communication Skills Training", "Leadership Skills for School Students"]
     },
     {
@@ -25,6 +29,8 @@ const skillPrograms = {
       shortDesc: "An engaging robotics program where students learn robotics concepts, sensors, motors, automation, and problem-solving through hands-on projects and experiments.",
       benefits: ["Develops STEM skills", "Encourages innovation", "Improves technical aptitude", "Enhances teamwork"],
       modules: ["Introduction to Robotics", "Components of Robots", "Sensors and Motors", "Programming Basics", "Robot Design", "Robotics Project"],
+      learningOutcomes: "Students build and program robots to solve real-world challenges.",
+      mentorMeAdvantage: ["Hands-on learning", "Robotics kits included", "Project showcase opportunities"],
       keywords: ["Robotics Training for Schools", "STEM Education India", "Robotics Course for Students"]
     }
   ],
@@ -35,6 +41,8 @@ const skillPrograms = {
       shortDesc: "Learn data analysis, visualization, reporting, and business insights using industry tools and real-world datasets. The program prepares students for careers in analytics, consulting, and business intelligence.",
       benefits: ["High-demand career skill", "Better employability", "Data-driven thinking", "Industry relevance"],
       modules: ["Data Analytics Fundamentals", "Data Cleaning", "Data Visualization", "Business Reporting", "Dashboard Development", "Analytics Projects"],
+      learningOutcomes: "Students analyze business data and generate actionable insights.",
+      mentorMeAdvantage: ["Industry datasets", "Capstone projects", "Placement-oriented curriculum"],
       keywords: ["Data Analytics Course Hyderabad", "Business Analytics Training", "Data Analytics Certification"]
     },
     {
@@ -43,6 +51,8 @@ const skillPrograms = {
       shortDesc: "A practical digital marketing course covering SEO, social media marketing, content marketing, paid advertising, and analytics to help students build career-ready marketing skills.",
       benefits: ["High-demand skill", "Freelancing opportunities", "Entrepreneurial applications", "Career readiness"],
       modules: ["Digital Marketing Overview", "Search Engine Optimization", "Social Media Marketing", "Content Marketing", "Google Ads", "Analytics and Reporting"],
+      learningOutcomes: "Students execute and manage digital marketing campaigns effectively.",
+      mentorMeAdvantage: ["Live projects", "Campaign simulations", "Industry mentors"],
       keywords: ["Digital Marketing Course India", "SEO Training", "Social Media Marketing Course"]
     },
     {
@@ -51,6 +61,8 @@ const skillPrograms = {
       shortDesc: "Students learn to create financial models for valuation, budgeting, forecasting, and investment analysis using Excel and industry best practices.",
       benefits: ["Investment analysis skills", "Better finance careers", "Advanced Excel expertise", "Corporate readiness"],
       modules: ["Excel Fundamentals", "Financial Statements", "Forecasting Models", "Valuation Techniques", "Sensitivity Analysis", "Investment Cases"],
+      learningOutcomes: "Students build professional financial models used by investment and finance professionals.",
+      mentorMeAdvantage: ["Real company cases", "Finance expert faculty", "Industry-standard templates"],
       keywords: ["Financial Modelling Course India", "Investment Analysis Training", "Finance Skills Program"]
     }
   ],
@@ -61,6 +73,8 @@ const skillPrograms = {
       shortDesc: "A practical leadership program focused on developing strategic thinking, team leadership, communication, and decision-making capabilities required in today's dynamic workplace.",
       benefits: ["Stronger leadership capabilities", "Improved team performance", "Better decision-making", "Increased employee engagement"],
       modules: ["Leadership Fundamentals", "Emotional Intelligence", "Strategic Thinking", "Team Leadership", "Conflict Management", "Leading Change"],
+      learningOutcomes: "Participants become more effective leaders capable of driving organizational performance.",
+      mentorMeAdvantage: ["Leadership simulations", "Industry case studies", "Practical action plans"],
       keywords: ["Leadership Training India", "Management Development Program", "Leadership Skills Workshop"]
     },
     {
@@ -69,6 +83,8 @@ const skillPrograms = {
       shortDesc: "Learn project planning, scheduling, risk management, stakeholder management, and execution frameworks required to successfully manage projects.",
       benefits: ["Improved project success rates", "Better resource management", "Enhanced planning skills", "Reduced project risks"],
       modules: ["Project Fundamentals", "Planning and Scheduling", "Risk Management", "Stakeholder Management", "Project Monitoring", "Project Closure"],
+      learningOutcomes: "Participants effectively manage projects from initiation to completion.",
+      mentorMeAdvantage: ["Real project simulations", "Templates and toolkits", "Industry examples"],
       keywords: ["Project Management Training India", "PMP Foundation Program", "Project Leadership Skills"]
     },
     {
@@ -77,6 +93,8 @@ const skillPrograms = {
       shortDesc: "Designed for managers and finance professionals, this program helps participants interpret financial statements, assess business performance, and make informed financial decisions.",
       benefits: ["Better business decisions", "Improved financial understanding", "Strong analytical skills", "Enhanced profitability focus"],
       modules: ["Financial Statements Analysis", "Ratio Analysis", "Cash Flow Analysis", "Budgeting", "Cost Control", "Business Performance Review"],
+      learningOutcomes: "Participants confidently evaluate financial performance and support business decision-making.",
+      mentorMeAdvantage: ["Real company financials", "Practical business cases", "Finance expert facilitators"],
       keywords: ["Financial Analysis Training", "Finance for Non-Finance Managers", "Business Finance Course"]
     }
   ]
@@ -108,7 +126,7 @@ export default function SkillsHubPage() {
                     ))}
                   </ul>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 mb-4">
                   <p className="text-xs font-bold text-slate-700 uppercase">Course Modules:</p>
                   <ul className="text-xs text-slate-500 space-y-0.5">
                     {program.modules.map((m, j) => (
@@ -116,6 +134,22 @@ export default function SkillsHubPage() {
                     ))}
                   </ul>
                 </div>
+                {program.learningOutcomes && (
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Learning Outcomes:</p>
+                    <p className="text-xs text-slate-500">{program.learningOutcomes}</p>
+                  </div>
+                )}
+                {program.mentorMeAdvantage && (
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-brand-blue uppercase">MentorMe Advantage:</p>
+                    <ul className="text-xs text-slate-500 space-y-0.5">
+                      {program.mentorMeAdvantage.map((a, j) => (
+                        <li key={j}>• {a}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <Link href="/contact" className="mt-auto pt-4">
                   <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                 </Link>
@@ -143,7 +177,7 @@ export default function SkillsHubPage() {
                     ))}
                   </ul>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 mb-4">
                   <p className="text-xs font-bold text-slate-700 uppercase">Course Modules:</p>
                   <ul className="text-xs text-slate-500 space-y-0.5">
                     {program.modules.map((m, j) => (
@@ -151,6 +185,22 @@ export default function SkillsHubPage() {
                     ))}
                   </ul>
                 </div>
+                {program.learningOutcomes && (
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Learning Outcomes:</p>
+                    <p className="text-xs text-slate-500">{program.learningOutcomes}</p>
+                  </div>
+                )}
+                {program.mentorMeAdvantage && (
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-brand-blue uppercase">MentorMe Advantage:</p>
+                    <ul className="text-xs text-slate-500 space-y-0.5">
+                      {program.mentorMeAdvantage.map((a, j) => (
+                        <li key={j}>• {a}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <Link href="/contact" className="mt-auto pt-4">
                   <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                 </Link>
@@ -178,7 +228,7 @@ export default function SkillsHubPage() {
                     ))}
                   </ul>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 mb-4">
                   <p className="text-xs font-bold text-slate-700 uppercase">Course Modules:</p>
                   <ul className="text-xs text-slate-500 space-y-0.5">
                     {program.modules.map((m, j) => (
@@ -186,6 +236,22 @@ export default function SkillsHubPage() {
                     ))}
                   </ul>
                 </div>
+                {program.learningOutcomes && (
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Learning Outcomes:</p>
+                    <p className="text-xs text-slate-500">{program.learningOutcomes}</p>
+                  </div>
+                )}
+                {program.mentorMeAdvantage && (
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-brand-blue uppercase">MentorMe Advantage:</p>
+                    <ul className="text-xs text-slate-500 space-y-0.5">
+                      {program.mentorMeAdvantage.map((a, j) => (
+                        <li key={j}>• {a}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <Link href="/contact" className="mt-auto pt-4">
                   <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                 </Link>

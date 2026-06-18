@@ -264,22 +264,14 @@ export function Navbar() {
                       <p className="text-xs text-slate-500 truncate">{user?.email || ""}</p>
                     </div>
                     <div className="p-2">
-                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
+                      <Link href="/dashboard/student/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
                         <User size={18} className="text-brand-blue" />
                         <div>
                           <p className="text-sm font-bold text-slate-700">My Profile</p>
                           <p className="text-xs text-slate-500">Account settings and more</p>
                         </div>
                         <ChevronRight size={16} className="ml-auto text-slate-400" />
-                      </button>
-                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
-                        <ClipboardList size={18} className="text-brand-orange" />
-                        <div>
-                          <p className="text-sm font-bold text-slate-700">My Tasks</p>
-                          <p className="text-xs text-slate-500">Assigned and other tasks</p>
-                        </div>
-                        <ChevronRight size={16} className="ml-auto text-slate-400" />
-                      </button>
+                      </Link>
                       <button type="button" onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left border border-red-200">
                         <LogOut size={18} className="text-red-600" />
                         <span className="text-sm font-bold text-red-600">SIGN OUT</span>

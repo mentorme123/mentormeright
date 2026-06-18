@@ -150,22 +150,14 @@ export default function CounselorDashboard() {
                       <p className="text-xs text-slate-500 truncate">{counselorEmail}</p>
                     </div>
                     <div className="p-2">
-                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
-                        <User size={18} className="text-brand-blue" />
-                        <div>
-                          <p className="text-sm font-bold text-slate-700">My Profile</p>
-                          <p className="text-xs text-slate-500">Account settings and more</p>
-                        </div>
-                        <ChevronRight size={16} className="ml-auto text-slate-400" />
-                      </button>
-                      <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
-                        <CalendarDays size={18} className="text-brand-orange" />
-                        <div>
-                          <p className="text-sm font-bold text-slate-700">My Tasks</p>
-                          <p className="text-xs text-slate-500">Assigned sessions</p>
-                        </div>
-                        <ChevronRight size={16} className="ml-auto text-slate-400" />
-                      </button>
+                       <Link href="/dashboard/counsellor/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
+                         <User size={18} className="text-brand-blue" />
+                         <div>
+                           <p className="text-sm font-bold text-slate-700">My Profile</p>
+                           <p className="text-xs text-slate-500">Account settings and more</p>
+                         </div>
+                         <ChevronRight size={16} className="ml-auto text-slate-400" />
+                       </Link>
                     </div>
                     <div className="p-2 border-t border-slate-100">
                       <button

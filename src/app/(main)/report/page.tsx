@@ -50,8 +50,6 @@ const SectionHeader = ({ num, title }: { num: string, title: string }) => (
 
 import { createClient } from "@/lib/supabase";
 
-export const dynamic = "force-dynamic";
-
 export default function ReportPage() {
   const [report, setReport] = useState<ReportData | null>(null);
 

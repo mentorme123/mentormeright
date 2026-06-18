@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { getQuestions, Question, AudienceType } from "@/lib/mock-questions";
 import { Button } from "@/components/ui/button";
 import { Loader2, BrainCircuit, X, Phone, MapPin, User, GraduationCap, Briefcase, TrendingUp, Clock, Timer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-export const dynamic = "force-dynamic";
 
 export default function AssessmentPage() {
   const router = useRouter();

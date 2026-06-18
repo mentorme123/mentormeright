@@ -31,8 +31,6 @@ const sanitizeText = (text: string | null) => {
   return String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 };
 
-export const dynamic = "force-dynamic";
-
 export default function AdminDashboard() {
   const supabase = createClient();
   const [users, setUsers] = useState<DBUser[]>([]);

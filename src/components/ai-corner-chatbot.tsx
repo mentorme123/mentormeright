@@ -7,6 +7,7 @@ import {
   Sparkles, ChevronRight 
 } from "lucide-react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 
 type Message = {
   id: string;
@@ -39,6 +40,8 @@ How can I help you today?`,
 ];
 
 export function AiCornerChatbot() {
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const supabase = createClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -56,6 +59,40 @@ export function AiCornerChatbot() {
     }, 4000);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (isMounted) setIsLoggedIn(!!session);
+    };
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (isMounted) setIsLoggedIn(!!session);
+    });
+    checkAuth();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
+  }, [supabase]);
+
+  // Render "please log in" as the initial message when not authenticated
+  useEffect(() => {
+    if (!isLoggedIn) {
+      setMessages([
+        {
+          id: "auth-gate",
+          role: "assistant",
+          content: `🔒 **Log in Required**
+
+To chat with AI Corner, please log in to your MentorMe account.`,
+          suggestions: ["Take me to Login", "Take me to Register"]
+        }
+      ]);
+    } else {
+      setMessages(INITIAL_MESSAGES);
+    }
+  }, [isLoggedIn]);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -118,6 +155,14 @@ export function AiCornerChatbot() {
   };
 
   const handleSuggestion = (suggestion: string) => {
+    if (!isLoggedIn) {
+      if (suggestion.toLowerCase().includes("login")) {
+        window.location.href = "/login";
+        return;
+      }
+      window.location.href = "/register";
+      return;
+    }
     sendMessage(suggestion);
   };
 

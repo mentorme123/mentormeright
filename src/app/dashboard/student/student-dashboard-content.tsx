@@ -1,18 +1,7 @@
-import { createClient } from "@/lib/supabase/server";
-import { notFound } from "next/navigation";
-import StudentDashboardContent from "./student-dashboard-content";
+"use client";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
-export default async function StudentDashboard() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    notFound();
-  }
-  return <StudentDashboardContent initialUser={user} />;
-}
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
@@ -90,10 +79,15 @@ interface ReportData {
   [key: string]: unknown;
 }
 
-export default function StudentDashboardInner({ supabase, initialUser }: { supabase: ReturnType<typeof createClient>, initialUser: { id: string; email: string; user_metadata?: { full_name?: string } } }) {
+export default function StudentDashboardContent() {
   const router = useRouter();
+  const supabase = createClient();
+  return <StudentDashboardInner supabase={supabase} router={router} />;
+}
+
+function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<typeof createClient>, router: ReturnType<typeof useRouter> }) {
   const [loading, setLoading] = useState(true);
-  const [authUser, setAuthUser] = useState<{ id: string; email: string; user_metadata?: { full_name?: string } } | null>(initialUser);
+  const [authUser, setAuthUser] = useState<{ id: string; email: string; user_metadata?: { full_name?: string } } | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [reportData, setReportData] = useState<ReportData | null>(null);
   const [assessmentScores, setAssessmentScores] = useState<ParameterScores | null>(null);
@@ -428,7 +422,6 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
 
       <div className="max-w-7xl mx-auto space-y-8">
         
-        {/* Live Alert Ticker */}
         <div className="bg-slate-900 text-white py-3 px-6 rounded-2xl flex items-center gap-4 overflow-hidden shadow-xl border border-white/10">
           <div className="flex items-center gap-2 shrink-0">
             <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
@@ -448,7 +441,6 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
           </div>
         </div>
         
-        {/* Header */}
         <div className="relative p-8 sm:p-10 rounded-3xl overflow-hidden bg-gradient-to-br from-brand-blue to-blue-900 text-white shadow-2xl">
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2"></div>
           <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -490,7 +482,7 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
             </button>
           </div>
         </div>
-        {/* Global Toolkit - THE "WINNING" TOOLS */}
+
         {assessmentStatus === 'completed' ? (
           <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
@@ -535,10 +527,8 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
 
-            {/* Profile Details Card */}
             {profile?.phone && (
               <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
                 <div className="flex items-center justify-between mb-6">
@@ -574,15 +564,13 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
               </div>
             )}
 
-            {/* Quick Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* RIASEC Chart Card */}
               {assessmentScores && (
                 <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="font-black text-slate-800 flex items-center gap-2">
                       <PieChart size={18} className="text-brand-orange" /> Psychometric Profile
-                    </div>
+                    </h3>
                   </div>
                   
                   <div className="flex-1 min-h-[300px] w-full">
@@ -614,7 +602,6 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
                 </div>
               )}
 
-              {/* Summary / Status Card */}
               <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
                 <div>
                   <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
@@ -656,58 +643,54 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
               </div>
             </div>
 
-              {/* Career Match Intelligence */}
-              {reportData && (
-                <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
-                      <Sparkles size={20} className="text-brand-blue" /> Top Career Matches
-                    </h3>
-                    <span className="text-[10px] font-black text-brand-blue bg-blue-50 px-3 py-1 rounded-full uppercase tracking-widest">AI Ranked</span>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {/* Map career matches from report or show placeholders if not available */}
-                    {Array.isArray(reportData.careerMatches) ? reportData.careerMatches.slice(0, 3).map((match: any, i: number) => (
-                      <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:border-brand-blue hover:bg-white transition-all cursor-pointer group">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{match.industry || "Field"}</p>
-                        <h4 className="font-black text-slate-800 text-lg group-hover:text-brand-blue transition-colors">{match.title}</h4>
-                        <div className="mt-4 flex items-center justify-between">
-                           <div className="flex flex-col">
-                              <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
-                              <span className="text-xl font-black text-emerald-500">{match.matchScore || "92%"}</span>
-                            </div>
-                            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-                              <TrendingUp size={16} />
-                            </div>
-                        </div>
-                      </div>
-                    )) : [
-                      { title: "AI Research Scientist", industry: "Tech", score: "98%" },
-                      { title: "Strategic Consultant", industry: "Business", score: "94%" },
-                      { title: "UX Lead", industry: "Design", score: "89%" }
-                    ].map((match, i) => (
-                      <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/50">
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{match.industry}</p>
-                        <h4 className="font-black text-slate-800 text-lg">{match.title}</h4>
-                        <div className="mt-4 flex items-center justify-between">
-                           <div className="flex flex-col">
-                              <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
-                              <span className="text-xl font-black text-emerald-500">{match.score}</span>
-                            </div>
-                            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-                              <TrendingUp size={16} />
-                            </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+            {reportData && (
+              <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
+                    <Sparkles size={20} className="text-brand-blue" /> Top Career Matches
+                  </h3>
+                  <span className="text-[10px] font-black text-brand-blue bg-blue-50 px-3 py-1 rounded-full uppercase tracking-widest">AI Ranked</span>
                 </div>
-              )}
+                
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {Array.isArray(reportData.careerMatches) ? reportData.careerMatches.slice(0, 3).map((match: any, i: number) => (
+                    <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:border-brand-blue hover:bg-white transition-all cursor-pointer group">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{match.industry || "Field"}</p>
+                      <h4 className="font-black text-slate-800 text-lg group-hover:text-brand-blue transition-colors">{match.title}</h4>
+                      <div className="mt-4 flex items-center justify-between">
+                         <div className="flex flex-col">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
+                            <span className="text-xl font-black text-emerald-500">{match.matchScore || "92%"}</span>
+                          </div>
+                          <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <TrendingUp size={16} />
+                          </div>
+                      </div>
+                    </div>
+                  )) : [
+                    { title: "AI Research Scientist", industry: "Tech", score: "98%" },
+                    { title: "Strategic Consultant", industry: "Business", score: "94%" },
+                    { title: "UX Lead", industry: "Design", score: "89%" }
+                  ].map((match, i) => (
+                    <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/50">
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{match.industry}</p>
+                      <h4 className="font-black text-slate-800 text-lg">{match.title}</h4>
+                      <div className="mt-4 flex items-center justify-between">
+                         <div className="flex flex-col">
+                            <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
+                            <span className="text-xl font-black text-emerald-500">{match.score}</span>
+                          </div>
+                          <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                            <TrendingUp size={16} />
+                          </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-              {/* Victory Features Section */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Exam Tracker Card */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <motion.div 
                 whileHover={{ scale: 1.02 }}
                 className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group cursor-pointer"
@@ -735,7 +718,6 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
                 </div>
               </motion.div>
 
-              {/* Certification Card */}
               <motion.div 
                 whileHover={{ scale: 1.02 }}
                 className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group"
@@ -770,7 +752,7 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
               </motion.div>
             </div>
             
-            {/* Assessment Card */}
+
             <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
               <div className="flex justify-between items-center mb-4">
                 <div className="p-3 bg-brand-blue/5 rounded-xl">
@@ -800,10 +782,8 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
               )}
             </div>
 
-            {/* Strengths & Areas for Development */}
             {assessmentStatus === 'completed' && (getStrengths().length > 0 || getWeaknesses().length > 0) && (
               <div className="grid sm:grid-cols-2 gap-6">
-                {/* Strengths */}
                 {getStrengths().length > 0 && (
                   <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                     <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2 text-base">
@@ -820,7 +800,6 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
                   </div>
                 )}
 
-                {/* Weaknesses */}
                 {getWeaknesses().length > 0 && (
                   <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
                     <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2 text-base">
@@ -839,7 +818,6 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
               </div>
             )}
 
-            {/* My Bookings Section */}
             <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
               <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2">
                 <Video size={20} className="text-brand-orange" /> My Counseling Sessions
@@ -902,10 +880,8 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-8">
             
-            {/* Market Insights */}
             <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
               <h3 className="font-black text-slate-800 mb-5 flex items-center gap-2 text-base">
                 <Globe size={18} className="text-brand-blue" /> Market Insights
@@ -928,7 +904,6 @@ export default function StudentDashboardInner({ supabase, initialUser }: { supab
               </div>
             </div>
 
-            {/* Why Counseling Matters */}
             <div className="bg-gradient-to-br from-brand-blue to-blue-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
               <div className="absolute bottom-0 right-0 w-32 h-32 bg-brand-orange/20 rounded-full blur-2xl translate-x-1/2 translate-y-1/2"></div>
               <div className="relative z-10">

@@ -30,22 +30,27 @@ export default function RouteDirector() {
           .eq('id', user.id)
           .maybeSingle();
 
-        if (!profile || profileError) {
-          console.warn("⚠️ Profile missing. Attempting self-healing...");
-          const { data: newProfile, error: createError } = await routeSupabase
-            .from('users')
-            .upsert({
-              id: user.id,
-              email: user.email,
-              name: user.user_metadata?.full_name || user.email?.split('@')[0],
-              role: 'individual', // Default
-              audience_type: 'ST'
-            })
-            .select()
-            .single();
-          
-          if (createError) throw createError;
-          profile = newProfile;
+if (!profile || profileError) {
+           console.warn("⚠️ Profile missing. Attempting self-healing...");
+           const { data: newProfile, error: createError } = await routeSupabase
+             .from('users')
+             .upsert({
+               id: user.id,
+               email: user.email,
+               name: user.user_metadata?.full_name || user.email?.split('@')[0],
+               role: 'individual', // Default
+               audience_type: 'ST'
+             })
+             .select()
+             .single();
+           
+           if (createError) throw createError;
+           profile = newProfile;
+        }
+
+        if (!profile) {
+          router.push("/login");
+          return;
         }
 
         console.log("👤 Profile Verified:", profile.role);

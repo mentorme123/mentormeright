@@ -1,15 +1,95 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Users, BookOpen, Globe2, ChevronDown } from "lucide-react";
+import { Users, BookOpen, Globe2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
+const skillPrograms = {
+  k12: [
+    {
+      title: "Critical Thinking & Problem Solving",
+      tagline: "Think Better. Solve Faster. Lead Smarter.",
+      shortDesc: "This program helps students develop structured thinking, logical reasoning, analytical skills, and problem-solving abilities.",
+      benefits: ["Improves analytical thinking", "Enhances academic performance", "Builds decision-making ability", "Encourages independent thinking"],
+      modules: ["Understanding Problems", "Root Cause Analysis", "Logical Reasoning", "Creative Problem Solving", "Decision-Making Frameworks", "Real-Life Simulations"],
+      keywords: ["Critical Thinking Course for Students", "Problem Solving Skills Training", "Future Skills for School Students"]
+    },
+    {
+      title: "Public Speaking",
+      tagline: "Speak with Confidence. Influence with Impact.",
+      shortDesc: "A practical program that helps students overcome stage fear, improve communication skills, and become confident speakers.",
+      benefits: ["Builds confidence", "Improves communication", "Develops leadership qualities", "Enhances presentation skills"],
+      modules: ["Fundamentals of Public Speaking", "Voice and Body Language", "Storytelling Techniques", "Presentation Skills", "Debate and Persuasion", "Stage Performance"],
+      keywords: ["Public Speaking for Students", "Communication Skills Training", "Leadership Skills for School Students"]
+    },
+    {
+      title: "Robotics Fundamentals",
+      tagline: "Learn by Building. Innovate through Robotics.",
+      shortDesc: "An engaging robotics program where students learn robotics concepts, sensors, motors, automation, and problem-solving through hands-on projects.",
+      benefits: ["Develops STEM skills", "Encourages innovation", "Improves technical aptitude", "Enhances teamwork"],
+      modules: ["Introduction to Robotics", "Components of Robots", "Sensors and Motors", "Programming Basics", "Robot Design", "Robotics Project"],
+      keywords: ["Robotics Training for Schools", "STEM Education India", "Robotics Course for Students"]
+    }
+  ],
+  college: [
+    {
+      title: "Data Analytics",
+      tagline: "Transform Data into Decisions.",
+      shortDesc: "Learn data analysis, visualization, reporting, and business insights using industry tools and real-world datasets.",
+      benefits: ["High-demand career skill", "Better employability", "Data-driven thinking", "Industry relevance"],
+      modules: ["Data Analytics Fundamentals", "Data Cleaning", "Data Visualization", "Business Reporting", "Dashboard Development", "Analytics Projects"],
+      keywords: ["Data Analytics Course Hyderabad", "Business Analytics Training", "Data Analytics Certification"]
+    },
+    {
+      title: "Digital Marketing",
+      tagline: "Master the Skills Behind Modern Business Growth.",
+      shortDesc: "A practical digital marketing course covering SEO, social media marketing, content marketing, paid advertising, and analytics.",
+      benefits: ["High-demand skill", "Freelancing opportunities", "Entrepreneurial applications", "Career readiness"],
+      modules: ["Digital Marketing Overview", "Search Engine Optimization", "Social Media Marketing", "Content Marketing", "Google Ads", "Analytics and Reporting"],
+      keywords: ["Digital Marketing Course India", "SEO Training", "Social Media Marketing Course"]
+    },
+    {
+      title: "Financial Modelling",
+      tagline: "Build Business Decisions on Strong Financial Insights.",
+      shortDesc: "Students learn to create financial models for valuation, budgeting, forecasting, and investment analysis using Excel.",
+      benefits: ["Investment analysis skills", "Better finance careers", "Advanced Excel expertise", "Corporate readiness"],
+      modules: ["Excel Fundamentals", "Financial Statements", "Forecasting Models", "Valuation Techniques", "Sensitivity Analysis", "Investment Cases"],
+      keywords: ["Financial Modelling Course India", "Investment Analysis Training", "Finance Skills Program"]
+    }
+  ],
+  corporate: [
+    {
+      title: "Leadership Development",
+      tagline: "Develop Leaders Who Deliver Results.",
+      shortDesc: "A practical leadership program focused on developing strategic thinking, team leadership, communication, and decision-making capabilities.",
+      benefits: ["Stronger leadership capabilities", "Improved team performance", "Better decision-making", "Increased employee engagement"],
+      modules: ["Leadership Fundamentals", "Emotional Intelligence", "Strategic Thinking", "Team Leadership", "Conflict Management", "Leading Change"],
+      keywords: ["Leadership Training India", "Management Development Program", "Leadership Skills Workshop"]
+    },
+    {
+      title: "Project Management",
+      tagline: "Plan Better. Execute Faster. Deliver Results.",
+      shortDesc: "Learn project planning, scheduling, risk management, stakeholder management, and execution frameworks.",
+      benefits: ["Improved project success rates", "Better resource management", "Enhanced planning skills", "Reduced project risks"],
+      modules: ["Project Fundamentals", "Planning and Scheduling", "Risk Management", "Stakeholder Management", "Project Monitoring", "Project Closure"],
+      keywords: ["Project Management Training India", "PMP Foundation Program", "Project Leadership Skills"]
+    },
+    {
+      title: "Financial Analysis",
+      tagline: "Convert Financial Data into Business Intelligence.",
+      shortDesc: "Designed for managers and finance professionals to interpret financial statements and make informed financial decisions.",
+      benefits: ["Better business decisions", "Improved financial understanding", "Strong analytical skills", "Enhanced profitability focus"],
+      modules: ["Financial Statements Analysis", "Ratio Analysis", "Cash Flow Analysis", "Budgeting", "Cost Control", "Business Performance Review"],
+      keywords: ["Financial Analysis Training", "Finance for Non-Finance Managers", "Business Finance Course"]
+    }
+  ]
+};
+
 export default function ServicesPage() {
   const [guidanceTab, setGuidanceTab] = useState("institutions");
-  const [roboticsExpanded, setRoboticsExpanded] = useState(false);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -17,69 +97,6 @@ export default function ServicesPage() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  const roboticsCurriculum = [
-    {
-      title: "Introduction to Robotics & Its Applications",
-      details: [
-        "Understanding what robots are and their significance in everyday life",
-        "Exploring different types of robots and their real-world applications",
-        "Basics of how robots sense, think, and act",
-        "Introduction to key components: motors, sensors, controllers, and power sources"
-      ]
-    },
-    {
-      title: "Fundamentals of Electronics & Circuitry",
-      details: [
-        "Learning about LEDs, sensors, motors, and buzzers used in robotics",
-        "Basics of circuit connections, power supply, and simple electronic circuits",
-        "Understanding how circuits control robotic movement and responses",
-        "Hands-on experience in assembling simple electronic projects"
-      ]
-    },
-    {
-      title: "Practical Circuit Implementation",
-      details: [
-        "Connecting input and output devices to build functional circuits",
-        "Understanding how sensors and motors work together in robotics",
-        "Implementing basic automation concepts using circuits and sensors"
-      ]
-    },
-    {
-      title: "Sensor Integration & Interactive Systems",
-      details: [
-        "Understanding different types of sensors (IR, ultrasonic, LDR, etc.)",
-        "Learning how sensors help robots detect and respond to their environment",
-        "Using sensors to measure distance, detect light, and sense obstacles"
-      ]
-    },
-    {
-      title: "Robotics Programming & Control Systems",
-      details: [
-        "Introduction to basic block-based programming and its role in robotics",
-        "Learning how to control robots using simple coding",
-        "Programming sensors and motors to create interactive robotic behavior",
-        "Introduction to microcontroller-based projects (Arduino, Microcontrollers, etc.)"
-      ]
-    },
-    {
-      title: "Automation & Smart Robotics",
-      details: [
-        "Basics of robotic automation and real-world problem-solving",
-        "Learning how robots make decisions based on sensor inputs",
-        "Understanding how robots are used in schools, homes, and industries"
-      ]
-    },
-    {
-      title: "Robotics Projects & Expo",
-      details: [
-        "Applying STEM concepts to build exciting robotics projects",
-        "Encouraging team collaboration and problem-solving skills",
-        "Students develop and present their own robotic creations",
-        "Final Expo: Showcasing innovative robotics projects"
-      ]
-    }
-  ];
 
   const guidancePrograms = {
     institutions: [
@@ -235,8 +252,8 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Skill Training Section - Tree Layout */}
-      <section id="skills" className="py-20 px-4">
+      {/* Skill Training Section - Grid Layout */}
+      <section id="skills" className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto space-y-8">
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -250,137 +267,126 @@ export default function ServicesPage() {
             └── <span className="font-bold">21st Century Skills Hub</span>
           </div>
 
-          <div className="space-y-1">
-            <div className="ml-6">
-              <div className="flex items-center gap-2">
-                <span className="text-slate-400">│</span>
-                <span className="text-xl font-bold text-blue-700">K-12 Students</span>
-              </div>
-              <div className="ml-6 mt-3 space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Future Readiness Skills</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Communication & Leadership</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-slate-400">│</span>
-                  <div className="flex-1">
-                    <span className="text-base font-bold text-slate-800 block mb-2">├── STEM & Emerging Technologies:</span>
-                    <div className="ml-6 space-y-1 border-l-2 border-slate-200 pl-4">
-                      <div className="flex items-center gap-2 cursor-pointer" onClick={() => setRoboticsExpanded(!roboticsExpanded)}>
-                        <span className="text-slate-400">│</span>
-                        <span className="text-base font-medium text-slate-500">├── Robotics</span>
-                        <ChevronDown size={16} className={`text-slate-500 transition-transform ${roboticsExpanded ? "rotate-180" : ""}`} />
-                      </div>
-                      {roboticsExpanded && (
-                        <div className="ml-6 space-y-3 border-l-2 border-slate-200 pl-4 mt-2">
-                          {roboticsCurriculum.map((module, idx) => (
-                            <div key={idx}>
-                              <div className="flex items-center gap-2">
-                                <span className="text-slate-300">{idx === roboticsCurriculum.length - 1 ? "└──" : "├──"}</span>
-                                <span className="text-sm font-semibold text-slate-500">{module.title}</span>
-                              </div>
-                              <div className="ml-6 mt-1 space-y-1">
-                                {module.details.map((detail, i) => (
-                                  <div key={i} className="flex items-start gap-2">
-                                    <span className="text-slate-300 text-xs mt-0.5">•</span>
-                                    <span className="text-xs text-slate-400">{detail}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                      <div className="flex items-center gap-2">
-                        <span className="text-slate-400">│</span>
-                        <span className="text-base font-medium text-slate-500">├── Coding</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-slate-400">│</span>
-                        <span className="text-base font-medium text-slate-500">├── IoT</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-slate-400">│</span>
-                        <span className="text-base font-medium text-slate-500">├── AI for School Students</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className="text-slate-400">│</span>
-                        <span className="text-base font-medium text-slate-500">└── Drones</span>
-                      </div>
-                    </div>
+          {/* K-12 Students */}
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-blue-700 border-b pb-3">K-12 Students</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {skillPrograms.k12.map((program, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-slate-50 rounded-2xl p-6 border hover:shadow-lg transition-all flex flex-col"
+                >
+                  <h4 className="text-xl font-bold text-slate-800 mb-2">{program.title}</h4>
+                  <p className="text-brand-orange font-semibold text-sm mb-3">{program.tagline}</p>
+                  <p className="text-slate-600 text-sm mb-4 flex-1">{program.shortDesc}</p>
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Key Benefits:</p>
+                    <ul className="text-xs text-slate-600 space-y-1">
+                      {program.benefits.map((b, j) => (
+                        <li key={j} className="flex items-start gap-1">
+                          <span className="text-brand-blue">•</span> {b}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">└── Digital Literacy</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">└── Career & Life Skills</span>
-                </div>
-              </div>
+                  <div className="space-y-2">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Course Modules:</p>
+                    <ul className="text-xs text-slate-500 space-y-0.5">
+                      {program.modules.map((m, j) => (
+                        <li key={j}>• {m}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <Link href="/contact" className="mt-auto pt-4">
+                    <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
+          </div>
 
-            <div className="ml-6 mt-6">
-              <div className="flex items-center gap-2">
-                <span className="text-slate-400">│</span>
-                <span className="text-xl font-bold text-green-700">College Students</span>
-              </div>
-              <div className="ml-6 mt-3 space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Employability Skills</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Business & Professional Skills</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Digital & Analytics Skills</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Finance & Commerce Skills</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">└── Entrepreneurship & Innovation</span>
-                </div>
-              </div>
+          {/* College Students */}
+          <div className="space-y-6 mt-12">
+            <h3 className="text-2xl font-bold text-green-700 border-b pb-3">College Students</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {skillPrograms.college.map((program, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + i * 0.1 }}
+                  className="bg-slate-50 rounded-2xl p-6 border hover:shadow-lg transition-all flex flex-col"
+                >
+                  <h4 className="text-xl font-bold text-slate-800 mb-2">{program.title}</h4>
+                  <p className="text-brand-orange font-semibold text-sm mb-3">{program.tagline}</p>
+                  <p className="text-slate-600 text-sm mb-4 flex-1">{program.shortDesc}</p>
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Key Benefits:</p>
+                    <ul className="text-xs text-slate-600 space-y-1">
+                      {program.benefits.map((b, j) => (
+                        <li key={j} className="flex items-start gap-1">
+                          <span className="text-brand-blue">•</span> {b}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Course Modules:</p>
+                    <ul className="text-xs text-slate-500 space-y-0.5">
+                      {program.modules.map((m, j) => (
+                        <li key={j}>• {m}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <Link href="/contact" className="mt-auto pt-4">
+                    <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
+          </div>
 
-            <div className="ml-6 mt-6">
-              <div className="flex items-center gap-2">
-                <span className="text-slate-400">│</span>
-                <span className="text-xl font-bold text-orange-700">Corporate Professionals</span>
-              </div>
-              <div className="ml-6 mt-3 space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Leadership Excellence</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Business Excellence</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Digital Transformation</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">├── Workplace Effectiveness</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-slate-400">│</span>
-                  <span className="text-base font-medium text-slate-600">└── Finance, Compliance & Risk</span>
-                </div>
-              </div>
+          {/* Corporate Professionals */}
+          <div className="space-y-6 mt-12">
+            <h3 className="text-2xl font-bold text-orange-700 border-b pb-3">Corporate Professionals</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {skillPrograms.corporate.map((program, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 + i * 0.1 }}
+                  className="bg-slate-50 rounded-2xl p-6 border hover:shadow-lg transition-all flex flex-col"
+                >
+                  <h4 className="text-xl font-bold text-slate-800 mb-2">{program.title}</h4>
+                  <p className="text-brand-orange font-semibold text-sm mb-3">{program.tagline}</p>
+                  <p className="text-slate-600 text-sm mb-4 flex-1">{program.shortDesc}</p>
+                  <div className="space-y-2 mb-4">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Key Benefits:</p>
+                    <ul className="text-xs text-slate-600 space-y-1">
+                      {program.benefits.map((b, j) => (
+                        <li key={j} className="flex items-start gap-1">
+                          <span className="text-brand-blue">•</span> {b}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-xs font-bold text-slate-700 uppercase">Course Modules:</p>
+                    <ul className="text-xs text-slate-500 space-y-0.5">
+                      {program.modules.map((m, j) => (
+                        <li key={j}>• {m}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <Link href="/contact" className="mt-auto pt-4">
+                    <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>

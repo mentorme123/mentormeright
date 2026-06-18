@@ -11,5 +11,5 @@ export default async function StudentDashboard() {
   if (!user) {
     notFound();
   }
-  return <StudentDashboardContent initialUser={user} />;
+  return <StudentDashboardContent />;
 }

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, Menu, X, Search, ChevronRight } from "lucide-react";
+import { ChevronDown, Menu, X, Search, ChevronRight, User, ClipboardList, LogOut } from "lucide-react";
 import { SiteSearch, useSiteSearch } from "@/components/site-search";
 import { createClient } from "@/lib/supabase";
 

@@ -63,6 +63,7 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
     try {
+      const supabase = createClient();
       const siteUrl = typeof window !== 'undefined' ? window.location.origin : '';
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',

@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 import { getQuestions, Question, AudienceType } from "@/lib/mock-questions";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase";
 import { Loader2, BrainCircuit, X, Phone, MapPin, User, GraduationCap, Briefcase, TrendingUp, Clock, Timer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+
+export const dynamic = "force-dynamic";
 
 export default function AssessmentPage() {
   const router = useRouter();
@@ -81,7 +82,7 @@ export default function AssessmentPage() {
       if (globalIntervalRef.current) clearInterval(globalIntervalRef.current);
       if (questionIntervalRef.current) clearInterval(questionIntervalRef.current);
     };
-  }, [router]);
+  }, []);
 
   // Safety net to correct out-of-bounds index
   useEffect(() => {
@@ -241,7 +242,7 @@ export default function AssessmentPage() {
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Failed to generate report');
         localStorage.setItem("mentorme_ai_report", JSON.stringify(data.report));
-        router.push("/report");
+        window.location.href = "/report";
       } else {
         const errorText = await response.text();
         console.error("Non-JSON error from server:", errorText);

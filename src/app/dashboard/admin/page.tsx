@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
 import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
 
 // Types
 type DBUser = {
@@ -29,6 +30,8 @@ const sanitizeText = (text: string | null) => {
   if (!text) return '';
   return String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 };
+
+export const dynamic = "force-dynamic";
 
 export default function AdminDashboard() {
   const supabase = createClient();
@@ -103,7 +106,7 @@ export default function AdminDashboard() {
   const totalInstitutions = roleCounts.institutional ?? 0;
   const totalAdmins = roleCounts.admin ?? 0;
   const totalCounselors = roleCounts.counselor ?? 0;
-  
+   
   // Filtering
   const filteredUsers = users.filter(u => {
     const term = searchTerm.toLowerCase();
@@ -389,23 +392,23 @@ export default function AdminDashboard() {
                    </div>
                  </div>
                )}
-              </div>
-              <div className="flex flex-wrap gap-2">
-               <Button
-                 onClick={() => window.location.href = "/dashboard/admin/report"}
-                 className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
-               >
-                 <BarChart3 size={16} className="mr-1.5" />
-                 Student Report
-               </Button>
-               <Button 
-                 onClick={handleExportData}
-                 disabled={isExporting || loading}
-                 className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all text-xs"
-               >
-                {isExporting ? "Compiling Backup..." : <><Download size={16} className="mr-1.5" /> Download DB</>}
-               </Button>
              </div>
+             <div className="flex flex-wrap gap-2">
+              <Button
+                onClick={() => window.location.href = "/dashboard/admin/report"}
+                className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
+              >
+                <BarChart3 size={16} className="mr-1.5" />
+                Student Report
+              </Button>
+              <Button 
+                onClick={handleExportData}
+                disabled={isExporting || loading}
+                className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all text-xs"
+              >
+               {isExporting ? "Compiling Backup..." : <><Download size={16} className="mr-1.5" /> Download DB</>}
+              </Button>
+            </div>
            </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">
@@ -511,50 +514,50 @@ export default function AdminDashboard() {
                         <td className="px-6 py-4 text-slate-500 font-mono text-sm">{idx + 1}</td>
                         <td className="px-6 py-4 font-bold text-slate-800">
                          <div className="flex items-center gap-3">
-                           <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
-                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                            </svg>
-                           </div>
-                           {sanitizeText(user.name) || "N/A"}
-                         </div>
-                       </td>
-                       <td className="px-6 py-4 text-slate-500 font-medium">{sanitizeText(user.email)}</td>
-                       <td className="px-6 py-4">
-                         <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${
-                           user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
-                           user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
-                           'bg-purple-50 text-purple-700 border border-purple-100'
-                         }`}>
-                           {sanitizeText(user.role)}
-                         </span>
-                       </td>
-                       <td className="px-6 py-4 text-slate-500 text-sm font-medium">
-                         {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                       </td>
-                       <td className="px-6 py-4 text-right">
-                         <Button 
-                           variant="ghost" 
-                           size="sm" 
-                           onClick={() => setSelectedUser(user)}
-                           className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold opacity-0 group-hover:opacity-100 transition-opacity"
-                         >
-                           View Details <ChevronRight size={16} className="ml-1" />
-                         </Button>
-                       </td>
-                     </tr>
-                   ))
-                 )}
-               </tbody>
-             </table>
-           </div>
-           
-           {!loading && (
-             <div className="p-4 border-t border-slate-100 bg-slate-50 text-center text-sm font-bold text-slate-500">
-               Showing {filteredUsers.length} of {users.length} live records
-             </div>
-           )}
-        </div>
+                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
+                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">
+                               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                             </svg>
+                            </div>
+                            {sanitizeText(user.name) || "N/A"}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-slate-500 font-medium">{sanitizeText(user.email)}</td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${
+                            user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
+                            user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                            'bg-purple-50 text-purple-700 border border-purple-100'
+                          }`}>
+                            {sanitizeText(user.role)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-slate-500 text-sm font-medium">
+                          {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => setSelectedUser(user)}
+                            className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            View Details <ChevronRight size={16} className="ml-1" />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+            
+            {!loading && (
+              <div className="p-4 border-t border-slate-100 bg-slate-50 text-center text-sm font-bold text-slate-500">
+                Showing {filteredUsers.length} of {users.length} live records
+              </div>
+            )}
+          </div>
 
       </div>
     </div>

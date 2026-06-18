@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Papa from "papaparse";
 import { 
   Upload, 
@@ -13,29 +13,30 @@ import {
   Download,
   ArrowRight,
   TrendingUp,
-  Clock
+  Clock,
+  LogOut
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase";
+import Link from "next/link";
 
-interface Student {
-  id: string;
-  name: string | null;
-  email: string;
-  education_level: string | null;
-  role: string;
-  assessment_results?: Array<{ id: string }>;
+interface InstitutionDashboardProps {
+  user: { id: string; email: string; user_metadata?: { full_name?: string } };
 }
 
-export default function InstitutionDashboard() {
+function InstitutionDashboard({ user }: InstitutionDashboardProps) {
   const supabase = createClient();
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = "/";
+  };
   const [isDragging, setIsDragging] = useState(false);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
   const [isExporting, setIsExporting] = useState(false);
 
-  const [students, setStudents] = useState<Student[]>([]);
+  const [students, setStudents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [misalignmentData, setMisalignmentData] = useState<{misaligned_percentage: number} | null>(null);
@@ -45,9 +46,6 @@ export default function InstitutionDashboard() {
     async function loadStudents() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
-
-      // In a real app, we'd filter by the institution_id associated with this user
-      // For this MVP, we fetch all users who have an 'institution_name'
       const { data: studentList } = await supabase
         .from('users')
         .select(`
@@ -65,7 +63,6 @@ export default function InstitutionDashboard() {
 
       setStudents(studentList || []);
 
-      // Fetch advanced B2B analytics via Postgres RPCs
       try {
         const { data: misData } = await supabase.rpc('get_cohort_misalignment_rate', { inst_name: 'Global School System' });
         if (misData && typeof misData === 'object' && 'misaligned_percentage' in misData) {
@@ -74,7 +71,7 @@ export default function InstitutionDashboard() {
 
         const { data: gapData } = await supabase.rpc('get_cohort_reality_gap', { inst_name: 'Global School System' });
         if (gapData && typeof gapData === 'object' && 'danger_zone_percentage' in gapData) {
-          setRealityGapData(gapData as { danger_zone_percentage: number });
+          setRealityGapData(gapData as {danger_zone_percentage: number});
         }
       } catch (err: unknown) {
         console.error("Failed to fetch advanced metrics:", err);
@@ -154,22 +151,29 @@ export default function InstitutionDashboard() {
                <TrendingUp size={16} className="text-emerald-500" /> Active Cohort: <span className="text-slate-900">Global School System — Batch 2026</span>
              </p>
            </div>
-           <div className="flex gap-3 w-full md:w-auto">
-             <Button 
-               onClick={handleDownloadTemplate}
-               variant="outline" 
-               className="flex-1 md:flex-none bg-white border-2 border-slate-200 hover:border-brand-orange text-slate-700 font-bold px-6 py-6 rounded-2xl transition-all"
-             >
-                CSV Template
-             </Button>
-             <Button 
-               onClick={() => document.getElementById('csv-upload')?.click()}
-               className="flex-1 md:flex-none bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-8 py-6 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all hover:scale-105"
-             >
-                <Upload size={20} className="mr-2" /> Bulk Upload Students
-             </Button>
-             <input type="file" id="csv-upload" accept=".csv" className="hidden" onChange={(e) => e.target.files?.[0] && processCSV(e.target.files[0])} />
-           </div>
+            <div className="flex gap-3 w-full md:w-auto">
+              <Button 
+                onClick={handleDownloadTemplate}
+                variant="outline" 
+                className="flex-1 md:flex-none bg-white border-2 border-slate-200 hover:border-brand-orange text-slate-700 font-bold px-6 py-6 rounded-2xl transition-all"
+              >
+                 CSV Template
+              </Button>
+              <Button 
+                onClick={() => document.getElementById('csv-upload')?.click()}
+                className="flex-1 md:flex-none bg-brand-orange hover:bg-brand-orange/90 text-white font-black px-8 py-6 rounded-2xl shadow-xl shadow-brand-orange/20 transition-all hover:scale-105"
+              >
+                 <Upload size={20} className="mr-2" /> Bulk Upload Students
+              </Button>
+              <Button 
+                onClick={handleLogout}
+                variant="outline"
+                className="flex-1 md:flex-none border-red-200 text-red-600 hover:bg-red-50 font-bold px-4 py-6 rounded-2xl"
+              >
+                <LogOut size={18} />
+              </Button>
+              <input type="file" id="csv-upload" accept=".csv" className="hidden" onChange={(e) => e.target.files?.[0] && processCSV(e.target.files[0])} />
+            </div>
         </div>
 
         {/* Stats Grid */}

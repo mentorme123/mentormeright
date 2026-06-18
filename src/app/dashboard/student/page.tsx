@@ -39,6 +39,7 @@ import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tool
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ParameterScores } from "@/lib/scoring";
+import { notFound } from "next/navigation";
 
 interface UserProfile {
   id: string;
@@ -79,6 +80,9 @@ interface ReportData {
   [key: string]: unknown;
 }
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function StudentDashboard() {
   const router = useRouter();
   const supabase = createClient();
@@ -100,7 +104,7 @@ export default function StudentDashboard() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/");
+    window.location.href = "/";
   };
 
   // Onboarding form state
@@ -118,7 +122,7 @@ export default function StudentDashboard() {
     async function loadData() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        router.push("/login");
+        window.location.href = "/login";
         return;
       }
       setAuthUser({
@@ -177,7 +181,7 @@ export default function StudentDashboard() {
       setLoading(false);
     }
     loadData();
-  }, [router, supabase]);
+  }, [supabase]);
 
   const handleSaveProfile = async () => {
     if (!formPhone || !formGender || !formCountry || !formState || !formEducation) {
@@ -689,10 +693,10 @@ export default function StudentDashboard() {
                            <div className="flex flex-col">
                               <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
                               <span className="text-xl font-black text-emerald-500">{match.matchScore || "92%"}</span>
-                           </div>
-                           <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-                              <TrendingUp size={16} />
-                           </div>
+                            </div>
+                            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                               <TrendingUp size={16} />
+                            </div>
                         </div>
                       </div>
                     )) : [
@@ -707,10 +711,10 @@ export default function StudentDashboard() {
                            <div className="flex flex-col">
                               <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
                               <span className="text-xl font-black text-emerald-500">{match.score}</span>
-                           </div>
-                           <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-                              <TrendingUp size={16} />
-                           </div>
+                            </div>
+                            <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+                               <TrendingUp size={16} />
+                            </div>
                         </div>
                       </div>
                     ))}

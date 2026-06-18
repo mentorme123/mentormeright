@@ -104,7 +104,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    window.location.href = "/";
+    window.location.href = "/login";
   };
 
   const [formPhone, setFormPhone] = useState("");

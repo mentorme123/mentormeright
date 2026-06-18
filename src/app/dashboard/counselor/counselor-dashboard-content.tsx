@@ -92,7 +92,7 @@ export default function CounselorDashboardContent({ user }: CounselorDashboardPr
   const handleLogout = async () => {
     await supabase.auth.signOut();
     if (typeof window !== 'undefined') {
-      window.location.href = '/';
+      window.location.href = '/login';
     }
   };
 

@@ -63,7 +63,7 @@ export function Navbar() {
     await supabase.auth.signOut();
     setProfileOpen(false);
     if (typeof window !== "undefined") {
-      window.location.href = "/";
+      window.location.href = "/login";
     }
   };
 

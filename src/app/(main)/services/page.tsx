@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 const skillPrograms = {
   k12: [
     {
+      slug: "critical-thinking-k12",
       title: "Critical Thinking & Problem Solving",
       tagline: "Think Better. Solve Faster. Lead Smarter.",
       shortDesc: "This program helps students develop structured thinking, logical reasoning, analytical skills, and problem-solving abilities.",
@@ -18,6 +19,7 @@ const skillPrograms = {
       keywords: ["Critical Thinking Course for Students", "Problem Solving Skills Training", "Future Skills for School Students"]
     },
     {
+      slug: "public-speaking-k12",
       title: "Public Speaking",
       tagline: "Speak with Confidence. Influence with Impact.",
       shortDesc: "A practical program that helps students overcome stage fear, improve communication skills, and become confident speakers.",
@@ -26,6 +28,7 @@ const skillPrograms = {
       keywords: ["Public Speaking for Students", "Communication Skills Training", "Leadership Skills for School Students"]
     },
     {
+      slug: "robotics-fundamentals-k12",
       title: "Robotics Fundamentals",
       tagline: "Learn by Building. Innovate through Robotics.",
       shortDesc: "An engaging robotics program where students learn robotics concepts, sensors, motors, automation, and problem-solving through hands-on projects.",
@@ -36,6 +39,7 @@ const skillPrograms = {
   ],
   college: [
     {
+      slug: "data-analytics-college",
       title: "Data Analytics",
       tagline: "Transform Data into Decisions.",
       shortDesc: "Learn data analysis, visualization, reporting, and business insights using industry tools and real-world datasets.",
@@ -44,6 +48,7 @@ const skillPrograms = {
       keywords: ["Data Analytics Course Hyderabad", "Business Analytics Training", "Data Analytics Certification"]
     },
     {
+      slug: "digital-marketing-college",
       title: "Digital Marketing",
       tagline: "Master the Skills Behind Modern Business Growth.",
       shortDesc: "A practical digital marketing course covering SEO, social media marketing, content marketing, paid advertising, and analytics.",
@@ -52,6 +57,7 @@ const skillPrograms = {
       keywords: ["Digital Marketing Course India", "SEO Training", "Social Media Marketing Course"]
     },
     {
+      slug: "financial-modelling-college",
       title: "Financial Modelling",
       tagline: "Build Business Decisions on Strong Financial Insights.",
       shortDesc: "Students learn to create financial models for valuation, budgeting, forecasting, and investment analysis using Excel.",
@@ -62,6 +68,7 @@ const skillPrograms = {
   ],
   corporate: [
     {
+      slug: "leadership-development-corporate",
       title: "Leadership Development",
       tagline: "Develop Leaders Who Deliver Results.",
       shortDesc: "A practical leadership program focused on developing strategic thinking, team leadership, communication, and decision-making capabilities.",
@@ -70,6 +77,7 @@ const skillPrograms = {
       keywords: ["Leadership Training India", "Management Development Program", "Leadership Skills Workshop"]
     },
     {
+      slug: "project-management-corporate",
       title: "Project Management",
       tagline: "Plan Better. Execute Faster. Deliver Results.",
       shortDesc: "Learn project planning, scheduling, risk management, stakeholder management, and execution frameworks.",
@@ -78,6 +86,7 @@ const skillPrograms = {
       keywords: ["Project Management Training India", "PMP Foundation Program", "Project Leadership Skills"]
     },
     {
+      slug: "financial-analysis-corporate",
       title: "Financial Analysis",
       tagline: "Convert Financial Data into Business Intelligence.",
       shortDesc: "Designed for managers and finance professionals to interpret financial statements and make informed financial decisions.",
@@ -300,7 +309,7 @@ export default function ServicesPage() {
                       ))}
                     </ul>
                   </div>
-                  <Link href="/contact" className="mt-auto pt-4">
+                  <Link href={`/programs/${program.slug}`} className="mt-auto pt-4">
                     <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                   </Link>
                 </motion.div>
@@ -341,7 +350,7 @@ export default function ServicesPage() {
                       ))}
                     </ul>
                   </div>
-                  <Link href="/contact" className="mt-auto pt-4">
+                  <Link href={`/programs/${program.slug}`} className="mt-auto pt-4">
                     <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                   </Link>
                 </motion.div>
@@ -382,7 +391,7 @@ export default function ServicesPage() {
                       ))}
                     </ul>
                   </div>
-                  <Link href="/contact" className="mt-auto pt-4">
+                  <Link href={`/programs/${program.slug}`} className="mt-auto pt-4">
                     <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                   </Link>
                 </motion.div>

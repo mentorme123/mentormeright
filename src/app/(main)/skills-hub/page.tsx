@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 const skillPrograms = {
   k12: [
     {
+      slug: "critical-thinking-k12",
       title: "Critical Thinking & Problem Solving",
       tagline: "Think Better. Solve Faster. Lead Smarter.",
       shortDesc: "This program helps students develop structured thinking, logical reasoning, analytical skills, and problem-solving abilities through case studies, puzzles, and real-world challenges.",
@@ -14,6 +15,7 @@ const skillPrograms = {
       keywords: ["Critical Thinking Course for Students", "Problem Solving Skills Training", "Future Skills for School Students"]
     },
     {
+      slug: "public-speaking-k12",
       title: "Public Speaking",
       tagline: "Speak with Confidence. Influence with Impact.",
       shortDesc: "A practical program that helps students overcome stage fear, improve communication skills, and become confident speakers through presentations, storytelling, debates, and public speaking exercises.",
@@ -24,6 +26,7 @@ const skillPrograms = {
       keywords: ["Public Speaking for Students", "Communication Skills Training", "Leadership Skills for School Students"]
     },
     {
+      slug: "robotics-fundamentals-k12",
       title: "Robotics Fundamentals",
       tagline: "Learn by Building. Innovate through Robotics.",
       shortDesc: "An engaging robotics program where students learn robotics concepts, sensors, motors, automation, and problem-solving through hands-on projects and experiments.",
@@ -36,6 +39,7 @@ const skillPrograms = {
   ],
   college: [
     {
+      slug: "data-analytics-college",
       title: "Data Analytics",
       tagline: "Transform Data into Decisions.",
       shortDesc: "Learn data analysis, visualization, reporting, and business insights using industry tools and real-world datasets. The program prepares students for careers in analytics, consulting, and business intelligence.",
@@ -46,6 +50,7 @@ const skillPrograms = {
       keywords: ["Data Analytics Course Hyderabad", "Business Analytics Training", "Data Analytics Certification"]
     },
     {
+      slug: "digital-marketing-college",
       title: "Digital Marketing",
       tagline: "Master the Skills Behind Modern Business Growth.",
       shortDesc: "A practical digital marketing course covering SEO, social media marketing, content marketing, paid advertising, and analytics to help students build career-ready marketing skills.",
@@ -56,6 +61,7 @@ const skillPrograms = {
       keywords: ["Digital Marketing Course India", "SEO Training", "Social Media Marketing Course"]
     },
     {
+      slug: "financial-modelling-college",
       title: "Financial Modelling",
       tagline: "Build Business Decisions on Strong Financial Insights.",
       shortDesc: "Students learn to create financial models for valuation, budgeting, forecasting, and investment analysis using Excel and industry best practices.",
@@ -68,6 +74,7 @@ const skillPrograms = {
   ],
   corporate: [
     {
+      slug: "leadership-development-corporate",
       title: "Leadership Development",
       tagline: "Develop Leaders Who Deliver Results.",
       shortDesc: "A practical leadership program focused on developing strategic thinking, team leadership, communication, and decision-making capabilities required in today's dynamic workplace.",
@@ -78,6 +85,7 @@ const skillPrograms = {
       keywords: ["Leadership Training India", "Management Development Program", "Leadership Skills Workshop"]
     },
     {
+      slug: "project-management-corporate",
       title: "Project Management",
       tagline: "Plan Better. Execute Faster. Deliver Results.",
       shortDesc: "Learn project planning, scheduling, risk management, stakeholder management, and execution frameworks required to successfully manage projects.",
@@ -88,6 +96,7 @@ const skillPrograms = {
       keywords: ["Project Management Training India", "PMP Foundation Program", "Project Leadership Skills"]
     },
     {
+      slug: "financial-analysis-corporate",
       title: "Financial Analysis",
       tagline: "Convert Financial Data into Business Intelligence.",
       shortDesc: "Designed for managers and finance professionals, this program helps participants interpret financial statements, assess business performance, and make informed financial decisions.",
@@ -150,7 +159,7 @@ export default function SkillsHubPage() {
                     </ul>
                   </div>
                 )}
-                <Link href="/contact" className="mt-auto pt-4">
+                <Link href={`/programs/${program.slug}`} className="mt-auto pt-4">
                   <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                 </Link>
               </div>
@@ -201,7 +210,7 @@ export default function SkillsHubPage() {
                     </ul>
                   </div>
                 )}
-                <Link href="/contact" className="mt-auto pt-4">
+                <Link href={`/programs/${program.slug}`} className="mt-auto pt-4">
                   <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                 </Link>
               </div>
@@ -252,7 +261,7 @@ export default function SkillsHubPage() {
                     </ul>
                   </div>
                 )}
-                <Link href="/contact" className="mt-auto pt-4">
+                <Link href={`/programs/${program.slug}`} className="mt-auto pt-4">
                   <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white text-sm">Learn More</Button>
                 </Link>
               </div>

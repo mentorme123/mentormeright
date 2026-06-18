@@ -566,6 +566,323 @@ export const programsData: Record<string, Program> = {
       "Risk & Compliance",
       "Change Management",
       "AI Roadmap Workshop"
+    ],
+    seoKeywords: [
+      "AI Leadership Training",
+      "Digital Transformation Program",
+      "AI for Executives"
+    ]
+  },
+
+  // --- 21st Century Skills Hub - K12 ---
+  "critical-thinking-k12": {
+    slug: "critical-thinking-k12",
+    title: "Critical Thinking & Problem Solving",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/critical-thinking.png",
+    subtitle: "Think Better. Solve Faster. Lead Smarter.",
+    description: "This program helps students develop structured thinking, logical reasoning, analytical skills, and problem-solving abilities through case studies, puzzles, and real-world challenges.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Improves analytical thinking",
+      "Enhances academic performance",
+      "Builds decision-making ability",
+      "Encourages independent thinking"
+    ],
+    usp: [
+      "Gamified learning",
+      "Industry-inspired case studies",
+      "Age-appropriate simulations"
+    ],
+    modules: [
+      "Understanding Problems",
+      "Root Cause Analysis",
+      "Logical Reasoning",
+      "Creative Problem Solving",
+      "Decision-Making Frameworks",
+      "Real-Life Simulations"
+    ],
+    seoKeywords: [
+      "Critical Thinking Course for Students",
+      "Problem Solving Skills Training",
+      "Future Skills for School Students"
+    ]
+  },
+  "public-speaking-k12": {
+    slug: "public-speaking-k12",
+    title: "Public Speaking",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/public-speaking.png",
+    subtitle: "Speak with Confidence. Influence with Impact.",
+    description: "A practical program that helps students overcome stage fear, improve communication skills, and become confident speakers through presentations, storytelling, debates, and public speaking exercises.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Builds confidence",
+      "Improves communication",
+      "Develops leadership qualities",
+      "Enhances presentation skills"
+    ],
+    usp: [
+      "Extensive practice sessions",
+      "Individual feedback",
+      "Video-based assessments"
+    ],
+    modules: [
+      "Fundamentals of Public Speaking",
+      "Voice and Body Language",
+      "Storytelling Techniques",
+      "Presentation Skills",
+      "Debate and Persuasion",
+      "Stage Performance"
+    ],
+    seoKeywords: [
+      "Public Speaking for Students",
+      "Communication Skills Training",
+      "Leadership Skills for School Students"
+    ]
+  },
+  "robotics-fundamentals-k12": {
+    slug: "robotics-fundamentals-k12",
+    title: "Robotics Fundamentals",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/robotics-fundamentals.png",
+    subtitle: "Learn by Building. Innovate through Robotics.",
+    description: "An engaging robotics program where students learn robotics concepts, sensors, motors, automation, and problem-solving through hands-on projects and experiments.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Develops STEM skills",
+      "Encourages innovation",
+      "Improves technical aptitude",
+      "Enhances teamwork"
+    ],
+    usp: [
+      "Hands-on learning",
+      "Robotics kits included",
+      "Project showcase opportunities"
+    ],
+    modules: [
+      "Introduction to Robotics",
+      "Components of Robots",
+      "Sensors and Motors",
+      "Programming Basics",
+      "Robot Design",
+      "Robotics Project"
+    ],
+    seoKeywords: [
+      "Robotics Training for Schools",
+      "STEM Education India",
+      "Robotics Course for Students"
+    ]
+  },
+
+  // --- 21st Century Skills Hub - College ---
+  "data-analytics-college": {
+    slug: "data-analytics-college",
+    title: "Data Analytics",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/data-analytics.png",
+    subtitle: "Transform Data into Decisions.",
+    description: "Learn data analysis, visualization, reporting, and business insights using industry tools and real-world datasets. The program prepares students for careers in analytics, consulting, and business intelligence.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "High-demand career skill",
+      "Better employability",
+      "Data-driven thinking",
+      "Industry relevance"
+    ],
+    usp: [
+      "Industry datasets",
+      "Capstone projects",
+      "Placement-oriented curriculum"
+    ],
+    modules: [
+      "Data Analytics Fundamentals",
+      "Data Cleaning",
+      "Data Visualization",
+      "Business Reporting",
+      "Dashboard Development",
+      "Analytics Projects"
+    ],
+    seoKeywords: [
+      "Data Analytics Course Hyderabad",
+      "Business Analytics Training",
+      "Data Analytics Certification"
+    ]
+  },
+  "digital-marketing-college": {
+    slug: "digital-marketing-college",
+    title: "Digital Marketing",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/digital-marketing.png",
+    subtitle: "Master the Skills Behind Modern Business Growth.",
+    description: "A practical digital marketing course covering SEO, social media marketing, content marketing, paid advertising, and analytics to help students build career-ready marketing skills.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "High-demand skill",
+      "Freelancing opportunities",
+      "Entrepreneurial applications",
+      "Career readiness"
+    ],
+    usp: [
+      "Live projects",
+      "Campaign simulations",
+      "Industry mentors"
+    ],
+    modules: [
+      "Digital Marketing Overview",
+      "Search Engine Optimization",
+      "Social Media Marketing",
+      "Content Marketing",
+      "Google Ads",
+      "Analytics and Reporting"
+    ],
+    seoKeywords: [
+      "Digital Marketing Course India",
+      "SEO Training",
+      "Social Media Marketing Course"
+    ]
+  },
+  "financial-modelling-college": {
+    slug: "financial-modelling-college",
+    title: "Financial Modelling",
+    category: "21st Century Skills Hub",
+    image: "/images/programs/financial-modelling.png",
+    subtitle: "Build Business Decisions on Strong Financial Insights.",
+    description: "Students learn to create financial models for valuation, budgeting, forecasting, and investment analysis using Excel and industry best practices.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Investment analysis skills",
+      "Better finance careers",
+      "Advanced Excel expertise",
+      "Corporate readiness"
+    ],
+    usp: [
+      "Real company cases",
+      "Finance expert faculty",
+      "Industry-standard templates"
+    ],
+    modules: [
+      "Excel Fundamentals",
+      "Financial Statements",
+      "Forecasting Models",
+      "Valuation Techniques",
+      "Sensitivity Analysis",
+      "Investment Cases"
+    ],
+    seoKeywords: [
+      "Financial Modelling Course India",
+      "Investment Analysis Training",
+      "Finance Skills Program"
+    ]
+  },
+
+  // --- 21st Century Skills Hub - Corporate ---
+  "leadership-development-corporate": {
+    slug: "leadership-development-corporate",
+    title: "Leadership Development",
+    category: "Corporate Professionals",
+    image: "/images/programs/leadership-development.png",
+    subtitle: "Develop Leaders Who Deliver Results.",
+    description: "A practical leadership program focused on developing strategic thinking, team leadership, communication, and decision-making capabilities required in today's dynamic workplace.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Stronger leadership capabilities",
+      "Improved team performance",
+      "Better decision-making",
+      "Increased employee engagement"
+    ],
+    usp: [
+      "Leadership simulations",
+      "Industry case studies",
+      "Practical action plans"
+    ],
+    modules: [
+      "Leadership Fundamentals",
+      "Emotional Intelligence",
+      "Strategic Thinking",
+      "Team Leadership",
+      "Conflict Management",
+      "Leading Change"
+    ],
+    seoKeywords: [
+      "Leadership Training India",
+      "Management Development Program",
+      "Leadership Skills Workshop"
+    ]
+  },
+  "project-management-corporate": {
+    slug: "project-management-corporate",
+    title: "Project Management",
+    category: "Corporate Professionals",
+    image: "/images/programs/project-management.png",
+    subtitle: "Plan Better. Execute Faster. Deliver Results.",
+    description: "Learn project planning, scheduling, risk management, stakeholder management, and execution frameworks required to successfully manage projects.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Improved project success rates",
+      "Better resource management",
+      "Enhanced planning skills",
+      "Reduced project risks"
+    ],
+    usp: [
+      "Real project simulations",
+      "Templates and toolkits",
+      "Industry examples"
+    ],
+    modules: [
+      "Project Fundamentals",
+      "Planning and Scheduling",
+      "Risk Management",
+      "Stakeholder Management",
+      "Project Monitoring",
+      "Project Closure"
+    ],
+    seoKeywords: [
+      "Project Management Training India",
+      "PMP Foundation Program",
+      "Project Leadership Skills"
+    ]
+  },
+  "financial-analysis-corporate": {
+    slug: "financial-analysis-corporate",
+    title: "Financial Analysis",
+    category: "Corporate Professionals",
+    image: "/images/programs/financial-analysis.png",
+    subtitle: "Convert Financial Data into Business Intelligence.",
+    description: "Designed for managers and finance professionals, this program helps participants interpret financial statements, assess business performance, and make informed financial decisions.",
+    howWeOffer: [],
+    keyHighlights: [],
+    benefits: [
+      "Better business decisions",
+      "Improved financial understanding",
+      "Strong analytical skills",
+      "Enhanced profitability focus"
+    ],
+    usp: [
+      "Real company financials",
+      "Practical business cases",
+      "Finance expert facilitators"
+    ],
+    modules: [
+      "Financial Statements Analysis",
+      "Ratio Analysis",
+      "Cash Flow Analysis",
+      "Budgeting",
+      "Cost Control",
+      "Business Performance Review"
+    ],
+    seoKeywords: [
+      "Financial Analysis Training",
+      "Finance for Non-Finance Managers",
+      "Business Finance Course"
     ]
   }
 };

@@ -1133,7 +1133,7 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 4 }}
-              className="flex gap-5"
+              className="flex gap-5 partners-scroll"
             >
               {(() => {
                 const partners = [
@@ -1205,6 +1205,21 @@ export default function Home() {
           @keyframes scroll-partners {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
+          }
+          .partners-scroll {
+            animation: scroll-partners 30s linear infinite;
+            width: max-content;
+          }
+          .partners-scroll:hover {
+            animation-play-state: paused;
+          }
+          .partners-scroll {
+            animation-iteration-count: infinite;
+          }
+          @supports (animation-timeline: scroll()) {
+            .partners-scroll {
+              animation-iteration-count: 1;
+            }
           }
         `}</style>
       </section>

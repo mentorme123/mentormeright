@@ -161,25 +161,26 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
           </div>
         )}
 
-        {/* MentorMe USP */}
-        {program.usp && program.usp.length > 0 && (
+        {/* MentorMe Advantage */}
+        {(program.mentorMeAdvantage && program.mentorMeAdvantage.length > 0) ||
+        (program.usp && program.usp.length > 0) ? (
           <div className="max-w-4xl mx-auto mb-10">
             <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
               <Award className={`w-6 h-6 ${accentColor}`} />
-              MentorMe USP
+              MentorMe Advantage
             </h3>
             <ul className="grid sm:grid-cols-2 gap-4">
-              {program.usp.map((usp, idx) => (
+              {(program.mentorMeAdvantage || program.usp || []).map((advantage, idx) => (
                 <li key={idx} className="flex items-start gap-3">
                   <span className={`w-8 h-8 rounded-full bg-gradient-to-br ${gradient} text-white flex items-center justify-center shrink-0`}>
-                    {uspIcons[usp] || <Award className="w-4 h-4" />}
+                    {uspIcons[advantage] || <Award className="w-4 h-4" />}
                   </span>
-                  <span className="text-slate-700 font-medium leading-snug">{usp}</span>
+                  <span className="text-slate-700 font-medium leading-snug">{advantage}</span>
                 </li>
               ))}
             </ul>
           </div>
-        )}
+        ) : null}
 
         {/* Modules */}
         {program.modules && program.modules.length > 0 && (
@@ -199,6 +200,18 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {program.learningOutcomes && (
+          <div className="max-w-4xl mx-auto mb-10">
+            <h3 className="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+              <Target className={`w-6 h-6 ${accentColor}`} />
+              Learning Outcomes
+            </h3>
+            <p className="text-slate-700 leading-relaxed bg-slate-50 border border-slate-100 rounded-2xl p-6">
+              {program.learningOutcomes}
+            </p>
           </div>
         )}
 

@@ -11,6 +11,8 @@ export interface Program {
   usp?: string[];
   modules?: string[];
   seoKeywords?: string[];
+  learningOutcomes?: string;
+  mentorMeAdvantage?: string[];
 }
 
 export const programsData: Record<string, Program> = {
@@ -603,6 +605,12 @@ export const programsData: Record<string, Program> = {
       "Decision-Making Frameworks",
       "Real-Life Simulations"
     ],
+    learningOutcomes: "Students can evaluate situations logically, solve problems systematically, and make better decisions.",
+    mentorMeAdvantage: [
+      "Gamified learning",
+      "Industry-inspired case studies",
+      "Age-appropriate simulations"
+    ],
     seoKeywords: [
       "Critical Thinking Course for Students",
       "Problem Solving Skills Training",
@@ -637,6 +645,12 @@ export const programsData: Record<string, Program> = {
       "Debate and Persuasion",
       "Stage Performance"
     ],
+    learningOutcomes: "Students confidently communicate ideas in classrooms, competitions, and public forums.",
+    mentorMeAdvantage: [
+      "Extensive practice sessions",
+      "Individual feedback",
+      "Video-based assessments"
+    ],
     seoKeywords: [
       "Public Speaking for Students",
       "Communication Skills Training",
@@ -670,6 +684,12 @@ export const programsData: Record<string, Program> = {
       "Programming Basics",
       "Robot Design",
       "Robotics Project"
+    ],
+    learningOutcomes: "Students build and program robots to solve real-world challenges.",
+    mentorMeAdvantage: [
+      "Hands-on learning",
+      "Robotics kits included",
+      "Project showcase opportunities"
     ],
     seoKeywords: [
       "Robotics Training for Schools",
@@ -707,6 +727,12 @@ export const programsData: Record<string, Program> = {
       "Dashboard Development",
       "Analytics Projects"
     ],
+    learningOutcomes: "Students analyze business data and generate actionable insights.",
+    mentorMeAdvantage: [
+      "Industry datasets",
+      "Capstone projects",
+      "Placement-oriented curriculum"
+    ],
     seoKeywords: [
       "Data Analytics Course Hyderabad",
       "Business Analytics Training",
@@ -741,6 +767,12 @@ export const programsData: Record<string, Program> = {
       "Google Ads",
       "Analytics and Reporting"
     ],
+    learningOutcomes: "Students execute and manage digital marketing campaigns effectively.",
+    mentorMeAdvantage: [
+      "Live projects",
+      "Campaign simulations",
+      "Industry mentors"
+    ],
     seoKeywords: [
       "Digital Marketing Course India",
       "SEO Training",
@@ -774,6 +806,12 @@ export const programsData: Record<string, Program> = {
       "Valuation Techniques",
       "Sensitivity Analysis",
       "Investment Cases"
+    ],
+    learningOutcomes: "Students build professional financial models used by investment and finance professionals.",
+    mentorMeAdvantage: [
+      "Real company cases",
+      "Finance expert faculty",
+      "Industry-standard templates"
     ],
     seoKeywords: [
       "Financial Modelling Course India",
@@ -811,6 +849,12 @@ export const programsData: Record<string, Program> = {
       "Conflict Management",
       "Leading Change"
     ],
+    learningOutcomes: "Participants become more effective leaders capable of driving organizational performance.",
+    mentorMeAdvantage: [
+      "Leadership simulations",
+      "Industry case studies",
+      "Practical action plans"
+    ],
     seoKeywords: [
       "Leadership Training India",
       "Management Development Program",
@@ -845,6 +889,12 @@ export const programsData: Record<string, Program> = {
       "Project Monitoring",
       "Project Closure"
     ],
+    learningOutcomes: "Participants effectively manage projects from initiation to completion.",
+    mentorMeAdvantage: [
+      "Real project simulations",
+      "Templates and toolkits",
+      "Industry examples"
+    ],
     seoKeywords: [
       "Project Management Training India",
       "PMP Foundation Program",
@@ -878,6 +928,12 @@ export const programsData: Record<string, Program> = {
       "Budgeting",
       "Cost Control",
       "Business Performance Review"
+    ],
+    learningOutcomes: "Participants confidently evaluate financial performance and support business decision-making.",
+    mentorMeAdvantage: [
+      "Real company financials",
+      "Practical business cases",
+      "Finance expert facilitators"
     ],
     seoKeywords: [
       "Financial Analysis Training",

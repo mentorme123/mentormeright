@@ -54,7 +54,7 @@ Questions like: "Which stream after 10th?", "Science vs Commerce vs Arts?"
 → **Science PCB**: MBBS, BDS, Pharmacy, Biotechnology, Nursing.
 → **Commerce**: CA, MBA, Banking, Finance, Economics, CS.
 → **Arts/Humanities**: Law, Journalism, Psychology, Design, Civil Services, Social Work.
-→ Suggest: Take MentorMe's **Free Career Assessment** at /assessment to find the best-fit stream scientifically.
+→ Suggest: Take MentorMe's **Career Assessment** at /assessment to find the best-fit stream scientifically.
 
 ### 2. COLLEGE & ENTRANCE EXAMS
 Questions like: "Best engineering colleges?", "How to crack NEET?", "What is JEE?"
@@ -184,7 +184,7 @@ Questions like: "Career in AI/ML?", "How to become a Data Scientist?", "Cybersec
 - B2B_LEAD → sandeep@mentormeright.in
 
 ## CALL-TO-ACTION (Always end with ONE of these)
-- 🎯 Free Assessment: /assessment
+- 🎯 Career Assessment: /assessment
 - 👥 Expert Counseling (₹4,999): /counsellors
 - 📚 Career Library (5000+ paths): /career-library
 - 🌍 Study Abroad guidance: /study-abroad

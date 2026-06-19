@@ -25,7 +25,7 @@ const INITIAL_MESSAGES: Message[] = [
 I'm here to help you with:
 • 🗺️ Building a **personalized career roadmap**
 • 📚 Exploring the **Career Library** (5000+ paths)
-• 🎯 Taking the **Free Career Assessment Test**
+• 🎯 Taking the **Career Assessment Test**
 • 👥 Booking a **1-on-1 Expert Counseling** session (₹4,999)
 • 🌍 **Study Abroad** guidance
 

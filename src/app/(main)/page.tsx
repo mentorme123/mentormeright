@@ -1197,6 +1197,7 @@ export default function Home() {
         <style>{`
           .partners-scroll {
             animation: scroll-partners 30s linear infinite;
+            display: flex;
             width: max-content;
           }
           .partners-scroll:hover {
@@ -1205,21 +1206,6 @@ export default function Home() {
           @keyframes scroll-partners {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
-          }
-          .partners-scroll {
-            animation: scroll-partners 30s linear infinite;
-            width: max-content;
-          }
-          .partners-scroll:hover {
-            animation-play-state: paused;
-          }
-          .partners-scroll {
-            animation-iteration-count: infinite;
-          }
-          @supports (animation-timeline: scroll()) {
-            .partners-scroll {
-              animation-iteration-count: 1;
-            }
           }
         `}</style>
       </section>

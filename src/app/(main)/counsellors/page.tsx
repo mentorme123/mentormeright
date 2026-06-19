@@ -23,7 +23,7 @@ export default function CounsellorsLanding() {
       return;
     }
 
-    // 2. Check if they have taken the Free Assessment
+    // 2. Check if they have taken the Career Assessment
     const { data: assessment } = await supabase
       .from("assessment_results")
       .select("id")
@@ -32,7 +32,7 @@ export default function CounsellorsLanding() {
       .maybeSingle();
 
     if (!assessment) {
-      setErrorMsg("You must complete the Free Career Assessment before booking a session. Redirecting...");
+      setErrorMsg("You must complete the Career Assessment before booking a session. Redirecting...");
       setTimeout(() => {
         router.push("/assessment");
       }, 3000);

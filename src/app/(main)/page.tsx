@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { CheckCircle2, Phone, Mail, MapPin, Globe2, GraduationCap, Briefcase } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
@@ -949,15 +949,13 @@ export default function Home() {
 
         {/* Dynamic content with horizontal slide animation */}
         <div className="max-w-5xl space-y-8 relative z-10 px-4">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="space-y-8"
-            >
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="space-y-8"
+          >
               <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
                 {slides[currentSlide].heading}
                 <br className="hidden md:block" />
@@ -983,7 +981,6 @@ export default function Home() {
                 </Link>
               </div>
             </motion.div>
-          </AnimatePresence>
 
           {/* Dots Navigation Indicator */}
           <div className="flex justify-center gap-3 pt-12">

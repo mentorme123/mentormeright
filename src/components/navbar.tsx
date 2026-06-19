@@ -55,9 +55,9 @@ export function Navbar() {
       if (aiHubOpen && !(event.target as Element).closest(".ai-hub-dropdown")) {
         setAiHubOpen(false);
       }
-      // if (skillsHubOpen && !(event.target as Element).closest(".skills-hub-dropdown")) {
-      //   setSkillsHubOpen(false);
-      // }
+      if (skillsHubOpen && !(event.target as Element).closest(".skills-hub-dropdown")) {
+        setSkillsHubOpen(false);
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);

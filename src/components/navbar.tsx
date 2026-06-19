@@ -116,23 +116,22 @@ export function Navbar() {
             </div>
 
             {/* 21st Century Skills Hub Dropdown */}
-            <div className="relative group skills-hub-dropdown">
-              <button
-                onClick={() => setSkillsHubOpen((prev) => !prev)}
-                className="relative flex items-center gap-1 py-2 group-hover:text-brand-blue transition-colors duration-300"
-              >
-                <span>21st Century Skills Hub</span>
-                <ChevronDown size={14} className={`text-slate-500 transition-transform ${skillsHubOpen ? "rotate-180" : ""}`} />
-              </button>
-              <div className={`absolute top-full left-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${skillsHubOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                <div className="p-2">
-                  <Link href="/k12-programs" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setSkillsHubOpen(false)}>K-12 Students</Link>
-                  <Link href="/college-programs" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setSkillsHubOpen(false)}>College Students</Link>
-                  <Link href="/services" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setSkillsHubOpen(false)}>Corporate Professionals</Link>
+              <div className="relative group skills-hub-dropdown">
+                <button
+                  onClick={() => setSkillsHubOpen((prev) => !prev)}
+                  className="relative flex items-center gap-1 py-2 group-hover:text-brand-blue transition-colors duration-300"
+                >
+                  <span>21st Century Skills Hub</span>
+                  <ChevronDown size={14} className={`text-slate-500 transition-transform ${skillsHubOpen ? "rotate-180" : ""}`} />
+                </button>
+                <div className={`absolute top-full left-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${skillsHubOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+                  <div className="p-2">
+                    <Link href="/college-programs" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setSkillsHubOpen(false)}>College Students</Link>
+                    <Link href="/services" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setSkillsHubOpen(false)}>Corporate Professionals</Link>
+                  </div>
                 </div>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
               </div>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
-            </div>
 
             <Link href="/blogs" className="relative group py-2">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>

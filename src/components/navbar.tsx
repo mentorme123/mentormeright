@@ -55,6 +55,18 @@ export function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [profileOpen]);
 
+  const mobileLinks = [
+    { href: "/", label: "Home" },
+    { href: "/about", label: "About MentorMe" },
+    { href: "/career-assessment.html", label: "Career Assessment", external: true },
+    { href: "/career-library", label: "Career Library" },
+    { href: "/counsellors", label: "Counsellors" },
+    { href: "/ai-corner", label: "AI Corner" },
+    { href: "/study-abroad", label: "Study Abroad" },
+    { href: "/services", label: "Training Programs" },
+    { href: "/contact", label: "Contact Us" },
+  ];
+
   return (
     <>
       <SiteSearch isOpen={isSearchOpen} onClose={closeSearch} />

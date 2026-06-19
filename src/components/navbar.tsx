@@ -2,15 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown, Menu, X, Search, ChevronRight, User, LogOut } from "lucide-react";
+import { ChevronDown, Menu, X, Search, User, LogOut } from "lucide-react";
 import { SiteSearch, useSiteSearch } from "@/components/site-search";
 import { createClient } from "@/lib/supabase";
 
 export function Navbar() {
-  const [isAiDropdownOpen, setIsAiDropdownOpen] = useState(false);
-  const [is21stDropdownOpen, setIs21stDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
   const [user, setUser] = useState<any>(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [profileName, setProfileName] = useState("");
@@ -38,25 +35,6 @@ export function Navbar() {
     );
     return () => subscription.unsubscribe();
   }, []);
-
-  const handleSubmenuClick = (submenu: string) => {
-    setActiveSubmenu((prev) => (prev === submenu ? null : submenu));
-  };
-
-  const mobileLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About Us" },
-    { href: "/ai-learning-hub", label: "AI Learning Hub" },
-    { href: "/career-library", label: "Career Library" },
-    { href: "/career-assessment.html", label: "Career Assessment", external: true },
-    { href: "/career-simulator", label: "Career Simulator" },
-    { href: "/counsellors", label: "Counsellors" },
-    { href: "/k12-programs", label: "K12 Programs" },
-    { href: "/skills-hub", label: "21st Century Skills Hub" },
-    { href: "/study-abroad", label: "Study Abroad" },
-    { href: "/blogs", label: "Blogs" },
-    { href: "/contact", label: "Contact Us" },
-  ];
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -97,110 +75,37 @@ export function Navbar() {
             </Link>
 
             <Link href="/about" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">About Us</span>
+              <span className="group-hover:text-brand-blue transition-colors duration-300">About MentorMe</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
 
-            {/* AI Learning Hub Dropdown */}
-            <div className="relative" onMouseEnter={() => setIsAiDropdownOpen(true)} onMouseLeave={() => setIsAiDropdownOpen(false)}>
-              <button type="button" className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300" aria-expanded={isAiDropdownOpen}>
-                <Link href="/ai-learning-hub" className="hover:text-brand-blue">AI Learning Hub</Link>
-                <ChevronDown size={14} className={`transition-transform duration-300 ${isAiDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
+            <Link href="/career-assessment.html" className="relative group py-2" target="_blank" rel="noopener noreferrer">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">Career Assessment</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
 
-              {isAiDropdownOpen && (
-                <div className="absolute top-full left-0 mt-0 w-[500px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                  <div className="p-6 max-h-[80vh] overflow-y-auto">
-                    <div className="space-y-4">
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick("k12")}>
-                        1. K-12 Students
-                      </button>
-                      {activeSubmenu === "k12" && (
-                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
-                          <Link href="/programs/ai-foundations-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Foundations for School Students</span></Link>
-                          <Link href="/programs/generative-ai-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI &amp; Prompt Engineering for Students</span></Link>
-                          <Link href="/programs/ai-robotics-k12" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI + Robotics Explorer Program</span></Link>
-                        </div>
-                      )}
+            <Link href="/career-library" className="relative group py-2">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">Career Library</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
 
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick("college")}>
-                        2. College Students
-                      </button>
-                      {activeSubmenu === "college" && (
-                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
-                          <Link href="/programs/ai-career-accelerator" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Career Accelerator Program</span></Link>
-                          <Link href="/programs/ai-data-analytics" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI &amp; Data Analytics Professional Program</span></Link>
-                          <Link href="/programs/ai-business-management" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Business, Finance &amp; Management</span></Link>
-                        </div>
-                      )}
+            <Link href="/counsellors" className="relative group py-2">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">Counsellors</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
 
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick("corporate")}>
-                        3. Corporate Professionals
-                      </button>
-                      {activeSubmenu === "corporate" && (
-                        <div className="pl-4 space-y-2 bg-gray-50 p-2">
-                          <Link href="/programs/generative-ai-workplace" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">Generative AI for Workplace Productivity</span></Link>
-                          <Link href="/programs/ai-finance-accounting" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI for Finance &amp; Accounting Professionals</span></Link>
-                          <Link href="/programs/ai-leadership" className="block hover:bg-gray-100 rounded-md"><span className="text-[14px] font-medium text-slate-500 block whitespace-nowrap hover:text-brand-blue transition-colors">AI Leadership &amp; Digital Transformation Program</span></Link>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Link href="/ai-corner" className="relative group py-2">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">AI Corner</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
 
-            {/* 21st Century Skills Hub Dropdown */}
-            <div className="relative" onMouseEnter={() => setIs21stDropdownOpen(true)} onMouseLeave={() => setIs21stDropdownOpen(false)}>
-              <button type="button" className="flex items-center gap-1 hover:text-brand-blue py-6 transition-colors duration-300" aria-expanded={is21stDropdownOpen}>
-                <Link href="/skills-hub" className="hover:text-brand-blue">21st Century Skills Hub</Link>
-                <ChevronDown size={14} className={`transition-transform duration-300 ${is21stDropdownOpen ? "rotate-180" : ""}`} />
-              </button>
+            <Link href="/study-abroad" className="relative group py-2">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">Study Abroad</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
 
-              {is21stDropdownOpen && (
-                <div className="absolute top-full left-0 mt-0 w-[500px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                  <div className="p-6 max-h-[80vh] overflow-y-auto">
-                    <div className="space-y-4">
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick("21st-k12")}>
-                        1. K-12 Students
-                      </button>
-{activeSubmenu === "21st-k12" && (
-                         <div className="pl-4 space-y-2 bg-gray-50 p-2 rounded-md">
-                           <Link href="/programs/critical-thinking-k12" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Critical Thinking & Problem Solving</span></Link>
-                           <Link href="/programs/public-speaking-k12" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Public Speaking</span></Link>
-                           <Link href="/programs/robotics-fundamentals-k12" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Robotics Fundamentals</span></Link>
-                         </div>
-                       )}
-
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick("21st-college")}>
-                        2. College Students
-                      </button>
-{activeSubmenu === "21st-college" && (
-                         <div className="pl-4 space-y-2 bg-gray-50 p-2 rounded-md">
-                           <Link href="/programs/data-analytics-college" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Data Analytics</span></Link>
-                           <Link href="/programs/digital-marketing-college" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Digital Marketing</span></Link>
-                           <Link href="/programs/financial-modelling-college" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Financial Modelling</span></Link>
-                         </div>
-                       )}
-
-                      <button type="button" className="block w-full text-left font-bold text-slate-800 text-[16px]" onClick={() => handleSubmenuClick("21st-corporate")}>
-                        3. Corporate Professionals
-                      </button>
-                      {activeSubmenu === "21st-corporate" && (
-                        <div className="pl-4 space-y-2 bg-gray-50 p-2 rounded-md">
-<Link href="/programs/leadership-development-corporate" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Leadership Development</span></Link>
-                           <Link href="/programs/project-management-corporate" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Project Management</span></Link>
-                           <Link href="/programs/financial-analysis-corporate" className="block hover:bg-gray-100 rounded-md p-1"><span className="text-[14px] font-medium text-slate-500 block hover:text-brand-blue transition-colors">Financial Analysis</span></Link>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <Link href="/blogs" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>
+            <Link href="/services" className="relative group py-2">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">Training Programs</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
 
@@ -222,11 +127,11 @@ export function Navbar() {
               <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-400 font-mono">⌘K</kbd>
             </button>
 
-            <Link href="/assessment" className="hidden lg:block">
-              <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
-                Career Assessment
-              </button>
-            </Link>
+             <Link href="/career-assessment.html" className="hidden lg:block" target="_blank" rel="noopener noreferrer">
+               <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
+                 Career Assessment
+               </button>
+             </Link>
 
             {user ? (
               <div className="relative profile-dropdown">
@@ -255,7 +160,6 @@ export function Navbar() {
                           <p className="text-sm font-bold text-slate-700">My Profile</p>
                           <p className="text-xs text-slate-500">Account settings and more</p>
                         </div>
-                        <ChevronRight size={16} className="ml-auto text-slate-400" />
                       </Link>
                       <button type="button" onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left border border-red-200">
                         <LogOut size={18} className="text-red-600" />
@@ -315,7 +219,7 @@ export function Navbar() {
               ))}
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
-                <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/career-assessment.html" onClick={() => setIsMobileMenuOpen(false)} target="_blank" rel="noopener noreferrer">
                   <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Career Assessment</button>
                 </Link>
                 {!user && (

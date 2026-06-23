@@ -999,35 +999,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section 1 - Feature Tiles */}
-      <section className="py-16 px-4 bg-background">
-        <div className="max-w-6xl mx-auto space-y-12">
-          {/* Tile 1 - Hero Tile */}
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold">Build Future-Ready Careers with AI</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.
-            </p>
-          </div>
-
-          {/* Tile 2 */}
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold">AI-Powered Career Intelligence</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.
-            </p>
-          </div>
-
-          {/* Tile 3 */}
-          <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold">Future Skills & Employability</h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Master AI, Robotics, emerging technologies, and workplace skills that drive academic, professional, and career success.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* What is MentorMe? (Deep Dive + Image) */}
       <section className="py-24 px-4 bg-background relative z-10">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-start">

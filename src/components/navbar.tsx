@@ -157,9 +157,9 @@ export function Navbar() {
               <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-400 font-mono">⌘K</kbd>
             </button>
 
-            <Link href="/career-assessment.html" className="hidden lg:block" target="_blank" rel="noopener noreferrer">
+            <Link href="https://mentormeright.com/elementor-13440/" className="hidden lg:block" target="_blank" rel="noopener noreferrer">
               <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
-                Career Assessment
+                Free Mini Psychometric Assessment
               </button>
             </Link>
 
@@ -240,8 +240,8 @@ export function Navbar() {
               ))}
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
-                <Link href="/career-assessment.html" onClick={() => setIsMobileMenuOpen(false)} target="_blank" rel="noopener noreferrer">
-                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Career Assessment</button>
+                <Link href="https://mentormeright.com/elementor-13440/" onClick={() => setIsMobileMenuOpen(false)} target="_blank" rel="noopener noreferrer">
+                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Free Mini Psychometric Assessment</button>
                 </Link>
                 {!user && (
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">

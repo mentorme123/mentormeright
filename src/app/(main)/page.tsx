@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { CheckCircle2, Phone, Mail, MapPin, Briefcase, GraduationCap } from "lucide-react";
+import { CheckCircle2, Phone, Mail, MapPin, Briefcase, GraduationCap, Globe2 } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
   const [count, setCount] = useState(0);
@@ -880,9 +880,9 @@ export default function Home() {
   const slides = [
     {
       image: "/images/programs/robotics.png",
-      heading: "Transform Your Career with ",
-      highlight: "MentorMe",
-      subtitle: "We provide a comprehensive range of services, spanning from self-discovery to enhancing employability, serving as a one-stop destination for all the support students require beyond academic institutions.",
+      heading: "Build Future-Ready Careers ",
+      highlight: "with AI",
+      subtitle: "MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.",
       btn1Text: "Career Assessment",
       btn1Link: "/assessment",
       btn2Text: "Contact Us",
@@ -890,9 +890,9 @@ export default function Home() {
     },
     {
       image: "/images/programs/ai-school.png",
-      heading: "Unlock Your Future ",
-      highlight: "Potential",
-      subtitle: "Discover your true strengths, career matches, and development pathways through our advanced science-backed AI evaluations and elite mentorship.",
+      heading: "AI-Powered Career ",
+      highlight: "Intelligence",
+      subtitle: "Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.",
       btn1Text: "Start Assessment",
       btn1Link: "/assessment",
       btn2Text: "Our Programs",
@@ -900,9 +900,9 @@ export default function Home() {
     },
     {
       image: "/images/programs/vedic-maths.png",
-      heading: "Bridging Education and ",
-      highlight: "Success",
-      subtitle: "Empowering students and colleges with cutting-edge Robotics, AI certification, full-stack development, and campus recruitment training.",
+      heading: "Future Skills & ",
+      highlight: "Employability",
+      subtitle: "Master AI, Robotics, emerging technologies, and workplace skills that drive academic, professional, and career success.",
       btn1Text: "Explore Services",
       btn1Link: "/services",
       btn2Text: "Partner With Us",

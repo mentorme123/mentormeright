@@ -200,18 +200,11 @@ export function Navbar() {
                 )}
               </div>
             ) : (
-              <>
-                <Link href="/login" className="hidden sm:block">
-                  <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
-                    Login
-                  </button>
-                </Link>
-                <Link href="/register" className="hidden sm:block">
-                  <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-orange/20 text-sm whitespace-nowrap">
-                    Register
-                  </button>
-                </Link>
-              </>
+              <Link href="/login" className="hidden sm:block">
+                <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
+                  Login / Register
+                </button>
+              </Link>
             )}
 
             <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="xl:hidden p-2 rounded-xl hover:bg-muted transition-colors" aria-label="Toggle mobile menu">
@@ -251,14 +244,9 @@ export function Navbar() {
                   <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Career Assessment</button>
                 </Link>
                 {!user && (
-                  <div className="flex gap-3">
-                    <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                      <button className="w-full font-bold py-3 bg-brand-blue text-white hover:bg-brand-blue/90 rounded-xl transition-all shadow-md">Log in</button>
-                    </Link>
-                    <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="flex-1">
-                      <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl transition-all shadow-md">Register</button>
-                    </Link>
-                  </div>
+                  <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">
+                    <button className="w-full font-bold py-3 bg-brand-blue text-white hover:bg-brand-blue/90 rounded-xl transition-all shadow-md">Login / Register</button>
+                  </Link>
                 )}
               </div>
             </div>

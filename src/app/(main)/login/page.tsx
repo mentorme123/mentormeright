@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { X, Loader2 } from "lucide-react";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -95,6 +96,15 @@ export default function LoginPage() {
               {loading ? <span className="inline-flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> Authenticating...</span> : "Sign In"}
             </button>
           </form>
+        </div>
+
+        <div className="bg-slate-50 p-6 border-t border-slate-100 text-center">
+          <p className="text-sm font-medium text-slate-500">
+            Don't have an account?{" "}
+            <Link href="/register" className="text-brand-orange font-black hover:underline transition-all">
+              Register here
+            </Link>
+          </p>
         </div>
       </div>
     </div>

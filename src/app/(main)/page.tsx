@@ -1041,68 +1041,145 @@ export default function Home() {
 
 
 
-      {/* Career Guidance + Working Professional Image */}
-      <section className="py-24 px-4 bg-background">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      {/* Career Guidance & Psychometric Assessments – Section 3 */}
+      <section className="py-24 px-4 bg-background relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-brand-blue/5 rounded-full blur-3xl -mr-48 -mt-48 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
+        <div className="max-w-6xl mx-auto space-y-16 relative z-10">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="order-2 lg:order-1 relative lg:col-span-5"
+            className="order-2 lg:order-1 relative lg:col-span-5 self-start"
           >
             <div className="absolute inset-0 bg-gradient-to-tl from-brand-orange/20 to-brand-blue/20 rounded-3xl blur-3xl transform scale-105"></div>
             <Image
               src="/images/guidance-session.jpg"
-              alt="Career Guidance Session"
+              alt="Career Guidance & Psychometric Assessment Session"
               width={600}
               height={800}
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[450px] lg:h-[550px]"
+              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[450px] lg:h-[560px]"
             />
           </motion.div>
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.6 }}
+            transition={{ duration: 0.8 }}
             className="space-y-6 order-1 lg:order-2 lg:col-span-7"
           >
-            <h2 className="text-4xl font-bold">Career Guidance for All Stages</h2>
+            {/* Badge */}
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-blue/10 text-brand-blue text-sm font-semibold border border-brand-blue/20">
+              🎯 AI-Powered Career Intelligence
+            </span>
+
+            <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-foreground">
+              Career Guidance, Admissions &amp; Psychometric Assessments{" "}
+              <span className="text-brand-blue">for Students and Professionals</span>
+            </h2>
+
             <p className="text-lg text-muted-foreground leading-relaxed">
-              MentorMe is an elite career intelligence platform powered by advanced AI — helping students & professionals discover their true potential through deep psychometric evaluations.{` `}
-              <details className="inline">
-                <summary className="inline cursor-pointer text-brand-blue font-semibold hover:underline list-none">Read more</summary>
-                <span className="block mt-3 space-y-3 text-base">
-                  <span className="block">After taking our 90-question assessment, our proprietary AI engine instantly generates a hyper-personalized, 10-page career roadmap outlining your dominant strengths, blind spots, and ideal job matches.</span>
-                  <span className="block space-y-2 pt-1">
-                    {["Science-backed Psychometric Analysis", "Proprietary AI-Powered Career Reports", "1-on-1 Sessions with Elite Counselors"].map((point, i) => (
-                      <span key={i} className="flex items-center gap-2">
-                        <span className="h-6 w-6 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center text-sm flex-shrink-0">✓</span>
-                        <span className="font-medium text-foreground">{point}</span>
-                      </span>
-                    ))}
-                  </span>
-                </span>
-              </details>
+              MentorMe&apos;s AI-powered Career Guidance Platform helps students and professionals make informed academic and career decisions through scientifically validated <strong className="text-foreground">Psychometric Assessments</strong>, Career Counselling, Admission Guidance, and Personalized Career Roadmaps.
             </p>
-            <div className="space-y-4 pt-4">
+
+            <p className="text-base text-muted-foreground leading-relaxed">
+              Our comprehensive Career Assessment evaluates interests, personality, aptitude, strengths, and career preferences to help answer important questions such as <em>&ldquo;What should I do after 10th?&rdquo;</em>, <em>&ldquo;What should I do after 12th?&rdquo;</em>, <em>&ldquo;Which subject stream is right for me?&rdquo;</em>, and <em>&ldquo;Which career best matches my potential?&rdquo;</em>
+            </p>
+
+            {/* Checkmarks */}
+            <div className="grid sm:grid-cols-2 gap-3 pt-2">
               {[
-                { title: "6th-7th Class Students", desc: "Discover strengths early and guide young minds toward the right path." },
-                { title: "8th-10th Class Students", desc: "Pick subjects & careers with science-backed assessments & expert advice." },
-                { title: "11th-12th Class Students", desc: "Decide your future confidently—exams, colleges, careers." },
-                { title: "College Students & Professionals", desc: "Strategize, skill up, and land your dream roles with our mentors." },
-              ].map((item, i) => (
-                <div key={i} className="flex gap-4 p-4 bg-muted/30 rounded-2xl border">
-                  <div className="h-10 w-10 shrink-0 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold">{i + 1}</div>
-                  <div>
-                    <h3 className="font-bold">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground">{item.desc}</p>
-                  </div>
+                "Career Path Recommendations & Career Growth Options",
+                "Stream Selection Guidance (PCM, PCB, Commerce, Arts & Humanities)",
+                "Course & College Recommendations",
+                "Engineering, Medical, B.Com, BBA, BCA, Law, Design, MBA & More",
+                "College Admission Guidance for Top Universities in India",
+                "Career Growth, Career Transition & Career Change Planning",
+              ].map((point, i) => (
+                <div key={i} className="flex items-start gap-2.5">
+                  <span className="h-5 w-5 rounded-full bg-brand-orange/15 text-brand-orange flex items-center justify-center text-xs flex-shrink-0 mt-0.5 font-bold">✓</span>
+                  <span className="text-sm font-medium text-foreground leading-snug">{point}</span>
                 </div>
               ))}
             </div>
+
+            {/* After Assessment box */}
+            <div className="mt-2 p-5 bg-gradient-to-r from-brand-blue/5 to-brand-orange/5 rounded-2xl border border-brand-blue/15">
+              <p className="text-sm font-semibold text-brand-blue mb-1">📄 After Your Assessment</p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Every client receives a detailed <strong className="text-foreground">AI-generated Career Report</strong> with actionable recommendations, ideal career matches, higher education pathways, admission guidance, and personalized skill development plans.
+              </p>
+            </div>
           </motion.div>
-        </div>
+          </div>{/* end top grid */}
+
+          {/* Career Guidance by Stage Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="space-y-8"
+          >
+            <div className="text-center space-y-2">
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Career Guidance for Every Stage</h3>
+              <p className="text-muted-foreground text-base max-w-2xl mx-auto">Personalized career support at every step of the learning journey — from school to career success.</p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {[
+                {
+                  grade: "Grades 6–7",
+                  icon: "🌱",
+                  color: "from-green-400 to-emerald-500",
+                  bg: "bg-green-50 border-green-100",
+                  desc: "Build self-awareness, identify strengths, and develop a strong foundation for future career planning."
+                },
+                {
+                  grade: "Grades 8–10",
+                  icon: "🧭",
+                  color: "from-blue-400 to-brand-blue",
+                  bg: "bg-blue-50 border-blue-100",
+                  desc: "Discover the right path after 10th through career assessments and expert counselling. Get guidance on stream selection — PCM, PCB, Commerce, Arts, and Humanities — based on your aptitude, interests, and future career goals."
+                },
+                {
+                  grade: "Grades 11–12",
+                  icon: "🎯",
+                  color: "from-purple-400 to-indigo-500",
+                  bg: "bg-purple-50 border-purple-100",
+                  desc: "Explore what to do after 12th, career options, entrance exams, and higher education pathways. Receive guidance for Engineering, Medicine, B.Com, BBA, BCA, Law, Design, Liberal Arts, Allied Health Sciences, and admission support for top colleges across India."
+                },
+                {
+                  grade: "College & Professionals",
+                  icon: "🚀",
+                  color: "from-brand-orange to-orange-400",
+                  bg: "bg-orange-50 border-orange-100",
+                  desc: "Plan career growth, improve employability, explore MBA, MCA, Master's programs, certifications, career transitions, leadership pathways, and achieve long-term professional success."
+                },
+              ].map((stage, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className={`rounded-2xl border p-5 flex flex-col gap-4 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-md ${stage.bg}`}
+                >
+                  <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${stage.color} flex items-center justify-center text-xl shadow-md`}>
+                    {stage.icon}
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-foreground text-base mb-1">{stage.grade}</h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{stage.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+        </div>{/* end max-w container */}
       </section>
 
       {/* Our Recent Program Partners Section */}

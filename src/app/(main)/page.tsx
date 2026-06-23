@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { CheckCircle2, Phone, Mail, MapPin, Globe2, GraduationCap, Briefcase, Rocket, Compass } from "lucide-react";
+import { CheckCircle2, Briefcase, GraduationCap } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
   const [count, setCount] = useState(0);
@@ -1000,55 +1000,30 @@ export default function Home() {
       </section>
 
       {/* Section 1 - Feature Tiles */}
-      <section className="py-20 px-4 bg-background">
-        <div className="max-w-6xl mx-auto space-y-8">
+      <section className="py-16 px-4 bg-background">
+        <div className="max-w-6xl mx-auto space-y-12">
           {/* Tile 1 - Hero Tile */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-blue via-brand-blue to-brand-blue/80 p-8 lg:p-12 text-white"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-orange/20 blur-[80px] rounded-full translate-x-1/2 -translate-y-1/2"></div>
-            <Rocket className="w-12 h-12 text-brand-orange mb-4" />
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">Build Future-Ready Careers with AI</h2>
-            <p className="text-lg text-slate-200 max-w-3xl leading-relaxed">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl font-bold">Build Future-Ready Careers with AI</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.
             </p>
-          </motion.div>
+          </div>
 
-          {/* Tiles 2 & 3 */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Tile 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="relative overflow-hidden rounded-3xl bg-white p-8 shadow-lg border border-slate-100"
-            >
-              <Compass className="w-10 h-10 text-brand-blue mb-4" />
-              <h3 className="text-2xl font-bold mb-4 text-foreground">AI-Powered Career Intelligence</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.
-              </p>
-            </motion.div>
+          {/* Tile 2 */}
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl font-bold">AI-Powered Career Intelligence</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.
+            </p>
+          </div>
 
-            {/* Tile 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative overflow-hidden rounded-3xl bg-white p-8 shadow-lg border border-slate-100"
-            >
-              <Briefcase className="w-10 h-10 text-brand-orange mb-4" />
-              <h3 className="text-2xl font-bold mb-4 text-foreground">Future Skills & Employability</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                Master AI, Robotics, emerging technologies, and workplace skills that drive academic, professional, and career success.
-              </p>
-            </motion.div>
+          {/* Tile 3 */}
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl font-bold">Future Skills & Employability</h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Master AI, Robotics, emerging technologies, and workplace skills that drive academic, professional, and career success.
+            </p>
           </div>
         </div>
       </section>

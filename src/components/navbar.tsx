@@ -105,11 +105,37 @@ export function Navbar() {
                 <span>AI Learning Hub</span>
                 <ChevronDown size={14} className={`text-slate-500 transition-transform ${aiHubOpen ? "rotate-180" : ""}`} />
               </button>
-              <div className={`absolute top-full left-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${aiHubOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                <div className="p-2">
-                  <Link href="/k12-programs" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setAiHubOpen(false)}>K-12 Students</Link>
-                  <Link href="/college-programs" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setAiHubOpen(false)}>College Students</Link>
-                  <Link href="/programs" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setAiHubOpen(false)}>All Programs</Link>
+              <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${aiHubOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+                <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white">
+                  {/* K-12 Section */}
+                  <div className="mb-4">
+                    <div className="px-3 py-2 text-sm font-bold text-slate-900">1. K-12 Students</div>
+                    <div className="bg-slate-50 rounded-xl p-2 space-y-1">
+                      <Link href="/programs/ai-foundations-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI Foundations for School Students</Link>
+                      <Link href="/programs/generative-ai-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>Generative AI & Prompt Engineering for Students</Link>
+                      <Link href="/programs/ai-robotics-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI + Robotics Explorer Program</Link>
+                    </div>
+                  </div>
+                  
+                  {/* College Section */}
+                  <div className="mb-4">
+                    <div className="px-3 py-2 text-sm font-bold text-slate-900">2. College Students</div>
+                    <div className="bg-slate-50 rounded-xl p-2 space-y-1">
+                      <Link href="/programs/ai-career-accelerator" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI Career Accelerator Program</Link>
+                      <Link href="/programs/ai-data-analytics" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI & Data Analytics Professional Program</Link>
+                      <Link href="/programs/ai-business-management" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI for Business, Finance & Management</Link>
+                    </div>
+                  </div>
+
+                  {/* Corporate Section */}
+                  <div className="mb-2">
+                    <div className="px-3 py-2 text-sm font-bold text-slate-900">3. Corporate Professionals</div>
+                    <div className="bg-slate-50 rounded-xl p-2 space-y-1">
+                      <Link href="/programs/generative-ai-workplace" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>Generative AI for Workplace Productivity</Link>
+                      <Link href="/programs/ai-finance-accounting" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI for Finance & Accounting Professionals</Link>
+                      <Link href="/programs/ai-leadership" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI Leadership & Digital Transformation</Link>
+                    </div>
+                  </div>
                 </div>
               </div>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
@@ -124,11 +150,37 @@ export function Navbar() {
                 <span>21st Century Skills Hub</span>
                 <ChevronDown size={14} className={`text-slate-500 transition-transform ${skillsHubOpen ? "rotate-180" : ""}`} />
               </button>
-              <div className={`absolute top-full left-0 mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${skillsHubOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                <div className="p-2">
-                  <Link href="/skills-hub" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setSkillsHubOpen(false)}>K-12 Students</Link>
-                  <Link href="/skills-hub" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setSkillsHubOpen(false)}>College Students</Link>
-                  <Link href="/skills-hub" className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => setSkillsHubOpen(false)}>Corporate Professionals</Link>
+              <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${skillsHubOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+                <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white">
+                  {/* K-12 Section */}
+                  <div className="mb-4">
+                    <div className="px-3 py-2 text-sm font-bold text-slate-900">1. K-12 Students</div>
+                    <div className="bg-slate-50 rounded-xl p-2 space-y-1">
+                      <Link href="/programs/critical-thinking-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Critical Thinking & Problem Solving</Link>
+                      <Link href="/programs/public-speaking-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Public Speaking</Link>
+                      <Link href="/programs/robotics-fundamentals-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Robotics Fundamentals</Link>
+                    </div>
+                  </div>
+
+                  {/* College Section */}
+                  <div className="mb-4">
+                    <div className="px-3 py-2 text-sm font-bold text-slate-900">2. College Students</div>
+                    <div className="bg-slate-50 rounded-xl p-2 space-y-1">
+                      <Link href="/programs/data-analytics-college" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Data Analytics</Link>
+                      <Link href="/programs/digital-marketing-college" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Digital Marketing</Link>
+                      <Link href="/programs/financial-modelling-college" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Financial Modelling</Link>
+                    </div>
+                  </div>
+
+                  {/* Corporate Section */}
+                  <div className="mb-2">
+                    <div className="px-3 py-2 text-sm font-bold text-slate-900">3. Corporate Professionals</div>
+                    <div className="bg-slate-50 rounded-xl p-2 space-y-1">
+                      <Link href="/programs/leadership-development-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Leadership Development</Link>
+                      <Link href="/programs/project-management-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Project Management</Link>
+                      <Link href="/programs/financial-analysis-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Financial Analysis</Link>
+                    </div>
+                  </div>
                 </div>
               </div>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />

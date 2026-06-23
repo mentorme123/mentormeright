@@ -1010,13 +1010,13 @@ export default function Home() {
             className="space-y-6"
           >
             <h2 className="text-4xl font-bold leading-tight text-foreground">
-              MentorMe – Empowering Careers Beyond Classrooms
+              MentorMe – AI-Powered Career Development &amp; Employability Solutions
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability. We specialize in career counseling, psychometric assessments, Robotics & AI training for schools, value-added programs for colleges, and Campus Recruitment Training (CRT).
+              MentorMe partners with schools, colleges, and organizations to develop future-ready talent through Career Guidance, Psychometric Assessments, AI &amp; Robotics Programs, Employability Training, Placement Readiness Solutions, and Professional Upskilling.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Our mission is to bridge classroom learning with real-world success and prepare students for future-ready careers.
+              By combining career intelligence, emerging technologies, and industry-relevant skills, we help learners and professionals succeed in an AI-driven world.
             </p>
           </motion.div>
           <motion.div

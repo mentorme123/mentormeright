@@ -884,7 +884,7 @@ export default function Home() {
       highlight: "with AI",
       subtitle: "MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.",
       btn1Text: "Free Mini Psychometric Assessment",
-      btn1Link: "/assessment",
+      btn1Link: "/free-mini-assessment.html",
       btn2Text: "Contact Us",
       btn2Link: "/contact"
     },
@@ -894,7 +894,7 @@ export default function Home() {
       highlight: "Intelligence",
       subtitle: "Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.",
       btn1Text: "Free Mini Psychometric Assessment",
-      btn1Link: "/assessment",
+      btn1Link: "/free-mini-assessment.html",
       btn2Text: "Our Programs",
       btn2Link: "/services"
     },

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Mini Assessment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"/>
+</head>
+<body style="background-color: #f5f9ff; margin: 0; padding: 0;">
+  <div style="max-width: 600px; margin: 40px auto;">
+    <style>
+  /* ─── THEME ─── */
+  :root {
+    --bg: #0f0c29;
+    --card: #1a1545;
+    --card2: #221c5a;
+    --accent1: #f7c948;
+    --accent2: #ff6b9d;
+    --accent3: #5ee7df;
+    --text: #f0eaff;
+    --muted: #9b93c9;
+    --radius: 18px;
+    --shadow: 0 8px 40px rgba(0,0,0,0.45);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 24px 16px 60px;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(94,231,223,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(255,107,157,0.12) 0%, transparent 50%);
+  }
+
+  /* ─── HEADER ─── */
+  .brand { font-family:'Baloo 2',cursive; font-size:1rem; font-weight:600; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  h1 { font-family:'Baloo 2',cursive; font-size:clamp(2rem,6vw,3.2rem); font-weight:800; text-align:center;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2), var(--accent3));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    line-height:1.15; margin-bottom:10px; }
+  .subtitle { color:var(--muted); font-size:1rem; text-align:center; max-width:440px; margin-bottom:32px; line-height:1.6; }
+
+  /* ─── PROGRESS ─── */
+  .progress-wrap { width:100%; max-width:600px; margin-bottom:28px; }
+  .progress-label { display:flex; justify-content:space-between; font-size:0.8rem; color:var(--muted); margin-bottom:6px; }
+  .progress-bar { height:7px; background:var(--card2); border-radius:99px; overflow:hidden; }
+  .progress-fill { height:100%; border-radius:99px;
+    background: linear-gradient(90deg, var(--accent3), var(--accent1), var(--accent2));
+    transition: width 0.5s cubic-bezier(.4,0,.2,1); }
+
+  /* ─── CARD ─── */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    width: 100%; max-width: 600px;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255,255,255,0.06);
+    animation: slideUp .4s ease;
+  }
+  @keyframes slideUp { from { opacity:0; transform:translateY(24px);} to {opacity:1;transform:translateY(0);} }
+
+  /* ─── EMAIL STEP ─── */
+  .email-step label { display:block; font-size:0.85rem; color:var(--muted); margin-bottom:6px; letter-spacing:0.5px; }
+  .email-step input {
+    width:100%; padding:14px 16px; border-radius:12px; border:1.5px solid rgba(255,255,255,0.1);
+    background:var(--card2); color:var(--text); font-size:1rem; font-family:'Nunito',sans-serif;
+    outline:none; transition:border-color .2s;
+  }
+  .email-step input:focus { border-color: var(--accent3); }
+  .email-step .name-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:16px; }
+  .email-step .email-row { margin-bottom:24px; }
+
+  /* ─── QUESTION ─── */
+  .q-number { font-size:0.78rem; color:var(--accent3); font-weight:700; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:10px; }
+  .q-text { font-family:'Baloo 2',cursive; font-size:1.25rem; font-weight:700; line-height:1.4; margin-bottom:22px; color:var(--text); }
+  .options { display:flex; flex-direction:column; gap:11px; }
+  .option-btn {
+    background: var(--card2);
+    border: 1.5px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 13px 18px;
+    text-align: left;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.97rem;
+    cursor: pointer;
+    transition: all .2s;
+    line-height: 1.4;
+  }
+  .option-btn:hover { border-color: var(--accent1); background: rgba(247,201,72,0.08); transform: translateX(4px); }
+  .option-btn.selected { border-color: var(--accent1); background: rgba(247,201,72,0.15); color: var(--accent1); font-weight:700; }
+
+  /* ─── BUTTONS ─── */
+  .btn {
+    width:100%; padding:15px; border-radius:12px; border:none; cursor:pointer;
+    font-family:'Baloo 2',cursive; font-size:1.05rem; font-weight:700; letter-spacing:.5px;
+    background: linear-gradient(135deg, var(--accent1), var(--accent2));
+    color: #1a0a2e;
+    transition: opacity .2s, transform .15s;
+    margin-top:20px;
+  }
+  .btn:hover { opacity:.9; transform:translateY(-2px); }
+  .btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+  /* ─── RESULT ─── */
+  .result-card { text-align:center; }
+  .superpower-badge {
+    display:inline-block;
+    font-family:'Baloo 2',cursive; font-size:3rem; font-weight:800;
+    padding:6px 28px; border-radius:99px; margin-bottom:16px;
+    animation: pop .5s cubic-bezier(.175,.885,.32,1.275);
+  }
+  @keyframes pop { from{transform:scale(0.5);opacity:0;} to{transform:scale(1);opacity:1;} }
+  .result-title { font-family:'Baloo 2',cursive; font-size:1rem; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-bottom:6px; }
+  .result-desc { font-size:1rem; color:var(--muted); line-height:1.7; max-width:420px; margin:0 auto 24px; }
+  .traits { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:28px; }
+  .trait { background:var(--card2); border-radius:99px; padding:5px 14px; font-size:0.82rem; color:var(--muted); border:1px solid rgba(255,255,255,0.08); }
+  .email-sent-note { font-size:0.85rem; color:var(--accent3); margin-bottom:16px; }
+  .retry-btn { background:transparent; border:1.5px solid var(--muted); color:var(--muted); font-size:0.9rem; padding:10px 24px; border-radius:10px; cursor:pointer; font-family:'Nunito',sans-serif; transition:all .2s; }
+  .retry-btn:hover { border-color:var(--text); color:var(--text); }
+
+  /* ─── LOADER ─── */
+  .loader { display:flex; flex-direction:column; align-items:center; gap:14px; padding:20px 0; }
+  .spinner { width:44px; height:44px; border:4px solid rgba(255,255,255,0.1); border-top-color:var(--accent1); border-radius:50%; animation:spin 0.8s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* ─── COUNSELING CTA ─── */
+  .cta-block {
+    margin-top: 28px;
+    padding: 22px 20px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(94,231,223,0.08), rgba(255,107,157,0.10));
+    border: 1.5px solid rgba(94,231,223,0.2);
+    text-align: center;
+  }
+  .cta-eyebrow {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent3); margin-bottom: 8px;
+  }
+  .cta-headline {
+    font-family: 'Baloo 2', cursive; font-size: 1.15rem; font-weight: 800;
+    color: var(--text); line-height: 1.35; margin-bottom: 8px;
+  }
+  .cta-sub {
+    font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 18px;
+  }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: #25D366; color: #fff;
+    font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 700;
+    padding: 13px 26px; border-radius: 12px; border: none; cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,0.45); }
+  .cta-btn svg { flex-shrink: 0; }
+  .cta-dismiss {
+    display: block; margin-top: 12px; font-size: 0.78rem; color: var(--muted);
+    cursor: pointer; background: none; border: none; text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .cta-dismiss:hover { color: var(--text); }
+
+  /* ─── SUPERPOWER COLORS ─── */
+  .sp-Inventor   { background:linear-gradient(135deg,#f7c948,#ff9500); color:#1a0a2e; }
+  .sp-Visionary  { background:linear-gradient(135deg,#5ee7df,#2979ff); color:#fff; }
+  .sp-Creator    { background:linear-gradient(135deg,#ff6b9d,#c951e6); color:#fff; }
+  .sp-Healer     { background:linear-gradient(135deg,#56ab2f,#a8e063); color:#1a2e0a; }
+  .sp-Strategist { background:linear-gradient(135deg,#4568dc,#b06ab3); color:#fff; }
+</style>
+</head>
+<body>
+
+<div class="brand">MentorMeRight</div>
+<h1>Discover Your SuperPower ✨</h1>
+<p class="subtitle">10 questions · 3 minutes · Unlock what makes you extraordinary</p>
+
+<div class="progress-wrap" id="progressWrap" style="display:none">
+  <div class="progress-label">
+    <span id="progressText">Question 1 of 10</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+</div>
+
+<div class="card" id="mainCard"></div>
+
+<script>
+// ─────────────────────────────────────────
+// EMAILJS CONFIG — FILL THESE IN
+// ─────────────────────────────────────────
+const EMAILJS_PUBLIC_KEY   = "_yV3n96u0nR1Ct0Ln";      // from EmailJS dashboard
+const EMAILJS_SERVICE_ID   = "service_60n2fw9";      // e.g. "service_abc123"
+const EMAILJS_TEMPLATE_ID  = "template_4x1x7lk";     // e.g. "template_xyz789"
+
+// ─────────────────────────────────────────
+// SUPERPOWER DATA
+// ─────────────────────────────────────────
+const SUPERPOWERS = {
+  Inventor: {
+    emoji: "⚙️",
+    tagline: "The Problem-Solver",
+    desc: "You love figuring out how things work and building solutions from scratch. Your curiosity turns every challenge into an exciting puzzle.",
+    traits: ["Curious", "Analytical", "Hands-on", "Innovative", "Persistent"]
+  },
+  Visionary: {
+    emoji: "🔭",
+    tagline: "The Big Thinker",
+    desc: "You see possibilities others miss. You dream boldly, think ahead, and inspire everyone around you with your ideas about the future.",
+    traits: ["Imaginative", "Inspirational", "Forward-thinking", "Bold", "Idealistic"]
+  },
+  Creator: {
+    emoji: "🎨",
+    tagline: "The Expresser",
+    desc: "You bring beauty and meaning into the world. Whether through art, words, music, or design — you turn feelings into something unforgettable.",
+    traits: ["Expressive", "Artistic", "Empathetic", "Original", "Passionate"]
+  },
+  Healer: {
+    emoji: "💚",
+    tagline: "The Nurturer",
+    desc: "You have an extraordinary ability to understand people and make them feel safe. You uplift and support everyone around you.",
+    traits: ["Compassionate", "Patient", "Thoughtful", "Trustworthy", "Kind"]
+  },
+  Strategist: {
+    emoji: "♟️",
+    tagline: "The Mastermind",
+    desc: "You plan, organise, and lead with precision. You thrive on challenges that require smart thinking and always find the most efficient path forward.",
+    traits: ["Logical", "Organised", "Decisive", "Focused", "Natural Leader"]
+  }
+};
+
+// ─────────────────────────────────────────
+// 10 QUESTIONS — each option maps to a SuperPower
+// Order per option: Inventor, Visionary, Creator, Healer, Strategist
+// ─────────────────────────────────────────
+const QUESTIONS = [
+  {
+    text: "When you have free time after school, what do you most enjoy doing?",
+    options: [
+      { text: "Taking apart gadgets or building something with my hands", sp: "Inventor" },
+      { text: "Daydreaming about what the world could look like in 50 years", sp: "Visionary" },
+      { text: "Drawing, writing stories, making music, or creating art", sp: "Creator" },
+      { text: "Spending time with friends or helping someone who's having a tough day", sp: "Healer" },
+      { text: "Organising my room, planning my week, or solving puzzles", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "Your class is given a group project. What role do you naturally take on?",
+    options: [
+      { text: "I design or build the actual thing we're presenting", sp: "Inventor" },
+      { text: "I come up with the big idea and overall concept", sp: "Visionary" },
+      { text: "I make the presentation look amazing and tell the story", sp: "Creator" },
+      { text: "I make sure everyone gets along and no one feels left out", sp: "Healer" },
+      { text: "I create the plan, assign tasks, and track progress", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "What kind of book or movie do you enjoy most?",
+    options: [
+      { text: "Science and technology — how things are invented or discovered", sp: "Inventor" },
+      { text: "Science fiction or fantasy about future worlds and possibilities", sp: "Visionary" },
+      { text: "Stories, art books, or films with deep emotions and creativity", sp: "Creator" },
+      { text: "Real-life stories about people overcoming hardship or helping others", sp: "Healer" },
+      { text: "Mysteries, strategy games, or stories where characters outsmart challenges", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "A friend comes to you with a big problem. What's your first instinct?",
+    options: [
+      { text: "Start brainstorming practical fixes right away", sp: "Inventor" },
+      { text: "Ask lots of 'what if' questions and explore new angles together", sp: "Visionary" },
+      { text: "Help them express how they feel through writing or talking it out", sp: "Creator" },
+      { text: "Listen carefully and make them feel truly heard and supported", sp: "Healer" },
+      { text: "Break the problem into steps and make a clear action plan", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "What would you most like to do if you could spend a day doing anything?",
+    options: [
+      { text: "Build a working robot, app, or gadget from scratch", sp: "Inventor" },
+      { text: "Meet a world leader and pitch an idea to change the future", sp: "Visionary" },
+      { text: "Create a short film, song, or art exhibition", sp: "Creator" },
+      { text: "Volunteer at a hospital, shelter, or community centre", sp: "Healer" },
+      { text: "Run a business simulation or lead a team competition", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "What do your friends say you're really good at?",
+    options: [
+      { text: "Fixing things or explaining how stuff works", sp: "Inventor" },
+      { text: "Coming up with ideas nobody else would think of", sp: "Visionary" },
+      { text: "Making things look beautiful or telling a great story", sp: "Creator" },
+      { text: "Being there for people when they need support the most", sp: "Healer" },
+      { text: "Keeping the group organised and making things happen", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "Which school subject feels the most exciting to you?",
+    options: [
+      { text: "Science, technology, engineering, or maths (STEM)", sp: "Inventor" },
+      { text: "Social studies, current events, or environmental issues", sp: "Visionary" },
+      { text: "Art, music, drama, or creative writing", sp: "Creator" },
+      { text: "Biology, psychology, or any subject about living things and people", sp: "Healer" },
+      { text: "Economics, debate, history, or maths involving logic", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "You're given ₹5,000 and a month to do something meaningful. What do you do?",
+    options: [
+      { text: "Buy components and build a prototype of an idea I have", sp: "Inventor" },
+      { text: "Start a small movement or campaign for something I believe in", sp: "Visionary" },
+      { text: "Produce a creative project — a zine, short film, or art show", sp: "Creator" },
+      { text: "Use it to help a person or community in need near me", sp: "Healer" },
+      { text: "Invest it in a mini-business or savings plan with a clear goal", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "What frustrates you the most when working in a team?",
+    options: [
+      { text: "When we can't figure out the technical solution to a problem", sp: "Inventor" },
+      { text: "When people settle for boring, ordinary ideas instead of dreaming big", sp: "Visionary" },
+      { text: "When the work looks plain and the message isn't communicated well", sp: "Creator" },
+      { text: "When team members feel ignored, disrespected, or left out", sp: "Healer" },
+      { text: "When there's no plan and everyone is confused about what to do", sp: "Strategist" }
+    ]
+  },
+  {
+    text: "Imagine your future self — which headline would make you proudest?",
+    options: [
+      { text: "Local Student's Invention Wins National Science Award", sp: "Inventor" },
+      { text: "Young Visionary Named Among 30 Under 30 World Changers", sp: "Visionary" },
+      { text: "Rising Artist's Work Moves Thousands Across the Country", sp: "Creator" },
+      { text: "Compassionate Doctor Transforms Healthcare in Rural Communities", sp: "Healer" },
+      { text: "Youngest CEO Builds Company That Solves a Global Problem", sp: "Strategist" }
+    ]
+  }
+];
+
+// ─────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────
+let state = {
+  step: "email",        // "email" | "quiz" | "loading" | "result"
+  name: "",
+  email: "",
+  currentQ: 0,
+  answers: [],          // array of SP strings
+  scores: { Inventor:0, Visionary:0, Creator:0, Healer:0, Strategist:0 },
+  result: null
+};
+
+// ─────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────
+function render() {
+  const card = document.getElementById("mainCard");
+  const wrap = document.getElementById("progressWrap");
+
+  if (state.step === "email") {
+    wrap.style.display = "none";
+    card.innerHTML = renderEmailStep();
+  } else if (state.step === "quiz") {
+    wrap.style.display = "block";
+    updateProgress();
+    card.innerHTML = renderQuestion();
+    card.style.animation = "none";
+    card.offsetHeight; // reflow
+    card.style.animation = "slideUp .4s ease";
+  } else if (state.step === "loading") {
+    wrap.style.display = "none";
+    card.innerHTML = `<div class="loader"><div class="spinner"></div><p style="color:var(--muted)">Calculating your SuperPower…</p></div>`;
+  } else if (state.step === "result") {
+    wrap.style.display = "none";
+    card.innerHTML = renderResult();
+  }
+}
+
+function updateProgress() {
+  const pct = Math.round((state.currentQ / QUESTIONS.length) * 100);
+  document.getElementById("progressText").textContent = `Question ${state.currentQ + 1} of ${QUESTIONS.length}`;
+  document.getElementById("progressPct").textContent = pct + "%";
+  document.getElementById("progressFill").style.width = pct + "%";
+}
+
+// ─────────────────────────────────────────
+// EMAIL STEP
+// ─────────────────────────────────────────
+function renderEmailStep() {
+  return `
+    <div class="email-step">
+      <div class="q-text" style="margin-bottom:18px">First, tell us a little about yourself 👋</div>
+      <div class="name-row">
+        <div>
+          <label>First Name</label>
+          <input type="text" id="inputFirst" placeholder="Arjun" maxlength="50" />
+        </div>
+        <div>
+          <label>Last Name</label>
+          <input type="text" id="inputLast" placeholder="Sharma" maxlength="50" />
+        </div>
+      </div>
+      <div class="email-row">
+        <label>Email Address</label>
+        <input type="email" id="inputEmail" placeholder="arjun@email.com" />
+      </div>
+      <p style="font-size:0.8rem;color:var(--muted);margin-bottom:0">
+        Your SuperPower result will be sent to this email. We respect your privacy. ✨
+      </p>
+      <button class="btn" onclick="startQuiz()">Start the Assessment →</button>
+    </div>
+  `;
+}
+
+function startQuiz() {
+  const first = document.getElementById("inputFirst").value.trim();
+  const last  = document.getElementById("inputLast").value.trim();
+  const email = document.getElementById("inputEmail").value.trim();
+
+  if (!first || !email) { alert("Please enter your first name and email to continue."); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("Please enter a valid email address."); return; }
+
+  state.name  = first + (last ? " " + last : "");
+  state.email = email;
+  state.step  = "quiz";
+  state.currentQ = 0;
+  state.scores = { Inventor:0, Visionary:0, Creator:0, Healer:0, Strategist:0 };
+  state.answers = [];
+  render();
+}
+
+// ─────────────────────────────────────────
+// QUESTION STEP
+// ─────────────────────────────────────────
+function renderQuestion() {
+  const q = QUESTIONS[state.currentQ];
+  const selectedIdx = state.answers[state.currentQ] !== undefined
+    ? q.options.findIndex(o => o.sp === state.answers[state.currentQ])
+    : -1;
+
+  const opts = q.options.map((o, i) => `
+    <button class="option-btn ${i === selectedIdx ? 'selected' : ''}"
+      onclick="selectOption(${i})">
+      ${o.text}
+    </button>
+  `).join("");
+
+  const isLast = state.currentQ === QUESTIONS.length - 1;
+  const btnDisabled = selectedIdx === -1 ? "disabled" : "";
+
+  return `
+    <div class="q-number">Question ${state.currentQ + 1} of ${QUESTIONS.length}</div>
+    <div class="q-text">${q.text}</div>
+    <div class="options">${opts}</div>
+    <button class="btn" id="nextBtn" onclick="${isLast ? 'finishQuiz()' : 'nextQuestion()'}" ${btnDisabled}>
+      ${isLast ? "Reveal My SuperPower 🚀" : "Next Question →"}
+    </button>
+  `;
+}
+
+function selectOption(idx) {
+  const q = QUESTIONS[state.currentQ];
+  state.answers[state.currentQ] = q.options[idx].sp;
+  render();
+}
+
+function nextQuestion() {
+  if (state.answers[state.currentQ] === undefined) return;
+  state.currentQ++;
+  render();
+}
+
+function finishQuiz() {
+  if (state.answers[state.currentQ] === undefined) return;
+
+  // Tally scores
+  state.scores = { Inventor:0, Visionary:0, Creator:0, Healer:0, Strategist:0 };
+  state.answers.forEach(sp => { if (sp) state.scores[sp]++; });
+
+  // Find winner
+  const top = Object.entries(state.scores).sort((a,b)=>b[1]-a[1])[0][0];
+  state.result = top;
+  state.step = "loading";
+  render();
+
+  // Send email then show result
+  sendEmail(top).finally(() => {
+    state.step = "result";
+    render();
+  });
+}
+
+// ─────────────────────────────────────────
+// RESULT
+// ─────────────────────────────────────────
+function renderResult() {
+  const sp = SUPERPOWERS[state.result];
+  const traits = sp.traits.map(t => `<span class="trait">${t}</span>`).join("");
+  const scoreBreakdown = Object.entries(state.scores)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([k,v]) => `${k}: ${v}/10`)
+    .join(" · ");
+
+  return `
+    <div class="result-card">
+      <div class="result-title">Your SuperPower Is</div>
+      <div class="superpower-badge sp-${state.result}">${sp.emoji} ${state.result}</div>
+      <div style="font-family:'Baloo 2',cursive;font-size:1.1rem;color:var(--accent1);margin-bottom:12px">${sp.tagline}</div>
+      <p class="result-desc">${sp.desc}</p>
+      <div class="traits">${traits}</div>
+      <p style="font-size:0.78rem;color:var(--muted);margin-bottom:8px">Score breakdown: ${scoreBreakdown}</p>
+      <p class="email-sent-note">📧 Your result has been sent to ${state.email}</p>
+      <button class="retry-btn" onclick="resetQuiz()">Take the test again</button>
+
+      <div class="cta-block" id="ctaBlock">
+        <div class="cta-eyebrow">🎯 Take the Next Step</div>
+        <div class="cta-headline">Want to turn your ${state.result} SuperPower<br>into the perfect career?</div>
+        <p class="cta-sub">Get a deep-dive psychometric assessment + 1-on-1 expert counseling session — and make your career choice with science, not guesswork.</p>
+        <a class="cta-btn" href="${buildWhatsAppLink()}" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.124.558 4.121 1.533 5.857L0 24l6.335-1.51A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.007-1.371l-.36-.214-3.732.89.936-3.618-.235-.372A9.818 9.818 0 1112 21.818z"/></svg>
+          Yes! Let's Talk Career
+        </a>
+        <button class="cta-dismiss" onclick="document.getElementById('ctaBlock').style.display='none'">No thanks, I'm good for now</button>
+      </div>
+    </div>
+  `;
+}
+
+function buildWhatsAppLink() {
+  const msg = encodeURIComponent(
+    `Hi MentorMeRight! 👋 I just completed the SuperPower Assessment.\n\n` +
+    `My name is ${state.name} and my SuperPower is *${state.result}*.\n\n` +
+    `I'd love to learn more about the detailed psychometric assessment and career counseling. Can you help?`
+  );
+  return `https://wa.me/918188824440?text=${msg}`;
+}
+
+function resetQuiz() {
+  state = { step:"email", name:"", email:"", currentQ:0, answers:[], scores:{Inventor:0,Visionary:0,Creator:0,Healer:0,Strategist:0}, result:null };
+  render();
+}
+
+// ─────────────────────────────────────────
+// EMAILJS
+// ─────────────────────────────────────────
+async function sendEmail(superpower) {
+  try {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+    const sp = SUPERPOWERS[superpower];
+    const scoreBreakdown = Object.entries(state.scores)
+      .sort((a,b)=>b[1]-a[1])
+      .map(([k,v]) => `${k}: ${v}/10`)
+      .join("\n");
+
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+      to_name:    state.name,
+      to_email:   state.email,
+      superpower: superpower,
+      tagline:    sp.tagline,
+      emoji:      sp.emoji,
+      description: sp.desc,
+      traits:     sp.traits.join(", "),
+      scores:     scoreBreakdown,
+      site_name:  "MentorMeRight"
+    });
+  } catch (err) {
+    console.error("EmailJS error:", err);
+  }
+}
+
+// ─────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────
+render();
+</script>
+  </div>
+</body>
+</html>

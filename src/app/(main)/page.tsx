@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { CheckCircle2, Phone, Mail, Briefcase, GraduationCap } from "lucide-react";
+import { CheckCircle2, Phone, Mail, MapPin, Briefcase, GraduationCap } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
   const [count, setCount] = useState(0);

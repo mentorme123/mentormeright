@@ -534,16 +534,19 @@ export default function AboutPage() {
                 <div className="w-16 h-16 bg-gradient-to-br from-brand-blue to-brand-blue/80 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-brand-blue/20">
                   <Brain size={32} className="text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Assessments</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Career Assessments</h3>
                 <p className="text-slate-600 leading-relaxed mb-6">
-                  Our advanced AI technology conducts comprehensive psychometric and aptitude assessments, analyzing personality, skills, and interests with precision — combined with expert counsellor guidance.
+                  MentorMe uses advanced artificial intelligence and scientifically validated psychometric assessments to evaluate an individual&apos;s personality, aptitude, skills, interests, and career preferences.
                 </p>
+                <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Our assessment solutions include:</p>
                 <div className="space-y-3">
                   {[
-                    "Psychometric Profiling",
-                    "Aptitude Analysis",
-                    "Personality Mapping",
-                    "Interest Alignment",
+                    "Psychometric Career Assessment",
+                    "Career Aptitude Tests",
+                    "Personality Profiling",
+                    "Interest Mapping",
+                    "Skill Gap Analysis",
+                    "Career Recommendation Reports",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <div className="w-6 h-6 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0">
@@ -553,6 +556,9 @@ export default function AboutPage() {
                     </div>
                   ))}
                 </div>
+                <p className="text-sm text-slate-500 leading-relaxed mt-5">
+                  These insights help students choose the right career path, college, course, and future opportunities with confidence.
+                </p>
               </div>
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-brand-orange/10 rounded-full blur-2xl" />
               <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-brand-blue/10 rounded-full blur-2xl" />

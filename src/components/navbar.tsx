@@ -243,15 +243,6 @@ export function Navbar() {
 
           {/* Right Side Buttons */}
           <div className="flex items-center gap-2 xl:gap-3 shrink-0">
-            <button
-              onClick={openSearch}
-              title="Search site (Ctrl+K)"
-              className="flex items-center gap-2 px-3 py-2 bg-slate-100 hover:bg-brand-blue/10 border border-slate-200 hover:border-brand-blue/30 rounded-xl transition-all group"
-            >
-              <Search className="w-4 h-4 text-slate-500 group-hover:text-brand-blue transition-colors" />
-              <span className="hidden md:inline text-sm text-slate-400 group-hover:text-brand-blue transition-colors font-medium">Search...</span>
-              <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 bg-white border border-slate-200 rounded text-[10px] text-slate-400 font-mono">⌘K</kbd>
-            </button>
 
             <Link href="/free-mini-assessment.html" className="hidden lg:block" target="_blank" rel="noopener noreferrer">
               <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
@@ -313,16 +304,6 @@ export function Navbar() {
         {isMobileMenuOpen && (
           <div className="xl:hidden border-t border-border bg-background">
             <div className="container mx-auto px-4 py-4 space-y-1">
-              <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  openSearch();
-                }}
-                className="w-full flex items-center gap-3 px-4 py-3 mb-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-500 text-sm font-medium"
-              >
-                <Search className="w-4 h-4" />
-                <span>Ask anything about MentorMe...</span>
-              </button>
 
               {mobileLinks.map((link) => (
                 <Link

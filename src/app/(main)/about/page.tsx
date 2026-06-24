@@ -584,37 +584,43 @@ export default function AboutPage() {
               {
                 icon: Compass,
                 title: "Holistic Career Guidance",
-                description: "End-to-end career support combining psychometric assessments, expert counselling, and AI-driven insights to help you discover your ideal career path.",
+                description: "We offer comprehensive career counselling services that combine AI-powered insights, psychometric testing, and one-on-one expert guidance to help students make the right career decisions.",
                 gradient: "from-brand-blue to-blue-700",
               },
               {
                 icon: Users2,
-                title: "Extensive Network of Counsellors & Industry Mentors",
-                description: "Access to a wide network of experienced career counsellors and industry professionals who provide real-world guidance and mentorship.",
+                title: "Network of Career Counsellors & Industry Mentors",
+                description: "Connect with experienced career counsellors, industry experts, and mentors who provide practical guidance based on real-world industry requirements.",
                 gradient: "from-brand-orange to-orange-600",
               },
               {
                 icon: Database,
                 title: "Extensive Career Database",
-                description: "Explore a vast, curated database of career options, industry trends, and role-specific insights to make data-backed career decisions.",
+                description: "Explore hundreds of career options, emerging professions, salary trends, skill requirements, and industry insights through our comprehensive career database.",
                 gradient: "from-emerald-600 to-teal-600",
               },
               {
                 icon: Plane,
-                title: "Study Abroad Support",
-                description: "Complete guidance for international education — from university selection and application support to visa assistance and pre-departure preparation.",
+                title: "Study Abroad Counselling",
+                description: "Get complete support for international education, including university selection, admission guidance, application assistance, visa support, scholarship information, and pre-departure preparation.",
                 gradient: "from-violet-600 to-purple-600",
               },
               {
                 icon: Sparkles,
                 title: "Future-Ready Skill Development",
-                description: "Training programs that bridge the gap between academic knowledge and industry requirements, preparing individuals with 21st-century skills for successful careers.",
+                description: "Our skill development programs focus on communication, leadership, digital skills, employability skills, and industry-relevant training to prepare students for the future workforce.",
                 gradient: "from-rose-600 to-pink-600",
+              },
+              {
+                icon: Target,
+                title: "Empowering Career Success",
+                description: "Whether you are a student exploring career options after 10th or 12th grade, a graduate seeking career direction, or a professional looking for growth opportunities, MentorMe provides personalized career guidance to help you achieve your goals.",
+                gradient: "from-amber-500 to-orange-500",
               },
             ].map((pillar, i) => (
               <div
                 key={i}
-                className={`group relative rounded-2xl bg-white border border-slate-200/80 p-8 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 hover:-translate-y-1 ${i === 4 ? "sm:col-span-2 lg:col-span-1 sm:max-w-md sm:mx-auto lg:max-w-none" : ""}`}
+                className="group relative rounded-2xl bg-white border border-slate-200/80 p-8 shadow-sm hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500 hover:-translate-y-1"
               >
                 <div className={`w-14 h-14 bg-gradient-to-br ${pillar.gradient} rounded-2xl flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   <pillar.icon size={26} className="text-white" />
@@ -623,6 +629,13 @@ export default function AboutPage() {
                 <p className="text-slate-600 text-sm leading-relaxed">{pillar.description}</p>
               </div>
             ))}
+          </div>
+
+          {/* Closing CTA note */}
+          <div className="text-center mt-4 max-w-2xl mx-auto">
+            <p className="text-base text-slate-600 leading-relaxed">
+              Start your journey with MentorMe and discover the career path that matches your strengths, interests, and aspirations.
+            </p>
           </div>
         </div>
       </section>

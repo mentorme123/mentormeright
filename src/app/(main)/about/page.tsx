@@ -521,7 +521,10 @@ export default function AboutPage() {
                 From Self-Discovery to Employability
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed">
-                At MentorMe, we prioritize using a scientific approach rooted in deep self-awareness to guide career decisions. Our advanced AI technology is instrumental in conducting comprehensive psychometric and aptitude assessments, analyzing an individual&apos;s personality, skills, and interests with precision. Combining this with the expertise of our counsellors, we ensure students and professionals make informed choices.
+                At MentorMe, we help students and professionals make informed career decisions through AI-powered career guidance, psychometric assessments, aptitude testing, and expert career counselling.
+              </p>
+              <p className="text-lg text-slate-600 leading-relaxed">
+                Our mission is to bridge the gap between education and employability by helping individuals discover their strengths, interests, personality traits, and career opportunities. Through advanced AI technology and experienced career counsellors, we provide personalized career roadmaps that lead to long-term success.
               </p>
             </div>
 

@@ -67,7 +67,6 @@ export function Navbar() {
 
   const mobileLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About Us" },
     { href: "/ai-learning-hub", label: "AI Learning Hub" },
     { href: "/k12-programs", label: "21st Century Skills Hub" },
     { href: "/blogs", label: "Blogs" },
@@ -90,11 +89,6 @@ export function Navbar() {
           <div className="hidden xl:flex items-center gap-3 xl:gap-5 text-[14px] font-bold text-slate-800 whitespace-nowrap shrink">
             <Link href="/" className="relative group py-2">
               <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">Home</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
-            </Link>
-
-            <Link href="/about" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">About Us</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
 

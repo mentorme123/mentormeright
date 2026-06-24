@@ -502,7 +502,7 @@ export default function AboutPage() {
           </div>
           <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">About MentorMe</h1>
           <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
-            At MentorMe, we prioritize using a scientific approach rooted in deep self-awareness to guide career decisions.
+            AI-Powered Career Guidance & Career Counselling Platform.
           </p>
         </div>
       </section>

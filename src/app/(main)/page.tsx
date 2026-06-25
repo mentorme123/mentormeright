@@ -883,7 +883,7 @@ export default function Home() {
       highlight: "with AI",
       subtitle: "MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.",
       btn1Text: "Career Assessment",
-      btn1Link: "/free-mini-assessment.html",
+      btn1Link: "/assessment",
       btn2Text: "Contact Us",
       btn2Link: "/contact"
     },

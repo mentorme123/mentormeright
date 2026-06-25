@@ -67,6 +67,7 @@ export function Navbar() {
 
   const mobileLinks = [
     { href: "/", label: "Home" },
+    { href: "/about", label: "About" },
     { href: "/ai-learning-hub", label: "AI Learning Hub" },
     { href: "/k12-programs", label: "21st Century Skills Hub" },
     { href: "/blogs", label: "Blogs" },
@@ -89,6 +90,11 @@ export function Navbar() {
           <div className="hidden xl:flex items-center gap-3 xl:gap-5 text-[14px] font-bold text-slate-800 whitespace-nowrap shrink">
             <Link href="/" className="relative group py-2">
               <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">Home</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
+
+            <Link href="/about" className="relative group py-2">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">About</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
 
@@ -239,14 +245,18 @@ export function Navbar() {
               <span className="group-hover:text-brand-blue transition-colors duration-300">Contact Us</span>
               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
             </Link>
+
+            <button onClick={openSearch} className="relative group py-2 flex items-center gap-1">
+              <Search size={18} className="text-slate-600 group-hover:text-brand-blue transition-colors duration-300" />
+            </button>
           </div>
 
           {/* Right Side Buttons */}
           <div className="flex items-center gap-2 xl:gap-3 shrink-0">
 
-            <Link href="/free-mini-assessment.html" className="hidden lg:block" target="_blank" rel="noopener noreferrer">
+            <Link href="/assessment" className="hidden lg:block">
               <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
-                Free Mini Psychometric Assessment
+                Career Assessment
               </button>
             </Link>
 
@@ -317,8 +327,12 @@ export function Navbar() {
               ))}
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
-                <Link href="/free-mini-assessment.html" onClick={() => setIsMobileMenuOpen(false)} target="_blank" rel="noopener noreferrer">
-                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Free Mini Psychometric Assessment</button>
+                <button onClick={() => { openSearch(); setIsMobileMenuOpen(false); }} className="w-full flex items-center justify-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold py-3 rounded-xl transition-all">
+                  <Search size={18} />
+                  Search
+                </button>
+                <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
+                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Career Assessment</button>
                 </Link>
                 {!user && (
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">

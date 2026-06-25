@@ -893,7 +893,7 @@ export default function Home() {
       highlight: "Intelligence",
       subtitle: "Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.",
       btn1Text: "Career Assessment",
-      btn1Link: "/free-mini-assessment.html",
+      btn1Link: "/assessment",
       btn2Text: "Our Programs",
       btn2Link: "/services"
     },

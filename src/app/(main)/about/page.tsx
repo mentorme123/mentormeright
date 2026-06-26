@@ -534,7 +534,7 @@ export default function AboutPage() {
                 <div className="w-16 h-16 bg-gradient-to-br from-brand-blue to-brand-blue/80 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-brand-blue/20">
                   <Brain size={32} className="text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Career Assessments</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Free Mini Psychometric Assessments</h3>
                 <p className="text-slate-600 leading-relaxed mb-6">
                   MentorMe uses advanced artificial intelligence and scientifically validated psychometric assessments to evaluate an individual&apos;s personality, aptitude, skills, interests, and career preferences.
                 </p>

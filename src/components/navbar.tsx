@@ -256,7 +256,7 @@ export function Navbar() {
 
             <Link href="/assessment" className="hidden lg:block">
               <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
-                Career Assessment
+                Free Mini Psychometric Assessment
               </button>
             </Link>
 
@@ -332,7 +332,7 @@ export function Navbar() {
                   Search
                 </button>
                 <Link href="/assessment" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Career Assessment</button>
+                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Free Mini Psychometric Assessment</button>
                 </Link>
                 {!user && (
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">

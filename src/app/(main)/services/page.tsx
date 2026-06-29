@@ -13,8 +13,15 @@ const skillPrograms = {
       slug: "critical-thinking-k12",
       title: "Critical Thinking & Problem Solving",
       tagline: "Think Better. Solve Faster. Lead Smarter.",
-      shortDesc: "This program helps students develop structured thinking, logical reasoning, analytical skills, and problem-solving abilities.",
-      benefits: ["Improves analytical thinking", "Enhances academic performance", "Builds decision-making ability", "Encourages independent thinking"],
+      shortDesc: "The Critical Thinking & Problem Solving Course helps students develop strong structured thinking, logical reasoning, analytical skills, and problem-solving abilities through engaging case studies, puzzles, real-world challenges, and interactive activities. This program is designed to build 21st-century thinking skills that improve academic performance and prepare students for future careers.",
+      benefits: [
+        "Improves analytical thinking skills",
+        "Enhances academic performance and learning ability",
+        "Builds strong decision-making skills",
+        "Encourages independent and logical thinking",
+        "Strengthens problem-solving confidence",
+        "Develops real-world reasoning ability"
+      ],
       modules: ["Understanding Problems", "Root Cause Analysis", "Logical Reasoning", "Creative Problem Solving", "Decision-Making Frameworks", "Real-Life Simulations"],
       keywords: ["Critical Thinking Course for Students", "Problem Solving Skills Training", "Future Skills for School Students"]
     },

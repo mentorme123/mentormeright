@@ -583,19 +583,23 @@ export const programsData: Record<string, Program> = {
     category: "21st Century Skills Hub",
     image: "/images/programs/ai-school.png",
     subtitle: "Think Better. Solve Faster. Lead Smarter.",
-    description: "This program helps students develop structured thinking, logical reasoning, analytical skills, and problem-solving abilities through case studies, puzzles, and real-world challenges.",
+    description: "The Critical Thinking & Problem Solving Course helps students develop strong structured thinking, logical reasoning, analytical skills, and problem-solving abilities through engaging case studies, puzzles, real-world challenges, and interactive activities. This program is designed to build 21st-century thinking skills that improve academic performance and prepare students for future careers.",
     howWeOffer: [],
     keyHighlights: [],
     benefits: [
-      "Improves analytical thinking",
-      "Enhances academic performance",
-      "Builds decision-making ability",
-      "Encourages independent thinking"
+      "Improves analytical thinking skills",
+      "Enhances academic performance and learning ability",
+      "Builds strong decision-making skills",
+      "Encourages independent and logical thinking",
+      "Strengthens problem-solving confidence",
+      "Develops real-world reasoning ability"
     ],
     usp: [
-      "Gamified learning",
+      "Gamified and interactive learning experience",
       "Industry-inspired case studies",
-      "Age-appropriate simulations"
+      "Age-appropriate simulations and activities",
+      "Practical, hands-on thinking exercises",
+      "Focus on real-world problem-solving skills"
     ],
     modules: [
       "Understanding Problems",
@@ -605,11 +609,13 @@ export const programsData: Record<string, Program> = {
       "Decision-Making Frameworks",
       "Real-Life Simulations"
     ],
-    learningOutcomes: "Students can evaluate situations logically, solve problems systematically, and make better decisions.",
+    learningOutcomes: "After completing this program, students will be able to: Evaluate situations logically and systematically, Break down complex problems effectively, Improve reasoning and analytical thinking skills, Make better and faster decisions, Apply structured problem-solving methods in real life.",
     mentorMeAdvantage: [
-      "Gamified learning",
+      "Gamified and interactive learning experience",
       "Industry-inspired case studies",
-      "Age-appropriate simulations"
+      "Age-appropriate simulations and activities",
+      "Practical, hands-on thinking exercises",
+      "Focus on real-world problem-solving skills"
     ],
     seoKeywords: [
       "Critical Thinking Course for Students",

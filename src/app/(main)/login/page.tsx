@@ -30,7 +30,8 @@ export default function LoginPage() {
       const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
       if (authError) throw authError;
       if (!data.user) throw new Error("No user found");
-      router.push("/auth/route-director");
+      // Directly open career assessment after login
+      window.location.href = "https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment";
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Login failed. Please check your credentials.");
     } finally {

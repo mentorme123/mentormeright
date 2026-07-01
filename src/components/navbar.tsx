@@ -260,12 +260,6 @@ export function Navbar() {
               </button>
             </Link>
 
-            <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html" className="hidden lg:block">
-              <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-blue/20 transition-all duration-300 text-sm whitespace-nowrap">
-                Career Assessment
-              </button>
-            </Link>
-
             {user ? (
               <div className="relative profile-dropdown">
                 <button
@@ -339,9 +333,6 @@ export function Navbar() {
                 </button>
                 <Link href="https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Free Mini Psychometric Assessment</button>
-                </Link>
-                <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-bold py-3 rounded-xl shadow-md">Career Assessment</button>
                 </Link>
                 {!user && (
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">

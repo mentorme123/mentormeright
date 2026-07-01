@@ -32,6 +32,7 @@ export function Footer() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li><Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link></li>
                 <li><Link href="/services" className="hover:text-brand-blue transition-colors">Our Services</Link></li>
+                <li><Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html" className="hover:text-brand-blue transition-colors">Career Assessment</Link></li>
                 <li><Link href="/careers" className="hover:text-brand-blue transition-colors">Careers</Link></li>
               </ul>
             </div>

@@ -878,7 +878,7 @@ export default function Home() {
 
   const slides = [
     {
-      image: "/images/programs/robotics.png",
+      image: "/images/home-hero-1.png",
       heading: "Build Future-Ready Careers ",
       highlight: "with AI",
       subtitle: "MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.",
@@ -888,7 +888,7 @@ export default function Home() {
       btn2Link: "/contact"
     },
     {
-      image: "/images/programs/ai-school.png",
+      image: "/images/home-hero-2.png",
       heading: "AI-Powered Career ",
       highlight: "Intelligence",
       subtitle: "Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.",
@@ -898,7 +898,7 @@ export default function Home() {
       btn2Link: "/services"
     },
     {
-      image: "/images/programs/vedic-maths.png",
+      image: "/images/home-hero-3.png",
       heading: "Future Skills & ",
       highlight: "Employability",
       subtitle: "Master AI, Robotics, emerging technologies, and workplace skills that drive academic, professional, and career success.",

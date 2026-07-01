@@ -878,8 +878,8 @@ export default function Home() {
 
   const slides = [
     {
-      image: "/images/home-hero-1.png",
-      heading: "Build Future-Ready Careers ",
+      image: "https://images.unsplash.com/photo-1620712943543-bcc4688da561?auto=format&fit=crop&w=1600&q=80",
+      heading: "Build Future-Ready Careers",
       highlight: "with AI",
       subtitle: "MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.",
       btn1Text: "Career Assessment",
@@ -888,7 +888,7 @@ export default function Home() {
       btn2Link: "/contact"
     },
     {
-      image: "/images/home-hero-2.png",
+      image: "https://images.unsplash.com/photo-1550751827-4bd374c3a058?auto=format&fit=crop&w=1600&q=80",
       heading: "AI-Powered Career ",
       highlight: "Intelligence",
       subtitle: "Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.",
@@ -898,7 +898,7 @@ export default function Home() {
       btn2Link: "/services"
     },
     {
-      image: "/images/home-hero-3.png",
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1600&q=80",
       heading: "Future Skills & ",
       highlight: "Employability",
       subtitle: "Master AI, Robotics, emerging technologies, and workplace skills that drive academic, professional, and career success.",

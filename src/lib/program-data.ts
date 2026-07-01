@@ -247,7 +247,7 @@ export const programsData: Record<string, Program> = {
     slug: "ai-foundations-k12",
     title: "AI Foundations for School Students",
     category: "AI Learning Hub",
-    image: "/images/programs/ai-school.png",
+    image: "/images/programs/ai-foundations-k12.png",
     subtitle: "A beginner-friendly introduction to Artificial Intelligence for young learners.",
     description: "A beginner-friendly introduction to Artificial Intelligence that helps students understand how AI works and how it impacts everyday life, future careers, and society.",
     howWeOffer: [],

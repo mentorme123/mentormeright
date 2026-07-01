@@ -43,17 +43,7 @@ export async function GET(request: Request) {
       // If they already exist, redirect them based on their role, unless a specific 'next' was provided
       if (next === '/' && userProfile) {
         if (userProfile.role === 'individual') {
-          // Check if they've already completed an assessment
-          const { data: existingResult } = await supabase
-            .from('assessment_results')
-            .select('id')
-            .eq('user_id', session.user.id)
-            .limit(1)
-            .maybeSingle();
-
-          if (existingResult) {
-            return NextResponse.redirect(`${origin}/dashboard/student`);
-          }
+          // Always redirect to assessment after login/register
           return NextResponse.redirect("https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment");
         } else if (userProfile.role === 'institutional') {
           return NextResponse.redirect(`${origin}/dashboard/institution`);

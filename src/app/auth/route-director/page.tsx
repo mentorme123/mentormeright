@@ -57,16 +57,10 @@ export default function RouteDirector() {
 
         // 2. Strict Role-Based Routing
         if (profile.role === 'individual') {
-          // Check for completed assessment (Condition B)
-          const { data: assessment } = await routeSupabase
-            .from('assessment_results')
-            .select('id')
-            .eq('user_id', user.id)
-            .maybeSingle();
-
-          const destination = assessment ? "/dashboard/student" : "https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment";
-          console.log(`🎯 Routing Student to: ${destination}`);
-          router.push(destination);
+          // Always redirect to assessment after login/register
+          const destination = "https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment";
+          console.log(`🎯 Routing Student to Assessment: ${destination}`);
+          window.location.href = destination;
         } 
         else if (profile.role === 'institutional') {
           console.log("🎯 Routing to Institutional Dashboard");

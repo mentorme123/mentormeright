@@ -254,9 +254,15 @@ export function Navbar() {
           {/* Right Side Buttons */}
           <div className="flex items-center gap-2 xl:gap-3 shrink-0">
 
-            <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html" className="hidden lg:block">
+            <Link href="https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment" className="hidden lg:block">
               <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
                 Free Mini Psychometric Assessment
+              </button>
+            </Link>
+
+            <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html" className="hidden lg:block">
+              <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-blue/20 transition-all duration-300 text-sm whitespace-nowrap">
+                Career Assessment
               </button>
             </Link>
 
@@ -331,8 +337,11 @@ export function Navbar() {
                   <Search size={18} />
                   Search
                 </button>
-                <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Free Mini Psychometric Assessment</button>
+                </Link>
+                <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html" onClick={() => setIsMobileMenuOpen(false)}>
+                  <button className="w-full bg-brand-blue text-white hover:bg-brand-blue/90 font-bold py-3 rounded-xl shadow-md">Career Assessment</button>
                 </Link>
                 {!user && (
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">

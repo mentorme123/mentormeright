@@ -171,7 +171,7 @@ END:VCALENDAR`;
               <!-- Footer -->
               <div style="background: #f8fafc; padding: 24px 32px; text-align: center; border-top: 1px solid #e2e8f0;">
                 <p style="color: #94a3b8; font-size: 12px; margin: 0;">© ${new Date().getFullYear()} MentorMe. All rights reserved.</p>
-                <p style="color: #94a3b8; font-size: 12px; margin: 4px 0 0;">Hyderabad, India | mentormeright.vercel.app</p>
+                <p style="color: #94a3b8; font-size: 12px; margin: 4px 0 0;">Hyderabad, India | ${process.env.NEXT_PUBLIC_SITE_URL?.replace(/^https?:\/\//, '') || 'mentormeright.in'}</p>
               </div>
             </div>
           </body>

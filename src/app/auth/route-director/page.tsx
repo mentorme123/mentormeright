@@ -30,7 +30,7 @@ export default function RouteDirector() {
           .eq('id', user.id)
           .maybeSingle();
 
-if (!profile || profileError) {
+        if (!profile || profileError) {
            console.warn("⚠️ Profile missing. Attempting self-healing...");
            const { data: newProfile, error: createError } = await routeSupabase
              .from('users')
@@ -64,7 +64,7 @@ if (!profile || profileError) {
             .eq('user_id', user.id)
             .maybeSingle();
 
-          const destination = assessment ? "/dashboard/student" : "/assessment";
+          const destination = assessment ? "/dashboard/student" : "https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment";
           console.log(`🎯 Routing Student to: ${destination}`);
           router.push(destination);
         } 

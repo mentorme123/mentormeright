@@ -37,7 +37,7 @@ export async function GET(request: Request) {
           ]);
         
         // Redirect new students to the assessment page
-        return NextResponse.redirect(`${origin}/assessment`);
+        return NextResponse.redirect("https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment");
       }
 
       // If they already exist, redirect them based on their role, unless a specific 'next' was provided
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
           if (existingResult) {
             return NextResponse.redirect(`${origin}/dashboard/student`);
           }
-          return NextResponse.redirect(`${origin}/assessment`);
+          return NextResponse.redirect("https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment");
         } else if (userProfile.role === 'institutional') {
           return NextResponse.redirect(`${origin}/dashboard/institution`);
         } else if (userProfile.role === 'admin') {

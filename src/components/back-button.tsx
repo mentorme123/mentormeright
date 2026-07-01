@@ -9,7 +9,7 @@ export function PathTracker() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const isContentPage = !pathname.startsWith("/assessment") && 
+      const isContentPage = !pathname.startsWith("https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment") && 
                             !pathname.startsWith("/login") && 
                             !pathname.startsWith("/register") && 
                             !pathname.startsWith("/auth");

@@ -34,7 +34,7 @@ export default function CounsellorsLanding() {
     if (!assessment) {
       setErrorMsg("You must complete the Career Assessment before booking a session. Redirecting...");
       setTimeout(() => {
-        router.push("/assessment");
+        router.push("https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment");
       }, 3000);
       return;
     }

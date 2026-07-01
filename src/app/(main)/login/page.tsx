@@ -31,7 +31,7 @@ export default function LoginPage() {
       if (authError) throw authError;
       if (!data.user) throw new Error("No user found");
       // Directly open career assessment after login
-      window.location.href = "https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html";
+      window.location.href = "/career-assessment.html";
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Login failed. Please check your credentials.");
     } finally {

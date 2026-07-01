@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 
 const QUICK_LINKS = [
-  { href: "https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html",     label: "Career Assessment",   icon: Star,          desc: "Free psychometric test" },
+  { href: "/career-assessment.html",     label: "Career Assessment",   icon: Star,          desc: "Free psychometric test" },
   { href: "/counsellors",    label: "Counsellors",         icon: Users,         desc: "Book a 1-on-1 session" },
   { href: "/career-library", label: "Career Library",      icon: BookOpen,      desc: "5000+ career paths" },
   { href: "/ai-corner",      label: "AI Corner",           icon: Sparkles,      desc: "Chat with AI counselor" },

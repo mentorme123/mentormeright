@@ -58,7 +58,7 @@ export default function RouteDirector() {
         // 2. Strict Role-Based Routing
         if (profile.role === 'individual') {
           // Always redirect to assessment after login/register
-          const destination = "https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html";
+          const destination = "/career-assessment.html";
           console.log(`🎯 Routing Student to Assessment: ${destination}`);
           window.location.href = destination;
         } 

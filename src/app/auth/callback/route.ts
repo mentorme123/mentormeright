@@ -37,14 +37,14 @@ export async function GET(request: Request) {
           ]);
         
         // Redirect new students to the assessment page
-        return NextResponse.redirect("https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html");
+        return NextResponse.redirect("/career-assessment.html");
       }
 
       // If they already exist, redirect them based on their role, unless a specific 'next' was provided
       if (next === '/' && userProfile) {
         if (userProfile.role === 'individual') {
           // Always redirect to assessment after login/register
-          return NextResponse.redirect("https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html");
+          return NextResponse.redirect("/career-assessment.html");
         } else if (userProfile.role === 'institutional') {
           return NextResponse.redirect(`${origin}/dashboard/institution`);
         } else if (userProfile.role === 'admin') {

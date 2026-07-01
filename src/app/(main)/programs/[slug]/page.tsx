@@ -111,7 +111,7 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
             {program.subtitle}
           </p>
           <div className="pt-6 flex flex-wrap gap-3 justify-center">
-            <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html">
+            <Link href="/career-assessment.html">
               <Button size="lg" className={`${bgColor} hover:opacity-90 text-white border-0 shadow-2xl scale-100 hover:scale-105 transition-all duration-300 text-base px-6 py-5 rounded-full`}>
                 Enroll Now <ArrowRight className="ml-2" />
               </Button>

@@ -517,7 +517,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
             <h3 className="text-lg font-black text-slate-800">App Resources</h3>
             <p className="text-sm text-slate-500 mt-2">Complete the assessment to unlock AI Simulator, Exam War Room, NEP Certificates, and Career ROI.</p>
-            <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html" className="inline-block mt-4">
+            <Link href="/career-assessment.html" className="inline-block mt-4">
               <button className="bg-brand-orange text-white font-bold px-6 py-3 rounded-xl shadow-lg text-sm">
                 Complete Assessment
               </button>
@@ -622,7 +622,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
                 </div>
 
                 {!reportData && (
-                  <Link href="https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html">
+                  <Link href="/career-assessment.html">
                     <Button className="w-full mt-6 bg-brand-orange hover:bg-brand-orange/90 text-white font-bold py-4 shadow-lg shadow-orange-600/10 transition-all hover:translate-y-[-2px]">
                       Start Assessment <ChevronRight size={18} className="ml-1" />
                     </Button>
@@ -768,7 +768,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
               <p className="text-slate-500 text-sm mb-6">
                 Our proprietary 90-question psychometric engine maps your unique traits to 500+ global career paths.
               </p>
-              <Link href={assessmentStatus === 'completed' ? "/report" : "https://mentormeright-gud43a1bj-mentorme123s-projects.vercel.app/career-assessment.html"}>
+              <Link href={assessmentStatus === 'completed' ? "/report" : "/career-assessment.html"}>
                 <Button className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-8 py-5 rounded-xl shadow-md transition-all hover:scale-105">
                   {assessmentStatus === 'completed' ? 'View Full Report' : 'Begin Assessment'} <ChevronRight className="ml-1" size={16} />
                 </Button>

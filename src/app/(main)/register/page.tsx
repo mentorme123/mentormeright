@@ -43,7 +43,7 @@ export default function RegisterPage() {
 
       if (result.emailConfirmed) {
         // Directly open career assessment after registration
-        window.location.href = "/career-assessment.html";
+        window.location.href = "https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment";
       } else {
         setSuccess(true);
       }

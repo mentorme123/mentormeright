@@ -9,7 +9,7 @@ export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const isAuthPage = pathname.startsWith('/login') || pathname.startsWith('/register');
   
-  const isTestRoute = pathname.startsWith('/test') || pathname.startsWith('/assessment') || pathname.startsWith('/report') || pathname.startsWith('/counsellors/book');
+  const isTestRoute = pathname.startsWith('/test') || pathname.startsWith('/counsellors/book');
   const isProtectedPage = isTestRoute || pathname.startsWith('/dashboard');
 
   if (!user && isProtectedPage) {

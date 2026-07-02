@@ -31,9 +31,14 @@ export default function LoginPage() {
       if (authError) throw authError;
       if (!data.user) throw new Error("No user found");
       // Directly open career assessment after login
-      window.location.href = "https://mentormeright-gt7dzpp8x-mentorme123s-projects.vercel.app/assessment";
+      window.location.href = "/assessment";
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Login failed. Please check your credentials.");
+      const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";
+      if (message.includes("Unexpected token '<'") || message.toLowerCase().includes("rate limit")) {
+        setError("Too many login attempts or server error. Please wait a few minutes and try again.");
+      } else {
+        setError(message);
+      }
     } finally {
       setLoading(false);
     }

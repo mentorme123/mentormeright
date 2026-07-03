@@ -1662,6 +1662,20 @@
                 <option value="12">Class 12</option>
               </select>
             </div>
+            <div class="reg-field"><label>Subject / Stream *</label>
+              <select id="r-subject">
+                <option value="">Select subject</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Physics">Physics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Biology">Biology</option>
+                <option value="English">English</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Commerce">Commerce</option>
+                <option value="Arts/Humanities">Arts / Humanities</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
             <div class="reg-field full"><label>School name *</label><input id="r-school" type="text"
                 placeholder="Full name of your school" /></div>
             <div class="reg-field"><label>City *</label><input id="r-city" type="text" placeholder="e.g. Hyderabad" />
@@ -2019,12 +2033,13 @@
     function initPayment() {
       const name = document.getElementById('r-name').value.trim();
       const cls = document.getElementById('r-class').value;
+      const subject = document.getElementById('r-subject').value;
       const school = document.getElementById('r-school').value.trim();
       const phone = document.getElementById('r-phone').value.trim();
       const err = document.getElementById('reg-err');
-      if (!name || !cls || !school || !phone || phone.length < 10) { err.style.display = 'block'; return; }
+      if (!name || !cls || !subject || !school || !phone || phone.length < 10) { err.style.display = 'block'; return; }
       err.style.display = 'none';
-      student = { name, cls: parseInt(cls), school, phone, email: document.getElementById('r-email').value.trim(), city: document.getElementById('r-city').value.trim() };
+      student = { name, cls: parseInt(cls), subject, school, phone, email: document.getElementById('r-email').value.trim(), city: document.getElementById('r-city').value.trim() };
       goTo('pg-paying');
 
       // ══ LIVE RAZORPAY FLOW ══
@@ -2388,6 +2403,7 @@
                   <th>#</th>
                   <th>Student</th>
                   <th>Class</th>
+                  <th>Subject</th>
                   <th>City</th>
                   <th>Overall %</th>
                   <th>Top Interest</th>
@@ -2398,7 +2414,7 @@
               </thead>
               <tbody id="submissions-tbody">
                 <tr>
-                  <td colspan="9">
+                  <td colspan="10">
                     <div class="adm-loading">
                       <div class="adm-spinner"></div>Loading submissions…
                     </div>
@@ -2435,6 +2451,7 @@
                 <tr>
                   <th>Student</th>
                   <th>Class</th>
+                  <th>Subject</th>
                   <th>Parent Email</th>
                   <th>Phone</th>
                   <th>Overall %</th>
@@ -2629,13 +2646,14 @@
     function renderSubmissionsTable(data) {
       filteredRows = data;
       const tbody = document.getElementById('submissions-tbody');
-      if (!data.length) { tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">🔍</div><div>No matching submissions</div></div></td></tr>`; document.getElementById('tbl-count').textContent = 'No results'; return; }
+      if (!data.length) { tbody.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">🔍</div><div>No matching submissions</div></div></td></tr>`; document.getElementById('tbl-count').textContent = 'No results'; return; }
       tbody.innerHTML = data.map((s, i) => `
     <tr style="cursor:pointer" onclick="openModal('${s.id}')">
       <td style="color:var(--t3);font-size:12px">${i + 1}</td>
       <td><div class="tbl-name">${s.student?.name || '—'}</div><div class="tbl-school">${s.student?.school || '—'}</div></td>
-      <td><span class="bdg bdg-navy" style="font-size:11px">Class ${s.student?.cls || '?'}</span></td>
-      <td style="font-size:13px;color:var(--t2)">${s.student?.city || '—'}</td>
+       <td><span class="bdg bdg-navy" style="font-size:11px">Class ${s.student?.cls || '?'}</span></td>
+       <td style="font-size:13px;color:var(--t2)">${s.student?.subject || '—'}</td>
+       <td style="font-size:13px;color:var(--t2)">${s.student?.city || '—'}</td>
       <td><span style="font-family:var(--fh);font-size:15px;font-weight:700;color:var(--navy)">${s.overall || 0}%</span></td>
       <td><span class="bdg bdg-green" style="font-size:11px">${s.topPassion || '—'}</span></td>
       <td style="font-size:12px;color:var(--t2)">${fmtDate(s.submittedAtISO)}</td>
@@ -2662,7 +2680,8 @@
         const name = (s.student?.name || '').toLowerCase();
         const school = (s.student?.school || '').toLowerCase();
         const city = (s.student?.city || '').toLowerCase();
-        const matchQ = !q || (name.includes(q) || school.includes(q) || city.includes(q));
+        const subject = (s.student?.subject || '').toLowerCase();
+        const matchQ = !q || (name.includes(q) || school.includes(q) || city.includes(q) || subject.includes(q));
         const matchCls = !cls || String(s.student?.cls) === cls;
         const matchSt = !st || s.reportStatus === st;
         return matchQ && matchCls && matchSt;
@@ -2675,12 +2694,13 @@
       const pending = allSubmissions.filter(s => s.reportStatus === 'pending');
       document.getElementById('pending-count').textContent = `${pending.length} student${pending.length !== 1 ? 's' : ''} awaiting report`;
       const tbody = document.getElementById('pending-tbody');
-      if (!pending.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="empty-state"><div class="empty-icon">🎉</div><div style="font-weight:600;color:var(--text)">All reports sent!</div><div>No pending reports.</div></div></td></tr>`; return; }
+      if (!pending.length) { tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">🎉</div><div style="font-weight:600;color:var(--text)">All reports sent!</div><div>No pending reports.</div></div></td></tr>`; return; }
       tbody.innerHTML = pending.map(s => `
     <tr>
       <td><div class="tbl-name">${s.student?.name || '—'}</div><div class="tbl-school">${s.student?.school || '—'}</div></td>
-      <td><span class="bdg bdg-navy" style="font-size:11px">Class ${s.student?.cls || '?'}</span></td>
-      <td style="font-size:12px;color:var(--blue)">${s.student?.email || '—'}</td>
+       <td><span class="bdg bdg-navy" style="font-size:11px">Class ${s.student?.cls || '?'}</span></td>
+       <td style="font-size:13px;color:var(--t2)">${s.student?.subject || '—'}</td>
+       <td style="font-size:12px;color:var(--blue)">${s.student?.email || '—'}</td>
       <td style="font-size:12px;color:var(--t2)">${s.student?.phone || '—'}</td>
       <td><span style="font-family:var(--fh);font-size:15px;font-weight:700;color:var(--navy)">${s.overall || 0}%</span></td>
       <td><span class="bdg bdg-green" style="font-size:11px">${s.topPassion || '—'}</span></td>
@@ -2726,7 +2746,7 @@
       const s = allSubmissions.find(x => x.id === id);
       if (!s) return;
       document.getElementById('modal-name').textContent = s.student?.name || '—';
-      document.getElementById('modal-meta').textContent = `Class ${s.student?.cls || '?'} · ${s.student?.school || '—'} · ${s.student?.city || '—'} · ${s.student?.phone || '—'} · ${s.student?.email || '—'}`;
+      document.getElementById('modal-meta').textContent = `Class ${s.student?.cls || '?'} · ${s.student?.school || '—'} · ${s.student?.city || '—'} · ${s.student?.subject || '—'} · ${s.student?.phone || '—'} · ${s.student?.email || '—'}`;
       const SECS_DATA = [
         { id: 'individuality', nm: '🧠 Individuality Profile', params: ['Emotional Intelligence', 'Efficiency', 'Empathy', 'Engagement', 'Exploration'], bars: ['#1a3a8f', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd'] },
         { id: 'skills', nm: '⚡ Skill Proficiency', params: ['Logical', 'Numerical', 'Mechanical', 'Verbal', 'Administrative'], bars: ['#d97706', '#f59e0b', '#b45309', '#92400e', '#fbbf24'] },
@@ -2788,8 +2808,7 @@
       doc.setFillColor(...LTGRAY); doc.roundedRect(14, 44, 182, 30, 3, 3, 'F');
       doc.setTextColor(...NAVY); doc.setFont('helvetica', 'bold'); doc.setFontSize(15);
       doc.text(s.name || 'Student', 20, 55);
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...GRAY);
-      doc.text(`Class ${s.cls || '?'}  ·  ${s.school || ''}  ·  ${s.city || 'India'}`, 20, 62);
+      doc.text(`Class ${s.cls || '?'}  ·  ${s.subject || ''}  ·  ${s.school || ''}  ·  ${s.city || 'India'}`, 20, 62);
       doc.text(`Mobile: ${s.phone || '—'}    Parent email: ${s.email || '—'}`, 20, 68);
       doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(...NAVY);
       doc.text(`Overall Score: ${sub.overall || 0}%`, 140, 55);
@@ -2892,7 +2911,7 @@
     function exportCSV() {
       const rows = [['Name', 'Class', 'School', 'City', 'Phone', 'Parent Email', 'Overall %', 'Top Passion', 'Report Status', 'Submitted']];
       allSubmissions.forEach(s => {
-        rows.push([s.student?.name || '', s.student?.cls || '', s.student?.school || '', s.student?.city || '', s.student?.phone || '', s.student?.email || '', s.overall || 0, s.topPassion || '', s.reportStatus || '', fmtDate(s.submittedAtISO)]);
+        rows.push([s.student?.name || '', s.student?.cls || '', s.student?.school || '', s.student?.subject || '', s.student?.city || '', s.student?.phone || '', s.student?.email || '', s.overall || 0, s.topPassion || '', s.reportStatus || '', fmtDate(s.submittedAtISO)]);
       });
       const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
       const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);

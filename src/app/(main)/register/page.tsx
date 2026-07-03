@@ -42,7 +42,7 @@ export default function RegisterPage() {
       }
 
       if (result.emailConfirmed) {
-        window.location.href = "/assessment";
+        window.location.href = "/career-assessment.html";
       } else {
         setSuccess(true);
       }

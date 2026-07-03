@@ -31,7 +31,7 @@
       "name": "Career Assessment",
       "short_name": "Assessment",
       "description": "Take the free career assessment",
-      "url": "/assessment",
+      "url": "/career-assessment.html",
       "icons": [{ "src": "/logo.png", "sizes": "96x96" }]
     },
     {

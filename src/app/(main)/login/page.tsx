@@ -31,7 +31,7 @@ export default function LoginPage() {
       if (authError) throw authError;
       if (!data.user) throw new Error("No user found");
       // Directly open career assessment after login
-      window.location.href = "/assessment";
+      window.location.href = "/career-assessment.html";
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";
       if (message.includes("Unexpected token '<'") || message.toLowerCase().includes("rate limit")) {

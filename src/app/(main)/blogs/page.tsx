@@ -107,7 +107,7 @@ export default function BlogsPage() {
                     <div className="p-5 flex-1 flex flex-col space-y-4">
                       <h3 className="font-bold text-sm flex-1 leading-snug">{item.title}</h3>
                       <div className="flex flex-col gap-2 mt-auto">
-                        <Link href={`/assessment?audience=${item.audience}`}>
+                        <Link href={`/career-assessment.html?audience=${item.audience}`}>
                           <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50 text-sm">Know More</Button>
                         </Link>
                         <Link href="/contact">

@@ -3,7 +3,7 @@ const STATIC_ASSETS = [
   '/',
   '/login',
   '/register',
-  '/assessment',
+  '/career-assessment.html',
   '/career-library',
   '/logo.png',
   '/manifest.json'

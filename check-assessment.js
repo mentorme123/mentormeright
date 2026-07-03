@@ -15,7 +15,7 @@ const puppeteer = require('puppeteer');
   });
 
   try {
-    await page.goto('https://mentormeright.vercel.app/assessment', { waitUntil: 'networkidle0' });
+    await page.goto('https://mentormeright.vercel.app/career-assessment.html', { waitUntil: 'networkidle0' });
     console.log("Assessment Page loaded successfully.");
     await new Promise(r => setTimeout(r, 2000));
   } catch (err) {

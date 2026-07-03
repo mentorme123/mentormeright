@@ -345,9 +345,9 @@ To chat with AI Corner, please log in to your MentorMe account.`,
 
               {/* Quick Links Bar */}
               <div className="px-4 py-2 bg-white border-t border-slate-100 flex gap-2 overflow-x-auto flex-shrink-0">
-                <Link href="/career-assessment.html" className="px-3 py-1.5 bg-brand-orange/10 text-brand-orange text-xs font-black rounded-lg whitespace-nowrap hover:bg-brand-orange/20 transition-colors">
+                <a href="/career-assessment.html" className="px-3 py-1.5 bg-brand-orange/10 text-brand-orange text-xs font-black rounded-lg whitespace-nowrap hover:bg-brand-orange/20 transition-colors">
                   Free Test 🎯
-                </Link>
+                </a>
                 <Link href="/counsellors" className="px-3 py-1.5 bg-brand-blue/10 text-brand-blue text-xs font-black rounded-lg whitespace-nowrap hover:bg-brand-blue/20 transition-colors">
                   Book ₹4,999 Session
                 </Link>

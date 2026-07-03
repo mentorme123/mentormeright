@@ -254,11 +254,11 @@ export function Navbar() {
           {/* Right Side Buttons */}
           <div className="flex items-center gap-2 xl:gap-3 shrink-0">
 
-            <Link href="/free-mini-assessment.html" className="hidden lg:block">
+            <a href="/free-mini-assessment.html" className="hidden lg:block">
               <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
                 Free Mini Psychometric Assessment
               </button>
-            </Link>
+            </a>
 
             {user ? (
               <div className="relative profile-dropdown">
@@ -331,9 +331,9 @@ export function Navbar() {
                   <Search size={18} />
                   Search
                 </button>
-                <Link href="/free-mini-assessment.html" onClick={() => setIsMobileMenuOpen(false)}>
+                <a href="/free-mini-assessment.html" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Free Mini Psychometric Assessment</button>
-                </Link>
+                </a>
                 {!user && (
                   <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">
                     <button className="w-full font-bold py-3 bg-brand-blue text-white hover:bg-brand-blue/90 rounded-xl transition-all shadow-md">Login / Register</button>

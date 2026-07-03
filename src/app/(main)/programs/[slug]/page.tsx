@@ -111,11 +111,11 @@ export default function ProgramPage({ params }: { params: { slug: string } }) {
             {program.subtitle}
           </p>
           <div className="pt-6 flex flex-wrap gap-3 justify-center">
-            <Link href="/career-assessment.html">
+            <a href="/career-assessment.html">
               <Button size="lg" className={`${bgColor} hover:opacity-90 text-white border-0 shadow-2xl scale-100 hover:scale-105 transition-all duration-300 text-base px-6 py-5 rounded-full`}>
                 Enroll Now <ArrowRight className="ml-2" />
               </Button>
-            </Link>
+            </a>
             <Link href="/contact">
               <Button variant="outline" size="lg" className="bg-white/10 border-white/30 text-white hover:bg-white hover:text-slate-900 backdrop-blur-md text-base px-6 py-5 rounded-full">
                 Contact Us

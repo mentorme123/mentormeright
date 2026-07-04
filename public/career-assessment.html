@@ -2468,8 +2468,9 @@
 
   <div class="res-actions">
     <p style="font-size:13px;color:var(--t2);text-align:center;max-width:420px;line-height:1.7">Questions about your results? Our counsellors are available on WhatsApp — mention your name and the date you took the assessment.</p>
-    <a href="https://api.whatsapp.com/send?phone=918188824440&text=Hi+MentorMe+team!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(student.name)}+,+Class+${student.cls}).+Looking+forward+to+my+report!" target="_blank" class="btn btn-navy">Chat with a MentorMe counsellor →</a>
-    <button class="btn btn-ghost" onclick="goTo('pg-welcome')" style="font-size:13px;padding:9px 18px">Back to home</button>
+     <a href="https://api.whatsapp.com/send?phone=918188824440&text=Hi+MentorMe+team!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(student.name)}+,+Class+${student.cls}).+Looking+forward+to+my+report!" target="_blank" class="btn btn-navy">Chat with a MentorMe counsellor →</a>
+     <a href="/" class="btn btn-amber" target="_self" rel="noopener">Go to Home Page</a>
+     <button class="btn btn-ghost" onclick="goTo('pg-welcome')" style="font-size:13px;padding:9px 18px">Take another assessment</button>
   </div>`;
 
       document.getElementById('res-body').innerHTML = html;

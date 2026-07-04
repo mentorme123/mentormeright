@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Printer, Download, Sparkles, AlertTriangle, Target, Briefcase, GraduationCap, Calendar, Landmark, CheckCircle2 } from "lucide-react";
+import { Printer, Download, Sparkles, AlertTriangle, Target, Briefcase, GraduationCap, Calendar, Landmark, CheckCircle2, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, ResponsiveContainer } from "recharts";
 import Image from "next/image";
@@ -181,6 +182,16 @@ export default function ReportPage() {
           <Printer size={20} />
           <span>Download & Print PDF</span>
         </Button>
+
+        <Link href="/">
+          <Button 
+            size="lg" 
+            className="bg-white text-brand-blue hover:bg-slate-50 font-black shadow-2xl rounded-2xl py-6 px-6 sm:px-8 flex gap-3 items-center justify-center border border-slate-200 transition-all hover:scale-105 hover:shadow-brand-blue/20"
+          >
+            <Home size={20} />
+            <span>Go to Home Page</span>
+          </Button>
+        </Link>
       </div>
 
       <div className="flex flex-col items-center">

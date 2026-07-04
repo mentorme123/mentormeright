@@ -123,8 +123,16 @@
   .traits { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:28px; }
   .trait { background:var(--card2); border-radius:99px; padding:5px 14px; font-size:0.82rem; color:var(--muted); border:1px solid rgba(255,255,255,0.08); }
   .email-sent-note { font-size:0.85rem; color:var(--accent3); margin-bottom:16px; }
-  .retry-btn { background:transparent; border:1.5px solid var(--muted); color:var(--muted); font-size:0.9rem; padding:10px 24px; border-radius:10px; cursor:pointer; font-family:'Nunito',sans-serif; transition:all .2s; }
-  .retry-btn:hover { border-color:var(--text); color:var(--text); }
+   .retry-btn { background:transparent; border:1.5px solid var(--muted); color:var(--muted); font-size:0.9rem; padding:10px 24px; border-radius:10px; cursor:pointer; font-family:'Nunito',sans-serif; transition:all .2s; }
+   .retry-btn:hover { border-color:var(--text); color:var(--text); }
+  .go-home-btn {
+    display: inline-block; margin-top: 18px; padding: 14px 28px; border-radius: 12px;
+    background: linear-gradient(135deg, #f7c948, #ff9500); color: #1a0a2e;
+    font-family: 'Baloo 2', cursive; font-size: 1.05rem; font-weight: 700;
+    text-decoration: none; box-shadow: 0 4px 20px rgba(247,201,72,0.35);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .go-home-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(247,201,72,0.45); }
 
   /* ─── LOADER ─── */
   .loader { display:flex; flex-direction:column; align-items:center; gap:14px; padding:20px 0; }
@@ -517,6 +525,7 @@ function renderResult() {
       <div class="traits">${traits}</div>
       <p style="font-size:0.78rem;color:var(--muted);margin-bottom:8px">Score breakdown: ${scoreBreakdown}</p>
       <p class="email-sent-note">📧 Your result has been sent to ${state.email}</p>
+      <a href="/" class="go-home-btn">Go to Home Page ✨</a>
       <button class="retry-btn" onclick="resetQuiz()">Take the test again</button>
 
       <div class="cta-block" id="ctaBlock">

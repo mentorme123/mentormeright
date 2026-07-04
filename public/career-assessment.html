@@ -642,34 +642,118 @@
       color: var(--t3)
     }
 
-    /* ── SUBJECT CHECKBOXES ── */
-    .subj-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 7px;
-      margin-top: 2px
+    /* ── SUBJECT DROPDOWN ── */
+    .subj-dropdown {
+      position: relative
     }
 
-    .subj-chip {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 12px;
+    .subj-trigger {
+      min-height: 42px;
+      padding: 7px 36px 7px 11px;
       border: 1.5px solid var(--bdr);
       border-radius: var(--r);
+      background: var(--white);
+      cursor: pointer;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      align-items: center;
+      position: relative;
+      transition: border-color .15s
+    }
+
+    .subj-trigger:hover,
+    .subj-trigger.open {
+      border-color: var(--blue)
+    }
+
+    .subj-trigger::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%) rotate(0deg);
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid var(--t3);
+      transition: transform .2s
+    }
+
+    .subj-trigger.open::after {
+      transform: translateY(-50%) rotate(180deg)
+    }
+
+    .subj-placeholder {
+      color: var(--t3);
+      font-size: 14px
+    }
+
+    .subj-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--blue-md);
+      color: var(--navy);
+      border-radius: 5px;
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 600
+    }
+
+    .subj-tag-x {
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      margin-left: 1px;
+      color: var(--blue2);
+      font-weight: 700
+    }
+
+    .subj-tag-x:hover {
+      color: #dc2626
+    }
+
+    .subj-panel {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--white);
+      border: 1.5px solid var(--blue);
+      border-radius: var(--r);
+      box-shadow: var(--sh2);
+      z-index: 200;
+      max-height: 280px;
+      overflow-y: auto
+    }
+
+    .subj-panel.open {
+      display: block
+    }
+
+    .subj-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
       cursor: pointer;
       font-size: 13px;
       color: var(--text);
-      transition: all .15s;
-      user-select: none
+      transition: background .12s
     }
 
-    .subj-chip:hover {
-      border-color: var(--blue);
+    .subj-option:hover {
       background: var(--blue-lt)
     }
 
-    .subj-chip input[type=checkbox] {
+    .subj-option + .subj-option {
+      border-top: 1px solid var(--bdr)
+    }
+
+    .subj-option input[type=checkbox] {
       appearance: none;
       -webkit-appearance: none;
       width: 16px;
@@ -683,12 +767,12 @@
       padding: 0
     }
 
-    .subj-chip input[type=checkbox]:checked {
+    .subj-option input[type=checkbox]:checked {
       background: var(--blue);
       border-color: var(--blue)
     }
 
-    .subj-chip input[type=checkbox]:checked::after {
+    .subj-option input[type=checkbox]:checked::after {
       content: '';
       position: absolute;
       left: 3px;
@@ -701,11 +785,10 @@
       transform: rotate(45deg)
     }
 
-    .subj-chip.checked {
-      border-color: var(--blue);
-      background: var(--blue-md);
-      color: var(--navy);
-      font-weight: 600
+    .subj-option.selected {
+      background: var(--blue-lt);
+      font-weight: 600;
+      color: var(--navy)
     }
 
     .err {
@@ -1722,43 +1805,48 @@
             </div>
             <div class="reg-field full">
               <label>Subjects / Stream <span style="font-weight:400;color:var(--t3);text-transform:none;font-size:10px">(optional — select all that apply)</span></label>
-              <div class="subj-grid" id="subj-grid">
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Mathematics" /> Mathematics
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Physics" /> Physics
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Chemistry" /> Chemistry
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Biology" /> Biology
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Computer Science" /> Computer Science
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="English" /> English
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Commerce" /> Commerce
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Economics" /> Economics
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="History" /> History
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Geography" /> Geography
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Arts / Humanities" /> Arts / Humanities
-                </label>
-                <label class="subj-chip" onclick="toggleChip(this)">
-                  <input type="checkbox" value="Other" /> Other
-                </label>
+              <div class="subj-dropdown" id="subj-dropdown">
+                <div class="subj-trigger" id="subj-trigger" onclick="toggleSubjDropdown(event)">
+                  <span class="subj-placeholder" id="subj-placeholder">Select subjects…</span>
+                </div>
+                <div class="subj-panel" id="subj-panel">
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Mathematics')">
+                    <input type="checkbox" value="Mathematics" /> Mathematics
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Physics')">
+                    <input type="checkbox" value="Physics" /> Physics
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Chemistry')">
+                    <input type="checkbox" value="Chemistry" /> Chemistry
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Biology')">
+                    <input type="checkbox" value="Biology" /> Biology
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Computer Science')">
+                    <input type="checkbox" value="Computer Science" /> Computer Science
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'English')">
+                    <input type="checkbox" value="English" /> English
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Commerce')">
+                    <input type="checkbox" value="Commerce" /> Commerce
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Economics')">
+                    <input type="checkbox" value="Economics" /> Economics
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'History')">
+                    <input type="checkbox" value="History" /> History
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Geography')">
+                    <input type="checkbox" value="Geography" /> Geography
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Arts / Humanities')">
+                    <input type="checkbox" value="Arts / Humanities" /> Arts / Humanities
+                  </div>
+                  <div class="subj-option" onclick="toggleSubjOption(this,'Other')">
+                    <input type="checkbox" value="Other" /> Other
+                  </div>
+                </div>
               </div>
             </div>
             <div class="reg-field"><label>School name *</label><input id="r-school" type="text"
@@ -2107,12 +2195,64 @@
     function goTo(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('on')); document.getElementById(id).classList.add('on'); window.scrollTo(0, 0); }
 
     // ══════════════════════ PAYMENT ══════════════════════
-    function toggleChip(label) {
-      const cb = label.querySelector('input[type=checkbox]');
-      // The click bubbles from the checkbox itself too, so toggle only when label is the direct target
-      // We let the checkbox handle its own state; we just sync the visual class
-      setTimeout(() => label.classList.toggle('checked', cb.checked), 0);
+    // ══════════════════════ SUBJECT DROPDOWN ══════════════════════
+    function toggleSubjDropdown(e) {
+      e.stopPropagation();
+      const trigger = document.getElementById('subj-trigger');
+      const panel   = document.getElementById('subj-panel');
+      const isOpen  = panel.classList.contains('open');
+      if (isOpen) { panel.classList.remove('open'); trigger.classList.remove('open'); }
+      else        { panel.classList.add('open');    trigger.classList.add('open'); }
     }
+
+    function toggleSubjOption(el, value) {
+      el.stopPropagation && el.stopPropagation();
+      const cb = el.querySelector('input[type=checkbox]');
+      cb.checked = !cb.checked;
+      el.classList.toggle('selected', cb.checked);
+      updateSubjTrigger();
+    }
+
+    function removeSubjTag(value, e) {
+      e.stopPropagation();
+      // Uncheck the matching option
+      const opts = document.querySelectorAll('#subj-panel input[type=checkbox]');
+      opts.forEach(cb => {
+        if (cb.value === value) {
+          cb.checked = false;
+          cb.closest('.subj-option').classList.remove('selected');
+        }
+      });
+      updateSubjTrigger();
+    }
+
+    function updateSubjTrigger() {
+      const trigger     = document.getElementById('subj-trigger');
+      const placeholder = document.getElementById('subj-placeholder');
+      const checked     = Array.from(document.querySelectorAll('#subj-panel input[type=checkbox]:checked'));
+      // Remove old tags (keep placeholder span)
+      trigger.querySelectorAll('.subj-tag').forEach(t => t.remove());
+      if (checked.length === 0) {
+        placeholder.style.display = 'inline';
+      } else {
+        placeholder.style.display = 'none';
+        checked.forEach(cb => {
+          const tag = document.createElement('span');
+          tag.className = 'subj-tag';
+          tag.innerHTML = cb.value + '<span class="subj-tag-x" onclick="removeSubjTag(\'' + cb.value.replace(/'/g, "\\'") + '\',event)">×</span>';
+          trigger.insertBefore(tag, placeholder);
+        });
+      }
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+      const dd = document.getElementById('subj-dropdown');
+      if (dd && !dd.contains(e.target)) {
+        document.getElementById('subj-panel').classList.remove('open');
+        document.getElementById('subj-trigger').classList.remove('open');
+      }
+    });
 
     function initPayment() {
       const name = document.getElementById('r-name').value.trim();
@@ -2121,7 +2261,7 @@
       const phone = document.getElementById('r-phone').value.trim();
       const err = document.getElementById('reg-err');
       // Collect selected subjects (optional)
-      const checkedBoxes = document.querySelectorAll('#subj-grid input[type=checkbox]:checked');
+      const checkedBoxes = document.querySelectorAll('#subj-panel input[type=checkbox]:checked');
       const subject = Array.from(checkedBoxes).map(cb => cb.value).join(', ');
       if (!name || !cls || !school || !phone || phone.length < 10) { err.style.display = 'block'; return; }
       err.style.display = 'none';

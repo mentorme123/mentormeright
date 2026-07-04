@@ -539,7 +539,7 @@ function buildWhatsAppLink() {
     `My name is ${state.name} and my SuperPower is *${state.result}*.\n\n` +
     `I'd love to learn more about the detailed psychometric assessment and career counseling. Can you help?`
   );
-  return `https://wa.me/918188824440?text=${msg}`;
+  return `https://api.whatsapp.com/send?phone=918188824440&text=${msg}`;
 }
 
 function resetQuiz() {

@@ -122,7 +122,7 @@ export default function CounsellorsLanding() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <a href="https://wa.me/919392707596" target="_blank" rel="noopener noreferrer" className="bg-white p-8 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all group block">
+            <a href="https://api.whatsapp.com/send?phone=918188824440" target="_blank" rel="noopener noreferrer" className="bg-white p-8 rounded-3xl border border-slate-200 hover:border-emerald-500 hover:shadow-xl transition-all group block">
               <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                 <MessageCircle className="text-emerald-500 w-8 h-8" />
               </div>

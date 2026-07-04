@@ -642,6 +642,72 @@
       color: var(--t3)
     }
 
+    /* ── SUBJECT CHECKBOXES ── */
+    .subj-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px;
+      margin-top: 2px
+    }
+
+    .subj-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border: 1.5px solid var(--bdr);
+      border-radius: var(--r);
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text);
+      transition: all .15s;
+      user-select: none
+    }
+
+    .subj-chip:hover {
+      border-color: var(--blue);
+      background: var(--blue-lt)
+    }
+
+    .subj-chip input[type=checkbox] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--t3);
+      border-radius: 4px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all .15s;
+      position: relative;
+      padding: 0
+    }
+
+    .subj-chip input[type=checkbox]:checked {
+      background: var(--blue);
+      border-color: var(--blue)
+    }
+
+    .subj-chip input[type=checkbox]:checked::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 0px;
+      width: 5px;
+      height: 9px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg)
+    }
+
+    .subj-chip.checked {
+      border-color: var(--blue);
+      background: var(--blue-md);
+      color: var(--navy);
+      font-weight: 600
+    }
+
     .err {
       color: #dc2626;
       font-size: 12px;
@@ -1654,19 +1720,46 @@
                 <option value="12">Class 12</option>
               </select>
             </div>
-            <div class="reg-field"><label>Subject / Stream *</label>
-              <select id="r-subject">
-                <option value="">Select subject</option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="Physics">Physics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Biology">Biology</option>
-                <option value="English">English</option>
-                <option value="Computer Science">Computer Science</option>
-                <option value="Commerce">Commerce</option>
-                <option value="Arts/Humanities">Arts / Humanities</option>
-                <option value="Other">Other</option>
-              </select>
+            <div class="reg-field full">
+              <label>Subjects / Stream <span style="font-weight:400;color:var(--t3);text-transform:none;font-size:10px">(optional — select all that apply)</span></label>
+              <div class="subj-grid" id="subj-grid">
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Mathematics" /> Mathematics
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Physics" /> Physics
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Chemistry" /> Chemistry
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Biology" /> Biology
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Computer Science" /> Computer Science
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="English" /> English
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Commerce" /> Commerce
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Economics" /> Economics
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="History" /> History
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Geography" /> Geography
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Arts / Humanities" /> Arts / Humanities
+                </label>
+                <label class="subj-chip" onclick="toggleChip(this)">
+                  <input type="checkbox" value="Other" /> Other
+                </label>
+              </div>
             </div>
             <div class="reg-field"><label>School name *</label><input id="r-school" type="text"
                 placeholder="Full name of your school" /></div>
@@ -2014,14 +2107,23 @@
     function goTo(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('on')); document.getElementById(id).classList.add('on'); window.scrollTo(0, 0); }
 
     // ══════════════════════ PAYMENT ══════════════════════
+    function toggleChip(label) {
+      const cb = label.querySelector('input[type=checkbox]');
+      // The click bubbles from the checkbox itself too, so toggle only when label is the direct target
+      // We let the checkbox handle its own state; we just sync the visual class
+      setTimeout(() => label.classList.toggle('checked', cb.checked), 0);
+    }
+
     function initPayment() {
       const name = document.getElementById('r-name').value.trim();
       const cls = document.getElementById('r-class').value;
-      const subject = document.getElementById('r-subject').value;
       const school = document.getElementById('r-school').value.trim();
       const phone = document.getElementById('r-phone').value.trim();
       const err = document.getElementById('reg-err');
-      if (!name || !cls || !subject || !school || !phone || phone.length < 10) { err.style.display = 'block'; return; }
+      // Collect selected subjects (optional)
+      const checkedBoxes = document.querySelectorAll('#subj-grid input[type=checkbox]:checked');
+      const subject = Array.from(checkedBoxes).map(cb => cb.value).join(', ');
+      if (!name || !cls || !school || !phone || phone.length < 10) { err.style.display = 'block'; return; }
       err.style.display = 'none';
       student = { name, cls: parseInt(cls), subject, school, phone, email: document.getElementById('r-email').value.trim(), city: document.getElementById('r-city').value.trim() };
       goTo('pg-paying');
@@ -2226,7 +2328,7 @@
 
   <div class="res-actions">
     <p style="font-size:13px;color:var(--t2);text-align:center;max-width:420px;line-height:1.7">Questions about your results? Our counsellors are available on WhatsApp — mention your name and the date you took the assessment.</p>
-    <a href="https://wa.me/91XXXXXXXXXX?text=Hi+MentorMe+team!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(student.name)}+,+Class+${student.cls}).+Looking+forward+to+my+report!" target="_blank" class="btn btn-navy">Chat with a MentorMe counsellor →</a>
+    <a href="https://api.whatsapp.com/send?phone=918188824440&text=Hi+MentorMe+team!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(student.name)}+,+Class+${student.cls}).+Looking+forward+to+my+report!" target="_blank" class="btn btn-navy">Chat with a MentorMe counsellor →</a>
     <button class="btn btn-ghost" onclick="goTo('pg-welcome')" style="font-size:13px;padding:9px 18px">Back to home</button>
   </div>`;
 

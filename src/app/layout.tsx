@@ -38,7 +38,7 @@ export default function RootLayout({
         </QueryProvider>
 
         <a
-          href="https://wa.me/919392707596"
+          href="https://api.whatsapp.com/send?phone=918188824440"
           target="_blank"
           rel="noopener noreferrer"
           className="fixed right-6 bottom-6 z-[999] w-14 h-14 bg-[#25D366] rounded-2xl shadow-2xl flex items-center justify-center hover:scale-110 transition-transform group"

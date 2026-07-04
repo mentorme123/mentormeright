@@ -209,10 +209,10 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-semibold text-lg mb-1">WhatsApp Us</h3>
                   <p className="text-muted-foreground text-sm mb-3">Instant support from our team.</p>
-                  <a href="https://wa.me/919392707596" target="_blank" rel="noreferrer" className="text-brand-blue font-medium hover:underline block">
+                  <a href="https://api.whatsapp.com/send?phone=918188824440" target="_blank" rel="noreferrer" className="text-brand-blue font-medium hover:underline block">
                     +91-9392707596
                   </a>
-                  <a href="https://wa.me/918188824440" target="_blank" rel="noreferrer" className="text-brand-blue font-medium hover:underline block">
+                  <a href="https://api.whatsapp.com/send?phone=918188824440" target="_blank" rel="noreferrer" className="text-brand-blue font-medium hover:underline block">
                     +91-8188824440
                   </a>
                 </div>

@@ -37,7 +37,7 @@ const SYSTEM_PROMPT = `You are "AI Corner", a highly intelligent, versatile, and
 
 ## CONTACT DETAILS
 - **Email**: admin@mentormeright.in
-- **WhatsApp**: +91-9392707596
+- **WhatsApp**: +91-8188824440
 - **Location**: Hyderabad, India
 - **Website**: mentormeright.com
 
@@ -413,7 +413,7 @@ export async function POST(req: NextRequest) {
     const message = error instanceof Error ? error.message : String(error);
     console.error("Chat API error:", message);
     return NextResponse.json(
-      { reply: `I'm having a momentary difficulty (${message}). Please try again or WhatsApp us at +91-9392707596 📲`, suggestions: [] },
+      { reply: `I'm having a momentary difficulty (${message}). Please try again or WhatsApp us at +91-8188824440 📲`, suggestions: [] },
       { status: 200 }
     );
   }

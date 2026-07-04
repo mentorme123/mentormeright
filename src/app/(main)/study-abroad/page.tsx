@@ -79,7 +79,7 @@ export default function StudyAbroadHub() {
             <Link href="#destinations" className="px-10 py-5 bg-brand-blue text-white font-black text-lg rounded-2xl shadow-2xl hover:bg-brand-blue/90 transition-all hover:scale-105 flex items-center gap-3">
               Explore Destinations <ArrowRight />
             </Link>
-            <a href="https://wa.me/+919392707596" target="_blank" className="px-10 py-5 bg-emerald-500 text-white font-black text-lg rounded-2xl shadow-2xl hover:bg-emerald-600 transition-all hover:scale-105 flex items-center gap-3">
+            <a href="https://api.whatsapp.com/send?phone=918188824440" target="_blank" className="px-10 py-5 bg-emerald-500 text-white font-black text-lg rounded-2xl shadow-2xl hover:bg-emerald-600 transition-all hover:scale-105 flex items-center gap-3">
               <Phone size={20} /> Chat on WhatsApp
             </a>
           </motion.div>

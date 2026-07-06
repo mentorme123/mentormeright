@@ -19,13 +19,28 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user && isAuthPage) {
-    const userRole = (user.user_metadata as Record<string, string> | undefined)?.role;
+    const userRole = (user.user_metadata as Record<string, string | undefined>)?.role;
     if (userRole === 'admin') {
       return NextResponse.next();
     }
     const url = request.nextUrl.clone()
     url.pathname = '/auth/route-director' 
     return NextResponse.redirect(url)
+  }
+
+  if (user && pathname === '/') {
+    const userRole = (user.user_metadata as Record<string, string | undefined>)?.role;
+    if (userRole === 'institutional') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard/institution'
+      return NextResponse.redirect(url)
+    } else if (userRole === 'admin') {
+      return NextResponse.next()
+    } else if (userRole === 'counselor') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard/counselor'
+      return NextResponse.redirect(url)
+    }
   }
 
   return NextResponse.next();

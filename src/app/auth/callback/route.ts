@@ -76,6 +76,8 @@ export async function GET(request: Request) {
         return NextResponse.redirect(new URL('/dashboard/institution', base));
       } else if (userProfile.role === 'admin') {
         return NextResponse.redirect(new URL('/dashboard/admin', base));
+      } else if (userProfile.role === 'counselor') {
+        return NextResponse.redirect(new URL('/dashboard/counselor', base));
       }
     }
 

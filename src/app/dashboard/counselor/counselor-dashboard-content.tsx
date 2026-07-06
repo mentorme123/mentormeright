@@ -18,6 +18,7 @@ import {
   Mail,
   ArrowRight
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -46,6 +47,34 @@ type Session = {
 };
 
 type MenuKey = "overview" | "schools" | "sessions" | "resources" | "profile";
+
+type MenuItem = {
+  key: MenuKey;
+  label: string;
+  icon: LucideIcon;
+};
+
+const menuItems: MenuItem[] = [
+  { key: "overview", label: "Overview", icon: LayoutDashboard },
+  { key: "schools", label: "Schools & Students", icon: School },
+  { key: "sessions", label: "Upcoming Sessions", icon: CalendarDays },
+  { key: "resources", label: "Resources", icon: FileText },
+  { key: "profile", label: "My Profile", icon: User },
+];
+
+type MenuItem = {
+  key: MenuKey;
+  label: string;
+  icon: LucideIcon;
+};
+
+const menuItems: MenuItem[] = [
+  { key: "overview", label: "Overview", icon: LayoutDashboard },
+  { key: "schools", label: "Schools & Students", icon: School },
+  { key: "sessions", label: "Upcoming Sessions", icon: CalendarDays },
+  { key: "resources", label: "Resources", icon: FileText },
+  { key: "profile", label: "My Profile", icon: User },
+];
 
 const sanitizeText = (text: string | null) => {
   if (!text) return "";
@@ -105,12 +134,17 @@ export default function CounselorDashboardContent({
   useEffect(() => {
     async function fetchSchools() {
       setLoadingSchools(true);
-      const res = await fetch("/api/counsellor/schools");
-      const data = await res.json();
-      if (data.success) {
-        setSchools(data.schools);
+      try {
+        const res = await fetch("/api/counsellor/schools");
+        const data = await res.json();
+        if (data.success) {
+          setSchools(data.schools);
+        }
+      } catch (err) {
+        console.error("Failed to load schools", err);
+      } finally {
+        setLoadingSchools(false);
       }
-      setLoadingSchools(false);
     }
     fetchSchools();
   }, []);
@@ -165,12 +199,17 @@ export default function CounselorDashboardContent({
     setLoadingStudents(true);
     setStudents([]);
 
-    const res = await fetch(`/api/counsellor/schools/${schoolId}/students`);
-    const data = await res.json();
-    if (data.success) {
-      setStudents(data.students);
+    try {
+      const res = await fetch(`/api/counsellor/schools/${schoolId}/students`);
+      const data = await res.json();
+      if (data.success) {
+        setStudents(data.students);
+      }
+    } catch (err) {
+      console.error("Failed to load students", err);
+    } finally {
+      setLoadingStudents(false);
     }
-    setLoadingStudents(false);
   };
 
   const handleBackToSchools = () => {
@@ -217,14 +256,6 @@ export default function CounselorDashboardContent({
     document.body.removeChild(link);
     setIsDownloading(null);
   };
-
-  const menuItems = [
-    { key: "overview", label: "Overview", icon: LayoutDashboard },
-    { key: "schools", label: "Schools & Students", icon: School },
-    { key: "sessions", label: "Upcoming Sessions", icon: CalendarDays },
-    { key: "resources", label: "Resources", icon: FileText },
-    { key: "profile", label: "My Profile", icon: User },
-  ];
 
   const overviewStatCards = [
     { label: "Total Schools", value: schools.length.toString(), icon: Building2, color: "text-brand-blue bg-brand-blue/10" },
@@ -650,3 +681,8 @@ export default function CounselorDashboardContent({
     </div>
   );
 }
+
+
+
+
+

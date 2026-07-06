@@ -41,26 +41,12 @@ type Student = {
 
 type Session = {
   id: string;
-  users: { name: string; email: string; education_level: string };
+  users: { id: string; name: string; email: string; education_level: string };
   slots: { date: string; start_time: string };
   jitsi_link: string | null;
 };
 
 type MenuKey = "overview" | "schools" | "sessions" | "resources" | "profile";
-
-type MenuItem = {
-  key: MenuKey;
-  label: string;
-  icon: LucideIcon;
-};
-
-const menuItems: MenuItem[] = [
-  { key: "overview", label: "Overview", icon: LayoutDashboard },
-  { key: "schools", label: "Schools & Students", icon: School },
-  { key: "sessions", label: "Upcoming Sessions", icon: CalendarDays },
-  { key: "resources", label: "Resources", icon: FileText },
-  { key: "profile", label: "My Profile", icon: User },
-];
 
 type MenuItem = {
   key: MenuKey;

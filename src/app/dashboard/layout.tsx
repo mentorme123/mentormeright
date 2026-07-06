@@ -1,5 +1,3 @@
-import { BackButtonCompact } from "@/components/back-button";
-
 export default function DashboardLayout({
   children,
 }: {
@@ -7,7 +5,6 @@ export default function DashboardLayout({
 }) {
   return (
     <>
-      <BackButtonCompact />
       {children}
     </>
   );

@@ -98,6 +98,7 @@ export default function CounselorDashboardContent({
   const [loadingStudents, setLoadingStudents] = useState(false);
   const [loadingSessions, setLoadingSessions] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isProfileHidden, setIsProfileHidden] = useState(false);
 
   const [isJoining, setIsJoining] = useState<string | null>(null);
   const [isDownloading, setIsDownloading] = useState<string | null>(null);
@@ -255,7 +256,7 @@ export default function CounselorDashboardContent({
       {/* Floating Home Back Button */}
       <button
         type="button"
-        onClick={() => { window.location.href = '/'; }}
+        onClick={() => { setIsProfileHidden(true); window.location.href = '/'; }}
         className="fixed top-24 right-4 sm:right-8 z-40 flex items-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground bg-white/80 backdrop-blur-md border border-slate-200 rounded-xl shadow-lg hover:text-brand-blue hover:border-brand-blue/30 hover:shadow-brand-blue/10 transition-all duration-200 group"
         aria-label="Back to Home"
       >
@@ -331,6 +332,7 @@ export default function CounselorDashboardContent({
                 </div>
               </div>
             </div>
+            {!isProfileHidden && (
             <div className="relative w-full md:w-auto">
               <button
                 type="button"
@@ -372,6 +374,7 @@ export default function CounselorDashboardContent({
                 </div>
               )}
             </div>
+            )}
           </div>
 
           {/* Mobile Menu */}

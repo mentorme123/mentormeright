@@ -19,17 +19,53 @@ export async function middleware(request: NextRequest) {
   }
 
   if (user && isAuthPage) {
-    const userRole = (user.user_metadata as Record<string, string | undefined>)?.role;
-    if (userRole === 'admin') {
+    const metadataRole = (user.user_metadata as Record<string, string | undefined>)?.role;
+    if (metadataRole === 'admin') {
       return NextResponse.next();
     }
+
+    const { data: profile } = await supabase
+      .from('users')
+      .select('role')
+      .eq('id', user.id)
+      .maybeSingle();
+
+    const dbRole = profile?.role;
+
+    if (dbRole === 'counselor') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard/counselor'
+      return NextResponse.redirect(url)
+    }
+
+    if (dbRole === 'institutional') {
+      const url = request.nextUrl.clone()
+      url.pathname = '/dashboard/institution'
+      return NextResponse.redirect(url)
+    }
+
+    if (dbRole === 'admin') {
+      return NextResponse.next();
+    }
+
     const url = request.nextUrl.clone()
     url.pathname = '/auth/route-director' 
     return NextResponse.redirect(url)
   }
 
   if (user && pathname === '/') {
-    const userRole = (user.user_metadata as Record<string, string | undefined>)?.role;
+    const metadataRole = (user.user_metadata as Record<string, string | undefined>)?.role;
+    let userRole = metadataRole;
+
+    if (!userRole || !['institutional', 'admin', 'counselor'].includes(userRole)) {
+      const { data: profile } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', user.id)
+        .maybeSingle();
+      userRole = profile?.role;
+    }
+
     if (userRole === 'institutional') {
       const url = request.nextUrl.clone()
       url.pathname = '/dashboard/institution'

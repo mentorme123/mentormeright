@@ -1,7 +1,7 @@
 -- MentorMe Supabase Database Schema
 
 -- 1. Create custom ENUMs
-CREATE TYPE user_role AS ENUM ('individual', 'institutional', 'admin');
+CREATE TYPE user_role AS ENUM ('individual', 'institutional', 'admin', 'counselor');
 CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'cancelled');
 
 -- 2. Tables

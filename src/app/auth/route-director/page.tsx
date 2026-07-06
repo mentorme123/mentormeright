@@ -53,24 +53,31 @@ export default function RouteDirector() {
           return;
         }
 
-        console.log("👤 Profile Verified:", profile.role);
+        const metadataRole = (user.user_metadata as Record<string, string | undefined>)?.role;
+        let userRole = metadataRole;
+
+        if (!userRole || !['individual', 'institutional', 'admin', 'counselor'].includes(userRole)) {
+          userRole = profile.role;
+        }
+
+        console.log("👤 Profile Verified:", userRole);
 
         // 2. Strict Role-Based Routing
-        if (profile.role === 'individual') {
+        if (userRole === 'individual') {
           // Always redirect to assessment after login/register
           const destination = "/career-assessment.html";
           console.log(`🎯 Routing Student to Assessment: ${destination}`);
           window.location.href = destination;
         } 
-        else if (profile.role === 'institutional') {
+        else if (userRole === 'institutional') {
           console.log("🎯 Routing to Institutional Dashboard");
           router.push("/dashboard/institution");
         } 
-        else if (profile.role === 'admin') {
+        else if (userRole === 'admin') {
           console.log("🎯 Routing to Admin Command Center");
           router.push("/dashboard/admin");
         } 
-        else if (profile.role === 'counselor') {
+        else if (userRole === 'counselor') {
           console.log("🎯 Routing to Counselor Portal");
           router.push("/dashboard/counselor");
         } 

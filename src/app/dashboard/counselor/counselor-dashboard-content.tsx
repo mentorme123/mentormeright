@@ -298,13 +298,24 @@ export default function CounselorDashboardContent({
           
           {/* Header with Profile */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="md:hidden">
-              <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Counselor</h1>
-              <p className="text-xs text-slate-500 font-bold">Portal Workspace</p>
-            </div>
-            <div className="hidden md:block">
-              <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tight">{menuItems.find(m => m.key === activeMenu)?.label}</h1>
-              <p className="text-xs text-slate-500 font-medium">Manage schools, students and sessions</p>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => { window.location.href = '/'; }}
+                className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <ArrowLeft size={16} /> Home
+              </button>
+              <div>
+                <div className="md:hidden">
+                  <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Counselor</h1>
+                  <p className="text-xs text-slate-500 font-bold">Portal Workspace</p>
+                </div>
+                <div className="hidden md:block">
+                  <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tight">{menuItems.find(m => m.key === activeMenu)?.label}</h1>
+                  <p className="text-xs text-slate-500 font-medium">Manage schools, students and sessions</p>
+                </div>
+              </div>
             </div>
             <div className="relative w-full md:w-auto">
               <button

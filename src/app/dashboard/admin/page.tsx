@@ -165,19 +165,8 @@ export default function AdminDashboard() {
       icon: <Search size={48} className="text-brand-orange mb-4" />
     }
   ];
-
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8 relative">
-      {/* Floating Home Back Button */}
-      <button
-        type="button"
-        onClick={() => { window.location.href = '/'; }}
-        className="fixed top-20 right-4 sm:right-6 z-50 flex items-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground bg-white/90 backdrop-blur-md border border-slate-200 rounded-xl shadow-lg hover:text-brand-blue hover:border-brand-blue/30 hover:shadow-brand-blue/10 transition-all duration-200 group"
-        aria-label="Back to Home"
-      >
-        <ArrowLeft size={16} className="transition-transform duration-200 group-hover:-translate-x-0.5" />
-        <span className="hidden sm:inline">Back to Home</span>
-      </button>
 
       {/* Onboarding Tour Overlay */}
       <AnimatePresence>
@@ -373,7 +362,15 @@ export default function AdminDashboard() {
                    <div className="p-2">
                       <Link href="/dashboard/admin/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
                         <User size={18} className="text-brand-blue" />
-                        <div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => { window.location.href = '/'; }}
+                className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <ArrowLeft size={16} /> Back to Home
+              </button>
+              <div>
                           <p className="text-sm font-bold text-slate-700">My Profile</p>
                           <p className="text-xs text-slate-500">Account settings and more</p>
                         </div>

@@ -66,16 +66,8 @@ export async function middleware(request: NextRequest) {
       userRole = profile?.role;
     }
 
-    if (userRole === 'institutional') {
-      const url = request.nextUrl.clone()
-      url.pathname = '/dashboard/institution'
-      return NextResponse.redirect(url)
-    } else if (userRole === 'admin') {
-      return NextResponse.next()
-    } else if (userRole === 'counselor') {
-      const url = request.nextUrl.clone()
-      url.pathname = '/dashboard/counselor'
-      return NextResponse.redirect(url)
+    if (userRole === 'institutional' || userRole === 'counselor' || userRole === 'admin') {
+      return NextResponse.next();
     }
   }
 

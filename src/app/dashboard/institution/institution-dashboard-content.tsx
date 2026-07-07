@@ -262,13 +262,13 @@ export default function InstitutionDashboardContent() {
           {/* Header with Profile */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => { window.location.href = 'https://mentormeright-a31hvrhj4-mentorme123s-projects.vercel.app'; }}
-                className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
-              >
-                <ArrowLeft size={16} /> Back to Home
-              </button>
+                <button
+                  type="button"
+                  onClick={() => { window.location.href = '/'; }}
+                  className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  <ArrowLeft size={16} /> Back to Home
+                </button>
               <div>
                 <div className="md:hidden">
                   <h1 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Institution</h1>

@@ -163,6 +163,8 @@ body{font-family:var(--f);background:#eef2fb;min-height:100vh;color:var(--text)}
 .sc-card{background:var(--surf);border-radius:var(--r);padding:12px;text-align:center}
 .sc-n{font-family:var(--fp);font-size:24px;font-weight:800;color:var(--blue)}
 .sc-l{font-size:10px;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:.3px}
+.top-back{position:fixed;top:16px;right:16px;z-index:90;display:none;align-items:center;gap:6px;padding:7px 14px;background:var(--white);border:1px solid var(--bdr);border-radius:20px;font-size:12px;font-weight:600;color:var(--blue);cursor:pointer;box-shadow:var(--sh);transition:all .15s}
+.top-back:hover{background:var(--blue-lt);border-color:var(--blue)}
 /* ADMIN */
 .adm-shell{max-width:1140px;margin:0 auto;padding:22px 18px 60px}
 .adm-wrap{max-width:400px;margin:56px auto 0}
@@ -228,6 +230,11 @@ tr.dr:hover td{background:#f8faff;cursor:pointer}
 </style>
 </head>
 <body>
+
+<div class="top-back" id="top-back-btn" onclick="goTopBack()">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  <span>Back to Dashboard</span>
+</div>
 
 <!-- CONFIG -->
 <script>
@@ -1019,6 +1026,31 @@ document.addEventListener('click',function(e){
   }
 });
 
+function goTopBack(){
+  const storedRole=localStorage.getItem('mentorme_post_login_role');
+  if(storedRole==='institutional'){
+    window.location.href='/dashboard/institution';
+  } else if(storedRole==='counselor'){
+    window.location.href='/dashboard/counselor';
+  } else if(storedRole==='admin'){
+    window.location.href='/dashboard/admin';
+  } else {
+    window.location.href='/';
+  }
+}
+function updateTopBack(){
+  const btn=document.getElementById('top-back-btn');
+  if(!btn)return;
+  const storedRole=localStorage.getItem('mentorme_post_login_role');
+  const label=btn.querySelector('span');
+  if(storedRole==='institutional'||storedRole==='counselor'||storedRole==='admin'){
+    btn.style.display='flex';
+    if(label) label.textContent=storedRole==='institutional'?'Back to Dashboard':storedRole==='counselor'?'Back to Portal':'Back to Command Center';
+  } else {
+    btn.style.display='none';
+  }
+}
+
 // ════════════════════════════════════════════════════════════
 // NAVIGATION
 // ════════════════════════════════════════════════════════════
@@ -1026,6 +1058,7 @@ function goTo(id){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   document.getElementById(id).classList.add('on');
   window.scrollTo(0,0);
+  updateTopBack();
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1142,6 +1175,7 @@ function showSI(){
 function beginSec(){
   curQ=0; answers=new Array(30).fill(null);
   tLeft=900; startTmr(); renderQ(); goTo('pg-q');
+  updateTopBack();
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1668,6 +1702,7 @@ function swTab(id,el){document.querySelectorAll('.adm-pane').forEach(t=>t.classL
 window.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('img[alt="MentorMe"]').forEach(el=>el.src=LOGO_SRC);
   if(window.location.search.includes('admin=1')) goTo('pg-adm-login');
+  updateTopBack();
 });
 </script>
 </body>

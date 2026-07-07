@@ -107,6 +107,19 @@ body{font-family:var(--f);background:#eef2fb;min-height:100vh;color:var(--text)}
 .subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-top:6px}
 .subj-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text);cursor:pointer}
 .subj-item.subj-full{grid-column:1/-1}
+.subj-wrap{position:relative}
+.subj-trigger{display:flex;align-items:center;justify-content:space-between;padding:10px 36px 10px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);background:var(--white);cursor:pointer;font-size:14px;color:var(--t3);transition:all .15s;min-height:44px;-webkit-appearance:none;appearance:none}
+.subj-trigger.open{border-color:var(--blue);color:var(--text)}
+.subj-ph{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subj-chev{position:absolute;right:12px;top:50%;transform:translateY(-50%);transition:transform .2s;color:var(--t3);pointer-events:none}
+.subj-trigger.open .subj-chev{transform:translateY(-50%) rotate(180deg)}
+.subj-drop{display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);background:var(--white);border:1.5px solid var(--bdr);border-radius:var(--r);box-shadow:var(--sh2);z-index:50;padding:6px 0;max-height:260px;overflow-y:auto}
+.subj-drop.open{display:block}
+.subj-drop .subj-item{display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:13px;color:var(--text);cursor:pointer;transition:background .1s;width:100%}
+.subj-drop .subj-item:hover{background:var(--surf)}
+.subj-drop .subj-item input[type="checkbox"]{width:15px;height:15px;accent-color:var(--blue);cursor:pointer;flex-shrink:0}
+.subj-drop .subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.subj-drop .subj-full{grid-column:1/-1}
 .err{color:var(--red);font-size:12px;background:var(--red-lt);padding:8px 12px;border-radius:var(--r);margin-bottom:10px;display:none}
 .pay-box{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:14px;margin:14px 0}
 .pay-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px;align-items:center}
@@ -290,14 +303,22 @@ const CFG={ADMIN_USER:'mentorme_admin',ADMIN_PASS:'MentorMe@2025!',RZP_KEY:'rzp_
       <div class="reg-field"><label>Student Mobile *</label><input id="r-phone" type="tel" placeholder="10-digit number" maxlength="10"/></div>
       <div class="reg-field">
         <label>Subjects / Stream <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — select all that apply)</span></label>
-        <div class="subj-grid">
-          <label class="subj-item"><input type="checkbox" value="Mathematics"/> Mathematics</label>
-          <label class="subj-item"><input type="checkbox" value="Physics"/> Physics</label>
-          <label class="subj-item"><input type="checkbox" value="Chemistry"/> Chemistry</label>
-          <label class="subj-item"><input type="checkbox" value="Biology"/> Biology</label>
-          <label class="subj-item"><input type="checkbox" value="Computer Science"/> Computer Science</label>
-          <label class="subj-item"><input type="checkbox" value="English"/> English</label>
-          <label class="subj-item subj-full"><input type="checkbox" value="Commerce"/> Commerce</label>
+        <div class="subj-wrap">
+          <div class="subj-trigger" id="subj-trigger" onclick="toggleSubj()">
+            <span class="subj-ph">Select subjects...</span>
+            <svg class="subj-chev" id="subj-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 9l6 6 6-6"/></svg>
+          </div>
+          <div class="subj-drop" id="subj-drop">
+            <div class="subj-grid">
+              <label class="subj-item"><input type="checkbox" value="Mathematics" onchange="updateSubjLabel()"/> Mathematics</label>
+              <label class="subj-item"><input type="checkbox" value="Physics" onchange="updateSubjLabel()"/> Physics</label>
+              <label class="subj-item"><input type="checkbox" value="Chemistry" onchange="updateSubjLabel()"/> Chemistry</label>
+              <label class="subj-item"><input type="checkbox" value="Biology" onchange="updateSubjLabel()"/> Biology</label>
+              <label class="subj-item"><input type="checkbox" value="Computer Science" onchange="updateSubjLabel()"/> Computer Science</label>
+              <label class="subj-item"><input type="checkbox" value="English" onchange="updateSubjLabel()"/> English</label>
+              <label class="subj-item subj-full"><input type="checkbox" value="Commerce" onchange="updateSubjLabel()"/> Commerce</label>
+            </div>
+          </div>
         </div>
       </div>
       <div class="reg-field full"><label>Parent's email (report sent here)</label><input id="r-email" type="email" placeholder="parent@email.com"/></div>
@@ -970,6 +991,33 @@ let submissions=[], srtKey='date', srtDir=-1;
 function loadSubs(){try{submissions=JSON.parse(localStorage.getItem('mm_subs')||'[]');}catch(e){submissions=[];}}
 function saveSubs(){try{localStorage.setItem('mm_subs',JSON.stringify(submissions));}catch(e){}}
 loadSubs();
+
+function toggleSubj(){
+  const trig=document.getElementById('subj-trigger');
+  const drop=document.getElementById('subj-drop');
+  trig.classList.toggle('open');
+  drop.classList.toggle('open');
+}
+function updateSubjLabel(){
+  const trig=document.getElementById('subj-trigger');
+  const ph=trig.querySelector('.subj-ph');
+  const checked=document.querySelectorAll('#subj-drop input[type="checkbox"]:checked');
+  if(checked.length){
+    const names=Array.from(checked).map(c=>c.value);
+    ph.textContent=names.length<=2?names.join(', '):names.slice(0,2).join(', ')+' +'+(names.length-2);
+    ph.style.color='var(--text)';
+  } else {
+    ph.textContent='Select subjects...';
+    ph.style.color='var(--t3)';
+  }
+}
+document.addEventListener('click',function(e){
+  const wrap=document.querySelector('.subj-wrap');
+  if(wrap&&!wrap.contains(e.target)){
+    document.getElementById('subj-trigger')?.classList.remove('open');
+    document.getElementById('subj-drop')?.classList.remove('open');
+  }
+});
 
 // ════════════════════════════════════════════════════════════
 // NAVIGATION

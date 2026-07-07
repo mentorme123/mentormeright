@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User } from "lucide-react";
+import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
@@ -340,8 +340,15 @@ export default function AdminDashboard() {
              </h1>
              <p className="text-slate-500 font-medium">Live global overview and database management.</p>
            </div>
-           <div className="flex items-center gap-3">
-             <div className="relative">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => { window.location.href = '/'; }}
+                className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <ArrowLeft size={16} /> Back to Home
+              </button>
+              <div className="relative">
                <button
                  type="button"
                  onClick={() => setShowProfileMenu((v) => !v)}

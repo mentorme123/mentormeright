@@ -260,16 +260,6 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
   }
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8 relative">
-      {/* Floating Home Back Button */}
-      <button
-        type="button"
-        onClick={() => { window.location.href = '/'; }}
-        className="fixed top-20 right-4 sm:right-6 z-50 flex items-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground bg-white/90 backdrop-blur-md border border-slate-200 rounded-xl shadow-lg hover:text-brand-blue hover:border-brand-blue/30 hover:shadow-brand-blue/10 transition-all duration-200 group"
-        aria-label="Back to Home"
-      >
-        <ArrowLeft size={16} className="transition-transform duration-200 group-hover:-translate-x-0.5" />
-        <span className="hidden sm:inline">Back to Home</span>
-      </button>
 
       <AnimatePresence>
         {showOnboarding && (
@@ -477,7 +467,15 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
                 <p className="text-blue-200 font-medium text-sm truncate">{authUser?.email}</p>
               </div>
             </div>
-            {assessmentStatus === 'completed' && (
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => { window.location.href = '/'; }}
+                className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                <ArrowLeft size={16} /> Back to Home
+              </button>
+              {assessmentStatus === 'completed' && (
               <Link href="/report">
                 <Button className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold shadow-xl px-8 py-6 rounded-2xl text-base transition-all hover:scale-105 whitespace-nowrap">
                   View AI Report <ArrowRight className="ml-2" size={18} />
@@ -792,7 +790,15 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
                   </Button>
                 </a>
               )}
-              {assessmentStatus === 'completed' && (
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => { window.location.href = '/'; }}
+                  className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  <ArrowLeft size={16} /> Back to Home
+                </button>
+                {assessmentStatus === 'completed' && (
                 <Link href="/report">
                   <Button variant="outline" className="ml-3 font-bold px-6 py-5 rounded-xl">
                     <Download size={16} className="mr-2" /> Download PDF

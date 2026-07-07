@@ -171,12 +171,12 @@ export default function AdminDashboard() {
       {/* Floating Home Back Button */}
       <button
         type="button"
-        onClick={() => { setIsProfileHidden(true); window.location.href = '/'; }}
-        className="fixed top-24 right-4 sm:right-8 z-40 flex items-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground bg-white/80 backdrop-blur-md border border-slate-200 rounded-xl shadow-lg hover:text-brand-blue hover:border-brand-blue/30 hover:shadow-brand-blue/10 transition-all duration-200 group"
+        onClick={() => { window.location.href = '/'; }}
+        className="fixed top-20 right-4 sm:right-6 z-50 flex items-center gap-2 px-3 py-2 text-sm font-medium text-muted-foreground bg-white/90 backdrop-blur-md border border-slate-200 rounded-xl shadow-lg hover:text-brand-blue hover:border-brand-blue/30 hover:shadow-brand-blue/10 transition-all duration-200 group"
         aria-label="Back to Home"
       >
         <ArrowLeft size={16} className="transition-transform duration-200 group-hover:-translate-x-0.5" />
-        <span className="hidden sm:inline">Back</span>
+        <span className="hidden sm:inline">Back to Home</span>
       </button>
 
       {/* Onboarding Tour Overlay */}

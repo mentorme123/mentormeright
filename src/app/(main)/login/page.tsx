@@ -40,7 +40,8 @@ export default function LoginPage() {
       const role = profile?.role || (data.user.user_metadata as Record<string, string | undefined>)?.role || 'individual';
 
       if (role === 'institutional') {
-        window.location.href = '/dashboard/institution';
+        localStorage.setItem('mentorme_post_login_role', 'institutional');
+        window.location.href = '/career-assessment.html';
       } else if (role === 'admin') {
         window.location.href = '/dashboard/admin';
       } else if (role === 'counselor') {

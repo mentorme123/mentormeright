@@ -85,6 +85,15 @@ export default function InstitutionDashboardContent() {
   const [institutionEmail, setInstitutionEmail] = useState("");
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/dashboard/institution')) {
+      const isComplete = localStorage.getItem('mentorme_assessment_complete');
+      const userRole = localStorage.getItem('mentorme_post_login_role');
+      if (!isComplete && userRole === 'institutional') {
+        window.location.href = '/career-assessment.html';
+        return;
+      }
+    }
+
     async function loadData() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;

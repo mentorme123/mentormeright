@@ -1255,61 +1255,14 @@ function buildResults(){
              submittedAt:new Date().toISOString()};
   submissions.push(sub); saveSubs(); sendEmail(sub);
 
-  let html=`<div class="res-hero">
-    <div class="res-avatar">${ini}</div>
-    <h2 style="font-family:var(--fp);margin-bottom:4px">Outstanding, ${fn}!</h2>
-    <p style="font-size:13px;color:var(--t2);margin-bottom:12px">All 3 sections complete. Your MentorMe counsellor is preparing your personalised report.</p>
-    <div class="score-strip">
-      <div class="sc-card"><div class="sc-n">${ovr}%</div><div class="sc-l">Overall</div></div>
-      <div class="sc-card"><div class="sc-n" style="color:var(--amber2)">Class ${student.cls}</div><div class="sc-l">Your class</div></div>
-      <div class="sc-card"><div class="sc-n">90</div><div class="sc-l">Completed</div></div>
-    </div>
-  </div>`;
+  localStorage.setItem('mentorme_assessment_complete','1');
 
-  SECS.forEach(sec=>{
-    const ss=scores[sec.id]||{};
-    let top='',topPct=-1;
-    sec.params.forEach(p=>{const v=getPct(ss,sec.id,p)||getPct2(ss,p);if(v>topPct){topPct=v;top=p;}});
-    html+=`<div class="res-sec"><div class="res-sec-hd">
-      <span style="font-size:20px">${sec.icon}</span>
-      <span style="font-size:14px;font-weight:700;color:var(--navy);font-family:var(--fp)">${sec.nm}</span>
-      <span class="bdg ${sec.bdg}" style="margin-left:auto">${Math.round(topPct)}%</span>
-    </div>`;
-    sec.params.forEach((p,pi)=>{
-      const d=ss[p]||{score:0,max:1};
-      const v=Math.round((d.score/Math.max(d.max,0.01))*100);
-      html+=`<div class="p-row"><div class="p-lbl">${p}</div>
-        <div class="p-track"><div class="p-fill" style="width:${v}%;background:${sec.bars[pi]}"></div></div>
-        <div class="p-pct">${v}%</div></div>`;
-    });
-    html+=`<div class="top-trait"><div class="tt-lbl">Strongest trait</div>
-      <div class="tt-nm">${top}</div><div class="tt-desc">${TRAITS[top]||''}</div>
-    </div></div>`;
-  });
-
-  html+=`<div class="career-box">
-    <div class="career-lbl">Your career direction</div>
-    <div class="career-nm">${tp} personality type</div>
-    <div class="career-txt">${CAREER[tp]||''}</div>
-  </div>
-  <div class="rp-box">
-    <div style="font-size:28px;margin-bottom:8px">📬</div>
-    <div style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px;font-family:var(--fp)">Your personalised PDF report is being prepared</div>
-    <p style="font-size:13px;color:var(--t2);line-height:1.65;margin:0">A MentorMe counsellor will send your detailed career report within <strong>48 hours</strong>${student.email?' to <strong>'+student.email+'</strong>':''}. Check your inbox and spam folder.</p>
-  </div>
-  <div class="res-actions">
-    <a href="https://wa.me/918188824440?text=Hi+MentorMe!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(student.name)}%2C+Class+${student.cls}).+Looking+forward+to+my+report!" target="_blank" class="btn btn-green">Chat with a MentorMe counsellor →</a>
-    <button class="btn btn-ghost" onclick="goTo('pg-welcome')" style="font-size:13px;padding:9px 18px">Back to home</button>
-  </div>`;
-
-  document.getElementById('res-body').innerHTML=html;
-  goTo('pg-results');
-  setTimeout(()=>{
-    document.querySelectorAll('.p-fill').forEach(el=>{
-      const w=el.style.width; el.style.width='0%';
-      setTimeout(()=>{el.style.width=w;},80);
-    });
-  },300);
+  const storedRole=localStorage.getItem('mentorme_post_login_role');
+  if(storedRole==='institutional'){
+    setTimeout(()=>{
+      window.location.href='/dashboard/institution';
+    },2000);
+  }
 }
 
 function getPct2(ss,p){const d=ss[p]||{score:0,max:1};return Math.round((d.score/Math.max(d.max,0.01))*100);}

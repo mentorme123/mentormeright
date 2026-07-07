@@ -64,11 +64,10 @@ export default function RouteDirector() {
 
         // 2. Strict Role-Based Routing
         if (userRole === 'individual') {
-          // Always redirect to assessment after login/register
-          const destination = "/career-assessment.html";
-          console.log(`🎯 Routing Student to Assessment: ${destination}`);
+          const destination = "/dashboard/student";
+          console.log(`Routing Student to Dashboard Page: ${destination}`);
           window.location.href = destination;
-        } 
+        }
         else if (userRole === 'institutional') {
           console.log("🎯 Routing to Institutional Dashboard");
           router.push("/dashboard/institution");

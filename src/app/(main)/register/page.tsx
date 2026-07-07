@@ -50,7 +50,7 @@ export default function RegisterPage() {
         } else if (role === 'counselor') {
           window.location.href = '/dashboard/counselor';
         } else {
-          window.location.href = '/career-assessment.html';
+          window.location.href = '/dashboard/student';
         }
       } else {
         setSuccess(true);

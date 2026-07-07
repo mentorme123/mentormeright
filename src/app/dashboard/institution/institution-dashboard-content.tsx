@@ -19,7 +19,9 @@ import {
   AlertCircle,
   CheckCircle2,
   Clock,
-  ArrowRight
+  ArrowRight,
+  UserPlus,
+  X
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Link from "next/link";
@@ -83,6 +85,14 @@ export default function InstitutionDashboardContent() {
   const [institutionName, setInstitutionName] = useState("Global School System");
 
   const [institutionEmail, setInstitutionEmail] = useState("");
+
+  const [showCreateStudent, setShowCreateStudent] = useState(false);
+  const [createName, setCreateName] = useState("");
+  const [createEmail, setCreateEmail] = useState("");
+  const [createGrade, setCreateGrade] = useState("");
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createError, setCreateError] = useState("");
+  const [createSuccess, setCreateSuccess] = useState("");
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.pathname.startsWith('/dashboard/institution')) {
@@ -198,6 +208,32 @@ export default function InstitutionDashboardContent() {
         }
       }
     });
+  };
+
+  const handleCreateStudent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (createLoading) return;
+    setCreateLoading(true);
+    setCreateError("");
+    setCreateSuccess("");
+    try {
+      const response = await fetch('/api/institution/students', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: createName, email: createEmail, grade: createGrade, institutionName })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to create student');
+      setCreateSuccess(`Student ${data.student.name} created successfully. Temporary password: MentorMe@123`);
+      setCreateName("");
+      setCreateEmail("");
+      setCreateGrade("");
+      setTimeout(() => window.location.reload(), 1200);
+    } catch (err: unknown) {
+      setCreateError(err instanceof Error ? err.message : "Failed to create student");
+    } finally {
+      setCreateLoading(false);
+    }
   };
 
   const filteredStudents = students.filter(s =>
@@ -370,6 +406,12 @@ export default function InstitutionDashboardContent() {
                   <p className="text-sm text-slate-500 font-medium">Student roster and management</p>
                 </div>
                 <div className="flex gap-2 w-full sm:w-auto">
+                  <Button
+                    onClick={() => setShowCreateStudent(true)}
+                    className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-4 py-2 rounded-xl shadow-sm"
+                  >
+                    <UserPlus size={16} className="mr-2" /> Create Student
+                  </Button>
                   <Button
                     onClick={handleDownloadTemplate}
                     variant="outline"
@@ -589,9 +631,54 @@ export default function InstitutionDashboardContent() {
               </div>
             </div>
           )}
-
         </div>
       </main>
+
+      {showCreateStudent && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-black text-slate-800">Create Student</h2>
+                <p className="text-slate-500 text-sm mt-1">Manually add a student to your roster.</p>
+              </div>
+              <button onClick={() => setShowCreateStudent(false)} className="p-2 hover:bg-slate-100 rounded-xl transition-colors">
+                <X size={20} className="text-slate-400" />
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateStudent} className="space-y-4">
+              {createError && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm font-bold">{createError}</div>
+              )}
+              {createSuccess && (
+                <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm font-bold">{createSuccess}</div>
+              )}
+              <div>
+                <label className="text-sm font-bold text-slate-700 mb-1 block">Full Name *</label>
+                <input type="text" required value={createName} onChange={(e) => setCreateName(e.target.value)} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm" placeholder="e.g. Rahul Sharma" />
+              </div>
+              <div>
+                <label className="text-sm font-bold text-slate-700 mb-1 block">Email *</label>
+                <input type="email" required value={createEmail} onChange={(e) => setCreateEmail(e.target.value)} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm" placeholder="rahul@example.com" />
+              </div>
+              <div>
+                <label className="text-sm font-bold text-slate-700 mb-1 block">Grade / Level</label>
+                <select value={createGrade} onChange={(e) => setCreateGrade(e.target.value)} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm">
+                  <option value="">Select Level</option>
+                  <option value="School Student">School Student</option>
+                  <option value="College/Undergraduate">College / Undergraduate</option>
+                  <option value="Graduate">Graduate</option>
+                  <option value="Working Professional">Working Professional</option>
+                </select>
+              </div>
+              <Button type="submit" disabled={createLoading} className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg">
+                {createLoading ? <><Loader2 className="animate-spin mr-2" size={16} /> Creating...</> : "Create Student"}
+              </Button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

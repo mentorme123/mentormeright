@@ -961,5 +961,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
 
       </div>
     </div>
+  </div>
+</div>
   );
 }

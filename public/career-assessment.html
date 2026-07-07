@@ -104,6 +104,9 @@ body{font-family:var(--f);background:#eef2fb;min-height:100vh;color:var(--text)}
 .reg-field input,.reg-field select{padding:10px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);font-family:var(--f);font-size:14px;color:var(--text);background:var(--white);outline:none;transition:border-color .15s}
 .reg-field input:focus,.reg-field select:focus{border-color:var(--blue)}
 .reg-field input::placeholder{color:var(--t3)}
+.subj-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;margin-top:6px}
+.subj-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text);cursor:pointer}
+.subj-item.subj-full{grid-column:1/-1}
 .err{color:var(--red);font-size:12px;background:var(--red-lt);padding:8px 12px;border-radius:var(--r);margin-bottom:10px;display:none}
 .pay-box{background:var(--surf);border:1px solid var(--bdr);border-radius:var(--r);padding:14px;margin:14px 0}
 .pay-row{display:flex;justify-content:space-between;font-size:14px;margin-bottom:7px;align-items:center}
@@ -282,9 +285,21 @@ const CFG={ADMIN_USER:'mentorme_admin',ADMIN_PASS:'MentorMe@2025!',RZP_KEY:'rzp_
           <option value="12">Class 12</option>
         </select>
       </div>
-      <div class="reg-field full"><label>School name *</label><input id="r-school" type="text" placeholder="Full name of your school"/></div>
+      <div class="reg-field"><label>School name *</label><input id="r-school" type="text" placeholder="Full name of your school"/></div>
       <div class="reg-field"><label>City *</label><input id="r-city" type="text" placeholder="e.g. Hyderabad"/></div>
-      <div class="reg-field"><label>Mobile number *</label><input id="r-phone" type="tel" placeholder="10-digit number" maxlength="10"/></div>
+      <div class="reg-field"><label>Student Mobile *</label><input id="r-phone" type="tel" placeholder="10-digit number" maxlength="10"/></div>
+      <div class="reg-field">
+        <label>Subjects / Stream <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional — select all that apply)</span></label>
+        <div class="subj-grid">
+          <label class="subj-item"><input type="checkbox" value="Mathematics"/> Mathematics</label>
+          <label class="subj-item"><input type="checkbox" value="Physics"/> Physics</label>
+          <label class="subj-item"><input type="checkbox" value="Chemistry"/> Chemistry</label>
+          <label class="subj-item"><input type="checkbox" value="Biology"/> Biology</label>
+          <label class="subj-item"><input type="checkbox" value="Computer Science"/> Computer Science</label>
+          <label class="subj-item"><input type="checkbox" value="English"/> English</label>
+          <label class="subj-item subj-full"><input type="checkbox" value="Commerce"/> Commerce</label>
+        </div>
+      </div>
       <div class="reg-field full"><label>Parent's email (report sent here)</label><input id="r-email" type="email" placeholder="parent@email.com"/></div>
     </div>
     <div class="pay-box">

@@ -135,7 +135,7 @@ export default function InstitutionDashboardContent() {
 
         const { data: gapData } = await supabase.rpc('get_cohort_reality_gap', { inst_name: 'Global School System' });
         if (gapData && typeof gapData === 'object' && 'danger_zone_percentage' in gapData) {
-          setRealityGapData(gapData as {danger_zone_percentage: number});
+          setRealityGapData(gapData as { danger_zone_percentage: number });
         }
       } catch (err: unknown) {
         console.error("Failed to fetch advanced metrics:", err);
@@ -200,8 +200,8 @@ export default function InstitutionDashboardContent() {
     });
   };
 
-  const filteredStudents = students.filter(s => 
-    s.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  const filteredStudents = students.filter(s =>
+    s.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     s.email?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -230,11 +230,10 @@ export default function InstitutionDashboardContent() {
               <button
                 key={item.key}
                 onClick={() => setActiveMenu(item.key)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                  isActive
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold transition-all ${isActive
                     ? "bg-brand-blue text-white shadow-lg shadow-brand-blue/20"
                     : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
-                }`}
+                  }`}
               >
                 <Icon size={18} />
                 <span>{item.label}</span>
@@ -265,7 +264,7 @@ export default function InstitutionDashboardContent() {
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                onClick={() => { window.location.href = '/'; }}
+                onClick={() => { window.location.href = 'https://mentormeright-a31hvrhj4-mentorme123s-projects.vercel.app'; }}
                 className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 <ArrowLeft size={16} /> Back to Home
@@ -282,47 +281,47 @@ export default function InstitutionDashboardContent() {
               </div>
             </div>
             {!isProfileHidden && (
-            <div className="relative w-full md:w-auto">
-              <button
-                type="button"
-                onClick={() => setProfileMenuOpen((prev) => !prev)}
-                className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-1 pr-3 py-1 hover:border-brand-blue/40 transition-all shadow-sm w-full md:w-auto"
-              >
-                <div className="w-8 h-8 rounded-lg bg-brand-blue text-white flex items-center justify-center font-bold text-sm">
-                  {institutionName.charAt(0).toUpperCase()}
-                </div>
-                <span className="text-sm font-bold text-slate-700 truncate hidden sm:inline">Hi, {sanitizeText(institutionName)}</span>
-              </button>
+              <div className="relative w-full md:w-auto">
+                <button
+                  type="button"
+                  onClick={() => setProfileMenuOpen((prev) => !prev)}
+                  className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-1 pr-3 py-1 hover:border-brand-blue/40 transition-all shadow-sm w-full md:w-auto"
+                >
+                  <div className="w-8 h-8 rounded-lg bg-brand-blue text-white flex items-center justify-center font-bold text-sm">
+                    {institutionName.charAt(0).toUpperCase()}
+                  </div>
+                  <span className="text-sm font-bold text-slate-700 truncate hidden sm:inline">Hi, {sanitizeText(institutionName)}</span>
+                </button>
 
-              {profileMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
-                  <div className="p-4 border-b border-slate-100 bg-slate-50">
-                    <p className="font-bold text-slate-800 text-sm truncate">{sanitizeText(institutionName)}</p>
-                    <p className="text-xs text-slate-500 truncate">{sanitizeText(institutionEmail)}</p>
+                {profileMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                    <div className="p-4 border-b border-slate-100 bg-slate-50">
+                      <p className="font-bold text-slate-800 text-sm truncate">{sanitizeText(institutionName)}</p>
+                      <p className="text-xs text-slate-500 truncate">{sanitizeText(institutionEmail)}</p>
+                    </div>
+                    <div className="p-2">
+                      <Link href="/dashboard/institution/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
+                        <User size={18} className="text-brand-blue" />
+                        <div>
+                          <p className="text-sm font-bold text-slate-700">My Profile</p>
+                          <p className="text-xs text-slate-500">Account settings and more</p>
+                        </div>
+                        <ChevronRight size={16} className="ml-auto text-slate-400" />
+                      </Link>
+                    </div>
+                    <div className="p-2 border-t border-slate-100">
+                      <button
+                        type="button"
+                        onClick={() => { setProfileMenuOpen(false); handleLogout(); }}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left border border-red-200"
+                      >
+                        <LogOut size={18} className="text-red-600" />
+                        <span className="text-sm font-bold text-red-600">SIGN OUT</span>
+                      </button>
+                    </div>
                   </div>
-                  <div className="p-2">
-                    <Link href="/dashboard/institution/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
-                      <User size={18} className="text-brand-blue" />
-                      <div>
-                        <p className="text-sm font-bold text-slate-700">My Profile</p>
-                        <p className="text-xs text-slate-500">Account settings and more</p>
-                      </div>
-                      <ChevronRight size={16} className="ml-auto text-slate-400" />
-                    </Link>
-                  </div>
-                  <div className="p-2 border-t border-slate-100">
-                    <button
-                      type="button"
-                      onClick={() => { setProfileMenuOpen(false); handleLogout(); }}
-                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left border border-red-200"
-                    >
-                      <LogOut size={18} className="text-red-600" />
-                      <span className="text-sm font-bold text-red-600">SIGN OUT</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
             )}
           </div>
 
@@ -371,14 +370,14 @@ export default function InstitutionDashboardContent() {
                   <p className="text-sm text-slate-500 font-medium">Student roster and management</p>
                 </div>
                 <div className="flex gap-2 w-full sm:w-auto">
-                  <Button 
+                  <Button
                     onClick={handleDownloadTemplate}
                     variant="outline"
                     className="bg-white border border-slate-200 hover:border-brand-blue text-slate-700 font-bold px-4 py-2 rounded-xl"
                   >
                     <FileSpreadsheet size={16} className="mr-2" /> Template
                   </Button>
-                  <Button 
+                  <Button
                     onClick={() => document.getElementById('csv-upload')?.click()}
                     className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold px-4 py-2 rounded-xl shadow-sm"
                   >
@@ -391,9 +390,9 @@ export default function InstitutionDashboardContent() {
               <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
                 <div className="relative">
                   <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input 
-                    type="text" 
-                    placeholder="Search name or email..." 
+                  <input
+                    type="text"
+                    placeholder="Search name or email..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none font-medium text-sm transition-all"
@@ -512,7 +511,7 @@ export default function InstitutionDashboardContent() {
                     <h3 className="text-lg font-black text-slate-800 mb-1">Export Cohort Report</h3>
                     <p className="text-sm text-slate-500 font-medium">Download a complete ZIP of all student reports.</p>
                   </div>
-                  <Button 
+                  <Button
                     onClick={handleExportReports}
                     disabled={isExporting}
                     className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-6 py-5 rounded-xl shadow-sm"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft } from "lucide-react";
+import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
@@ -359,32 +359,30 @@ export default function AdminDashboard() {
                      <p className="font-bold text-slate-800 text-sm truncate">{currentAdmin?.name || 'Admin'}</p>
                      <p className="text-xs text-slate-500 truncate">{currentAdmin?.email || ''}</p>
                    </div>
-                   <div className="p-2">
+                    <div className="p-2">
                       <Link href="/dashboard/admin/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
                         <User size={18} className="text-brand-blue" />
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => { window.location.href = '/'; }}
-                className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
-              >
-                <ArrowLeft size={16} /> Back to Home
-              </button>
-              <div>
+                        <div>
                           <p className="text-sm font-bold text-slate-700">My Profile</p>
                           <p className="text-xs text-slate-500">Account settings and more</p>
                         </div>
                         <ChevronRight size={16} className="ml-auto text-slate-400" />
                       </Link>
-                     <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
-                       <Settings size={18} className="text-brand-orange" />
-                       <div>
-                         <p className="text-sm font-bold text-slate-700">Settings</p>
-                         <p className="text-xs text-slate-500">Preferences and configuration</p>
-                       </div>
-                       <ChevronRight size={16} className="ml-auto text-slate-400" />
-                     </button>
-                   </div>
+                    </div>
+                    <div className="p-2">
+                      <button
+                        type="button"
+                        onClick={() => window.location.href = '/settings'}
+                        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
+                      >
+                        <Settings size={18} className="text-brand-orange" />
+                        <div>
+                          <p className="text-sm font-bold text-slate-700">Settings</p>
+                          <p className="text-xs text-slate-500">Preferences and configuration</p>
+                        </div>
+                        <ChevronRight size={16} className="ml-auto text-slate-400" />
+                      </button>
+                    </div>
                    <div className="p-2 border-t border-slate-100">
                      <button
                        type="button"

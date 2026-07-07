@@ -42,7 +42,15 @@ export default function RegisterPage() {
       }
 
       if (result.emailConfirmed) {
-        window.location.href = "/career-assessment.html";
+        if (role === 'institutional') {
+          window.location.href = '/dashboard/institution';
+        } else if (role === 'admin') {
+          window.location.href = '/dashboard/admin';
+        } else if (role === 'counselor') {
+          window.location.href = '/dashboard/counselor';
+        } else {
+          window.location.href = '/career-assessment.html';
+        }
       } else {
         setSuccess(true);
       }

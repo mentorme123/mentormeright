@@ -30,8 +30,24 @@ export default function LoginPage() {
       const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
       if (authError) throw authError;
       if (!data.user) throw new Error("No user found");
-      // Directly open career assessment after login
-      window.location.href = "/career-assessment.html";
+
+      const { data: profile } = await supabase
+        .from('users')
+        .select('role')
+        .eq('id', data.user.id)
+        .maybeSingle();
+
+      const role = profile?.role || (data.user.user_metadata as Record<string, string | undefined>)?.role || 'individual';
+
+      if (role === 'institutional') {
+        window.location.href = '/dashboard/institution';
+      } else if (role === 'admin') {
+        window.location.href = '/dashboard/admin';
+      } else if (role === 'counselor') {
+        window.location.href = '/dashboard/counselor';
+      } else {
+        window.location.href = '/career-assessment.html';
+      }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";
       if (message.includes("Unexpected token '<'") || message.toLowerCase().includes("rate limit")) {

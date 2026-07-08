@@ -50,8 +50,8 @@ export async function POST(req: NextRequest) {
       });
 
       if (authError) {
-        console.error(`Error creating auth user for ${username}:`, authError);
-        results.push({ username, email, status: 'error', error: authError.message });
+        console.error(`Error creating auth user for ${rawUsername}:`, authError);
+        results.push({ username: rawUsername, email, status: 'error', error: authError.message });
         continue;
       }
 
@@ -67,10 +67,10 @@ export async function POST(req: NextRequest) {
         });
 
       if (profileError) {
-        console.error(`Error creating profile for ${username}:`, profileError);
-        results.push({ username, email, status: 'partial_success', error: 'Auth created but profile failed', password });
+        console.error(`Error creating profile for ${rawUsername}:`, profileError);
+        results.push({ username: rawUsername, email, status: 'partial_success', error: 'Auth created but profile failed', password });
       } else {
-        results.push({ username, email, password, status: 'success' });
+        results.push({ username: rawUsername, email, password, status: 'success' });
       }
     }
 

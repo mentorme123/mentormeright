@@ -69,6 +69,20 @@ export async function POST(req: NextRequest) {
     const sanitizedGrade = String(grade || '').trim().slice(0, 50);
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
+    const { data: existingUser } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (existingUser) {
+      await supabaseAdmin
+        .from('users')
+        .update({ institution_name: sanitizedInstitution })
+        .eq('id', existingUser.id);
+      return NextResponse.json({ success: true, student: { id: existingUser.id, email, name: sanitizedName } });
+    }
+
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
       password: 'MentorMe@123',
@@ -77,19 +91,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (authError) {
-      const { data: existingUser } = await supabaseAdmin
-        .from('users')
-        .select('id')
-        .eq('email', email)
-        .maybeSingle();
-      if (existingUser) {
-        await supabaseAdmin
-          .from('users')
-          .update({ institution_name: sanitizedInstitution })
-          .eq('id', existingUser.id);
-        return NextResponse.json({ success: true, student: { id: existingUser.id, email, name: sanitizedName } });
-      }
-      return NextResponse.json({ error: authError.message }, { status: 400 });
+      return NextResponse.json({ error: authError.message || 'Failed to create user' }, { status: 400 });
     }
 
     const { error: profileError } = await supabaseAdmin

@@ -71,7 +71,7 @@ export async function GET(request: Request) {
     if (userProfile) {
       console.log('[auth/callback] Existing profile role:', userProfile.role);
     if (userProfile.role === 'individual') {
-      return NextResponse.redirect(new URL('/dashboard/student', base));
+      return NextResponse.redirect(new URL('/career-assessment.html', base));
     } else if (userProfile.role === 'institutional') {
       return NextResponse.redirect(new URL('/dashboard/institution', base));
       } else if (userProfile.role === 'admin') {

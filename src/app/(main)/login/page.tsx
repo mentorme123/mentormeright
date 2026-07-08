@@ -40,14 +40,13 @@ export default function LoginPage() {
       const role = profile?.role || (data.user.user_metadata as Record<string, string | undefined>)?.role || 'individual';
 
       if (role === 'institutional') {
-        localStorage.setItem('mentorme_post_login_role', 'institutional');
-        window.location.href = '/career-assessment.html';
+        window.location.href = '/dashboard/institution';
       } else if (role === 'admin') {
         window.location.href = '/dashboard/admin';
       } else if (role === 'counselor') {
         window.location.href = '/dashboard/counselor';
       } else {
-        window.location.href = '/dashboard/student';
+        window.location.href = '/career-assessment.html';
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";

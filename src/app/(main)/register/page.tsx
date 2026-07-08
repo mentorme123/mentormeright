@@ -43,14 +43,13 @@ export default function RegisterPage() {
 
       if (result.emailConfirmed) {
         if (role === 'institutional') {
-          localStorage.setItem('mentorme_post_login_role', 'institutional');
-          window.location.href = '/career-assessment.html';
+          window.location.href = '/dashboard/institution';
         } else if (role === 'admin') {
           window.location.href = '/dashboard/admin';
         } else if (role === 'counselor') {
           window.location.href = '/dashboard/counselor';
         } else {
-          window.location.href = '/dashboard/student';
+          window.location.href = '/career-assessment.html';
         }
       } else {
         setSuccess(true);

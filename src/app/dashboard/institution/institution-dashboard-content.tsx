@@ -117,15 +117,6 @@ export default function InstitutionDashboardContent() {
   }, [supabase]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.pathname.startsWith('/dashboard/institution')) {
-      const isComplete = localStorage.getItem('mentorme_assessment_complete');
-      const userRole = localStorage.getItem('mentorme_post_login_role');
-      if (!isComplete && userRole === 'institutional') {
-        window.location.href = '/career-assessment.html';
-        return;
-      }
-    }
-
     async function loadData() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
@@ -140,15 +131,6 @@ export default function InstitutionDashboardContent() {
 
       if (userProfile) {
         setInstitutionName(userProfile.institution_name || "Global School System");
-      }
-
-      if (typeof window !== 'undefined') {
-        const isComplete = localStorage.getItem('mentorme_assessment_complete');
-        const userRole = localStorage.getItem('mentorme_post_login_role');
-        if (!isComplete && userRole === 'institutional') {
-          window.location.href = '/career-assessment.html';
-          return;
-        }
       }
 
       await refreshStudents();

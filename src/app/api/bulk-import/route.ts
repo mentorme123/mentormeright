@@ -30,68 +30,44 @@ export async function POST(req: NextRequest) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     for (const student of students) {
-      const { Name, Email, Grade } = student;
+      const username = String(student.Username || student.Name || '').trim();
+      const providedPassword = String(student.Password || '').trim();
 
-      if (!Email) continue;
+      if (!username) continue;
 
-      // Validate email format
-      if (!emailRegex.test(Email)) {
-        console.error(`Invalid email format for ${Email}`);
-        results.push({ email: Email, status: 'error', error: 'Invalid email format' });
-        continue;
-      }
+      const email = `${username}@mentormeright.in`;
+      const password = providedPassword || `MM${username}@123`;
+      const sanitizedName = username.slice(0, 100);
 
-      // Sanitize inputs
-      const sanitizedName = String(Name || '').slice(0, 100);
-      const sanitizedGrade = String(Grade || '').slice(0, 50);
-
-      // 1. Create Auth User
       const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-        email: Email,
-        password: tempPassword,
+        email,
+        password,
         email_confirm: true,
         user_metadata: { full_name: sanitizedName }
       });
 
       if (authError) {
-        console.error(`Error creating auth user for ${Email}:`, authError);
-        results.push({ email: Email, status: 'error', error: authError.message });
+        console.error(`Error creating auth user for ${username}:`, authError);
+        results.push({ username, email, status: 'error', error: authError.message });
         continue;
       }
 
-      // 2. Create Public User Profile
       const { error: profileError } = await supabaseAdmin
         .from('users')
         .insert({
           id: authData.user.id,
-          email: Email,
+          email,
           name: sanitizedName,
           role: 'individual',
-          education_level: sanitizedGrade,
           institution_name: String(institutionName || 'Institution').slice(0, 100),
-          audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
+          audience_type: 'ST'
         });
 
       if (profileError) {
-        console.error(`Error creating profile for ${Email}:`, profileError);
-        results.push({ email: Email, status: 'partial_success', error: 'Auth created but profile failed' });
+        console.error(`Error creating profile for ${username}:`, profileError);
+        results.push({ username, email, status: 'partial_success', error: 'Auth created but profile failed', password });
       } else {
-        // 3. Trigger Welcome Email
-        try {
-          await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email/welcome`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: Name,
-              email: Email,
-              tempPassword: tempPassword
-            })
-          });
-        } catch (emailErr) {
-          console.error(`Failed to send welcome email to ${Email}:`, emailErr);
-        }
-
-        results.push({ email: Email, status: 'success' });
+        results.push({ username, email, password, status: 'success' });
       }
     }
 

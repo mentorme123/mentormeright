@@ -83,6 +83,7 @@ export default function InstitutionDashboardContent() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
+  const [uploadResults, setUploadResults] = useState<Array<{ username: string; email: string; password?: string; status: string }>>([]);
   const [isExporting, setIsExporting] = useState(false);
   const [institutionName, setInstitutionName] = useState("Global School System");
 
@@ -146,12 +147,12 @@ export default function InstitutionDashboardContent() {
   };
 
   const handleDownloadTemplate = () => {
-    const csvContent = "Name,Email,Grade\nJohn Doe,john@example.com,12\nJane Smith,jane@example.com,Undergrad";
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
+    const csvContent = "Username,Password\njohn12,MyPass123\njane_smith,MyPass456";
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', 'MentorMe_Bulk_Upload_Template.csv');
+    link.setAttribute('download', 'student_template.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -167,12 +168,13 @@ export default function InstitutionDashboardContent() {
 
   const processCSV = async (file: File) => {
     setUploadStatus('processing');
+    setUploadResults([]);
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
       complete: async (results) => {
         try {
-          const rows = results.data as Array<{ Name: string; Email: string; Grade: string }>;
+          const rows = results.data as Array<{ Username: string; Password?: string }>;
           if (rows.length === 0) throw new Error("The CSV file is empty.");
 
           const response = await fetch('/api/bulk-import', {
@@ -181,12 +183,18 @@ export default function InstitutionDashboardContent() {
             body: JSON.stringify({ students: rows, institutionName })
           });
 
-          if (!response.ok) throw new Error("Failed to provision accounts.");
+          if (!response.ok) {
+            const data = await response.json();
+            throw new Error(data.error || "Failed to provision accounts.");
+          }
 
-          setStudentsImported(rows.length);
+          const data = await response.json();
+          const successResults = (data.results || []).filter((r: any) => r.status === 'success' || r.status === 'partial_success');
+          setUploadResults(successResults);
+          const successCount = successResults.length;
+          setStudentsImported(successCount);
           setUploadStatus('success');
           await refreshStudents();
-          setTimeout(() => setUploadStatus('idle'), 3000);
         } catch (err: unknown) {
           setErrorMessage(err instanceof Error ? err.message : "An error occurred");
           setUploadStatus('error');
@@ -505,7 +513,35 @@ export default function InstitutionDashboardContent() {
 
               {uploadStatus === 'success' && (
                 <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
-                  <CheckCircle2 size={18} /> {studentsImported} students imported successfully!
+                  <CheckCircle2 size={18} /> {studentsImported} students imported successfully. Credentials generated.
+                </div>
+              )}
+              {uploadResults.length > 0 && (
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                  <div className="p-4 border-b border-slate-100">
+                    <h3 className="text-sm font-black text-slate-800">Generated Credentials</h3>
+                    <p className="text-xs text-slate-500 font-medium">Share these login details with students.</p>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-100">
+                          <th className="px-4 py-3 font-bold">Username</th>
+                          <th className="px-4 py-3 font-bold">Email</th>
+                          <th className="px-4 py-3 font-bold">Password</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {uploadResults.map((result, idx) => (
+                          <tr key={idx} className="hover:bg-slate-50 transition-colors">
+                            <td className="px-4 py-3 text-sm font-bold text-slate-700">{result.username}</td>
+                            <td className="px-4 py-3 text-sm text-slate-500">{result.email}</td>
+                            <td className="px-4 py-3 text-sm font-mono text-slate-700">{result.password || '---'}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               )}
               {uploadStatus === 'error' && (

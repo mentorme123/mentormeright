@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createAdminClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,14 +52,9 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
-    }
-
-    const supabaseAdmin = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL,
-      process.env.SUPABASE_SERVICE_ROLE_KEY,
-      { auth: { autoRefreshToken: false, persistSession: false } }
+    const supabaseAdmin = createAdminClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
     const { name, email, grade, institutionName } = await req.json();
@@ -107,6 +103,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true, student: { id: authData.user.id, email, name: sanitizedName } });
   } catch (error: unknown) {
     const err = error as Error;
+    console.error('Create student error:', err);
     return NextResponse.json({ error: err.message || 'Failed to create student' }, { status: 500 });
   }
 }

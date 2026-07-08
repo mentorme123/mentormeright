@@ -100,7 +100,8 @@ export default function InstitutionDashboardContent() {
   const refreshStudents = useCallback(async () => {
     try {
       const response = await fetch('/api/institution/students', {
-        cache: 'no-store'
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
       });
       if (response.ok) {
         const result = await response.json();
@@ -108,7 +109,7 @@ export default function InstitutionDashboardContent() {
           setStudents(result.students);
         }
       } else {
-        console.error('Failed to refresh students:', response.status);
+        console.error('Failed to refresh students:', response.status, response.statusText);
       }
     } catch (err) {
       console.error("Failed to refresh students", err);

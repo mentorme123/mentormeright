@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   LayoutDashboard,
   Users,
@@ -96,6 +96,26 @@ export default function InstitutionDashboardContent() {
   const [createError, setCreateError] = useState("");
   const [createSuccess, setCreateSuccess] = useState("");
 
+  const refreshStudents = useCallback(async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      const response = await fetch('/api/institution/students', {
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+      });
+      if (response.ok) {
+        const result = await response.json();
+        if (Array.isArray(result.students)) {
+          setStudents(result.students);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to refresh students", err);
+    }
+  }, [supabase]);
+
   useEffect(() => {
     if (typeof window !== 'undefined' && window.location.pathname.startsWith('/dashboard/institution')) {
       const isComplete = localStorage.getItem('mentorme_assessment_complete');
@@ -122,44 +142,21 @@ export default function InstitutionDashboardContent() {
         setInstitutionName(userProfile.institution_name || "Global School System");
       }
 
-      const currentInstitutionName = userProfile?.institution_name || "Global School System";
-
-      const { data: studentList } = await supabase
-        .from('users')
-        .select(`
-          id,
-          name,
-          email,
-          education_level,
-          role,
-          assessment_results (
-            id
-          )
-        `)
-        .eq('role', 'individual')
-        .eq('institution_name', currentInstitutionName)
-        .order('name', { ascending: true });
-
-      setStudents(studentList || []);
-
-      try {
-        const { data: misData } = await supabase.rpc('get_cohort_misalignment_rate', { inst_name: currentInstitutionName });
-        if (misData && typeof misData === 'object' && 'misaligned_percentage' in misData) {
-          setMisalignmentData(misData as { misaligned_percentage: number });
+      if (typeof window !== 'undefined') {
+        const isComplete = localStorage.getItem('mentorme_assessment_complete');
+        const userRole = localStorage.getItem('mentorme_post_login_role');
+        if (!isComplete && userRole === 'institutional') {
+          window.location.href = '/career-assessment.html';
+          return;
         }
-
-        const { data: gapData } = await supabase.rpc('get_cohort_reality_gap', { inst_name: currentInstitutionName });
-        if (gapData && typeof gapData === 'object' && 'danger_zone_percentage' in gapData) {
-          setRealityGapData(gapData as { danger_zone_percentage: number });
-        }
-      } catch (err: unknown) {
-        console.error("Failed to fetch advanced metrics:", err);
       }
 
+      await refreshStudents();
       setLoading(false);
     }
+
     loadData();
-  }, [supabase]);
+  }, [supabase, router, refreshStudents]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -199,14 +196,15 @@ export default function InstitutionDashboardContent() {
           const response = await fetch('/api/bulk-import', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ students: rows, institutionName: institutionName })
+            body: JSON.stringify({ students: rows, institutionName })
           });
 
           if (!response.ok) throw new Error("Failed to provision accounts.");
 
           setStudentsImported(rows.length);
           setUploadStatus('success');
-          window.location.reload();
+          await refreshStudents();
+          setTimeout(() => setUploadStatus('idle'), 3000);
         } catch (err: unknown) {
           setErrorMessage(err instanceof Error ? err.message : "An error occurred");
           setUploadStatus('error');
@@ -233,7 +231,8 @@ export default function InstitutionDashboardContent() {
       setCreateName("");
       setCreateEmail("");
       setCreateGrade("");
-      setTimeout(() => window.location.reload(), 1200);
+      await refreshStudents();
+      setTimeout(() => setCreateSuccess(""), 2000);
     } catch (err: unknown) {
       setCreateError(err instanceof Error ? err.message : "Failed to create student");
     } finally {

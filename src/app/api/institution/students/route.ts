@@ -3,6 +3,60 @@ import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
+export async function GET(req: NextRequest) {
+  try {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      return NextResponse.json({ error: 'Database not configured' }, { status: 500 });
+    }
+
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    );
+
+    const authHeader = req.headers.get('authorization');
+    if (!authHeader) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user } } = await supabaseAdmin.auth.getUser(token);
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { data: userProfile } = await supabaseAdmin
+      .from('users')
+      .select('institution_name')
+      .eq('id', user.id)
+      .single();
+
+    const institutionName = userProfile?.institution_name || 'Global School System';
+
+    const { data: studentList } = await supabaseAdmin
+      .from('users')
+      .select(`
+        id,
+        name,
+        email,
+        education_level,
+        role,
+        assessment_results (
+          id
+        )
+      `)
+      .eq('role', 'individual')
+      .eq('institution_name', institutionName)
+      .order('name', { ascending: true });
+
+    return NextResponse.json({ students: studentList || [] });
+  } catch (error: unknown) {
+    const err = error as Error;
+    return NextResponse.json({ error: err.message || 'Failed to fetch students' }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {

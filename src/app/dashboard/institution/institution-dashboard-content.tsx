@@ -83,7 +83,7 @@ export default function InstitutionDashboardContent() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
-  const [uploadResults, setUploadResults] = useState<Array<{ username: string; email: string; password?: string; status: string }>>([]);
+  const [uploadResults, setUploadResults] = useState<Array<{ username: string; email: string; password?: string; status: string; error?: string }>>([]);
   const [isExporting, setIsExporting] = useState(false);
   const [institutionName, setInstitutionName] = useState("Global School System");
 
@@ -183,18 +183,24 @@ export default function InstitutionDashboardContent() {
             body: JSON.stringify({ students: rows, institutionName })
           });
 
+          const data = await response.json();
+
           if (!response.ok) {
-            const data = await response.json();
             throw new Error(data.error || "Failed to provision accounts.");
           }
 
-          const data = await response.json();
           const successResults = (data.results || []).filter((r: any) => r.status === 'success' || r.status === 'partial_success');
+          const errorResults = (data.results || []).filter((r: any) => r.status === 'error');
+
           setUploadResults(successResults);
-          const successCount = successResults.length;
-          setStudentsImported(successCount);
-          setUploadStatus('success');
-          await refreshStudents();
+          setStudentsImported(successResults.length);
+          setUploadStatus(successResults.length > 0 ? 'success' : 'error');
+
+          if (successResults.length === 0 && errorResults.length > 0) {
+            setErrorMessage(`All ${errorResults.length} students failed: ${errorResults[0].error}`);
+          } else if (successResults.length > 0) {
+            await refreshStudents();
+          }
         } catch (err: unknown) {
           setErrorMessage(err instanceof Error ? err.message : "An error occurred");
           setUploadStatus('error');

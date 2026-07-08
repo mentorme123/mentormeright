@@ -30,8 +30,11 @@ export async function POST(req: NextRequest) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     for (const student of students) {
-      const username = String(student.Username || student.Name || '').trim();
-      const providedPassword = String(student.Password || '').trim();
+      const studentKeys = Object.keys(student);
+      const usernameKey = studentKeys.find(k => k.toLowerCase() === 'username');
+      const passwordKey = studentKeys.find(k => k.toLowerCase() === 'password');
+      const username = String(student[usernameKey || ''] || '').trim();
+      const providedPassword = String(student[passwordKey || ''] || '').trim();
 
       if (!username) continue;
 

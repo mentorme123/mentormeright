@@ -396,6 +396,12 @@ export default function InstitutionDashboardContent() {
                   </Button>
                 </div>
               </div>
+
+              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <h3 className="text-lg font-black text-slate-800 mb-2">Quick Test Student</h3>
+                <p className="text-xs text-slate-500 font-medium mb-4">Click below to open the student career dashboard.</p>
+                <StudentTestCard institutionId={institutionId} />
+              </div>
             </div>
           )}
 
@@ -692,5 +698,57 @@ export default function InstitutionDashboardContent() {
         </div>
       )}
     </div>
+  );
+}
+
+function StudentTestCard({ institutionId }: { institutionId: string }) {
+  const [student, setStudent] = useState<{ id: string; name: string; email: string; education_level: string | null } | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+      const { data } = await supabase
+        .from("users")
+        .select("id, name, email, education_level")
+        .eq("institution_id", institutionId)
+        .eq("role", "student")
+        .limit(1)
+        .maybeSingle();
+      if (!cancelled) {
+        setStudent(data);
+        setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, [institutionId]);
+
+  if (loading) {
+    return <div className="text-sm text-slate-500 font-medium">Loading sample student...</div>;
+  }
+
+  if (!student) {
+    return <div className="text-sm text-slate-500 font-medium">No students found. Create a student first.</div>;
+  }
+
+  return (
+    <a
+      href={`/dashboard/institution/students/${student.id}`}
+      className="block bg-gradient-to-br from-blue-50 to-slate-50 rounded-2xl p-5 border border-slate-200 hover:border-brand-blue/40 hover:shadow-md transition-all group"
+    >
+      <div className="flex items-center gap-4">
+        <div className="w-12 h-12 rounded-full bg-brand-blue text-white flex items-center justify-center text-lg font-black group-hover:scale-110 transition-transform">
+          {sanitizeText(student.name)?.charAt(0) || "S"}
+        </div>
+        <div>
+          <p className="font-black text-slate-800">{sanitizeText(student.name) || "Student"}</p>
+          <p className="text-xs text-slate-500 font-medium">{sanitizeText(student.email)}</p>
+          <p className="text-xs text-brand-blue font-black mt-1">Open Career Dashboard →</p>
+        </div>
+      </div>
+    </a>
   );
 }

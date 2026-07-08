@@ -6,20 +6,13 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {
-    const supabase = createClient();
+    const { searchParams } = new URL(req.url);
+    const institutionName = searchParams.get('institution') || 'Global School System';
 
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { data: userProfile } = await supabase
-      .from('users')
-      .select('institution_name')
-      .eq('id', user.id)
-      .single();
-
-    const institutionName = userProfile?.institution_name || 'Global School System';
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
 
     const { data: studentList, error: studentError } = await supabase
       .from('users')

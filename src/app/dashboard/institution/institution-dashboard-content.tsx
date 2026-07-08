@@ -83,7 +83,7 @@ export default function InstitutionDashboardContent() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
-  const [uploadResults, setUploadResults] = useState<Array<{ username: string; email: string; password?: string; status: string; error?: string }>>([]);
+  const [uploadResults, setUploadResults] = useState<Array<{ name?: string; email?: string; password?: string; status: string; error?: string }>>([]);
   const [isExporting, setIsExporting] = useState(false);
   const [institutionName, setInstitutionName] = useState("Global School System");
 
@@ -97,9 +97,11 @@ export default function InstitutionDashboardContent() {
   const [createError, setCreateError] = useState("");
   const [createSuccess, setCreateSuccess] = useState("");
 
-  const refreshStudents = useCallback(async () => {
+  const refreshStudents = useCallback(async (currentInstitutionName: string) => {
     try {
-      const response = await fetch('/api/institution/students', {
+      const url = new URL('/api/institution/students', window.location.origin);
+      url.searchParams.set('institution', currentInstitutionName);
+      const response = await fetch(url.toString(), {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -146,7 +148,7 @@ export default function InstitutionDashboardContent() {
   };
 
   const handleDownloadTemplate = () => {
-    const csvContent = "Username,Password\njohn12,MyPass123\njane_smith,MyPass456";
+    const csvContent = "Name\nRahul Kumar\nJane Smith\nJohn Doe";
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -173,7 +175,7 @@ export default function InstitutionDashboardContent() {
       skipEmptyLines: true,
       complete: async (results) => {
         try {
-          const rows = results.data as Array<{ Username: string; Password?: string }>;
+          const rows = results.data as Array<{ Name: string; Password?: string }>;
           if (rows.length === 0) throw new Error("The CSV file is empty.");
 
           const response = await fetch('/api/bulk-import', {
@@ -531,7 +533,7 @@ export default function InstitutionDashboardContent() {
                     <table className="w-full text-left border-collapse">
                       <thead>
                         <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-100">
-                          <th className="px-4 py-3 font-bold">Username</th>
+                          <th className="px-4 py-3 font-bold">Name</th>
                           <th className="px-4 py-3 font-bold">Email</th>
                           <th className="px-4 py-3 font-bold">Password</th>
                         </tr>
@@ -539,8 +541,8 @@ export default function InstitutionDashboardContent() {
                       <tbody className="divide-y divide-slate-100">
                         {uploadResults.map((result, idx) => (
                           <tr key={idx} className="hover:bg-slate-50 transition-colors">
-                            <td className="px-4 py-3 text-sm font-bold text-slate-700">{result.username}</td>
-                            <td className="px-4 py-3 text-sm text-slate-500">{result.email}</td>
+                            <td className="px-4 py-3 text-sm font-bold text-slate-700">{result.name || '---'}</td>
+                            <td className="px-4 py-3 text-sm text-slate-500">{result.email || '---'}</td>
                             <td className="px-4 py-3 text-sm font-mono text-slate-700">{result.password || '---'}</td>
                           </tr>
                         ))}

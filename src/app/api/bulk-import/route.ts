@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid students data' }, { status: 400 });
     }
 
-    const results = [];
+    const results: Array<{ username?: string; email?: string; name?: string; password?: string; status: string; error?: string }> = [];
     const tempPassword = 'MentorMe@123'; // Standard temp password
 
     // Email validation regex
@@ -31,16 +31,17 @@ export async function POST(req: NextRequest) {
 
     for (const student of students) {
       const studentKeys = Object.keys(student);
-      const usernameKey = studentKeys.find(k => k.toLowerCase() === 'username');
+      const nameKey = studentKeys.find(k => k.toLowerCase() === 'name' || k.toLowerCase() === 'full name' || k.toLowerCase() === 'full_name' || k.toLowerCase() === 'student name');
       const passwordKey = studentKeys.find(k => k.toLowerCase() === 'password');
-      const rawUsername = String(student[usernameKey || ''] || '').trim();
-      const providedPassword = String(student[passwordKey || ''] || '').trim();
+      const rawName = String(student[nameKey || ''] || '').trim().replace(/\s+/g, ' ');
+      const providedPassword = String(student[passwordKey || ''] || '').trim().replace(/\s+/g, ' ');
 
-      if (!rawUsername) continue;
+      if (!rawName) continue;
 
-      const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawUsername) ? rawUsername : `${rawUsername}@mentormeright.in`;
-      const password = providedPassword || `MM${rawUsername.split('@')[0]}@123`;
-      const sanitizedName = (rawUsername.split('@')[0] || rawUsername).slice(0, 100);
+      const namePart = rawName.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
+      const email = namePart ? `${namePart}@mentormeright.in` : `student${Date.now()}@mentormeright.in`;
+      const password = providedPassword || `MM${namePart.replace(/_/g, '')}@123`;
+      const sanitizedName = rawName.slice(0, 100);
 
       const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,
@@ -50,27 +51,32 @@ export async function POST(req: NextRequest) {
       });
 
       if (authError) {
-        console.error(`Error creating auth user for ${rawUsername}:`, authError);
-        results.push({ username: rawUsername, email, status: 'error', error: authError.message });
+        console.error(`Error creating auth user for ${rawName}:`, authError);
+        results.push({ name: sanitizedName, email, status: 'error', error: authError.message });
         continue;
       }
 
-      const { error: profileError } = await supabaseAdmin
-        .from('users')
-        .insert({
-          id: authData.user.id,
-          email,
-          name: sanitizedName,
-          role: 'individual',
-          institution_name: String(institutionName || 'Institution').slice(0, 100),
-          audience_type: 'ST'
-        });
+      let profileError = null;
+      try {
+        profileError = await supabaseAdmin
+          .from('users')
+          .insert({
+            id: authData.user.id,
+            email,
+            name: sanitizedName,
+            role: 'individual',
+            institution_name: String(institutionName || 'Institution').slice(0, 100),
+            audience_type: 'ST'
+          }).error;
+      } catch (err) {
+        profileError = err;
+      }
 
       if (profileError) {
-        console.error(`Error creating profile for ${rawUsername}:`, profileError);
-        results.push({ username: rawUsername, email, status: 'partial_success', error: 'Auth created but profile failed', password });
+        console.error(`Error creating profile for ${rawName}:`, profileError);
+        results.push({ name: sanitizedName, email, password, status: 'partial_success', error: 'Auth created but profile failed' });
       } else {
-        results.push({ username: rawUsername, email, password, status: 'success' });
+        results.push({ name: sanitizedName, email, password, status: 'success' });
       }
     }
 

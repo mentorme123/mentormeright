@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
 import { createClient as createAdminClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
@@ -9,9 +8,10 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const institutionName = searchParams.get('institution') || 'Global School System';
 
-    const supabase = createClient(
+    const supabase = createAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
     );
 
     const { data: studentList, error: studentError } = await supabase

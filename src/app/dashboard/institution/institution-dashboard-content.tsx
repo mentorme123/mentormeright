@@ -109,9 +109,12 @@ export default function InstitutionDashboardContent() {
         const result = await response.json();
         if (Array.isArray(result.students)) {
           setStudents(result.students);
+        } else {
+          console.warn('Unexpected students response shape:', result);
         }
       } else {
-        console.error('Failed to refresh students:', response.status, response.statusText, await response.text());
+        const text = await response.text();
+        console.error('Failed to refresh students:', response.status, response.statusText, text);
       }
     } catch (err) {
       console.error("Failed to refresh students", err);

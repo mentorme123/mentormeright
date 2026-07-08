@@ -394,7 +394,7 @@ export default function InstitutionDashboardContent() {
                   <Button onClick={() => setActiveMenu("analytics")} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-5 rounded-xl shadow-sm">
                     <TrendingUp size={18} className="mr-2" /> View Analytics
                   </Button>
-                  <Button onClick={() => document.getElementById('csv-upload')?.click()} className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold py-5 rounded-xl shadow-sm">
+                  <Button onClick={() => setActiveMenu("students")} className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold py-5 rounded-xl shadow-sm">
                     <Upload size={18} className="mr-2" /> Upload Students
                   </Button>
                 </div>
@@ -425,7 +425,7 @@ export default function InstitutionDashboardContent() {
                     <FileSpreadsheet size={16} className="mr-2" /> Template
                   </Button>
                   <Button
-                    onClick={() => document.getElementById('csv-upload')?.click()}
+                    onClick={() => document.getElementById('csv-upload-institution')?.click()}
                     className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold px-4 py-2 rounded-xl shadow-sm"
                   >
                     <Upload size={16} className="mr-2" /> Upload CSV

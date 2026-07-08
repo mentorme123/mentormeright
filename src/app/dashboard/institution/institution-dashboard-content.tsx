@@ -122,30 +122,33 @@ export default function InstitutionDashboardContent() {
         setInstitutionName(userProfile.institution_name || "Global School System");
       }
 
+      const currentInstitutionName = userProfile?.institution_name || "Global School System";
+
       const { data: studentList } = await supabase
         .from('users')
         .select(`
-          id, 
-          name, 
-          email, 
-          education_level, 
+          id,
+          name,
+          email,
+          education_level,
           role,
           assessment_results (
             id
           )
         `)
         .eq('role', 'individual')
+        .eq('institution_name', currentInstitutionName)
         .order('name', { ascending: true });
 
       setStudents(studentList || []);
 
       try {
-        const { data: misData } = await supabase.rpc('get_cohort_misalignment_rate', { inst_name: 'Global School System' });
+        const { data: misData } = await supabase.rpc('get_cohort_misalignment_rate', { inst_name: currentInstitutionName });
         if (misData && typeof misData === 'object' && 'misaligned_percentage' in misData) {
           setMisalignmentData(misData as { misaligned_percentage: number });
         }
 
-        const { data: gapData } = await supabase.rpc('get_cohort_reality_gap', { inst_name: 'Global School System' });
+        const { data: gapData } = await supabase.rpc('get_cohort_reality_gap', { inst_name: currentInstitutionName });
         if (gapData && typeof gapData === 'object' && 'danger_zone_percentage' in gapData) {
           setRealityGapData(gapData as { danger_zone_percentage: number });
         }
@@ -196,7 +199,7 @@ export default function InstitutionDashboardContent() {
           const response = await fetch('/api/bulk-import', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ students: rows, institutionName: 'Global School System' })
+            body: JSON.stringify({ students: rows, institutionName: institutionName })
           });
 
           if (!response.ok) throw new Error("Failed to provision accounts.");

@@ -33,14 +33,14 @@ export async function POST(req: NextRequest) {
       const studentKeys = Object.keys(student);
       const usernameKey = studentKeys.find(k => k.toLowerCase() === 'username');
       const passwordKey = studentKeys.find(k => k.toLowerCase() === 'password');
-      const username = String(student[usernameKey || ''] || '').trim();
+      const rawUsername = String(student[usernameKey || ''] || '').trim();
       const providedPassword = String(student[passwordKey || ''] || '').trim();
 
-      if (!username) continue;
+      if (!rawUsername) continue;
 
-      const email = `${username}@mentormeright.in`;
-      const password = providedPassword || `MM${username}@123`;
-      const sanitizedName = username.slice(0, 100);
+      const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(rawUsername) ? rawUsername : `${rawUsername}@mentormeright.in`;
+      const password = providedPassword || `MM${rawUsername.split('@')[0]}@123`;
+      const sanitizedName = (rawUsername.split('@')[0] || rawUsername).slice(0, 100);
 
       const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
         email,

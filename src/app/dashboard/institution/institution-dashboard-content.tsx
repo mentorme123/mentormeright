@@ -111,7 +111,7 @@ export default function InstitutionDashboardContent() {
           setStudents(result.students);
         }
       } else {
-        console.error('Failed to refresh students:', response.status, response.statusText);
+        console.error('Failed to refresh students:', response.status, response.statusText, await response.text());
       }
     } catch (err) {
       console.error("Failed to refresh students", err);
@@ -131,11 +131,10 @@ export default function InstitutionDashboardContent() {
         .eq('id', user.id)
         .single();
 
-      if (userProfile) {
-        setInstitutionName(userProfile.institution_name || "Global School System");
-      }
+      const currentInstitutionName = userProfile?.institution_name || "Global School System";
+      setInstitutionName(currentInstitutionName);
 
-      await refreshStudents();
+      await refreshStudents(currentInstitutionName);
       setLoading(false);
     }
 
@@ -199,8 +198,8 @@ export default function InstitutionDashboardContent() {
 
           if (successResults.length === 0 && errorResults.length > 0) {
             setErrorMessage(`All ${errorResults.length} students failed: ${errorResults[0].error}`);
-          } else if (successResults.length > 0) {
-            await refreshStudents();
+            } else if (successResults.length > 0) {
+            await refreshStudents(institutionName);
           }
         } catch (err: unknown) {
           setErrorMessage(err instanceof Error ? err.message : "An error occurred");
@@ -228,7 +227,7 @@ export default function InstitutionDashboardContent() {
       setCreateName("");
       setCreateEmail("");
       setCreateGrade("");
-      await refreshStudents();
+      await refreshStudents(institutionName);
       setTimeout(() => setCreateSuccess(""), 2000);
     } catch (err: unknown) {
       setCreateError(err instanceof Error ? err.message : "Failed to create student");

@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
             email,
             name: sanitizedName,
             role: 'individual',
-            institution_name: String(institutionName || 'Institution').slice(0, 100),
+            institution_name: String(institutionName || 'Institution').trim().slice(0, 100),
             audience_type: 'ST'
           }).error;
       } catch (err) {

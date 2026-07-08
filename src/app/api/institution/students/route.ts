@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const institutionName = searchParams.get('institution') || 'Global School System';
+    const institutionName = String(searchParams.get('institution') || 'Global School System').trim();
 
     const supabase = createAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -26,8 +26,8 @@ export async function GET(req: NextRequest) {
           id
         )
       `)
-      .eq('role', 'individual')
-      .eq('institution_name', institutionName)
+      .ilike('role', 'individual')
+      .ilike('institution_name', institutionName)
       .order('name', { ascending: true });
 
     if (studentError) {
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
     const tempPassword = 'MentorMe@123';
     const sanitizedName = String(name).slice(0, 100);
     const sanitizedGrade = String(grade || '').slice(0, 50);
-    const sanitizedInstitution = String(institutionName || 'Institution').slice(0, 100);
+    const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,

@@ -99,9 +99,7 @@ export default function InstitutionDashboardContent() {
 
   const refreshStudents = useCallback(async (currentInstitutionName: string) => {
     try {
-      const url = new URL('/api/institution/students', window.location.origin);
-      url.searchParams.set('institution', currentInstitutionName);
-      const response = await fetch(url.toString(), {
+      const response = await fetch(`/api/institution/students?institution=${encodeURIComponent(currentInstitutionName)}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -109,8 +107,6 @@ export default function InstitutionDashboardContent() {
         const result = await response.json();
         if (Array.isArray(result.students)) {
           setStudents(result.students);
-        } else {
-          console.warn('Unexpected students response shape:', result);
         }
       } else {
         const text = await response.text();

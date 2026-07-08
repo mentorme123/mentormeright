@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const institutionName = String(searchParams.get('institution') || 'Global School System').trim();
+    const institutionName = String(searchParams.get('institution') || '').trim();
 
     const supabase = createAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
       { auth: { autoRefreshToken: false, persistSession: false } }
     );
 
-    const { data: studentList, error: studentError } = await supabase
+    let query = supabase
       .from('users')
       .select(`
         id,
@@ -26,9 +26,13 @@ export async function GET(req: NextRequest) {
           id
         )
       `)
-      .ilike('role', 'individual')
-      .ilike('institution_name', institutionName)
-      .order('name', { ascending: true });
+      .eq('role', 'individual');
+
+    if (institutionName) {
+      query = query.ilike('institution_name', institutionName);
+    }
+
+    const { data: studentList, error: studentError } = await query.order('name', { ascending: true });
 
     if (studentError) {
       console.error('Failed to fetch students:', studentError.message);
@@ -61,19 +65,30 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid email format.' }, { status: 400 });
     }
 
-    const tempPassword = 'MentorMe@123';
-    const sanitizedName = String(name).slice(0, 100);
-    const sanitizedGrade = String(grade || '').slice(0, 50);
+    const sanitizedName = String(name).trim().slice(0, 100);
+    const sanitizedGrade = String(grade || '').trim().slice(0, 50);
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email,
-      password: tempPassword,
+      password: 'MentorMe@123',
       email_confirm: true,
       user_metadata: { full_name: sanitizedName }
     });
 
     if (authError) {
+      const { data: existingUser } = await supabaseAdmin
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .maybeSingle();
+      if (existingUser) {
+        await supabaseAdmin
+          .from('users')
+          .update({ institution_name: sanitizedInstitution })
+          .eq('id', existingUser.id);
+        return NextResponse.json({ success: true, student: { id: existingUser.id, email, name: sanitizedName } });
+      }
       return NextResponse.json({ error: authError.message }, { status: 400 });
     }
 

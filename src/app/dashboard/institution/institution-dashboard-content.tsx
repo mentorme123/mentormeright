@@ -28,6 +28,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 import Papa from "papaparse";
+import { useRouter } from "next/navigation";
 
 type Student = {
   id: string;
@@ -68,6 +69,7 @@ const sanitizeText = (text: string | null | undefined) => {
 
 export default function InstitutionDashboardContent() {
   const supabase = createClient();
+  const router = useRouter();
   const [activeMenu, setActiveMenu] = useState<MenuKey>("overview");
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [isProfileHidden, setIsProfileHidden] = useState(false);
@@ -468,34 +470,44 @@ export default function InstitutionDashboardContent() {
                         {filteredStudents.map((student, idx) => {
                           const isCompleted = student.assessment_results && student.assessment_results.length > 0;
                           return (
-                            <tr key={student.id} className="hover:bg-slate-50 transition-colors">
-                              <td className="px-6 py-4 text-slate-500 font-mono text-sm">{idx + 1}</td>
-                              <td className="px-6 py-4">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-xs uppercase">
-                                    {sanitizeText(student.name)?.charAt(0) || "S"}
+                              <tr key={student.id} className="hover:bg-slate-50 transition-colors">
+                                <td className="px-6 py-4 text-slate-500 font-mono text-sm">{idx + 1}</td>
+                                <td className="px-6 py-4">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue font-bold text-xs uppercase">
+                                      {sanitizeText(student.name)?.charAt(0) || "S"}
+                                    </div>
+                                    <span className="font-bold text-slate-800 text-sm">{sanitizeText(student.name) || "N/A"}</span>
                                   </div>
-                                  <span className="font-bold text-slate-800 text-sm">{sanitizeText(student.name) || "N/A"}</span>
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 text-slate-500 text-sm font-medium">{sanitizeText(student.email)}</td>
-                              <td className="px-6 py-4 text-slate-500 text-sm font-medium">
-                                <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-xs font-black uppercase tracking-wider">
-                                  {sanitizeText(student.education_level) || "General"}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 text-sm font-medium">
-                                {isCompleted ? (
-                                  <span className="text-emerald-600 font-bold flex items-center gap-1">
-                                    <CheckCircle2 size={14} /> Complete
+                                </td>
+                                <td className="px-6 py-4 text-slate-500 text-sm font-medium">{sanitizeText(student.email)}</td>
+                                <td className="px-6 py-4 text-slate-500 text-sm font-medium">
+                                  <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-xs font-black uppercase tracking-wider">
+                                    {sanitizeText(student.education_level) || "General"}
                                   </span>
-                                ) : (
-                                  <span className="text-amber-500 font-bold flex items-center gap-1">
-                                    <Clock size={14} /> Pending
-                                  </span>
-                                )}
-                              </td>
-                            </tr>
+                                </td>
+                                <td className="px-6 py-4 text-sm font-medium">
+                                  {isCompleted ? (
+                                    <span className="text-emerald-600 font-bold flex items-center gap-1">
+                                      <CheckCircle2 size={14} /> Complete
+                                    </span>
+                                  ) : (
+                                    <span className="text-amber-500 font-bold flex items-center gap-1">
+                                      <Clock size={14} /> Pending
+                                    </span>
+                                  )}
+                                </td>
+                                <td className="px-6 py-4 text-right">
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => router.push(`/dashboard/institution/students/${student.id}`)}
+                                    className="text-brand-blue hover:text-brand-blue hover:bg-brand-blue/10 font-bold"
+                                  >
+                                    View
+                                  </Button>
+                                </td>
+                              </tr>
                           );
                         })}
                       </tbody>

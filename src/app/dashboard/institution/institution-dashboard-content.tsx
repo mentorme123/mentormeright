@@ -99,23 +99,21 @@ export default function InstitutionDashboardContent() {
 
   const refreshStudents = useCallback(async () => {
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const token = session?.access_token;
       const response = await fetch('/api/institution/students', {
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {})
-        }
+        cache: 'no-store'
       });
       if (response.ok) {
         const result = await response.json();
         if (Array.isArray(result.students)) {
           setStudents(result.students);
         }
+      } else {
+        console.error('Failed to refresh students:', response.status);
       }
     } catch (err) {
       console.error("Failed to refresh students", err);
     }
-  }, [supabase]);
+  }, []);
 
   useEffect(() => {
     async function loadData() {

@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Types
 type DBUser = {
@@ -308,7 +309,7 @@ export default function AdminDashboard() {
                     </div>
                     <Button 
                       className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2"
-                      onClick={() => window.open('/career-assessment.html', '_blank')}
+                      onClick={() => router.push(`/report?userId=${encodeURIComponent(selectedUser.id)}`)}
                     >
                       View Generated Report
                     </Button>

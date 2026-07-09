@@ -139,14 +139,14 @@ export default function ReportPage({ searchParams }: { searchParams: { userId?: 
     );
   }
 
-  const ensureString = (val: any, fallback = 'Not Specified') => {
+  const ensureString = (val: unknown, fallback = 'Not Specified') => {
     if (typeof val === 'string') return val;
     if (typeof val === 'number') return String(val);
     if (!val) return fallback;
     try { return JSON.stringify(val); } catch { return fallback; }
   };
 
-  const ensureArrayOfObjects = (arr: any) => {
+  const ensureArrayOfObjects = (arr: unknown) => {
     if (!Array.isArray(arr)) return [];
     return arr.map(item => typeof item === 'object' && item !== null ? item : { name: String(item), title: String(item), desc: '', score: 0, max: 10 });
   };
@@ -173,7 +173,7 @@ export default function ReportPage({ searchParams }: { searchParams: { userId?: 
     },
     entranceExams: ensureArrayOfObjects(report.entranceExams),
     recommendedColleges: ensureArrayOfObjects(report.recommendedColleges),
-    nextSteps: Array.isArray(report.nextSteps) ? report.nextSteps.map((s: any) => ensureString(s)) : []
+    nextSteps: Array.isArray(report.nextSteps) ? report.nextSteps.map((s: unknown) => ensureString(s)) : []
   };
 
   return (
@@ -201,7 +201,7 @@ export default function ReportPage({ searchParams }: { searchParams: { userId?: 
             How to Download as PDF:
           </div>
           <p className="text-xs text-slate-500 leading-normal font-medium">
-            Click the button below. In the print dialog, change the <b>Destination</b> to <b>"Save as PDF"</b> to download this report to your device.
+            Click the button below. In the print dialog, change the <b>Destination</b> to <b>{'"'}&quot;Save as PDF&quot;{'"'}</b> to download this report to your device.
           </p>
         </div>
 

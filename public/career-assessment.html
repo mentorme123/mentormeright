@@ -8,6 +8,7 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
@@ -1286,8 +1287,9 @@ function buildResults(){
   const ini=student.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
 
   const sub={id:'sub_'+Date.now(),student,scores,topPassion:tp,overall:ovr,
-             submittedAt:new Date().toISOString()};
+            submittedAt:new Date().toISOString()};
   submissions.push(sub); saveSubs(); sendEmail(sub);
+  saveResultsToSupabase(sub);
 
   localStorage.setItem('mentorme_assessment_complete','1');
 
@@ -1375,6 +1377,28 @@ function sendEmail(sub){
   try{emailjs.send(CFG.EJS_SERVICE_ID,CFG.EJS_TEMPLATE_ID,p).catch(e=>console.warn('EmailJS:',e));}catch(e){}
 }
 
+async function saveResultsToSupabase(sub){
+  try {
+    const res = await fetch('/api/assessment/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: sub.student.email,
+        name: sub.student.name,
+        scores: sub.scores,
+        topPassion: sub.topPassion,
+        overall: sub.overall,
+        audience_type: 'ST'
+      })
+    });
+    const json = await res.json();
+    if (!res.ok) {
+      console.warn('Failed to save assessment to DB:', json.error);
+    }
+  } catch (e) {
+    console.warn('Error saving assessment to DB:', e);
+  }
+}
 // ════════════════════════════════════════════════════════════
 // ADMIN LOGIN
 // ════════════════════════════════════════════════════════════

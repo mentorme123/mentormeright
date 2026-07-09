@@ -1696,19 +1696,8 @@
             <div class="reg-field full"><label>Parent's email (report sent here)</label><input id="r-email" type="email"
                 placeholder="parent@email.com" /></div>
           </div>
-          <div class="pay-box">
-            <div class="pay-row"><span class="pay-lbl">Career Discovery Assessment</span><span><s
-                  style="color:var(--t3)">₹2,999</s>&nbsp;<s style="color:var(--t3)">₹1,999</s></span></div>
-            <div class="pay-row"><span class="pay-lbl">Special launch price</span><span
-                style="color:var(--green);font-weight:600">₹999 only</span></div>
-            <div class="pay-row"><span class="pay-lbl">Expert counsellor PDF report</span><span
-                style="color:var(--green);font-size:12px;font-weight:600">Free</span></div>
-            <div class="pay-row"><span>Total payable</span><span>₹999</span></div>
-          </div>
           <div id="reg-err" class="err">Please fill all required fields. Mobile must be 10 digits.</div>
-          <button class="btn btn-amber btn-full btn-lg" onclick="initPay()">Pay ₹999 securely &amp; unlock →</button>
-          <p style="text-align:center;font-size:11px;color:var(--t3);margin-top:9px">🔒 100% secure · Powered by
-            Razorpay · UPI, Cards &amp; Net Banking</p>
+          <button class="btn btn-amber btn-full btn-lg" onclick="initPay()">Start</button>
           <button class="btn btn-ghost" style="margin-top:12px;font-size:13px;padding:8px 16px"
             onclick="goTo('pg-welcome')">← Back</button>
         </div>
@@ -2572,7 +2561,7 @@
     }
 
     // ════════════════════════════════════════════════════════════
-    // PAYMENT
+    // REGISTRATION
     // ════════════════════════════════════════════════════════════
     function initPay() {
       const name = document.getElementById('r-name').value.trim();
@@ -2587,23 +2576,7 @@
         email: document.getElementById('r-email').value.trim(),
         city: document.getElementById('r-city').value.trim()
       };
-      goTo('pg-paying');
-      /* ── LIVE RAZORPAY ─────────────────────────────────────────
-      fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({amount:CFG.RZP_AMOUNT,currency:'INR',receipt:'rcpt_'+Date.now()})
-      }).then(r=>r.json()).then(order=>{
-        const rzp=new Razorpay({
-          key:CFG.RZP_KEY,amount:CFG.RZP_AMOUNT,currency:'INR',
-          name:'MentorMe',description:'Career Discovery Assessment',order_id:order.id,
-          handler:()=>unlockTest(),
-          prefill:{name:student.name,contact:student.phone,email:student.email},
-          theme:{color:'#0f2460'},modal:{ondismiss:()=>goTo('pg-register')}
-        });
-        rzp.on('payment.failed',()=>{alert('Payment failed. Please try again.');goTo('pg-register');});
-        rzp.open();
-      }).catch(()=>{alert('Connection error. Please check your internet.');goTo('pg-register');});
-      ─────────────────────────────────────────────────────────── */
-      setTimeout(unlockTest, 2000); // DEMO MODE — remove when Razorpay is live
+      unlockTest();
     }
 
     function unlockTest() { buildBank(); curSec = 0; showSI(); }

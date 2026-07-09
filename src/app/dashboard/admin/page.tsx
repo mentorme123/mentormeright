@@ -45,6 +45,8 @@ export default function AdminDashboard() {
    
   // Modals
   const [selectedUser, setSelectedUser] = useState<DBUser | null>(null);
+  const [hasAssessment, setHasAssessment] = useState(false);
+  const [checkingAssessment, setCheckingAssessment] = useState(false);
   const [showTour, setShowTour] = useState(false);
   const [tourStep, setTourStep] = useState(0);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -89,6 +91,23 @@ export default function AdminDashboard() {
     await supabase.auth.signOut();
     window.location.href = '/login';
   };
+
+  useEffect(() => {
+    async function checkAssessment() {
+      if (!selectedUser) return;
+      setCheckingAssessment(true);
+      setHasAssessment(false);
+      try {
+        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}`);
+        setHasAssessment(res.ok);
+      } catch {
+        setHasAssessment(false);
+      } finally {
+        setCheckingAssessment(false);
+      }
+    }
+    checkAssessment();
+  }, [selectedUser]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -298,7 +317,15 @@ export default function AdminDashboard() {
                   </div>
                 </div>
 
-                {selectedUser.role === 'individual' && (
+                {checkingAssessment ? (
+                  <div className="space-y-4">
+                    <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                    <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-start gap-3">
+                      <div className="w-5 h-5 border-2 border-slate-300 border-t-transparent rounded-full animate-spin"></div>
+                      <p className="text-slate-500 text-sm">Checking assessment status...</p>
+                    </div>
+                  </div>
+                ) : hasAssessment ? (
                   <div className="space-y-4">
                     <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
                     <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl flex items-start gap-3">
@@ -314,6 +341,17 @@ export default function AdminDashboard() {
                     >
                       View Generated Report
                     </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                    <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-start gap-3">
+                      <AlertCircle className="text-slate-400 shrink-0" size={20} />
+                      <div>
+                        <p className="font-bold text-slate-700 text-sm">Not Completed</p>
+                        <p className="text-slate-500 text-xs mt-1">This user has not completed the career assessment yet.</p>
+                      </div>
+                    </div>
                   </div>
                 )}
                 

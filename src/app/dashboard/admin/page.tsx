@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Types
 type DBUser = {
@@ -32,6 +33,7 @@ const sanitizeText = (text: string | null) => {
 };
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const supabase = createClient();
   const [users, setUsers] = useState<DBUser[]>([]);
   const [roleCounts, setRoleCounts] = useState<Record<string, number>>({ total: 0, individual: 0, institutional: 0, admin: 0, counselor: 0 });
@@ -306,9 +308,12 @@ export default function AdminDashboard() {
                         <p className="text-emerald-600 text-xs mt-1">The psychometric report was successfully generated.</p>
                       </div>
                     </div>
-                    <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2">
-                      View Generated Report
-                    </Button>
+                    <Button 
+  className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2" 
+  onClick={() => router.push(`/report?userId=${encodeURIComponent(selectedUser.id)}`)}
+>
+  View Generated Report
+</Button>
                   </div>
                 )}
                 

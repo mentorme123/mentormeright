@@ -51,48 +51,67 @@ const SectionHeader = ({ num, title }: { num: string, title: string }) => (
 
 import { createClient } from "@/lib/supabase";
 
-export default function ReportPage() {
+export default function ReportPage({ searchParams }: { searchParams: { userId?: string } }) {
+  const userId = searchParams?.userId;
   const [report, setReport] = useState<ReportData | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchReport() {
-      // First try to load from local storage for immediate feel
-      const saved = localStorage.getItem("mentorme_ai_report");
-      if (saved) {
-        try {
-          setReport(JSON.parse(saved));
-        } catch (e) {
-          console.error("Failed to parse report", e);
+      setLoading(true);
+      try {
+        if (userId) {
+          const res = await fetch(`/api/admin/user-report?userId=${encodeURIComponent(userId)}`);
+          if (res.ok) {
+            const json = await res.json();
+            if (json.report) {
+              setReport(json.report);
+              localStorage.setItem("mentorme_ai_report", JSON.stringify(json.report));
+              setLoading(false);
+              return;
+            }
+          }
         }
-      }
 
-      // Then attempt to fetch the official one from the DB
-      const supabase = createClient();
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-         const { data: assessment } = await supabase
-           .from('assessment_results')
-           .select('report')
-           .eq('user_id', user.id)
-           .order('completed_at', { ascending: false })
-           .limit(1)
-           .maybeSingle();
+        const saved = localStorage.getItem("mentorme_ai_report");
+        if (saved) {
+          try {
+            setReport(JSON.parse(saved));
+          } catch (e) {
+            console.error("Failed to parse report", e);
+          }
+        }
 
-         if (assessment?.report) {
-           setReport(assessment.report as ReportData);
-           // Also sync back to local storage
-           localStorage.setItem("mentorme_ai_report", JSON.stringify(assessment.report));
-         }
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user && !userId) {
+           const { data: assessment } = await supabase
+             .from('assessment_results')
+             .select('report')
+             .eq('user_id', user.id)
+             .order('completed_at', { ascending: false })
+             .limit(1)
+             .maybeSingle();
+
+           if (assessment?.report) {
+             setReport(assessment.report as ReportData);
+             localStorage.setItem("mentorme_ai_report", JSON.stringify(assessment.report));
+           }
+        }
+      } catch (e) {
+        console.error("Failed to fetch report", e);
+      } finally {
+        setLoading(false);
       }
     }
     fetchReport();
-  }, []);
+  }, [userId]);
 
   const handlePrint = () => {
     window.print();
   };
 
-  if (!report || !report.coreStrengths) {
+  if (loading) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 text-center bg-background">
         <div className="relative w-48 h-16 mb-6 animate-pulse">
@@ -101,6 +120,20 @@ export default function ReportPage() {
         <h2 className="text-2xl font-bold text-foreground">Generating 12-Page Career Intelligence Report...</h2>
         <p className="text-muted-foreground mt-2 max-w-md">
           Compiling psychometric data, mapping career trajectories, and formulating your academic roadmap.
+        </p>
+      </div>
+    );
+  }
+
+  if (!report || !report.coreStrengths) {
+    return (
+      <div className="flex-1 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 text-center bg-background">
+        <div className="relative w-48 h-16 mb-6">
+          <Image src="/logo.png" alt="MentorMe" fill className="object-contain" />
+        </div>
+        <h2 className="text-2xl font-bold text-foreground">No Report Found</h2>
+        <p className="text-muted-foreground mt-2 max-w-md">
+          This user has not completed their career assessment yet.
         </p>
       </div>
     );

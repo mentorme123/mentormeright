@@ -33,6 +33,7 @@ const sanitizeText = (text: string | null) => {
 };
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const supabase = createClient();
   const [users, setUsers] = useState<DBUser[]>([]);
   const [roleCounts, setRoleCounts] = useState<Record<string, number>>({ total: 0, individual: 0, institutional: 0, admin: 0, counselor: 0 });

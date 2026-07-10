@@ -85,6 +85,6 @@ export const config = {
      * - sw.js (Service Worker – must be publicly accessible)
      * - Static asset extensions (svg, png, jpg, etc.)
      */
-    '/((?!_next/static|_next/image|favicon.ico|manifest\\.json|sw\\.js|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|manifest\\.json|sw\\.js|.*\\.(?:svg|png|jpg|jpeg|gif|webp|html)$).*)',
   ],
 }

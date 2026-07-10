@@ -1479,13 +1479,14 @@
           </div>
         </div>
         <div class="reg-body">
+          <h2 style="text-align: center; font-family: var(--fp); margin-bottom: 24px; color: var(--navy);">MentorMe Career Assessment</h2>
           <h2 style="font-family:var(--fp);margin-bottom:4px">Student details</h2>
           <p style="font-size:13px;color:var(--t2);margin-bottom:18px">Your counsellor uses these details to prepare
             your personalised report.</p>
           <div class="reg-grid">
-            <div class="reg-field"><label>Student's full name *</label><input id="r-name" type="text"
+            <div class="reg-field full"><label>Student's full name *</label><input id="r-name" type="text"
                 placeholder="e.g. Priya Sharma" /></div>
-            <div class="reg-field"><label>Class / Standard *</label>
+            <div class="reg-field full"><label>Class / Standard *</label>
               <select id="r-class">
                 <option value="">Select class</option>
                 <option value="6">Class 6</option>
@@ -1499,16 +1500,29 @@
             </div>
             <div class="reg-field full"><label>School name *</label><input id="r-school" type="text"
                 placeholder="Full name of your school" /></div>
-            <div class="reg-field"><label>City *</label><input id="r-city" type="text" placeholder="e.g. Hyderabad" />
+            <div class="reg-field full">
+              <label>Subjects</label>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">
+                <label style="font-size:13px;font-weight:500;text-transform:none;display:flex;align-items:center;gap:6px"><input type="checkbox" class="subj-cb" value="Mathematics"> Mathematics</label>
+                <label style="font-size:13px;font-weight:500;text-transform:none;display:flex;align-items:center;gap:6px"><input type="checkbox" class="subj-cb" value="Physics"> Physics</label>
+                <label style="font-size:13px;font-weight:500;text-transform:none;display:flex;align-items:center;gap:6px"><input type="checkbox" class="subj-cb" value="Chemistry"> Chemistry</label>
+                <label style="font-size:13px;font-weight:500;text-transform:none;display:flex;align-items:center;gap:6px"><input type="checkbox" class="subj-cb" value="Biology"> Biology</label>
+                <label style="font-size:13px;font-weight:500;text-transform:none;display:flex;align-items:center;gap:6px"><input type="checkbox" class="subj-cb" value="Computer Science"> Computer Science</label>
+                <label style="font-size:13px;font-weight:500;text-transform:none;display:flex;align-items:center;gap:6px"><input type="checkbox" class="subj-cb" value="Commerce"> Commerce</label>
+                <label style="font-size:13px;font-weight:500;text-transform:none;display:flex;align-items:center;gap:6px"><input type="checkbox" class="subj-cb" value="Economics"> Economics</label>
+                <label style="font-size:13px;font-weight:500;text-transform:none;display:flex;align-items:center;gap:6px"><input type="checkbox" class="subj-cb" value="Arts"> Arts</label>
+              </div>
             </div>
-            <div class="reg-field"><label>Mobile number *</label><input id="r-phone" type="tel"
+            <div class="reg-field full"><label>City *</label><input id="r-city" type="text" placeholder="e.g. Hyderabad" />
+            </div>
+            <div class="reg-field full"><label>Mobile number (Optional)</label><input id="r-phone" type="tel"
                 placeholder="10-digit number" maxlength="10" /></div>
             <div class="reg-field full"><label>Parent's email (report sent here)</label><input id="r-email" type="email"
                 placeholder="parent@email.com" /></div>
           </div>
           <div class="pay-box">
-            <div id="reg-err" class="err">Please fill all required fields. Mobile must be 10 digits.</div>
-            <button class="btn btn-amber btn-full btn-lg" onclick="initPay()">Start/button>
+            <div id="reg-err" class="err">Please fill all required fields.</div>
+            <button class="btn btn-amber btn-full btn-lg" onclick="initPay()">Start</button>
               <button class="btn btn-ghost" style="margin-top:12px;font-size:13px;padding:8px 16px"
                 onclick="goTo('pg-welcome')">← Back</button>
           </div>
@@ -2326,13 +2340,15 @@
         const cls = document.getElementById('r-class').value;
         const school = document.getElementById('r-school').value.trim();
         const phone = document.getElementById('r-phone').value.trim();
+        const city = document.getElementById('r-city').value.trim();
+        const subjects = Array.from(document.querySelectorAll('.subj-cb:checked')).map(cb => cb.value);
         const err = document.getElementById('reg-err');
-        if (!name || !cls || !school || !phone || phone.length < 10) { err.style.display = 'block'; return; }
+        
+        if (!name || !cls || !school || !city) { err.style.display = 'block'; return; }
         err.style.display = 'none';
         student = {
-          name, cls: parseInt(cls), school, phone,
-          email: document.getElementById('r-email').value.trim(),
-          city: document.getElementById('r-city').value.trim()
+          name, cls: parseInt(cls), school, city, phone, subjects,
+          email: document.getElementById('r-email').value.trim()
         };
         goTo('pg-paying');
         /* ── LIVE RAZORPAY ─────────────────────────────────────────

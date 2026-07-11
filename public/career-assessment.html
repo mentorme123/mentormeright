@@ -229,7 +229,7 @@ const CFG={ADMIN_USER:'mentorme_admin',ADMIN_PASS:'MentorMe@2025!',RZP_KEY:'rzp_
   <div class="hero">
     <p class="hero-sub">India's most comprehensive psychometric assessment — built by career experts, trusted in 500+ schools.</p>
     <div class="trust-strip">
-      <div class="trust-item"><div class="trust-n">270</div><div class="trust-l">Questions</div></div>
+      <div class="trust-item"><div class="trust-n">90</div><div class="trust-l">Questions</div></div>
       <div class="trust-item"><div class="trust-n">3</div><div class="trust-l">Sections</div></div>
       <div class="trust-item"><div class="trust-n">16</div><div class="trust-l">Parameters</div></div>
       <div class="trust-item"><div class="trust-n">45<span style="font-size:11px">m</span></div><div class="trust-l">Duration</div></div>
@@ -256,7 +256,7 @@ const CFG={ADMIN_USER:'mentorme_admin',ADMIN_PASS:'MentorMe@2025!',RZP_KEY:'rzp_
     <div class="price-was">₹2,999 &nbsp;|&nbsp; ₹1,999</div>
     <div class="price-now"><sup style="font-size:14px;vertical-align:super">₹</sup>999</div>
     <div class="price-tag">One-time payment · Instant access · Expert PDF report by MentorMe counsellor</div>
-    <button class="btn btn-amber btn-lg btn-full" onclick="goTo('pg-register')">Get started — ₹999 only →</button>
+    <button class="btn btn-amber btn-lg btn-full" onclick="goTo('pg-register')">Get started</button>
     <div style="display:flex;justify-content:center;gap:18px;margin-top:12px;flex-wrap:wrap">
       <span class="gitem">Secure Razorpay payment</span>
       <span class="gitem">Personalised expert report</span>
@@ -273,9 +273,10 @@ const CFG={ADMIN_USER:'mentorme_admin',ADMIN_PASS:'MentorMe@2025!',RZP_KEY:'rzp_
     <h2 style="font-family:var(--fp);margin-bottom:4px">Student details</h2>
     <p style="font-size:13px;color:var(--t2);margin-bottom:18px">Your counsellor uses these details to prepare your personalised report.</p>
     <div class="reg-grid">
-      <div class="reg-field"><label>Student's full name *</label><input id="r-name" type="text" placeholder="e.g. Priya Sharma"/></div>
-      <div class="reg-field"><label>Class / Standard *</label>
-        <select id="r-class"><option value="">Select class</option>
+      <div class="reg-field full"><label>Student's full name *</label><input id="r-name" type="text" placeholder="e.g. Priya Sharma"/></div>
+      <div class="reg-field full">
+        <label>Class / Standard *</label>
+        <select id="r-class" style="width:100%;padding:10px 12px;border:1.5px solid var(--bdr);border-radius:var(--r);font-family:var(--f);font-size:14px;color:var(--text);background:var(--white);outline:none"><option value="">Select class</option>
           <option value="6">Class 6</option><option value="7">Class 7</option>
           <option value="8">Class 8</option><option value="9">Class 9</option>
           <option value="10">Class 10</option><option value="11">Class 11</option>
@@ -283,19 +284,23 @@ const CFG={ADMIN_USER:'mentorme_admin',ADMIN_PASS:'MentorMe@2025!',RZP_KEY:'rzp_
         </select>
       </div>
       <div class="reg-field full"><label>School name *</label><input id="r-school" type="text" placeholder="Full name of your school"/></div>
-      <div class="reg-field"><label>City *</label><input id="r-city" type="text" placeholder="e.g. Hyderabad"/></div>
-      <div class="reg-field"><label>Mobile number *</label><input id="r-phone" type="tel" placeholder="10-digit number" maxlength="10"/></div>
+      <div class="reg-field full" style="margin-bottom:4px"><label>Subjects</label></div>
+      <div class="reg-field full" style="display:grid;grid-template-columns:1fr 1fr;gap:8px 16px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" value="Mathematics"/> Mathematics</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" value="Physics"/> Physics</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" value="Chemistry"/> Chemistry</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" value="Biology"/> Biology</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" value="Computer Science"/> Computer Science</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" value="Commerce"/> Commerce</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" value="Economics"/> Economics</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);font-weight:400;text-transform:none;letter-spacing:0"><input type="checkbox" value="Arts"/> Arts</label>
+      </div>
+      <div class="reg-field full"><label>City *</label><input id="r-city" type="text" placeholder="e.g. Hyderabad"/></div>
+      <div class="reg-field full"><label>Mobile number (optional)</label><input id="r-phone" type="tel" placeholder="10-digit number" maxlength="10"/></div>
       <div class="reg-field full"><label>Parent's email (report sent here)</label><input id="r-email" type="email" placeholder="parent@email.com"/></div>
     </div>
-    <div class="pay-box">
-      <div class="pay-row"><span class="pay-lbl">Career Discovery Assessment</span><span><s style="color:var(--t3)">₹2,999</s>&nbsp;<s style="color:var(--t3)">₹1,999</s></span></div>
-      <div class="pay-row"><span class="pay-lbl">Special launch price</span><span style="color:var(--green);font-weight:600">₹999 only</span></div>
-      <div class="pay-row"><span class="pay-lbl">Expert counsellor PDF report</span><span style="color:var(--green);font-size:12px;font-weight:600">Free</span></div>
-      <div class="pay-row"><span>Total payable</span><span>₹999</span></div>
-    </div>
-    <div id="reg-err" class="err">Please fill all required fields. Mobile must be 10 digits.</div>
-    <button class="btn btn-amber btn-full btn-lg" onclick="initPay()">Pay ₹999 securely &amp; unlock →</button>
-    <p style="text-align:center;font-size:11px;color:var(--t3);margin-top:9px">🔒 100% secure · Powered by Razorpay · UPI, Cards &amp; Net Banking</p>
+    <div id="reg-err" class="err">Please fill all required fields.</div>
+    <button class="btn btn-amber btn-full btn-lg" onclick="initPay()">Start</button>
     <button class="btn btn-ghost" style="margin-top:12px;font-size:13px;padding:8px 16px" onclick="goTo('pg-welcome')">← Back</button>
   </div>
 </div></div></div>
@@ -974,7 +979,7 @@ function initPay(){
   const school=document.getElementById('r-school').value.trim();
   const phone=document.getElementById('r-phone').value.trim();
   const err=document.getElementById('reg-err');
-  if(!name||!cls||!school||!phone||phone.length<10){err.style.display='block';return;}
+  if(!name||!cls||!school){err.style.display='block';return;}
   err.style.display='none';
   student={name,cls:parseInt(cls),school,phone,
     email:document.getElementById('r-email').value.trim(),

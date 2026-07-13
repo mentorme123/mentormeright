@@ -209,39 +209,40 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     );
   }
 
-  if (error || !scores) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="text-center max-w-md p-8">
-          <div className="text-6xl mb-4">📋</div>
-          <h2 className="text-2xl font-bold text-slate-800 mb-2">No Assessment Found</h2>
-          <p className="text-slate-600 mb-6">{error || "Complete your career assessment to view your dashboard."}</p>
-          <Button onClick={() => window.location.href = "/career-assessment.html"} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold">
-            Take Assessment
-          </Button>
-        </div>
-      </div>
-    );
-  }
+  const noAssessment = error || !scores;
 
-  const topRIASEC = getTopRIASEC(scores);
-  const topSkills = getTopSkills(scores);
+  const displayScores: DashboardScores = scores || {
+    Realistic: 0, Investigative: 0, Artistic: 0, Social: 0, Enterprising: 0, Conventional: 0,
+    Logical: 0, Numerical: 0, Mechanical: 0, Verbal: 0, Administrative: 0
+  };
+
+  const topRIASEC = getTopRIASEC(displayScores);
+  const topSkills = getTopSkills(displayScores);
   const stream = getStreamFromRIASEC(topRIASEC.key);
-  const careerMatches = getCareerMatches(scores);
-  const subjectReadiness = getSubjectReadiness(scores);
-  const academicFitness = getAcademicFitness(scores);
-  const careerPaths = getCareerPathReadiness(scores);
-  const overallScore = getOverallScore(scores);
-  const careerReadinessScore = getCareerReadinessScore(scores);
+  const careerMatches = getCareerMatches(displayScores);
+  const subjectReadiness = getSubjectReadiness(displayScores);
+  const academicFitness = getAcademicFitness(displayScores);
+  const careerPaths = getCareerPathReadiness(displayScores);
+  const overallScore = getOverallScore(displayScores);
+  const careerReadinessScore = getCareerReadinessScore(displayScores);
   const profileStrengthScore = Math.round(overallScore * 0.72);
   const isSchool = profile?.education_level?.toLowerCase().includes("school") || 
                    profile?.audience_type === "ST";
 
-  const counselorRecs = getCounselorRecommendations(scores, isSchool);
+  const counselorRecs = getCounselorRecommendations(displayScores, isSchool);
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
+        {noAssessment && (
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6 flex items-center gap-3">
+            <span className="text-amber-600 font-bold text-sm">⚠</span>
+            <p className="text-sm text-amber-800 font-medium">No assessment data found. Complete your career assessment to see your personalized results.</p>
+            <Button onClick={() => window.location.href = "/career-assessment.html"} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold text-sm ml-auto">
+              Take Assessment
+            </Button>
+          </div>
+        )}
         {/* Header */}
         <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await supabaseAdmin
       .from('assessment_results')
-      .select('scores, answers, completed_at')
+      .select('scores, answers, completed_at, report')
       .eq('user_id', userId)
       .order('completed_at', { ascending: false })
       .limit(1)
@@ -44,7 +44,8 @@ export async function GET(req: NextRequest) {
       scores: data.scores,
       completedAt: data.completed_at,
       userName: user?.name || null,
-      userClass: user?.education_level || null
+      userClass: user?.education_level || null,
+      subjects: data.report?.subjects || []
     });
   } catch (error: unknown) {
     const err = error as Error;

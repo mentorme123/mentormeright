@@ -13,7 +13,7 @@ const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, name, scores, topPassion, overall, audience_type, grade } = body;
+    const { email, name, scores, topPassion, overall, audience_type, grade, subjects } = body;
 
     if (!email || !scores) {
       return NextResponse.json({ error: 'Email and scores are required' }, { status: 400 });
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
         {
           user_id: userId,
           scores,
-          report: { topPassion, overall },
+          report: { topPassion, overall, subjects: subjects || [] },
           answers: {},
           audience_type: audience_type || 'ST',
           completed_at: new Date().toISOString()

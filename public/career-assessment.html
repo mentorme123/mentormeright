@@ -977,9 +977,11 @@ function initPay(){
   const err=document.getElementById('reg-err');
   if(!name||!cls||!school){err.style.display='block';return;}
   err.style.display='none';
+  const subjects=[...document.querySelectorAll('#pg-register input[type=checkbox]:checked')].map(cb=>cb.value);
   student={name,cls:parseInt(cls),school,phone,
     email:document.getElementById('r-email').value.trim(),
-    city:document.getElementById('r-city').value.trim()};
+    city:document.getElementById('r-city').value.trim(),
+    subjects};
   goTo('pg-paying');
   /* ── LIVE RAZORPAY ─────────────────────────────────────────
   fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -1198,15 +1200,16 @@ async function buildResults(){
     await fetch('/api/assessment/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: student.email || 'anonymous@mentorme.in',
-        name: student.name,
-        scores: scores,
-        topPassion: tp,
-        overall: ovr,
-        audience_type: 'ST',
-        grade: student.cls
-      })
+        body: JSON.stringify({
+          email: student.email || 'anonymous@mentorme.in',
+          name: student.name,
+          scores: scores,
+          topPassion: tp,
+          overall: ovr,
+          audience_type: 'ST',
+          grade: student.cls,
+          subjects: student.subjects || []
+        })
     }).catch(e => console.warn('Failed to save to dashboard:', e));
   } catch (e) {
     console.warn('Dashboard sync failed:', e);
@@ -1290,6 +1293,7 @@ function sendEmail(sub){
     city:sub.student.city,
     phone:sub.student.phone,
     parent_email:sub.student.email,
+    subjects:(sub.student.subjects||[]).join(', '),
     overall:sub.overall+'%',
     top_passion:sub.topPassion,
     submitted_at:new Date(sub.submittedAt).toLocaleString('en-IN'),
@@ -1579,7 +1583,7 @@ function genPDF(id){
 function expExcel(){
   if(typeof XLSX==='undefined'){alert('Excel library loading. Please try again.');return;}
   const rows=submissions.map(s=>{
-    const r={'Student Name':s.student?.name||'','Class':s.student?.cls||'','School':s.student?.school||'','City':s.student?.city||'','Phone':s.student?.phone||'','Parent Email':s.student?.email||'','Overall %':s.overall||0,'Top Career Type':s.topPassion||'','Report Status':s.reportStatus||'pending','Submitted On':fmtDate(s.submittedAt)};
+    const r={'Student Name':s.student?.name||'','Class':s.student?.cls||'','School':s.student?.school||'','City':s.student?.city||'','Phone':s.student?.phone||'','Parent Email':s.student?.email||'','Subjects':(s.student?.subjects||[]).join(', '),'Overall %':s.overall||0,'Top Career Type':s.topPassion||'','Report Status':s.reportStatus||'pending','Submitted On':fmtDate(s.submittedAt)};
     const allParams=[['individuality',['Emotional Intelligence','Efficiency','Empathy','Engagement','Exploration']],['skills',['Logical','Numerical','Mechanical','Verbal','Administrative']],['passion',['Realistic','Investigative','Artistic','Social','Enterprising','Conventional']]];
     allParams.forEach(([secId,params])=>params.forEach(p=>{
       const d=s.scores?.[secId]?.[p]||{score:0,max:1};

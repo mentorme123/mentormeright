@@ -74,6 +74,7 @@ export default function ReportClient({ userId }: { userId: string }) {
   const [scores, setScores] = useState<Scores | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [userClass, setUserClass] = useState<string | null>(null);
+  const [subjects, setSubjects] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -91,6 +92,7 @@ export default function ReportClient({ userId }: { userId: string }) {
         setScores(data.scores);
         setUserName(data.userName);
         setUserClass(data.userClass);
+        setSubjects(data.subjects || []);
       } catch {
         setError("Failed to load assessment");
       } finally {
@@ -186,7 +188,7 @@ export default function ReportClient({ userId }: { userId: string }) {
               <div className="text-xs text-blue-200 mt-1">YOUR CLASS</div>
             </div>
             <div className="bg-white/10 rounded-xl px-6 py-4 min-w-[100px]">
-              <div className="text-2xl font-black">90</div>
+              <div className="text-2xl font-black">{(subjects || []).length || 90}</div>
               <div className="text-xs text-blue-200 mt-1">COMPLETED</div>
             </div>
           </div>

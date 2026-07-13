@@ -1197,6 +1197,7 @@ async function buildResults(){
 
   // Save to Supabase for dashboard integration
   let saveOk = false;
+  let saveErrMsg = 'Unknown error';
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       const res = await fetch('/api/assessment/submit', {
@@ -1215,20 +1216,20 @@ async function buildResults(){
       });
       saveOk = res.ok;
       if (saveOk) break;
+      try {
+        const j = await res.json();
+        saveErrMsg = j?.error || saveErrMsg;
+      } catch {
+        saveErrMsg = `HTTP ${res.status}`;
+      }
     } catch (e) {
+      saveError = e;
+      saveErrMsg = e?.message || String(e);
       console.warn(`Dashboard sync attempt ${attempt} failed:`, e);
     }
   }
 
-  if (!saveOk) {
-    const errEl = document.getElementById('reg-err');
-    if (errEl) {
-      errEl.textContent = 'Assessment saved locally, but cloud sync failed. Please contact support if your report does not appear in the dashboard.';
-      errEl.style.display = 'block';
-    }
-  }
-
-  let html=`<div class="res-hero">
+  let html = `<div class="res-hero">
     <div class="res-avatar">${ini}</div>
     <h2 style="font-family:var(--fp);margin-bottom:4px">Outstanding, ${fn}!</h2>
     <p style="font-size:13px;color:var(--t2);margin-bottom:12px">All 3 sections complete. Your MentorMe counsellor is preparing your personalised report.</p>
@@ -1238,6 +1239,18 @@ async function buildResults(){
       <div class="sc-card"><div class="sc-n">90</div><div class="sc-l">Completed</div></div>
     </div>
   </div>`;
+
+  if (!saveOk) {
+    html += `<div style="margin-top:12px;padding:10px 12px;background:#fff3cd;color:#856404;border:1px solid #ffeeba;border-radius:12px;font-size:13px;font-weight:600">
+      ⚠ Cloud sync failed: ${saveErrMsg}. Your report may not appear in the dashboard automatically. Please contact support with your submitted email: ${student.email || 'anonymous@mentorme.in'}.
+    </div>`;
+  }
+
+  if (!saveOk) {
+    html += `<div style="margin-top:12px;padding:10px 12px;background:#fff3cd;color:#856404;border:1px solid #ffeeba;border-radius:12px;font-size:13px;font-weight:600">
+      ⚠ Cloud sync failed. Your report may not appear in the dashboard automatically. Please contact support with your submitted email: ${student.email || 'anonymous@mentorme.in'}.
+    </div>`;
+  }
 
   SECS.forEach(sec=>{
     const ss=scores[sec.id]||{};

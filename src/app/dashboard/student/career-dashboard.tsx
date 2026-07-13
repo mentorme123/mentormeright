@@ -234,15 +234,6 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        {noAssessment && (
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 mb-6 flex items-center gap-3">
-            <span className="text-amber-600 font-bold text-sm">⚠</span>
-            <p className="text-sm text-amber-800 font-medium">No assessment data found. Complete your career assessment to see your personalized results.</p>
-            <Button onClick={() => window.location.href = "/career-assessment.html"} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold text-sm ml-auto">
-              Take Assessment
-            </Button>
-          </div>
-        )}
         {/* Header */}
         <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -425,11 +416,11 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
         {/* Footer Contact */}
         <div className="mt-8 text-center text-xs text-slate-400">
-          <span>www.mentormeright.com</span>
+          <a href="https://www.mentormeright.com" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 underline">www.mentormeright.com</a>
           <span className="mx-2">|</span>
-          <span>sirishakode@mentormeright.in</span>
+          <a href="mailto:sirishakode@mentormeright.in" className="hover:text-slate-600 underline">sirishakode@mentormeright.in</a>
           <span className="mx-2">|</span>
-          <span>+91-84310 97872</span>
+          <a href="tel:+9188431097872" className="hover:text-slate-600 underline">+91-84310 97872</a>
         </div>
       </div>
     </div>

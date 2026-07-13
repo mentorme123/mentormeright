@@ -19,18 +19,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email and scores are required' }, { status: 400 });
     }
 
+    console.log('Assessment submit attempt:', { email, grade, audience_type, scoresKeys: Object.keys(scores || {}) });
+
     // Find user by email
-    const { data: user } = await supabaseAdmin
+    const { data: user, error: userError } = await supabaseAdmin
       .from('users')
       .select('id, education_level')
       .eq('email', email)
       .maybeSingle();
+
+    if (userError) {
+      console.error('Error fetching user:', userError);
+    }
 
     let userId = user?.id;
     const educationLevel = grade ? `Class ${grade}` : (user?.education_level || 'School Student');
 
     // If user doesn't exist, create one
     if (!userId) {
+      console.log('Creating new user for email:', email);
       const { data: newUser, error: createError } = await supabaseAdmin
         .from('users')
         .insert([
@@ -47,15 +54,12 @@ export async function POST(req: NextRequest) {
 
       if (createError || !newUser) {
         console.error('Error creating user:', createError);
-        return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
+        return NextResponse.json({ error: 'Failed to create user', details: createError?.message }, { status: 500 });
       }
       userId = newUser.id;
-    } else if (grade && !user?.education_level?.startsWith('Class ')) {
-      // Update existing user with grade if not already set
-      await supabaseAdmin
-        .from('users')
-        .update({ education_level: educationLevel })
-        .eq('id', userId);
+      console.log('Created user:', userId);
+    } else {
+      console.log('Found existing user:', userId);
     }
 
     // Save assessment results
@@ -77,6 +81,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: insertError.message }, { status: 500 });
     }
 
+    console.log('Assessment saved successfully for user:', userId);
     return NextResponse.json({ success: true, userId });
   } catch (error: unknown) {
     const err = error as Error;

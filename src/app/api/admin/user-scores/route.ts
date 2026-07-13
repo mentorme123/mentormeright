@@ -17,6 +17,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'userId is required' }, { status: 400 });
     }
 
+    console.log('Fetching scores for userId:', userId);
+
     const { data, error } = await supabaseAdmin
       .from('assessment_results')
       .select('scores, answers, completed_at, report')
@@ -31,6 +33,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (!data?.scores) {
+      console.log('No assessment found for userId:', userId);
       return NextResponse.json({ error: 'No assessment found for this user' }, { status: 404 });
     }
 
@@ -39,6 +42,8 @@ export async function GET(req: NextRequest) {
       .select('name, education_level')
       .eq('id', userId)
       .maybeSingle();
+
+    console.log('Found assessment for userId:', userId, 'user:', user?.name || 'unknown');
 
     return NextResponse.json({ 
       scores: data.scores,

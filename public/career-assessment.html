@@ -1196,10 +1196,12 @@ async function buildResults(){
   submissions.push(sub); saveSubs(); sendEmail(sub);
 
   // Save to Supabase for dashboard integration
-  try {
-    await fetch('/api/assessment/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+  let saveOk = false;
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const res = await fetch('/api/assessment/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: student.email || 'anonymous@mentorme.in',
           name: student.name,
@@ -1210,9 +1212,20 @@ async function buildResults(){
           grade: student.cls,
           subjects: student.subjects || []
         })
-    }).catch(e => console.warn('Failed to save to dashboard:', e));
-  } catch (e) {
-    console.warn('Dashboard sync failed:', e);
+      });
+      saveOk = res.ok;
+      if (saveOk) break;
+    } catch (e) {
+      console.warn(`Dashboard sync attempt ${attempt} failed:`, e);
+    }
+  }
+
+  if (!saveOk) {
+    const errEl = document.getElementById('reg-err');
+    if (errEl) {
+      errEl.textContent = 'Assessment saved locally, but cloud sync failed. Please contact support if your report does not appear in the dashboard.';
+      errEl.style.display = 'block';
+    }
   }
 
   let html=`<div class="res-hero">

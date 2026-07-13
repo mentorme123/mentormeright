@@ -164,7 +164,6 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const [scores, setScores] = useState<DashboardScores | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -183,14 +182,12 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         const json = await res.json();
 
         if (!res.ok) {
-          setError(json.error || "Failed to load assessment");
           setLoading(false);
           return;
         }
 
         setScores(json.scores);
       } catch {
-        setError("Failed to load dashboard data");
       } finally {
         setLoading(false);
       }
@@ -208,8 +205,6 @@ export default function CareerDashboard({ userId }: { userId: string }) {
       </div>
     );
   }
-
-  const noAssessment = error || !scores;
 
   const displayScores: DashboardScores = scores || {
     Realistic: 0, Investigative: 0, Artistic: 0, Social: 0, Enterprising: 0, Conventional: 0,
@@ -239,7 +234,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-black mb-1">
-                Student Career Dashboard (sample only){isSchool ? "– Class 9 & 10" : " – Class 11 & 12"}
+                Student Career Dashboard {isSchool ? "– Class 9 & 10" : " – Class 11 & 12"}
               </h1>
               <p className="text-blue-200 text-sm">
                 {isSchool 

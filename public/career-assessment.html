@@ -1270,9 +1270,8 @@ async function buildResults(){
        const w=el.style.width; el.style.width='0%';
        setTimeout(()=>{el.style.width=w;},80);
      });
-   },300);
-   setTimeout(()=>{ window.location.href='/dashboard/student'; }, 4000);
- }
+    },300);
+  }
 
 function getPct2(ss,p){const d=ss[p]||{score:0,max:1};return Math.round((d.score/Math.max(d.max,0.01))*100);}
 

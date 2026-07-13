@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ParameterScores } from "@/lib/scoring";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Printer, ChevronRight } from "lucide-react";
+import { Printer, ChevronRight, Home } from "lucide-react";
 
 interface UserProfile {
   id: string;
@@ -251,11 +251,11 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                 <Printer size={16} className="mr-2" /> Print
               </Button>
               <Button
-                onClick={() => window.location.href = "/dashboard/student"}
+                onClick={() => window.location.href = "/"}
                 variant="ghost"
                 className="text-white hover:bg-white/10"
               >
-                <ArrowLeft size={16} className="mr-2" /> Dashboard
+                <Home size={16} className="mr-2" /> Back to Homepage
               </Button>
             </div>
           </div>

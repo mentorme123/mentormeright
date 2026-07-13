@@ -112,8 +112,8 @@ export default function ReportClient({ userId }: { userId: string }) {
   const calcOverall = () => {
     if (!scores) return 0;
     let tot = 0, mx = 0;
-    Object.values(scores).forEach(sec => {
-      Object.values(sec).forEach(p => {
+    (Object.values(scores) as Record<string, ScoreParam>[]).forEach(sec => {
+      Object.values(sec).forEach((p: ScoreParam) => {
         tot += p.score;
         mx += p.max;
       });
@@ -125,7 +125,7 @@ export default function ReportClient({ userId }: { userId: string }) {
     if (!scores) return "Social";
     const ps = scores.passion || {};
     let top = "Social", topV = -1;
-    Object.entries(ps).forEach(([p, d]) => {
+    Object.entries(ps).forEach(([p, d]: [string, ScoreParam]) => {
       const v = (d.score / Math.max(d.max, 0.01)) * 100;
       if (v > topV) { topV = v; top = p; }
     });

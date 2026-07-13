@@ -170,25 +170,18 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     async function fetchData() {
       try {
         const supabase = createClient();
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        if (!user) {
-          setError("Please log in to view your dashboard");
-          setLoading(false);
-          return;
-        }
 
         const { data: userProfile } = await supabase
           .from('users')
           .select('*')
-          .eq('id', user.id)
+          .eq('id', userId)
           .single();
 
         setProfile(userProfile);
 
-        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(user.id)}`);
+        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(userId)}`);
         const json = await res.json();
-        
+
         if (!res.ok) {
           setError(json.error || "Failed to load assessment");
           setLoading(false);
@@ -285,17 +278,17 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {isSchool ? (
             <>
-              <KPICard label="Career Clarity Score" value={`${overallScore}%`} color="text-[#1B3A6B]" />
-              <KPICard label="Recommended Stream" value={stream.stream} color="text-[#15803D]" />
-              <KPICard label="Subject Readiness" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#7C3AED]" />
-              <KPICard label="Personality & Interest Alignment" value={`${pct(scores[topRIASEC.key] || 0, MAX_RIASEC)}%`} color="text-[#C2410C]" />
+              <KPICard label="Career Clarity Score" value={`${overallScore}%`} color="text-[#1B3A6B]" bg="bg-blue-50" />
+              <KPICard label="Recommended Stream" value={stream.stream} color="text-[#15803D]" bg="bg-white" />
+              <KPICard label="Subject Readiness" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#7C3AED]" bg="bg-purple-50" />
+              <KPICard label="Personality & Interest Alignment" value={`${pct(scores[topRIASEC.key] || 0, MAX_RIASEC)}%`} color="text-[#C2410C]" bg="bg-orange-50" />
             </>
           ) : (
             <>
-              <KPICard label="Overall Academic Fit" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#1B3A6B]" />
-              <KPICard label="Profile Strength Score" value={`${profileStrengthScore}/100`} color="text-[#7C3AED]" />
-              <KPICard label="Career Readiness Score" value={`${careerReadinessScore}%`} color="text-[#15803D]" />
-              <KPICard label="Target Course" value={stream.courses[0]} color="text-[#C2410C]" />
+              <KPICard label="Overall Academic Fit" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#1B3A6B]" bg="bg-blue-50" />
+              <KPICard label="Profile Strength Score" value={`${profileStrengthScore}/100`} color="text-[#7C3AED]" bg="bg-purple-50" />
+              <KPICard label="Career Readiness Score" value={`${careerReadinessScore}%`} color="text-[#15803D]" bg="bg-emerald-50" />
+              <KPICard label="Target Course" value={stream.courses[0]} color="text-[#C2410C]" bg="bg-orange-50" />
             </>
           )}
         </div>
@@ -305,7 +298,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           
           {/* Left Column: Career Match Index / Academic Fitness */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <div className={`bg-white rounded-2xl p-6 border shadow-sm ${isSchool ? 'border-blue-200 bg-blue-50/30' : 'border-slate-200'}`}>
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Career Match Index" : "Academic Fitness"}
               </h3>
@@ -352,7 +345,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
           {/* Middle Column: Subject Readiness / Career Path Readiness */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+            <div className={`rounded-2xl p-6 border shadow-sm ${isSchool ? 'bg-orange-50 border-orange-100' : 'bg-white border-slate-200'}`}>
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Subject Readiness" : "Career Path Readiness"}
               </h3>
@@ -418,14 +411,16 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         </div>
 
         {/* Recommended Stream Badge */}
-        <div className="mt-8">
-          <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 inline-flex items-center gap-2">
-            <span className="text-emerald-600 font-bold text-sm">✓</span>
-            <span className="text-sm text-emerald-800 font-medium">
-              Recommended Stream: <span className="font-bold">{isSchool ? "Commerce" : stream.stream}</span>
-            </span>
+        {isSchool && (
+          <div className="mt-8">
+            <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 inline-flex items-center gap-2">
+              <span className="text-emerald-600 font-bold text-sm">✓</span>
+              <span className="text-sm text-emerald-800 font-medium">
+                Recommended Stream: <span className="font-bold">Commerce</span>
+              </span>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Footer Contact */}
         <div className="mt-8 text-center text-xs text-slate-400">
@@ -440,9 +435,9 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   );
 }
 
-function KPICard({ label, value, color }: { label: string; value: string; color: string }) {
+function KPICard({ label, value, color, bg }: { label: string; value: string; color: string; bg?: string }) {
   return (
-    <div className="bg-white rounded-2xl p-4 sm:p-6 border border-slate-200 shadow-sm">
+    <div className={`rounded-2xl p-4 sm:p-6 border shadow-sm ${bg || 'bg-white'} border-slate-200`}>
       <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">{label}</p>
       <p className={`text-xl sm:text-2xl font-black ${color}`}>{value}</p>
     </div>

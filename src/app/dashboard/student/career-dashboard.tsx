@@ -418,9 +418,11 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         <div className="mt-8 text-center text-xs text-slate-400">
           <a href="https://www.mentormeright.com" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 underline">www.mentormeright.com</a>
           <span className="mx-2">|</span>
-          <a href="mailto:sirishakode@mentormeright.in" className="hover:text-slate-600 underline">sirishakode@mentormeright.in</a>
+          <a href="mailto:admin@mentormeright.in" className="hover:text-slate-600 underline">admin@mentormeright.in</a>
           <span className="mx-2">|</span>
-          <a href="tel:+9188431097872" className="hover:text-slate-600 underline">+91-84310 97872</a>
+          <a href="tel:+919392707596" className="hover:text-slate-600 underline">+91-9392707596</a>
+          <span className="mx-2">|</span>
+          <a href="tel:+918188824440" className="hover:text-slate-600 underline">+91-8188824440</a>
         </div>
       </div>
     </div>

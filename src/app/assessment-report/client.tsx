@@ -265,7 +265,7 @@ export default function ReportClient({ userId }: { userId: string }) {
         {/* Actions */}
         <div className="px-6 pb-8 flex flex-col gap-3">
           <a
-            href={`https://wa.me/918188824440?text=Hi+MentorMe!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(userName || "Student")}%2C+Class+${userClass || "?"}).+Looking+forward+to+my+report!`}
+            href={`https://api.whatsapp.com/send?phone=918188824440&text=${encodeURIComponent(`Hi MentorMe! I just completed my Career Discovery Assessment (${userName || "Student"}, Class ${userClass || "?"}). Looking forward to my report!`)}`}
             target="_blank"
             rel="noopener noreferrer"
             className="block w-full bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-center py-4 rounded-xl transition-colors"

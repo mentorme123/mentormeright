@@ -408,7 +408,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
         {assessmentStatus === 'completed' ? (
           <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "View Career Dashboard", icon: <ClipboardList className="text-brand-blue" />, sub: "Your Full Report", link: "#", action: "dashboard" },
+              { label: "View Career Dashboard", icon: <ClipboardList className="text-brand-blue" />, sub: "Your Full Report", link: "/dashboard/student" },
               { label: "Exam War Room", icon: <Timer className="text-brand-orange" />, sub: "JEE/NEET/CUET", link: "/dashboard/student/exams", badge: "LIVE" },
               { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", badge: "HOT" },
               { label: "Career ROI", icon: <IndianRupee className="text-purple-500" />, sub: "Salary Insights", link: "/career-library" }
@@ -418,9 +418,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
                 key={i}
                 className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm hover:border-brand-blue hover:shadow-xl transition-all cursor-pointer group relative overflow-hidden"
                 onClick={() => {
-                  if (tool.action === "dashboard") {
-                    document.getElementById('career-dashboard')?.scrollIntoView({ behavior: 'smooth' });
-                  } else if (tool.link) {
+                  if (tool.link) {
                     window.location.href = tool.link;
                   }
                 }}

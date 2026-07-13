@@ -13,20 +13,21 @@ const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, name, scores, topPassion, overall, audience_type } = body;
+    const { email, name, scores, topPassion, overall, audience_type, grade } = body;
 
     if (!email || !scores) {
       return NextResponse.json({ error: 'Email and scores are required' }, { status: 400 });
     }
 
     // Find user by email
-    const { data: user, error: userError } = await supabaseAdmin
+    const { data: user } = await supabaseAdmin
       .from('users')
-      .select('id')
+      .select('id, education_level')
       .eq('email', email)
       .maybeSingle();
 
     let userId = user?.id;
+    const educationLevel = grade ? `Class ${grade}` : (user?.education_level || 'School Student');
 
     // If user doesn't exist, create one
     if (!userId) {
@@ -37,7 +38,8 @@ export async function POST(req: NextRequest) {
             email,
             name: name || email.split('@')[0],
             role: 'individual',
-            audience_type: audience_type || 'ST'
+            audience_type: audience_type || 'ST',
+            education_level: educationLevel
           }
         ])
         .select('id')
@@ -48,6 +50,12 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
       }
       userId = newUser.id;
+    } else if (grade && !user?.education_level?.startsWith('Class ')) {
+      // Update existing user with grade if not already set
+      await supabaseAdmin
+        .from('users')
+        .update({ education_level: educationLevel })
+        .eq('id', userId);
     }
 
     // Save assessment results

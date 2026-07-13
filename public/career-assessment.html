@@ -1154,7 +1154,7 @@ function scoreQ(){
   }
 }
 
-function nextQ(){
+async function nextQ(){
   if(answers[curQ]===null&&tLeft>0)return;
   if(answers[curQ]===null)answers[curQ]=-1;
   scoreQ();
@@ -1162,7 +1162,7 @@ function nextQ(){
   else{
     clearInterval(tmrInt);
     if(curSec<2){curSec++;showSI();}
-    else buildResults();
+    else await buildResults();
   }
 }
 
@@ -1184,7 +1184,7 @@ function topPassion(sc){
   return top;
 }
 
-function buildResults(){
+async function buildResults(){
   const tp=topPassion(scores), ovr=calcOverall(scores);
   const fn=student.name.split(' ')[0];
   const ini=student.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
@@ -1192,6 +1192,25 @@ function buildResults(){
   const sub={id:'sub_'+Date.now(),student,scores,topPassion:tp,overall:ovr,
              submittedAt:new Date().toISOString()};
   submissions.push(sub); saveSubs(); sendEmail(sub);
+
+  // Save to Supabase for dashboard integration
+  try {
+    await fetch('/api/assessment/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: student.email || 'anonymous@mentorme.in',
+        name: student.name,
+        scores: scores,
+        topPassion: tp,
+        overall: ovr,
+        audience_type: 'ST',
+        grade: student.cls
+      })
+    }).catch(e => console.warn('Failed to save to dashboard:', e));
+  } catch (e) {
+    console.warn('Dashboard sync failed:', e);
+  }
 
   let html=`<div class="res-hero">
     <div class="res-avatar">${ini}</div>
@@ -1238,6 +1257,7 @@ function buildResults(){
   <div class="res-actions">
     <a href="https://wa.me/91XXXXXXXXXX?text=Hi+MentorMe!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(student.name)}%2C+Class+${student.cls}).+Looking+forward+to+my+report!" target="_blank" class="btn btn-green">Chat with a MentorMe counsellor →</a>
     <button class="btn btn-ghost" onclick="goTo('pg-welcome')" style="font-size:13px;padding:9px 18px">Back to home</button>
+    <a href="/dashboard/student" class="btn btn-navy" style="font-size:13px;padding:9px 18px;margin-top:8px;display:inline-flex">View Career Dashboard →</a>
   </div>`;
 
   document.getElementById('res-body').innerHTML=html;

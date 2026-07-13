@@ -29,14 +29,15 @@ import {
   PieChart,
   Bell,
   Award,
-  ShieldCheck,
-  MessageSquare,
-  Timer,
-  Sparkles,
-  IndianRupee,
-  LogOut
+   ShieldCheck,
+   Timer,
+   Sparkles,
+   IndianRupee,
+   LogOut,
+   Target
 } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
+import CareerDashboard from "./career-dashboard";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ParameterScores } from "@/lib/scoring";
@@ -495,7 +496,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
         {assessmentStatus === 'completed' ? (
           <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "AI Simulator", icon: <MessageSquare className="text-brand-blue" />, sub: "Talk to Pros", link: "/career-library", badge: "NEW" },
+              { label: "View Career Dashboard", icon: <Target className="text-brand-blue" />, sub: "Your Full Report", link: "#", action: "dashboard" },
               { label: "Exam War Room", icon: <Timer className="text-brand-orange" />, sub: "JEE/NEET/CUET", link: "/dashboard/student/exams", badge: "LIVE" },
               { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", badge: "HOT" },
               { label: "Career ROI", icon: <IndianRupee className="text-purple-500" />, sub: "Salary Insights", link: "/career-library" }
@@ -504,13 +505,20 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
                 whileHover={{ y: -5 }}
                 key={i}
                 className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm hover:border-brand-blue hover:shadow-xl transition-all cursor-pointer group relative overflow-hidden"
+                onClick={() => {
+                  if (tool.action === "dashboard") {
+                    document.getElementById('career-dashboard')?.scrollIntoView({ behavior: 'smooth' });
+                  } else if (tool.link) {
+                    window.location.href = tool.link;
+                  }
+                }}
               >
                 {tool.badge && (
                   <div className="absolute top-0 right-0 px-2 py-1 bg-brand-orange text-[8px] font-black text-white rounded-bl-lg">
                     {tool.badge}
                   </div>
                 )}
-                <Link href={tool.link || "#"} className="space-y-3">
+                <div className="space-y-3">
                   <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-brand-blue/10 transition-colors">
                     {tool.icon}
                   </div>
@@ -518,7 +526,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
                     <p className="text-sm font-black text-slate-800">{tool.label}</p>
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tight">{tool.sub}</p>
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </section>
@@ -531,6 +539,13 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
                 Complete Assessment
               </button>
             </a>
+          </div>
+        )}
+
+        {/* Career Dashboard - shown when assessment is completed */}
+        {assessmentStatus === 'completed' && authUser && (
+          <div id="career-dashboard">
+            <CareerDashboard userId={authUser.id} />
           </div>
         )}
 

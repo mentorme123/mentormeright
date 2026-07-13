@@ -13,16 +13,34 @@ const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
 export async function GET(req: NextRequest) {
   try {
     const userId = req.nextUrl.searchParams.get('userId');
-    if (!userId) {
-      return NextResponse.json({ error: 'userId is required' }, { status: 400 });
+    const email = req.nextUrl.searchParams.get('email') || '';
+    if (!userId && !email) {
+      return NextResponse.json({ error: 'userId or email is required' }, { status: 400 });
     }
 
-    console.log('Fetching scores for userId:', userId);
+    let targetUserId = userId;
+    let userEmail = email;
+
+    if (!targetUserId && email) {
+      const { data: userByEmail } = await supabaseAdmin
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .maybeSingle();
+      targetUserId = userByEmail?.id || null;
+      userEmail = email;
+    }
+
+    if (!targetUserId) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    console.log('Fetching scores for userId:', targetUserId, 'email:', userEmail);
 
     const { data, error } = await supabaseAdmin
       .from('assessment_results')
       .select('scores, answers, completed_at, report')
-      .eq('user_id', userId)
+      .eq('user_id', targetUserId)
       .order('completed_at', { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -33,17 +51,17 @@ export async function GET(req: NextRequest) {
     }
 
     if (!data?.scores) {
-      console.log('No assessment found for userId:', userId);
+      console.log('No assessment found for userId:', targetUserId);
       return NextResponse.json({ error: 'No assessment found for this user' }, { status: 404 });
     }
 
     const { data: user } = await supabaseAdmin
       .from('users')
       .select('name, education_level')
-      .eq('id', userId)
+      .eq('id', targetUserId)
       .maybeSingle();
 
-    console.log('Found assessment for userId:', userId, 'user:', user?.name || 'unknown');
+    console.log('Found assessment for userId:', targetUserId, 'user:', user?.name || 'unknown');
 
     return NextResponse.json({ 
       scores: data.scores,

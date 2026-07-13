@@ -100,7 +100,7 @@ export default function AdminDashboard() {
       setHasAssessment(false);
       setAssessmentError(null);
       try {
-        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}`);
+        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
         setHasAssessment(res.ok);
         if (!res.ok) {
           const j = await res.json().catch(() => ({}));
@@ -346,7 +346,7 @@ export default function AdminDashboard() {
                           setHasAssessment(false);
                           setAssessmentError(null);
                           try {
-                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}`);
+                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
                             setHasAssessment(res.ok);
                             if (!res.ok) {
                               const j = await res.json().catch(() => ({}));
@@ -389,7 +389,7 @@ export default function AdminDashboard() {
                           setHasAssessment(false);
                           setAssessmentError(null);
                           try {
-                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}`);
+                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
                             setHasAssessment(res.ok);
                             if (!res.ok) {
                               const j = await res.json().catch(() => ({}));

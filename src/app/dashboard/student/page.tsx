@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-import StudentDashboardContent from "./student-dashboard-content";
+import CareerDashboard from "./career-dashboard";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -11,5 +11,5 @@ export default async function StudentDashboard() {
   if (!user) {
     notFound();
   }
-  return <StudentDashboardContent />;
+  return <CareerDashboard userId={user.id} />;
 }

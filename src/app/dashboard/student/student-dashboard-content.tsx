@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
 import {
@@ -10,36 +9,18 @@ import {
   ArrowRight, 
   ArrowLeft,
   Loader2, 
-  Globe,
-  User,
-  Phone,
-  MapPin,
-  GraduationCap,
-  Briefcase,
   TrendingUp,
-  Star,
-  AlertTriangle,
-  Video,
-  Mail,
   X,
-  ChevronRight,
-  Download,
-  BookOpen,
-  Info,
-  PieChart,
   Bell,
   Award,
-   ShieldCheck,
-   Timer,
-   Sparkles,
-   IndianRupee,
-   LogOut
+  Timer,
+  Sparkles,
+  IndianRupee,
+  LogOut
 } from "lucide-react";
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import CareerDashboard from "./career-dashboard";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import { ParameterScores } from "@/lib/scoring";
 
 interface UserProfile {
   id: string;
@@ -60,48 +41,17 @@ interface UserProfile {
   updated_at: string;
 }
 
-interface ReportData {
-  executiveSummary?: string;
-  strengths?: string[];
-  top_strengths?: string[];
-  keyStrengths?: string[];
-  summary?: {
-    strengths?: string[];
-    areas_for_development?: string[];
-  };
-  areas_for_development?: string[];
-  weaknesses?: string[];
-  areasForImprovement?: string[];
-  careerMatches?: Array<{
-    title: string;
-    industry: string;
-    matchScore?: string;
-  }>;
-  [key: string]: unknown;
-}
-
 export default function StudentDashboardContent() {
-  const router = useRouter();
   const supabase = createClient();
-  return <StudentDashboardInner supabase={supabase} router={router} />;
+  return <StudentDashboardInner supabase={supabase} />;
 }
 
-function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<typeof createClient>, router: ReturnType<typeof useRouter> }) {
+function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof createClient> }) {
   const [loading, setLoading] = useState(true);
   const [authUser, setAuthUser] = useState<{ id: string; email: string; user_metadata?: { full_name?: string } } | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [reportData, setReportData] = useState<ReportData | null>(null);
-  const [assessmentScores, setAssessmentScores] = useState<ParameterScores | null>(null);
   const [assessmentStatus, setAssessmentStatus] = useState<'not_started' | 'completed'>('not_started');
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const [bookings, setBookings] = useState<Array<{
-    id: string;
-    created_at: string;
-    status: string;
-    jitsi_link?: string | null;
-    counsellors: { name: string; specialization: string | null };
-  }>>([]);
-  const [bookingsLoading, setBookingsLoading] = useState(true);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -155,24 +105,8 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
       
       if (assessment) {
         setAssessmentStatus('completed');
-        setReportData(assessment.report);
-        setAssessmentScores(assessment.scores as unknown as ParameterScores);
       }
 
-      const { data: userBookings } = await supabase
-        .from('bookings')
-        .select(`
-          *,
-          counsellors (
-            name,
-            specialization
-          )
-        `)
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
-      
-      setBookings(userBookings || []);
-      setBookingsLoading(false);
       setLoading(false);
     }
     loadData();
@@ -225,28 +159,6 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
       }
     }
     setSaving(false);
-  };
-
-  const getStrengths = (): string[] => {
-    if (!reportData) return [];
-    try {
-      if (reportData.strengths) return Array.isArray(reportData.strengths) ? reportData.strengths.slice(0, 4) : [];
-      if (reportData.top_strengths) return Array.isArray(reportData.top_strengths) ? reportData.top_strengths.slice(0, 4) : [];
-      if (reportData.keyStrengths) return Array.isArray(reportData.keyStrengths) ? reportData.keyStrengths.slice(0, 4) : [];
-      if (reportData.summary?.strengths) return reportData.summary.strengths.slice(0, 4);
-    } catch { /* ignore */ }
-    return [];
-  };
-
-  const getWeaknesses = (): string[] => {
-    if (!reportData) return [];
-    try {
-      if (reportData.areas_for_development) return Array.isArray(reportData.areas_for_development) ? reportData.areas_for_development.slice(0, 4) : [];
-      if (reportData.weaknesses) return Array.isArray(reportData.weaknesses) ? reportData.weaknesses.slice(0, 4) : [];
-      if (reportData.areasForImprovement) return Array.isArray(reportData.areasForImprovement) ? reportData.areasForImprovement.slice(0, 4) : [];
-      if (reportData.summary?.areas_for_development) return reportData.summary.areas_for_development.slice(0, 4);
-    } catch { /* ignore */ }
-    return [];
   };
 
   const isWorkingProfessional = profile?.audience_type === 'WP' || formEducation === 'Working Professional';
@@ -491,6 +403,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
             </button>
           </div>
         </div>
+        </div>
 
         {assessmentStatus === 'completed' ? (
           <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -548,434 +461,19 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
           </div>
         )}
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          <div className="lg:col-span-2 space-y-8">
-
-            {profile?.phone && (
-              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-lg font-black text-slate-800 flex items-center gap-2">
-                    <User size={20} className="text-brand-blue" /> My Profile
-                  </h3>
-                  <button 
-                    onClick={() => setShowOnboarding(true)} 
-                    className="text-xs font-bold text-brand-blue hover:underline"
-                  >
-                    Edit
-                  </button>
-                </div>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {[
-                    { icon: <Mail size={14} />, label: "Email", value: profile.email },
-                    { icon: <Phone size={14} />, label: "Phone", value: profile.phone },
-                    { icon: <User size={14} />, label: "Gender", value: profile.gender },
-                    { icon: <MapPin size={14} />, label: "Location", value: `${profile.state || ''}, ${profile.country || ''}` },
-                    { icon: <GraduationCap size={14} />, label: "Education", value: profile.education_level },
-                    ...(profile.current_package ? [{ icon: <Briefcase size={14} />, label: "Current CTC", value: profile.current_package }] : []),
-                    ...(profile.target_package ? [{ icon: <TrendingUp size={14} />, label: "Target CTC", value: profile.target_package }] : []),
-                  ].filter(item => item.value && item.value !== ', ').map((item, i) => (
-                    <div key={i} className="p-3 bg-slate-50 rounded-xl">
-                      <div className="flex items-center gap-1.5 text-slate-400 mb-1">
-                        {item.icon}
-                        <span className="text-[10px] font-bold uppercase tracking-wider">{item.label}</span>
-                      </div>
-                      <p className="text-sm font-bold text-slate-700 truncate">{item.value}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {assessmentScores && (
-                <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-black text-slate-800 flex items-center gap-2">
-                      <PieChart size={18} className="text-brand-orange" /> Psychometric Profile
-                    </h3>
-                  </div>
-                  
-                  <div className="flex-1 min-h-[300px] w-full">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <RadarChart cx="50%" cy="50%" outerRadius="70%" data={[
-                        { subject: 'Realistic', A: assessmentScores.Realistic, fullMark: 20 },
-                        { subject: 'Investigative', A: assessmentScores.Investigative, fullMark: 20 },
-                        { subject: 'Artistic', A: assessmentScores.Artistic, fullMark: 20 },
-                        { subject: 'Social', A: assessmentScores.Social, fullMark: 20 },
-                        { subject: 'Enterprising', A: assessmentScores.Enterprising, fullMark: 20 },
-                        { subject: 'Conventional', A: assessmentScores.Conventional, fullMark: 20 },
-                      ]}>
-                        <PolarGrid stroke="#e2e8f0" />
-                        <PolarAngleAxis dataKey="subject" tick={{ fill: '#64748b', fontSize: 10, fontWeight: 700 }} />
-                        <Radar
-                          name="Passion"
-                          dataKey="A"
-                          stroke="#F97316"
-                          fill="#F97316"
-                          fillOpacity={0.6}
-                        />
-                        <Tooltip 
-                          contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontSize: '12px', fontWeight: 'bold' }}
-                        />
-                      </RadarChart>
-                    </ResponsiveContainer>
-                  </div>
-                  <p className="text-[10px] text-slate-400 text-center italic mt-2">RIASEC Passion Mapping v2.1</p>
-                </div>
-              )}
-
-              <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                <div>
-                  <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2">
-                    <BookOpen size={18} className="text-brand-blue" /> Executive Summary
-                  </h3>
-                  {reportData ? (
-                    <p className="text-slate-600 text-sm leading-relaxed">
-                      {reportData.executiveSummary}
-                    </p>
-                  ) : (
-                    <div className="space-y-3">
-                      <p className="text-slate-500 text-sm italic">Assessment not completed yet.</p>
-                      <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-                        <div className="w-0 h-full bg-brand-orange"></div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {!reportData && (
-                  <a href="/career-assessment.html">
-                    <Button className="w-full mt-6 bg-brand-orange hover:bg-brand-orange/90 text-white font-bold py-4 shadow-lg shadow-orange-600/10 transition-all hover:translate-y-[-2px]">
-                      Start Assessment <ChevronRight size={18} className="ml-1" />
-                    </Button>
-                  </a>
-                )}
-                
-                {reportData && (
-                  <div className="mt-6 p-4 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center gap-3">
-                    <div className="w-10 h-10 bg-emerald-500 text-white rounded-full flex items-center justify-center">
-                      <TrendingUp size={20} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-emerald-800 uppercase tracking-widest">Profile Status</p>
-                      <p className="text-sm font-black text-emerald-600">High Resolution Intelligence</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {reportData && (
-              <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xl font-black text-slate-800 flex items-center gap-2">
-                    <Sparkles size={20} className="text-brand-blue" /> Top Career Matches
-                  </h3>
-                  <span className="text-[10px] font-black text-brand-blue bg-blue-50 px-3 py-1 rounded-full uppercase tracking-widest">AI Ranked</span>
-                </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {Array.isArray(reportData.careerMatches) ? reportData.careerMatches.slice(0, 3).map((match: any, i: number) => (
-                    <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/50 hover:border-brand-blue hover:bg-white transition-all cursor-pointer group">
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{match.industry || "Field"}</p>
-                      <h4 className="font-black text-slate-800 text-lg group-hover:text-brand-blue transition-colors">{match.title}</h4>
-                      <div className="mt-4 flex items-center justify-between">
-                         <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
-                            <span className="text-xl font-black text-emerald-500">{match.matchScore || "92%"}</span>
-                          </div>
-                          <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-                            <TrendingUp size={16} />
-                          </div>
-                      </div>
-                    </div>
-                  )) : [
-                    { title: "AI Research Scientist", industry: "Tech", score: "98%" },
-                    { title: "Strategic Consultant", industry: "Business", score: "94%" },
-                    { title: "UX Lead", industry: "Design", score: "89%" }
-                  ].map((match, i) => (
-                    <div key={i} className="p-5 rounded-2xl border border-slate-100 bg-slate-50/50">
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{match.industry}</p>
-                      <h4 className="font-black text-slate-800 text-lg">{match.title}</h4>
-                      <div className="mt-4 flex items-center justify-between">
-                         <div className="flex flex-col">
-                            <span className="text-[10px] font-bold text-slate-400 uppercase">Match Score</span>
-                            <span className="text-xl font-black text-emerald-500">{match.score}</span>
-                          </div>
-                          <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
-                            <TrendingUp size={16} />
-                          </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <motion.div 
-                whileHover={{ scale: 1.02 }}
-                className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group cursor-pointer"
-              >
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Bell size={100} />
-                </div>
-                <div className="relative z-10 space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-orange/10 flex items-center justify-center text-brand-orange border border-brand-orange/20">
-                    <Bell size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-black text-slate-800">Exam Tracker</h3>
-                    <p className="text-slate-500 text-xs font-medium mt-1">JEE, NEET, CUET & 50+ other Indian exams.</p>
-                  </div>
-                  <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-                    Live Deadlines & Alerts
-                  </div>
-                  <Link href="/dashboard/student/exams" className="block">
-                    <Button className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-5 rounded-xl text-sm">
-                      Open War Room <ChevronRight size={16} className="ml-1" />
-                    </Button>
-                  </Link>
-                </div>
-              </motion.div>
-
-              <motion.div 
-                whileHover={{ scale: 1.02 }}
-                className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm relative overflow-hidden group"
-              >
-                <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-                  <Award size={100} />
-                </div>
-                <div className="relative z-10 space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-blue/10 flex items-center justify-center text-brand-blue border border-brand-blue/20">
-                    <Award size={24} />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-black text-slate-800">NEP Certificate</h3>
-                    <p className="text-slate-500 text-xs font-medium mt-1">Official Career Readiness Certificate (NEP 2020).</p>
-                  </div>
-                  {assessmentStatus === 'completed' ? (
-                    <div className="flex items-center gap-2 text-[10px] font-bold text-emerald-600">
-                      <ShieldCheck size={12} /> Eligible for Download
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2 text-[10px] font-bold text-amber-600">
-                      <Info size={12} /> Complete Assessment to Unlock
-                    </div>
-                  )}
-                  <Button 
-                    disabled={assessmentStatus !== 'completed'}
-                    className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-5 rounded-xl text-sm disabled:opacity-50"
-                  >
-                    Download PDF <Download size={16} className="ml-1" />
-                  </Button>
-                </div>
-              </motion.div>
-            </div>
-            
-
-            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
-              <div className="flex justify-between items-center mb-4">
-                <div className="p-3 bg-brand-blue/5 rounded-xl">
-                  <ClipboardList size={24} className="text-brand-blue" />
-                </div>
-                <div className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${
-                  assessmentStatus === 'completed' ? 'bg-emerald-50 text-emerald-600' : 'bg-brand-orange/10 text-brand-orange'
-                }`}>
-                  {assessmentStatus === 'completed' ? 'Completed' : 'Pending'}
-                </div>
-              </div>
-              <h2 className="text-xl font-black text-slate-800 mb-2">Career Intelligence Assessment</h2>
-              <p className="text-slate-500 text-sm mb-6">
-                Our proprietary 90-question psychometric engine maps your unique traits to 500+ global career paths.
-              </p>
-              {assessmentStatus === 'completed' ? (
-                <Link href="/report">
-                  <Button className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-8 py-5 rounded-xl shadow-md transition-all hover:scale-105">
-                    View Full Report <ChevronRight className="ml-1" size={16} />
-                  </Button>
-                </Link>
-              ) : (
-                <a href="/career-assessment.html">
-                  <Button className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-8 py-5 rounded-xl shadow-md transition-all hover:scale-105">
-                    Begin Assessment <ChevronRight className="ml-1" size={16} />
-                  </Button>
-                </a>
-              )}
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => { window.location.href = '/'; }}
-                  className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
-                >
-                  <ArrowLeft size={16} /> Back to Home
-                </button>
-                {assessmentStatus === 'completed' && (
-                <Link href="/report">
-                  <Button variant="outline" className="ml-3 font-bold px-6 py-5 rounded-xl">
-                    <Download size={16} className="mr-2" /> Download PDF
-                  </Button>
-                </Link>
-              )}
-            </div>
-
-            {assessmentStatus === 'completed' && (getStrengths().length > 0 || getWeaknesses().length > 0) && (
-              <div className="grid sm:grid-cols-2 gap-6">
-                {getStrengths().length > 0 && (
-                  <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                    <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2 text-base">
-                      <Star size={18} className="text-emerald-600" /> Top Strengths
-                    </h3>
-                    <div className="space-y-2">
-                      {getStrengths().map((s: string, i: number) => (
-                        <div key={i} className="flex items-start gap-2 p-2.5 bg-emerald-50 rounded-lg">
-                          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full mt-1.5 shrink-0"></div>
-                          <span className="text-sm font-medium text-emerald-800">{typeof s === 'string' ? s : JSON.stringify(s)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {getWeaknesses().length > 0 && (
-                  <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                    <h3 className="font-black text-slate-800 mb-4 flex items-center gap-2 text-base">
-                      <AlertTriangle size={18} className="text-amber-500" /> Areas for Development
-                    </h3>
-                    <div className="space-y-2">
-                      {getWeaknesses().map((s: string, i: number) => (
-                        <div key={i} className="flex items-start gap-2 p-2.5 bg-amber-50 rounded-lg">
-                          <div className="w-1.5 h-1.5 bg-amber-500 rounded-full mt-1.5 shrink-0"></div>
-                          <span className="text-sm font-medium text-amber-800">{typeof s === 'string' ? s : JSON.stringify(s)}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
-              <h3 className="text-lg font-black text-slate-800 mb-6 flex items-center gap-2">
-                <Video size={20} className="text-brand-orange" /> My Counseling Sessions
-              </h3>
-              
-              {bookingsLoading ? (
-                <div className="flex items-center justify-center py-8">
-                  <Loader2 className="animate-spin text-slate-300" />
-                </div>
-              ) : bookings.length === 0 ? (
-                <div className="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                  <Video className="mx-auto text-slate-300 mb-3" size={32} />
-                  <p className="text-slate-500 font-medium">No sessions booked yet.</p>
-                  <Link href="/counsellors">
-                    <button className="text-brand-blue font-bold text-sm mt-2 hover:underline">Book your first session →</button>
-                  </Link>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {bookings.map((booking) => (
-                    <div key={booking.id} className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-5 bg-slate-50 rounded-2xl border border-slate-100 gap-4 group hover:bg-white hover:border-brand-blue/20 hover:shadow-md transition-all">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-brand-blue/10 rounded-xl flex items-center justify-center text-brand-blue font-black">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-5 h-5 text-brand-blue">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-slate-800">{booking.counsellors?.name}</h4>
-                          <p className="text-xs text-slate-500 font-medium uppercase tracking-wider">{booking.counsellors?.specialization}</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex flex-col sm:items-end gap-1">
-                        <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                          booking.status === 'confirmed' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'
-                        }`}>
-                          {booking.status}
-                        </span>
-                        <p className="text-sm font-bold text-slate-600">
-                          Session ID: <span className="font-mono">{booking.id.slice(0, 8).toUpperCase()}</span>
-                        </p>
-                      </div>
-
-                      {booking.jitsi_link ? (
-                        <a href={booking.jitsi_link} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
-                          <Button className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-5 px-6 rounded-xl shadow-lg shadow-brand-blue/10 transition-all hover:scale-105">
-                            Join Call <Video className="ml-2" size={16} />
-                          </Button>
-                        </a>
-                      ) : (
-                        <Button disabled className="w-full bg-slate-300 text-slate-500 font-bold py-5 px-6 rounded-xl">
-                          Link Pending
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+        {assessmentStatus !== 'completed' ? (
+          <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm text-center">
+            <h3 className="text-lg font-black text-slate-800 mb-2">Complete Your Career Assessment</h3>
+            <p className="text-sm text-slate-500 mb-6">Take the assessment to unlock your personalized career dashboard.</p>
+            <a href="/career-assessment.html">
+              <button className="bg-brand-orange text-white font-bold px-6 py-3 rounded-xl shadow-lg text-sm">
+                Take Assessment
+              </button>
+            </a>
           </div>
-
-          <div className="space-y-8">
-            
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <h3 className="font-black text-slate-800 mb-5 flex items-center gap-2 text-base">
-                <Globe size={18} className="text-brand-blue" /> Market Insights
-              </h3>
-              <div className="space-y-3">
-                {[
-                  { title: "Generative AI FinTech", trend: "+45%", color: "text-emerald-600 bg-emerald-50" },
-                  { title: "Sustainability Tech", trend: "+30%", color: "text-brand-blue bg-brand-blue/5" },
-                  { title: "Cybersecurity", trend: "+60%", color: "text-purple-600 bg-purple-50" },
-                ].map((news, i) => (
-                  <div key={i} className="p-4 rounded-xl border border-slate-100 hover:bg-slate-50 transition-all cursor-pointer">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-bold text-slate-700 text-sm">{news.title}</h4>
-                      <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${news.color}`}>
-                        {news.trend}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-brand-blue to-blue-900 text-white rounded-2xl p-6 shadow-xl relative overflow-hidden">
-              <div className="absolute bottom-0 right-0 w-32 h-32 bg-brand-orange/20 rounded-full blur-2xl translate-x-1/2 translate-y-1/2"></div>
-              <div className="relative z-10">
-                <Video size={28} className="text-brand-orange mb-3" />
-                <h3 className="text-xl font-black mb-3">Why 1-on-1 Counseling?</h3>
-                <ul className="space-y-2 text-blue-100 text-sm mb-6">
-                  <li className="flex items-start gap-2">
-                    <ChevronRight size={14} className="text-brand-orange shrink-0 mt-0.5" />
-                    <span>Decode your AI report with an expert counselor</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <ChevronRight size={14} className="text-brand-orange shrink-0 mt-0.5" />
-                    <span>Get a personalized career roadmap</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <ChevronRight size={14} className="text-brand-orange shrink-0 mt-0.5" />
-                    <span>Live video session, fully confidential</span>
-                  </li>
-                </ul>
-                <Link href="/counsellors">
-                  <Button className="w-full bg-brand-orange hover:bg-brand-orange/90 text-white font-bold py-5 rounded-xl shadow-lg transition-all hover:scale-105">
-                    Book Counseling Session
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-
-        </div>
+        ) : null}
 
       </div>
     </div>
-  </div>
-</div>
   );
 }

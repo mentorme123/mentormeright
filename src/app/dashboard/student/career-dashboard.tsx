@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ParameterScores } from "@/lib/scoring";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Download, Printer, TrendingUp, BookOpen, ChevronRight } from "lucide-react";
+import { ArrowLeft, Printer, ChevronRight } from "lucide-react";
 
 interface UserProfile {
   id: string;
@@ -21,33 +21,19 @@ interface DashboardScores extends ParameterScores {
 
 const MAX_RIASEC = 20;
 const MAX_SKILL = 24;
-const MAX_INDIV = 24;
 
 const pct = (score: number, max: number) => Math.round((score / Math.max(max, 0.01)) * 100);
 
 const getTopRIASEC = (scores: DashboardScores) => {
-  const riasec: { key: string; label: string }[] = [
-    { key: "Realistic", label: "R" },
-    { key: "Investigative", label: "I" },
-    { key: "Artistic", label: "A" },
-    { key: "Social", label: "S" },
-    { key: "Enterprising", label: "E" },
-    { key: "Conventional", label: "C" },
+  const riasec: { key: string }[] = [
+    { key: "Realistic" },
+    { key: "Investigative" },
+    { key: "Artistic" },
+    { key: "Social" },
+    { key: "Enterprising" },
+    { key: "Conventional" },
   ];
   return riasec.sort((a, b) => (scores[b.key] || 0) - (scores[a.key] || 0))[0];
-};
-
-const getTopSkills = (scores: DashboardScores) => {
-  const skills = [
-    { key: "Logical", label: "Logical" },
-    { key: "Numerical", label: "Numerical" },
-    { key: "Mechanical", label: "Mechanical" },
-    { key: "Verbal", label: "Verbal" },
-    { key: "Administrative", label: "Administrative" },
-  ];
-  return skills
-    .map(s => ({ ...s, score: scores[s.key] || 0, pct: pct(scores[s.key] || 0, MAX_SKILL) }))
-    .sort((a, b) => b.pct - a.pct);
 };
 
 const getStreamFromRIASEC = (topKey: string) => {
@@ -64,69 +50,64 @@ const getStreamFromRIASEC = (topKey: string) => {
 
 const getCareerMatches = (scores: DashboardScores) => {
   const careers = [
-    { name: "Business", keys: ["Enterprising", "Social"] as const },
-    { name: "Commerce/Finance", keys: ["Conventional", "Enterprising"] as const },
-    { name: "Engineering", keys: ["Realistic", "Investigative"] as const },
-    { name: "Design", keys: ["Artistic", "Realistic"] as const },
-    { name: "Law", keys: ["Enterprising", "Social"] as const },
-    { name: "Medicine", keys: ["Investigative", "Social"] as const },
-    { name: "Technology", keys: ["Investigative", "Realistic"] as const },
-    { name: "Arts", keys: ["Artistic", "Social"] as const },
+    { name: "Business", color: "#1B3A6B", keys: ["Enterprising", "Social"] as const },
+    { name: "Commerce/Finance", color: "#15803D", keys: ["Conventional", "Enterprising"] as const },
+    { name: "Law", color: "#7C3AED", keys: ["Enterprising", "Social"] as const },
+    { name: "Design", color: "#C2410C", keys: ["Artistic", "Realistic"] as const },
   ];
 
   return careers
     .map(career => {
       const score = career.keys.reduce((sum, key) => sum + (scores[key] || 0), 0);
       const maxScore = career.keys.length * MAX_RIASEC;
-      return { name: career.name, pct: pct(score, maxScore) };
+      return { name: career.name, color: career.color, pct: pct(score, maxScore) };
     })
-    .sort((a, b) => b.pct - a.pct)
-    .slice(0, 4);
+    .sort((a, b) => b.pct - a.pct);
 };
 
 const getSubjectReadiness = (scores: DashboardScores) => {
   const subjects = [
-    { name: "Accountancy", keys: ["Conventional", "Numerical"], weights: [1, 1] as number[] },
-    { name: "Business Studies", keys: ["Enterprising", "Social"], weights: [0.8, 0.5] },
-    { name: "Economics", keys: ["Investigative", "Conventional"], weights: [0.8, 0.8] },
-    { name: "Mathematics", keys: ["Logical", "Numerical"], weights: [1, 1] },
+    { name: "Accountancy", color: "#F59E0B", keys: ["Conventional", "Numerical"], weights: [1, 1] as number[] },
+    { name: "Business Studies", color: "#F59E0B", keys: ["Enterprising", "Social"], weights: [0.8, 0.5] },
+    { name: "Economics", color: "#F59E0B", keys: ["Investigative", "Conventional"], weights: [0.8, 0.8] },
+    { name: "Mathematics", color: "#F59E0B", keys: ["Logical", "Numerical"], weights: [1, 1] },
   ];
 
   return subjects.map(subject => {
     const score = subject.keys.reduce((sum, key, i) => sum + (scores[key] || 0) * subject.weights[i], 0);
     const maxPossible = subject.keys.reduce((sum, _, i) => sum + MAX_SKILL * subject.weights[i], 0);
-    return { name: subject.name, pct: pct(score, maxPossible) };
+    return { name: subject.name, color: subject.color, pct: pct(score, maxPossible) };
   });
 };
 
 const getAcademicFitness = (scores: DashboardScores) => {
   const subjects = [
-    { name: "Mathematics", keys: ["Logical", "Numerical"] as const },
-    { name: "Physics", keys: ["Logical", "Mechanical"] as const },
-    { name: "Chemistry", keys: ["Investigative", "Logical"] as const },
+    { name: "Mathematics", color: "#1B3A6B", keys: ["Logical", "Numerical"] as const },
+    { name: "Physics", color: "#1B3A6B", keys: ["Logical", "Mechanical"] as const },
+    { name: "Chemistry", color: "#1B3A6B", keys: ["Investigative", "Logical"] as const },
   ];
 
   return subjects.map(subject => {
     const score = subject.keys.reduce((sum, key) => sum + (scores[key] || 0), 0);
     const maxPossible = subject.keys.length * MAX_SKILL;
-    return { name: subject.name, pct: pct(score, maxPossible) };
+    return { name: subject.name, color: subject.color, pct: pct(score, maxPossible) };
   });
 };
 
 const getCareerPathReadiness = (scores: DashboardScores) => {
   const paths = [
-    { name: "Software Engineering", keys: ["Investigative", "Logical", "Numerical"] as const },
-    { name: "Artificial Intelligence", keys: ["Investigative", "Logical", "Numerical"] as const },
-    { name: "Data Science", keys: ["Investigative", "Conventional", "Numerical"] as const },
-    { name: "Mechanical Engineering", keys: ["Realistic", "Mechanical"] as const },
-    { name: "Entrepreneurship", keys: ["Enterprising", "Social"] as const },
+    { name: "Software Engineering", color: "#F59E0B", keys: ["Investigative", "Logical", "Numerical"] as const },
+    { name: "Artificial Intelligence", color: "#F59E0B", keys: ["Investigative", "Logical", "Numerical"] as const },
+    { name: "Data Science", color: "#F59E0B", keys: ["Investigative", "Conventional", "Numerical"] as const },
+    { name: "Mechanical Engineering", color: "#F59E0B", keys: ["Realistic", "Mechanical"] as const },
+    { name: "Entrepreneurship", color: "#F59E0B", keys: ["Enterprising", "Social"] as const },
   ];
 
   return paths
     .map(path => {
       const score = path.keys.reduce((sum, key) => sum + (scores[key] || 0), 0);
       const maxPossible = path.keys.length * MAX_RIASEC;
-      return { name: path.name, pct: pct(score, maxPossible) };
+      return { name: path.name, color: path.color, pct: pct(score, maxPossible) };
     })
     .sort((a, b) => b.pct - a.pct);
 };
@@ -137,25 +118,38 @@ const getCounselorRecommendations = (scores: DashboardScores, isSchool: boolean)
 
   if (isSchool) {
     return [
-      `Strengthen ${weakestSkill.label.toLowerCase()} fundamentals — this is your biggest growth area.`,
-      `Build logical thinking through puzzles, coding games, or science projects.`,
-      `Begin case-study & aptitude practice to prepare for entrance exams.`,
-      `Explore CUET / business entrance prep aligned with your top stream.`,
+      `Strengthen ${weakestSkill.label.toLowerCase()} fundamentals`,
+      `Build logical thinking`,
+      `Begin case-study & aptitude practice`,
+      `Explore CUET / business entrance prep`,
     ];
   }
 
   return [
-    `Improve ${weakestSkill.label.toLowerCase()} through structured practice and courses.`,
-    `Explore and understand the recommended career options in your dashboard.`,
-    `Explore engineering programs across different colleges.`,
-    `Try short courses on programming or AI to validate your interests.`,
+    `Improve ${weakestSkill.label.toLowerCase()} through structured practice`,
+    `Explore and understand the recommended career options`,
+    `Explore engineering programs across different colleges`,
+    `Try short courses on programming or AI`,
   ];
+};
+
+const getTopSkills = (scores: DashboardScores) => {
+  const skills = [
+    { key: "Logical", label: "Logical" },
+    { key: "Numerical", label: "Numerical" },
+    { key: "Mechanical", label: "Mechanical" },
+    { key: "Verbal", label: "Verbal" },
+    { key: "Administrative", label: "Administrative" },
+  ];
+  return skills
+    .map(s => ({ ...s, score: scores[s.key] || 0, pct: pct(scores[s.key] || 0, MAX_SKILL) }))
+    .sort((a, b) => b.pct - a.pct);
 };
 
 const getOverallScore = (scores: DashboardScores) => {
   const allScores = Object.values(scores);
   const totalScore = allScores.reduce((sum, s) => sum + s, 0);
-  const maxTotal = 6 * MAX_RIASEC + 5 * MAX_SKILL + 5 * MAX_INDIV;
+  const maxTotal = 6 * MAX_RIASEC + 5 * MAX_SKILL + 5 * 24;
   return pct(totalScore, maxTotal);
 };
 
@@ -260,10 +254,12 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-black mb-1">
-                Student Career Dashboard {isSchool ? "(Class 9 & 10)" : "(Class 11 & 12)"}
+                Student Career Dashboard (sample only){isSchool ? "– Class 9 & 10" : " – Class 11 & 12"}
               </h1>
               <p className="text-blue-200 text-sm">
-                {isSchool ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas" : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
+                {isSchool 
+                  ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas" 
+                  : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
               </p>
             </div>
             <div className="flex gap-3">
@@ -289,17 +285,17 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {isSchool ? (
             <>
-              <KPICard label="Career Clarity Score" value={`${overallScore}%`} color="text-brand-blue" />
-              <KPICard label="Recommended Stream" value={stream.stream} color="text-emerald-700" />
-              <KPICard label="Subject Readiness" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-purple-600" />
-              <KPICard label="Personality & Interest Alignment" value={`${pct(scores[topRIASEC.key] || 0, MAX_RIASEC)}%`} color="text-orange-600" />
+              <KPICard label="Career Clarity Score" value={`${overallScore}%`} color="text-[#1B3A6B]" />
+              <KPICard label="Recommended Stream" value={stream.stream} color="text-[#15803D]" />
+              <KPICard label="Subject Readiness" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#7C3AED]" />
+              <KPICard label="Personality & Interest Alignment" value={`${pct(scores[topRIASEC.key] || 0, MAX_RIASEC)}%`} color="text-[#C2410C]" />
             </>
           ) : (
             <>
-              <KPICard label="Overall Academic Fit" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-brand-blue" />
-              <KPICard label="Profile Strength Score" value={`${profileStrengthScore}/100`} color="text-purple-600" />
-              <KPICard label="Career Readiness Score" value={`${careerReadinessScore}%`} color="text-emerald-700" />
-              <KPICard label="Target Course" value={stream.courses[0]} color="text-orange-600" />
+              <KPICard label="Overall Academic Fit" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#1B3A6B]" />
+              <KPICard label="Profile Strength Score" value={`${profileStrengthScore}/100`} color="text-[#7C3AED]" />
+              <KPICard label="Career Readiness Score" value={`${careerReadinessScore}%`} color="text-[#15803D]" />
+              <KPICard label="Target Course" value={stream.courses[0]} color="text-[#C2410C]" />
             </>
           )}
         </div>
@@ -308,25 +304,26 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           
           {/* Left Column: Career Match Index / Academic Fitness */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Career Match Index" : "Academic Fitness"}
               </h3>
+              {isSchool && profile?.education_level && (
+                <p className="text-xs text-slate-500 mb-4 italic">Target: {stream.courses[0]} Computer Science</p>
+              )}
               {isSchool ? (
                 <div className="space-y-4">
                   {careerMatches.map((career, i) => (
                     <div key={i}>
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm font-medium text-slate-600">{career.name}</span>
-                        <span className={`text-sm font-bold ${career.pct >= 70 ? "text-brand-blue" : career.pct >= 50 ? "text-emerald-600" : "text-amber-600"}`}>
-                          {career.pct}%
-                        </span>
+                        <span className="text-sm font-bold" style={{ color: career.color }}>{career.pct}%</span>
                       </div>
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-700 ${career.pct >= 70 ? "bg-brand-blue" : career.pct >= 50 ? "bg-emerald-500" : "bg-amber-500"}`}
-                          style={{ width: `${career.pct}%` }}
+                          className="h-full rounded-full transition-all duration-700"
+                          style={{ width: `${career.pct}%`, background: career.color }}
                         ></div>
                       </div>
                     </div>
@@ -338,13 +335,11 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                     <div key={i}>
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm font-medium text-slate-600">{subject.name}</span>
-                        <span className={`text-sm font-bold ${subject.pct >= 70 ? "text-brand-blue" : subject.pct >= 50 ? "text-emerald-600" : "text-amber-600"}`}>
-                          {subject.pct}%
-                        </span>
+                        <span className="text-sm font-bold text-[#1B3A6B]">{subject.pct}%</span>
                       </div>
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-700 ${subject.pct >= 70 ? "bg-brand-blue" : subject.pct >= 50 ? "bg-emerald-500" : "bg-amber-500"}`}
+                          className="h-full rounded-full transition-all duration-700 bg-[#1B3A6B]"
                           style={{ width: `${subject.pct}%` }}
                         ></div>
                       </div>
@@ -356,7 +351,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
 
           {/* Middle Column: Subject Readiness / Career Path Readiness */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Subject Readiness" : "Career Path Readiness"}
@@ -367,13 +362,11 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                     <div key={i}>
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm font-medium text-slate-600">{subject.name}</span>
-                        <span className={`text-sm font-bold ${subject.pct >= 70 ? "text-brand-blue" : subject.pct >= 50 ? "text-emerald-600" : "text-amber-600"}`}>
-                          {subject.pct}%
-                        </span>
+                        <span className="text-sm font-bold text-[#F59E0B]">{subject.pct}%</span>
                       </div>
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-700 ${subject.pct >= 70 ? "bg-brand-blue" : subject.pct >= 50 ? "bg-emerald-500" : "bg-amber-500"}`}
+                          className="h-full rounded-full transition-all duration-700 bg-[#F59E0B]"
                           style={{ width: `${subject.pct}%` }}
                         ></div>
                       </div>
@@ -386,13 +379,11 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                     <div key={i}>
                       <div className="flex justify-between items-center mb-1">
                         <span className="text-sm font-medium text-slate-600">{path.name}</span>
-                        <span className={`text-sm font-bold ${path.pct >= 70 ? "text-brand-blue" : path.pct >= 50 ? "text-emerald-600" : "text-amber-600"}`}>
-                          {path.pct}%
-                        </span>
+                        <span className="text-sm font-bold text-[#F59E0B]">{path.pct}%</span>
                       </div>
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-700 ${path.pct >= 70 ? "bg-brand-blue" : path.pct >= 50 ? "bg-emerald-500" : "bg-amber-500"}`}
+                          className="h-full rounded-full transition-all duration-700 bg-[#F59E0B]"
                           style={{ width: `${path.pct}%` }}
                         ></div>
                       </div>
@@ -409,12 +400,12 @@ export default function CareerDashboard({ userId }: { userId: string }) {
               <h3 className="text-lg font-black text-emerald-800 mb-4">
                 {isSchool ? "Counselor Recommendation" : "Counselor Recommendations"}
               </h3>
-              <p className="text-sm text-emerald-700 mb-6">
+              <p className="text-sm text-emerald-700 mb-4">
                 {isSchool
-                  ? `Strong suitability for ${stream.stream} pathways based on your current performance and interests.`
-                  : `Strong suitability for ${stream.courses[0]} and related career pathways based on your current performance.`}
+                  ? `Strong suitability for Commerce and Business pathways based on current performance.`
+                  : `Strong suitability for ${stream.courses[0]} and related career pathways based on current performance.`}
               </p>
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {counselorRecs.map((rec, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <ChevronRight size={16} className="text-emerald-600 mt-0.5 shrink-0" />
@@ -426,71 +417,23 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
         </div>
 
-        {/* Bottom Section: Top Strengths & Weaknesses */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-            <h3 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2">
-              <TrendingUp size={20} className="text-emerald-600" /> Top Strengths
-            </h3>
-            <div className="space-y-3">
-              {topIndividuality.slice(0, 3).map((trait, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-1.5 shrink-0"></div>
-                  <div>
-                    <p className="text-sm font-bold text-emerald-800">{trait.label}</p>
-                    <p className="text-xs text-emerald-600 mt-0.5">{trait.pct}% score</p>
-                  </div>
-                </div>
-              ))}
-              {topSkills.slice(0, 2).map((skill, i) => (
-                <div key={`skill-${i}`} className="flex items-start gap-3 p-3 bg-emerald-50 rounded-xl">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-1.5 shrink-0"></div>
-                  <div>
-                    <p className="text-sm font-bold text-emerald-800">{skill.label}</p>
-                    <p className="text-xs text-emerald-600 mt-0.5">{skill.pct}% proficiency</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-            <h3 className="text-lg font-black text-slate-800 mb-4 flex items-center gap-2">
-              <BookOpen size={20} className="text-amber-500" /> Areas for Development
-            </h3>
-            <div className="space-y-3">
-              {[...topSkills].sort((a, b) => a.pct - b.pct).slice(0, 3).map((skill, i) => (
-                <div key={i} className="flex items-start gap-3 p-3 bg-amber-50 rounded-xl">
-                  <div className="w-2 h-2 bg-amber-500 rounded-full mt-1.5 shrink-0"></div>
-                  <div>
-                    <p className="text-sm font-bold text-amber-800">{skill.label}</p>
-                    <p className="text-xs text-amber-600 mt-0.5">{skill.pct}% — needs improvement</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+        {/* Recommended Stream Badge */}
+        <div className="mt-8">
+          <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 inline-flex items-center gap-2">
+            <span className="text-emerald-600 font-bold text-sm">✓</span>
+            <span className="text-sm text-emerald-800 font-medium">
+              Recommended Stream: <span className="font-bold">{isSchool ? "Commerce" : stream.stream}</span>
+            </span>
           </div>
         </div>
 
-        {/* Recommended Stream Badge */}
-        <div className="mt-8 bg-brand-blue/5 rounded-2xl p-6 border border-brand-blue/10">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
-              <p className="text-xs font-bold text-brand-blue uppercase tracking-widest mb-1">Recommended Stream</p>
-              <p className="text-2xl font-black text-brand-blue">{stream.stream}</p>
-              <p className="text-sm text-slate-600 mt-1">
-                Top career match: <span className="font-bold text-slate-800">{careerMatches[0]?.name}</span>
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <Button
-                onClick={() => window.print()}
-                className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold"
-              >
-                <Download size={16} className="mr-2" /> Download Report
-              </Button>
-            </div>
-          </div>
+        {/* Footer Contact */}
+        <div className="mt-8 text-center text-xs text-slate-400">
+          <span>www.mentormeright.com</span>
+          <span className="mx-2">|</span>
+          <span>sirishakode@mentormeright.in</span>
+          <span className="mx-2">|</span>
+          <span>+91-84310 97872</span>
         </div>
       </div>
     </div>

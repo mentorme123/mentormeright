@@ -33,8 +33,7 @@ import {
    Timer,
    Sparkles,
    IndianRupee,
-   LogOut,
-   Target
+   LogOut
 } from "lucide-react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import CareerDashboard from "./career-dashboard";
@@ -496,7 +495,7 @@ function StudentDashboardInner({ supabase, router }: { supabase: ReturnType<type
         {assessmentStatus === 'completed' ? (
           <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "View Career Dashboard", icon: <Target className="text-brand-blue" />, sub: "Your Full Report", link: "#", action: "dashboard" },
+              { label: "View Career Dashboard", icon: <ClipboardList className="text-brand-blue" />, sub: "Your Full Report", link: "#", action: "dashboard" },
               { label: "Exam War Room", icon: <Timer className="text-brand-orange" />, sub: "JEE/NEET/CUET", link: "/dashboard/student/exams", badge: "LIVE" },
               { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", badge: "HOT" },
               { label: "Career ROI", icon: <IndianRupee className="text-purple-500" />, sub: "Salary Insights", link: "/career-library" }

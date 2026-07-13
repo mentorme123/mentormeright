@@ -47,6 +47,7 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState<DBUser | null>(null);
   const [hasAssessment, setHasAssessment] = useState(false);
   const [checkingAssessment, setCheckingAssessment] = useState(false);
+  const [assessmentError, setAssessmentError] = useState<string | null>(null);
   const [showTour, setShowTour] = useState(false);
   const [tourStep, setTourStep] = useState(0);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -97,11 +98,17 @@ export default function AdminDashboard() {
       if (!selectedUser) return;
       setCheckingAssessment(true);
       setHasAssessment(false);
+      setAssessmentError(null);
       try {
         const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}`);
         setHasAssessment(res.ok);
-      } catch {
+        if (!res.ok) {
+          const j = await res.json().catch(() => ({}));
+          setAssessmentError(j?.error || `HTTP ${res.status}`);
+        }
+      } catch (e) {
         setHasAssessment(false);
+        setAssessmentError(e?.message || 'Network error');
       } finally {
         setCheckingAssessment(false);
       }
@@ -319,7 +326,9 @@ export default function AdminDashboard() {
 
                 {checkingAssessment ? (
                   <div className="space-y-4">
-                    <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                    </div>
                     <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-start gap-3">
                       <div className="w-5 h-5 border-2 border-slate-300 border-t-transparent rounded-full animate-spin"></div>
                       <p className="text-slate-500 text-sm">Checking assessment status...</p>
@@ -327,7 +336,33 @@ export default function AdminDashboard() {
                   </div>
                 ) : hasAssessment ? (
                   <div className="space-y-4">
-                    <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={async () => {
+                          setCheckingAssessment(true);
+                          setHasAssessment(false);
+                          setAssessmentError(null);
+                          try {
+                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}`);
+                            setHasAssessment(res.ok);
+                            if (!res.ok) {
+                              const j = await res.json().catch(() => ({}));
+                              setAssessmentError(j?.error || `HTTP ${res.status}`);
+                            }
+                          } catch (e) {
+                            setHasAssessment(false);
+                            setAssessmentError(e?.message || 'Network error');
+                          } finally {
+                            setCheckingAssessment(false);
+                          }
+                        }}
+                      >
+                        Refresh
+                      </Button>
+                    </div>
                     <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl flex items-start gap-3">
                       <CheckCircle2 className="text-emerald-600 shrink-0" size={20} />
                       <div>
@@ -344,12 +379,41 @@ export default function AdminDashboard() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={async () => {
+                          setCheckingAssessment(true);
+                          setHasAssessment(false);
+                          setAssessmentError(null);
+                          try {
+                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}`);
+                            setHasAssessment(res.ok);
+                            if (!res.ok) {
+                              const j = await res.json().catch(() => ({}));
+                              setAssessmentError(j?.error || `HTTP ${res.status}`);
+                            }
+                          } catch (e) {
+                            setHasAssessment(false);
+                            setAssessmentError(e?.message || 'Network error');
+                          } finally {
+                            setCheckingAssessment(false);
+                          }
+                        }}
+                      >
+                        Refresh
+                      </Button>
+                    </div>
                     <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-start gap-3">
                       <AlertCircle className="text-slate-400 shrink-0" size={20} />
                       <div>
                         <p className="font-bold text-slate-700 text-sm">Not Completed</p>
                         <p className="text-slate-500 text-xs mt-1">This user has not completed the career assessment yet.</p>
+                        {assessmentError && (
+                          <p className="text-amber-600 text-xs mt-2 font-medium">Last check: {assessmentError}</p>
+                        )}
                       </div>
                     </div>
                   </div>

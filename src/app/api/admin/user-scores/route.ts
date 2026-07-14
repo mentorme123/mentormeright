@@ -20,6 +20,7 @@ export async function GET(req: NextRequest) {
 
     let targetUserId = userId;
     let userEmail = email;
+    let matchedById = true;
 
     if (!targetUserId && email) {
       const { data: userByEmail } = await supabaseAdmin
@@ -29,13 +30,14 @@ export async function GET(req: NextRequest) {
         .maybeSingle();
       targetUserId = userByEmail?.id || null;
       userEmail = email;
+      matchedById = false;
     }
 
     if (!targetUserId) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    console.log('Fetching scores for userId:', targetUserId, 'email:', userEmail);
+    console.log('Fetching scores for userId:', targetUserId, 'email:', userEmail, 'matchedById:', matchedById);
 
     const { data, error } = await supabaseAdmin
       .from('assessment_results')
@@ -51,7 +53,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (!data?.scores) {
-      console.log('No assessment found for userId:', targetUserId);
+      console.log('No assessment found for userId:', targetUserId, 'email:', userEmail);
 
       if (userEmail) {
         const { data: userByEmail } = await supabaseAdmin
@@ -61,6 +63,7 @@ export async function GET(req: NextRequest) {
           .maybeSingle();
 
         if (userByEmail?.id && userByEmail.id !== targetUserId) {
+          console.log('Trying fallback by email for user:', userByEmail.id, 'original userId:', targetUserId);
           const { data: altResult, error: altError } = await supabaseAdmin
             .from('assessment_results')
             .select('scores, answers, completed_at, report')

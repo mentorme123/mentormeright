@@ -199,7 +199,12 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
         setProfile(userProfile || null);
 
-        const emailParam = profile?.email ? `&email=${encodeURIComponent(profile.email)}` : '';
+        let resolvedEmail = userProfile?.email || null;
+        if (!resolvedEmail) {
+          const { data: { user } } = await supabase.auth.getUser();
+          resolvedEmail = user?.email || null;
+        }
+        const emailParam = resolvedEmail ? `&email=${encodeURIComponent(resolvedEmail)}` : '';
         const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(userId)}${emailParam}`);
         const json = await res.json();
 

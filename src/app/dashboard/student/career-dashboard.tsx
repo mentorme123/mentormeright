@@ -199,7 +199,8 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
         setProfile(userProfile || null);
 
-        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(userId)}`);
+        const emailParam = profile?.email ? `&email=${encodeURIComponent(profile.email)}` : '';
+        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(userId)}${emailParam}`);
         const json = await res.json();
 
         if (!res.ok) {

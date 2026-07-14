@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email and scores are required' }, { status: 400 });
     }
 
-    console.log('Assessment submit attempt:', { email, grade, audience_type, scoresKeys: Object.keys(scores || {}) });
+    console.log('Assessment submit attempt:', { email, grade, audience_type, scoresKeys: Object.keys(scores || {}), scoresType: typeof scores });
 
     const educationLevel = grade ? `Class ${grade}` : 'School Student';
 
@@ -33,9 +33,11 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     authUserId = existingUser?.id || null;
+    console.log('Assessment submit: existing user lookup', { email, authUserId });
 
     if (!authUserId) {
       const { data: authUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
+      console.log('Assessment submit: auth lookup', { email, found: !!authUser?.user?.id });
 
       if (authUser?.user?.id) {
         authUserId = authUser.user.id;
@@ -54,6 +56,7 @@ export async function POST(req: NextRequest) {
         }
 
         authUserId = createdAuthUser.user.id;
+        console.log('Assessment submit: created auth user', { email, authUserId });
       }
     }
 
@@ -78,6 +81,8 @@ export async function POST(req: NextRequest) {
       console.error('Error upserting user profile:', profileUpsertError);
       return NextResponse.json({ error: profileUpsertError.message }, { status: 500 });
     }
+
+    console.log('Assessment submit: saving results', { userId: authUserId, scoresKeys: Object.keys(scores || {}) });
 
     // Save assessment results
     const { error: insertError } = await supabaseAdmin

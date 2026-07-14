@@ -1193,11 +1193,17 @@ async function buildResults(){
 
   const sub={id:'sub_'+Date.now(),student,scores,topPassion:tp,overall:ovr,
              submittedAt:new Date().toISOString()};
-  submissions.push(sub); saveSubs(); sendEmail(sub);
+  submissions.push(sub); saveSubs();
 
   // Save to Supabase for dashboard integration
   let saveOk = false;
   let saveErrMsg = 'Unknown error';
+  console.log('Assessment: starting dashboard sync', {
+    email: student.email || 'anonymous@mentorme.in',
+    overall: ovr,
+    scoresKeys: Object.keys(scores || {}),
+    scoresSample: Object.fromEntries(Object.entries(scores || {}).slice(0, 5))
+  });
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
       const res = await fetch('/api/assessment/submit', {
@@ -1214,10 +1220,17 @@ async function buildResults(){
           subjects: student.subjects || []
         })
       });
+      const resText = await res.text().catch(() => '');
+      console.log('Assessment: dashboard sync response', {
+        attempt,
+        status: res.status,
+        ok: res.ok,
+        body: resText.slice(0, 500)
+      });
       saveOk = res.ok;
       if (saveOk) break;
       try {
-        const j = await res.json();
+        const j = JSON.parse(resText);
         saveErrMsg = j?.error || saveErrMsg;
       } catch {
         saveErrMsg = `HTTP ${res.status}`;
@@ -1228,6 +1241,7 @@ async function buildResults(){
       console.warn(`Dashboard sync attempt ${attempt} failed:`, e);
     }
   }
+  console.log('Assessment: dashboard sync complete', { saveOk, saveErrMsg });
 
   let html = `<div class="res-hero">
     <div class="res-avatar">${ini}</div>

@@ -52,6 +52,42 @@ export async function GET(req: NextRequest) {
 
     if (!data?.scores) {
       console.log('No assessment found for userId:', targetUserId);
+
+      if (userEmail) {
+        const { data: userByEmail } = await supabaseAdmin
+          .from('users')
+          .select('id')
+          .eq('email', userEmail)
+          .maybeSingle();
+
+        if (userByEmail?.id && userByEmail.id !== targetUserId) {
+          const { data: altResult, error: altError } = await supabaseAdmin
+            .from('assessment_results')
+            .select('scores, answers, completed_at, report')
+            .eq('user_id', userByEmail.id)
+            .order('completed_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+
+          if (!altError && altResult?.scores) {
+            const { data: altUser } = await supabaseAdmin
+              .from('users')
+              .select('name, education_level')
+              .eq('id', userByEmail.id)
+              .maybeSingle();
+
+            return NextResponse.json({
+              scores: altResult.scores,
+              completedAt: altResult.completed_at,
+              userName: altUser?.name || null,
+              userClass: altUser?.education_level || null,
+              subjects: altResult.report?.subjects || [],
+              report: altResult.report || null
+            });
+          }
+        }
+      }
+
       return NextResponse.json({ error: 'No assessment found for this user' }, { status: 404 });
     }
 
@@ -63,7 +99,7 @@ export async function GET(req: NextRequest) {
 
     console.log('Found assessment for userId:', targetUserId, 'user:', user?.name || 'unknown');
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       scores: data.scores,
       completedAt: data.completed_at,
       userName: user?.name || null,

@@ -23,41 +23,30 @@ export async function POST(req: NextRequest) {
 
     const educationLevel = grade ? `Class ${grade}` : 'School Student';
 
-    // Find or create matching auth user so we have a valid UUID for public.users.id
+    // Always resolve the stable auth user ID first to avoid identity mismatches
     let authUserId: string | null = null;
 
-    const { data: existingUser } = await supabaseAdmin
-      .from('users')
-      .select('id')
-      .eq('email', email)
-      .maybeSingle();
+    const { data: authUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
+    console.log('Assessment submit: auth lookup', { email, found: !!authUser?.user?.id });
 
-    authUserId = existingUser?.id || null;
-    console.log('Assessment submit: existing user lookup', { email, authUserId });
+    if (authUser?.user?.id) {
+      authUserId = authUser.user.id;
+    } else {
+      const randomPassword = crypto.randomUUID().replace(/-/g, '').slice(0, 24);
+      const { data: createdAuthUser, error: createAuthError } = await supabaseAdmin.auth.admin.createUser({
+        email,
+        password: randomPassword,
+        email_confirm: true,
+        user_metadata: { name: name || email.split('@')[0] },
+      });
 
-    if (!authUserId) {
-      const { data: authUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
-      console.log('Assessment submit: auth lookup', { email, found: !!authUser?.user?.id });
-
-      if (authUser?.user?.id) {
-        authUserId = authUser.user.id;
-      } else {
-        const randomPassword = crypto.randomUUID().replace(/-/g, '').slice(0, 24);
-        const { data: createdAuthUser, error: createAuthError } = await supabaseAdmin.auth.admin.createUser({
-          email,
-          password: randomPassword,
-          email_confirm: true,
-          user_metadata: { name: name || email.split('@')[0] },
-        });
-
-        if (createAuthError || !createdAuthUser?.user?.id) {
-          console.error('Error creating auth user:', createAuthError);
-          return NextResponse.json({ error: 'Failed to create account', details: createAuthError?.message }, { status: 500 });
-        }
-
-        authUserId = createdAuthUser.user.id;
-        console.log('Assessment submit: created auth user', { email, authUserId });
+      if (createAuthError || !createdAuthUser?.user?.id) {
+        console.error('Error creating auth user:', createAuthError);
+        return NextResponse.json({ error: 'Failed to create account', details: createAuthError?.message }, { status: 500 });
       }
+
+      authUserId = createdAuthUser.user.id;
+      console.log('Assessment submit: created auth user', { email, authUserId });
     }
 
     // Upsert public profile row using the stable auth user id

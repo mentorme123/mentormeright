@@ -184,6 +184,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [subjects, setSubjects] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [scoresMessage, setScoresMessage] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -203,11 +204,13 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
         if (!res.ok) {
           console.warn('CareerDashboard: scores API error', res.status, json.error);
+          setScoresMessage(json.error || 'Unable to load assessment scores.');
           setLoading(false);
           return;
         }
 
         console.log('CareerDashboard: raw API response scores keys:', json.scores ? Object.keys(json.scores) : 'none', 'sample:', json.scores);
+        setScoresMessage(null);
 
         let normalizedScores = json.scores;
         if (normalizedScores && typeof normalizedScores === 'object') {
@@ -239,18 +242,37 @@ export default function CareerDashboard({ userId }: { userId: string }) {
               if (mapped && typeof v === 'number') flat[mapped] = v;
             });
             normalizedScores = flat;
+          } else {
+            const flat: Record<string, number> = {};
+            const walk = (obj: any) => {
+              if (!obj || typeof obj !== 'object') return;
+              Object.entries(obj).forEach(([k, v]) => {
+                if (v && typeof v === 'object' && !(typeof v.score === 'number')) {
+                  walk(v);
+                } else if (typeof v === 'number') {
+                  flat[k.replace(/\s+/g, '')] = v;
+                }
+              });
+            };
+            walk(normalizedScores);
+            if (Object.keys(flat).length > 0) {
+              normalizedScores = flat;
+            }
           }
         }
 
         const hasAnyScore = normalizedScores && Object.values(normalizedScores).some((v: any) => (typeof v === 'number' ? v : 0) > 0);
         if (!hasAnyScore) {
           console.warn('CareerDashboard: no valid scores found for userId', userId, 'raw:', json.scores);
+          setScoresMessage('Assessment data was found, but no valid scores could be loaded. Please try retaking the assessment.');
         }
 
         setScores(normalizedScores);
         setReport(json.report);
         setSubjects((json.subjects || []) as string[]);
-      } catch {
+      } catch (error) {
+        console.error('CareerDashboard: fetch error', error);
+        setScoresMessage('Something went wrong while loading your dashboard. Please refresh or retake the assessment.');
       } finally {
         setLoading(false);
       }
@@ -324,6 +346,14 @@ export default function CareerDashboard({ userId }: { userId: string }) {
             </div>
           </div>
         </div>
+
+        {scoresMessage && (
+          <div className="max-w-6xl mx-auto mb-6">
+            <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-xl p-4 text-sm">
+              {scoresMessage}
+            </div>
+          </div>
+        )}
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">

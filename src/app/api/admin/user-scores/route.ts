@@ -13,7 +13,7 @@ const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
 export async function GET(req: NextRequest) {
   try {
     const userId = req.nextUrl.searchParams.get('userId');
-    const email = req.nextUrl.searchParams.get('email') || '';
+    const email = (req.nextUrl.searchParams.get('email') || '').trim().toLowerCase();
     if (!userId && !email) {
       return NextResponse.json({ error: 'userId or email is required' }, { status: 400 });
     }
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       const { data: userByEmail } = await supabaseAdmin
         .from('users')
         .select('id')
-        .eq('email', email)
+        .ilike('email', email)
         .maybeSingle();
       targetUserId = userByEmail?.id || null;
       userEmail = email;
@@ -56,18 +56,27 @@ export async function GET(req: NextRequest) {
       console.log('No assessment found for userId:', targetUserId, 'email:', userEmail);
 
       if (userEmail) {
-        const { data: userByEmail } = await supabaseAdmin
+        const { data: usersByEmail } = await supabaseAdmin
           .from('users')
           .select('id')
-          .eq('email', userEmail)
-          .maybeSingle();
+          .ilike('email', userEmail);
 
-        if (userByEmail?.id && userByEmail.id !== targetUserId) {
-          console.log('Trying fallback by email for user:', userByEmail.id, 'original userId:', targetUserId);
+        const candidateIds = [
+          ...(usersByEmail?.map(u => u.id) || []),
+          targetUserId
+        ].filter((id, idx, arr) => id && arr.indexOf(id) === idx);
+
+        console.log('Trying fallback by email candidates:', candidateIds);
+
+        for (const candidateId of candidateIds) {
+          if (candidateId === targetUserId && matchedById) {
+            continue;
+          }
+
           const { data: altResult, error: altError } = await supabaseAdmin
             .from('assessment_results')
             .select('scores, answers, completed_at, report')
-            .eq('user_id', userByEmail.id)
+            .eq('user_id', candidateId)
             .order('completed_at', { ascending: false })
             .limit(1)
             .maybeSingle();
@@ -76,9 +85,10 @@ export async function GET(req: NextRequest) {
             const { data: altUser } = await supabaseAdmin
               .from('users')
               .select('name, education_level')
-              .eq('id', userByEmail.id)
+              .eq('id', candidateId)
               .maybeSingle();
 
+            console.log('Found assessment via fallback for candidateId:', candidateId);
             return NextResponse.json({
               scores: altResult.scores,
               completedAt: altResult.completed_at,

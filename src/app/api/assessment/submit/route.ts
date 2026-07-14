@@ -22,72 +22,25 @@ export async function POST(req: NextRequest) {
     console.log('Assessment submit attempt:', { email, grade, audience_type, scoresKeys: Object.keys(scores || {}), scoresType: typeof scores });
 
     const educationLevel = grade ? `Class ${grade}` : 'School Student';
+    const normalizedEmail = String(email).trim().toLowerCase();
 
-    // Always resolve the stable auth user ID first to avoid identity mismatches
-    let authUserId: string | null = null;
+    const { data: existingUser } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .ilike('email', normalizedEmail)
+      .maybeSingle();
 
-    const hasGetUserByEmail = typeof supabaseAdmin.auth.admin?.getUserByEmail === 'function';
-    console.log('Assessment submit: getUserByEmail available', { email, hasGetUserByEmail });
+    const generatedUserId = existingUser?.id || crypto.randomUUID();
+    console.log('Assessment submit: resolved userId', { email: normalizedEmail, generatedUserId, existing: !!existingUser?.id });
 
-    if (hasGetUserByEmail) {
-      const { data: authUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
-      console.log('Assessment submit: auth lookup', { email, found: !!authUser?.user?.id });
-
-      if (authUser?.user?.id) {
-        authUserId = authUser.user.id;
-      }
-    } else {
-      console.log('Assessment submit: skipping getUserByEmail because it is unavailable');
-    }
-
-    if (!authUserId) {
-      const randomPassword = crypto.randomUUID().replace(/-/g, '').slice(0, 24);
-      const { data: createdAuthUser, error: createAuthError } = await supabaseAdmin.auth.admin.createUser({
-        email,
-        password: randomPassword,
-        email_confirm: true,
-        user_metadata: { name: name || email.split('@')[0] },
-      });
-
-      if (createAuthError || !createdAuthUser?.user?.id) {
-        const message = (createAuthError?.message || '').toLowerCase();
-        const isDuplicate = message.includes('already exists') || message.includes('duplicate') || message.includes('registered') || message.includes('unique constraint');
-
-        if (isDuplicate) {
-          console.log('Assessment submit: duplicate user, attempting fallback lookup');
-          try {
-            const { data: { users } } = await supabaseAdmin.auth.admin.listUsers();
-            const existingUser = users?.find((u: { email?: string }) => u.email === email);
-            if (existingUser?.id) {
-              authUserId = existingUser.id;
-              console.log('Assessment submit: recovered existing auth user via listUsers', { email, authUserId });
-            } else {
-              console.error('Assessment submit: duplicate reported but user not found in listUsers');
-              return NextResponse.json({ error: 'User already exists but could not be found', code: 'USER_NOT_FOUND' }, { status: 404 });
-            }
-          } catch (listError) {
-            console.error('Assessment submit: listUsers fallback failed', listError);
-            return NextResponse.json({ error: 'User already exists. Please contact support.', code: 'USER_EXISTS', details: createAuthError?.message }, { status: 409 });
-          }
-        } else {
-          console.error('Error creating auth user:', createAuthError);
-          return NextResponse.json({ error: 'Failed to create account', details: createAuthError?.message }, { status: 500 });
-        }
-      } else {
-        authUserId = createdAuthUser.user.id;
-        console.log('Assessment submit: created auth user', { email, authUserId });
-      }
-    }
-
-    // Upsert public profile row using the stable auth user id
     const { error: profileUpsertError } = await supabaseAdmin
       .from('users')
       .upsert(
         [
           {
-            id: authUserId,
-            email,
-            name: name || email.split('@')[0],
+            id: generatedUserId,
+            email: normalizedEmail,
+            name: name || normalizedEmail.split('@')[0],
             role: 'individual',
             audience_type: audience_type || 'ST',
             education_level: educationLevel,
@@ -101,14 +54,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: profileUpsertError.message }, { status: 500 });
     }
 
-    console.log('Assessment submit: saving results', { userId: authUserId, scoresKeys: Object.keys(scores || {}), email });
+    console.log('Assessment submit: saving results', { userId: generatedUserId, scoresKeys: Object.keys(scores || {}), email });
 
-    // Save assessment results
     const { error: insertError } = await supabaseAdmin
       .from('assessment_results')
       .insert([
         {
-          user_id: authUserId,
+          user_id: generatedUserId,
           scores,
           report: { topPassion, overall, subjects: subjects || [] },
           answers: {},
@@ -122,8 +74,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: insertError.message }, { status: 500 });
     }
 
-    console.log('Assessment saved successfully for user:', authUserId, 'email:', email);
-    return NextResponse.json({ success: true, userId: authUserId });
+    console.log('Assessment saved successfully for user:', generatedUserId, 'email:', normalizedEmail);
+    return NextResponse.json({ success: true, userId: generatedUserId });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Error submitting assessment:', err);

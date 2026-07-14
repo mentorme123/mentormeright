@@ -51,7 +51,12 @@ export default function AdminProfileContent() {
         .from('users')
         .select('*')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
+
+      if (!userProfile) {
+        router.push("/login");
+        return;
+      }
 
       setProfile(userProfile);
       setFormPhone(userProfile?.phone || "");
@@ -84,9 +89,12 @@ export default function AdminProfileContent() {
         .from('users')
         .select('*')
         .eq('id', profile?.id || '')
-        .single();
-      setProfile(updatedProfile);
-      setShowEditModal(false);
+        .maybeSingle();
+
+      if (updatedProfile) {
+        setProfile(updatedProfile);
+        setShowEditModal(false);
+      }
     }
     setSaving(false);
   };

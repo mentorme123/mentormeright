@@ -21,45 +21,62 @@ export async function POST(req: NextRequest) {
 
     console.log('Assessment submit attempt:', { email, grade, audience_type, scoresKeys: Object.keys(scores || {}) });
 
-    // Find user by email
-    const { data: user, error: userError } = await supabaseAdmin
+    const educationLevel = grade ? `Class ${grade}` : 'School Student';
+
+    // Find or create matching auth user so we have a valid UUID for public.users.id
+    let authUserId: string | null = null;
+
+    const { data: existingUser } = await supabaseAdmin
       .from('users')
-      .select('id, education_level')
+      .select('id')
       .eq('email', email)
       .maybeSingle();
 
-    if (userError) {
-      console.error('Error fetching user:', userError);
+    authUserId = existingUser?.id || null;
+
+    if (!authUserId) {
+      const { data: authUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
+
+      if (authUser?.user?.id) {
+        authUserId = authUser.user.id;
+      } else {
+        const randomPassword = crypto.randomUUID().replace(/-/g, '').slice(0, 24);
+        const { data: createdAuthUser, error: createAuthError } = await supabaseAdmin.auth.admin.createUser({
+          email,
+          password: randomPassword,
+          email_confirm: true,
+          user_metadata: { name: name || email.split('@')[0] },
+        });
+
+        if (createAuthError || !createdAuthUser?.user?.id) {
+          console.error('Error creating auth user:', createAuthError);
+          return NextResponse.json({ error: 'Failed to create account', details: createAuthError?.message }, { status: 500 });
+        }
+
+        authUserId = createdAuthUser.user.id;
+      }
     }
 
-    let userId = user?.id;
-    const educationLevel = grade ? `Class ${grade}` : (user?.education_level || 'School Student');
-
-    // If user doesn't exist, create one
-    if (!userId) {
-      console.log('Creating new user for email:', email);
-      const { data: newUser, error: createError } = await supabaseAdmin
-        .from('users')
-        .insert([
+    // Upsert public profile row using the stable auth user id
+    const { error: profileUpsertError } = await supabaseAdmin
+      .from('users')
+      .upsert(
+        [
           {
+            id: authUserId,
             email,
             name: name || email.split('@')[0],
             role: 'individual',
             audience_type: audience_type || 'ST',
-            education_level: educationLevel
-          }
-        ])
-        .select('id')
-        .single();
+            education_level: educationLevel,
+          },
+        ],
+        { onConflict: 'id' }
+      );
 
-      if (createError || !newUser) {
-        console.error('Error creating user:', createError);
-        return NextResponse.json({ error: 'Failed to create user', details: createError?.message }, { status: 500 });
-      }
-      userId = newUser.id;
-      console.log('Created user:', userId);
-    } else {
-      console.log('Found existing user:', userId);
+    if (profileUpsertError) {
+      console.error('Error upserting user profile:', profileUpsertError);
+      return NextResponse.json({ error: profileUpsertError.message }, { status: 500 });
     }
 
     // Save assessment results
@@ -67,7 +84,7 @@ export async function POST(req: NextRequest) {
       .from('assessment_results')
       .insert([
         {
-          user_id: userId,
+          user_id: authUserId,
           scores,
           report: { topPassion, overall, subjects: subjects || [] },
           answers: {},
@@ -81,8 +98,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: insertError.message }, { status: 500 });
     }
 
-    console.log('Assessment saved successfully for user:', userId);
-    return NextResponse.json({ success: true, userId });
+    console.log('Assessment saved successfully for user:', authUserId);
+    return NextResponse.json({ success: true, userId: authUserId });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Error submitting assessment:', err);

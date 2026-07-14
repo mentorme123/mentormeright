@@ -26,12 +26,21 @@ export async function POST(req: NextRequest) {
     // Always resolve the stable auth user ID first to avoid identity mismatches
     let authUserId: string | null = null;
 
-    const { data: authUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
-    console.log('Assessment submit: auth lookup', { email, found: !!authUser?.user?.id });
+    const hasGetUserByEmail = typeof supabaseAdmin.auth.admin?.getUserByEmail === 'function';
+    console.log('Assessment submit: getUserByEmail available', { email, hasGetUserByEmail });
 
-    if (authUser?.user?.id) {
-      authUserId = authUser.user.id;
+    if (hasGetUserByEmail) {
+      const { data: authUser } = await supabaseAdmin.auth.admin.getUserByEmail(email);
+      console.log('Assessment submit: auth lookup', { email, found: !!authUser?.user?.id });
+
+      if (authUser?.user?.id) {
+        authUserId = authUser.user.id;
+      }
     } else {
+      console.log('Assessment submit: skipping getUserByEmail because it is unavailable');
+    }
+
+    if (!authUserId) {
       const randomPassword = crypto.randomUUID().replace(/-/g, '').slice(0, 24);
       const { data: createdAuthUser, error: createAuthError } = await supabaseAdmin.auth.admin.createUser({
         email,
@@ -41,12 +50,33 @@ export async function POST(req: NextRequest) {
       });
 
       if (createAuthError || !createdAuthUser?.user?.id) {
-        console.error('Error creating auth user:', createAuthError);
-        return NextResponse.json({ error: 'Failed to create account', details: createAuthError?.message }, { status: 500 });
-      }
+        const message = (createAuthError?.message || '').toLowerCase();
+        const isDuplicate = message.includes('already exists') || message.includes('duplicate') || message.includes('registered') || message.includes('unique constraint');
 
-      authUserId = createdAuthUser.user.id;
-      console.log('Assessment submit: created auth user', { email, authUserId });
+        if (isDuplicate) {
+          console.log('Assessment submit: duplicate user, attempting fallback lookup');
+          try {
+            const { data: { users } } = await supabaseAdmin.auth.admin.listUsers();
+            const existingUser = users?.find((u: { email?: string }) => u.email === email);
+            if (existingUser?.id) {
+              authUserId = existingUser.id;
+              console.log('Assessment submit: recovered existing auth user via listUsers', { email, authUserId });
+            } else {
+              console.error('Assessment submit: duplicate reported but user not found in listUsers');
+              return NextResponse.json({ error: 'User already exists but could not be found', code: 'USER_NOT_FOUND' }, { status: 404 });
+            }
+          } catch (listError) {
+            console.error('Assessment submit: listUsers fallback failed', listError);
+            return NextResponse.json({ error: 'User already exists. Please contact support.', code: 'USER_EXISTS', details: createAuthError?.message }, { status: 409 });
+          }
+        } else {
+          console.error('Error creating auth user:', createAuthError);
+          return NextResponse.json({ error: 'Failed to create account', details: createAuthError?.message }, { status: 500 });
+        }
+      } else {
+        authUserId = createdAuthUser.user.id;
+        console.log('Assessment submit: created auth user', { email, authUserId });
+      }
     }
 
     // Upsert public profile row using the stable auth user id

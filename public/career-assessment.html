@@ -293,7 +293,7 @@ const CFG={ADMIN_USER:'mentorme_admin',ADMIN_PASS:'MentorMe@2025!',RZP_KEY:'rzp_
       </div>
       <div class="reg-field"><label>City *</label><input id="r-city" type="text" placeholder="e.g. Hyderabad"/></div>
       <div class="reg-field"><label>Mobile number (optional)</label><input id="r-phone" type="tel" placeholder="10-digit number" maxlength="10"/></div>
-      <div class="reg-field full"><label>Parent's email (report sent here)</label><input id="r-email" type="email" placeholder="parent@email.com"/></div>
+      <div class="reg-field full"><label>Parent's email (report sent here)</label><input id="r-email" type="email" placeholder="parent@email.com"/><span id="r-email-hint" style="display:none;font-size:11px;color:#2563eb;font-weight:600;margin-top:4px">Email pre-filled from your account</span></div>
     </div>
     <div id="reg-err" class="err">Please fill all required fields.</div>
     <button class="btn btn-amber btn-full btn-lg" onclick="initPay()">Start</button>
@@ -1651,10 +1651,17 @@ window.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('img[alt="MentorMe"]').forEach(el=>el.src=LOGO_SRC);
   if(window.location.search.includes('admin=1')) goTo('pg-adm-login');
   const emailField=document.getElementById('r-email');
-  if(emailField && !emailField.value){
+  const emailHint=document.getElementById('r-email-hint');
+  if(emailField){
     const urlParams=new URLSearchParams(window.location.search);
     const emailParam=urlParams.get('email');
     if(emailParam) emailField.value=emailParam;
+    if(emailParam || emailField.value){
+      emailField.readOnly=true;
+      emailField.style.background='#f1f5f9';
+      emailField.style.cursor='not-allowed';
+      if(emailHint) emailHint.style.display='block';
+    }
   }
 });
 </script>

@@ -54,13 +54,15 @@ export async function GET(req: NextRequest) {
 
     if (!data?.scores) {
       console.log('No assessment found for userId:', targetUserId, 'email:', userEmail);
+      console.log('No assessment: data payload', JSON.stringify(data).slice(0, 300));
 
       if (userEmail) {
         const { data: usersByEmail } = await supabaseAdmin
           .from('users')
-          .select('id')
+          .select('id, email')
           .ilike('email', userEmail);
 
+        console.log('No assessment: usersByEmail', JSON.stringify(usersByEmail).slice(0, 300));
         const candidateIds = [
           ...(usersByEmail?.map(u => u.id) || []),
           targetUserId

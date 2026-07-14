@@ -23,15 +23,16 @@ export async function POST(req: NextRequest) {
 
     const educationLevel = grade ? `Class ${grade}` : 'School Student';
     const normalizedEmail = String(email).trim().toLowerCase();
+    const incomingEmail = String(email).trim();
 
     const { data: existingUser } = await supabaseAdmin
       .from('users')
-      .select('id')
+      .select('id, email')
       .ilike('email', normalizedEmail)
       .maybeSingle();
 
     const generatedUserId = existingUser?.id || crypto.randomUUID();
-    console.log('Assessment submit: resolved userId', { email: normalizedEmail, generatedUserId, existing: !!existingUser?.id });
+    console.log('Assessment submit: resolved userId', { incomingEmail, normalizedEmail, generatedUserId, existingId: existingUser?.id, existingEmail: existingUser?.email });
 
     const { error: profileUpsertError } = await supabaseAdmin
       .from('users')
@@ -73,6 +74,16 @@ export async function POST(req: NextRequest) {
       console.error('Error saving assessment results:', insertError);
       return NextResponse.json({ error: insertError.message }, { status: 500 });
     }
+
+    const { data: verifyResult } = await supabaseAdmin
+      .from('assessment_results')
+      .select('id, user_id, completed_at')
+      .eq('user_id', generatedUserId)
+      .order('completed_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    console.log('Assessment submit: verify after insert', { generatedUserId, verifyResult });
 
     console.log('Assessment saved successfully for user:', generatedUserId, 'email:', normalizedEmail);
     return NextResponse.json({ success: true, userId: generatedUserId });

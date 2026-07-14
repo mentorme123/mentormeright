@@ -80,17 +80,35 @@ const getSubjectReadiness = (scores: DashboardScores) => {
   });
 };
 
-const getAcademicFitness = (scores: DashboardScores) => {
-  const subjects = [
-    { name: "Mathematics", color: "#1B3A6B", keys: ["Logical", "Numerical"] as const },
-    { name: "Physics", color: "#1B3A6B", keys: ["Logical", "Mechanical"] as const },
-    { name: "Chemistry", color: "#1B3A6B", keys: ["Investigative", "Logical"] as const },
-  ];
+const SUBJECT_KEY_MAP: Record<string, { keys: readonly [string, string]; label: string }> = {
+  Mathematics:     { keys: ["Logical", "Numerical"] as const, label: "Mathematics" },
+  Physics:         { keys: ["Logical", "Mechanical"] as const, label: "Physics" },
+  Chemistry:       { keys: ["Investigative", "Logical"] as const, label: "Chemistry" },
+  Biology:         { keys: ["Investigative", "Logical"] as const, label: "Biology" },
+  "Computer Science": { keys: ["Logical", "Numerical"] as const, label: "Computer Science" },
+  Economics:       { keys: ["Investigative", "Conventional"] as const, label: "Economics" },
+  Commerce:        { keys: ["Conventional", "Enterprising"] as const, label: "Commerce" },
+  Arts:            { keys: ["Artistic", "Social"] as const, label: "Arts" },
+};
+
+const DEFAULT_SENIOR_SUBJECTS = [
+  { name: "Mathematics", keys: ["Logical", "Numerical"] as const },
+  { name: "Physics", keys: ["Logical", "Mechanical"] as const },
+  { name: "Chemistry", keys: ["Investigative", "Logical"] as const },
+];
+
+const getAcademicFitness = (scores: DashboardScores, selectedSubjects: string[] = []) => {
+  const subjects = selectedSubjects.length > 0
+    ? selectedSubjects
+        .map(name => SUBJECT_KEY_MAP[name])
+        .filter(Boolean)
+        .map(s => ({ name: s.label, keys: s.keys }))
+    : DEFAULT_SENIOR_SUBJECTS;
 
   return subjects.map(subject => {
     const score = subject.keys.reduce((sum, key) => sum + (scores[key] || 0), 0);
     const maxPossible = subject.keys.length * MAX_SKILL;
-    return { name: subject.name, color: subject.color, pct: pct(score, maxPossible) };
+    return { name: subject.name, color: "#1B3A6B", pct: pct(score, maxPossible) };
   });
 };
 
@@ -164,6 +182,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const [scores, setScores] = useState<DashboardScores | null>(null);
   const [report, setReport] = useState<any>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [subjects, setSubjects] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -205,6 +224,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
         setScores(normalizedScores);
         setReport(json.report);
+        setSubjects((json.subjects || []) as string[]);
       } catch {
       } finally {
         setLoading(false);
@@ -235,13 +255,13 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const stream = getStreamFromRIASEC(topRIASEC.key);
   const careerMatches = getCareerMatches(displayScores);
   const subjectReadiness = getSubjectReadiness(displayScores);
-  const academicFitness = getAcademicFitness(displayScores);
+  const isSchool = profile?.education_level?.toLowerCase().includes("school") || 
+                   profile?.audience_type === "ST";
+  const academicFitness = getAcademicFitness(displayScores, !isSchool ? subjects : []);
   const careerPaths = getCareerPathReadiness(displayScores);
   const overallScore = getOverallScore(displayScores);
   const careerReadinessScore = getCareerReadinessScore(displayScores);
   const profileStrengthScore = Math.round(overallScore * 0.72);
-  const isSchool = profile?.education_level?.toLowerCase().includes("school") || 
-                   profile?.audience_type === "ST";
 
   const counselorRecs = report?.nextSteps || getCounselorRecommendations(displayScores, isSchool);
 

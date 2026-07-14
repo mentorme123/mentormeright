@@ -188,8 +188,8 @@ export default function ReportClient({ userId }: { userId: string }) {
               <div className="text-xs text-blue-200 mt-1">YOUR CLASS</div>
             </div>
             <div className="bg-white/10 rounded-xl px-6 py-4 min-w-[100px]">
-              <div className="text-2xl font-black">{(subjects || []).length || 90}</div>
-              <div className="text-xs text-blue-200 mt-1">COMPLETED</div>
+              <div className="text-lg font-black leading-tight">{(subjects || []).slice(0, 2).join(', ') || 'N/A'}</div>
+              <div className="text-xs text-blue-200 mt-1">SUBJECTS</div>
             </div>
           </div>
         </div>
@@ -250,6 +250,22 @@ export default function ReportClient({ userId }: { userId: string }) {
             <div className="text-sm text-amber-800 leading-relaxed">{CAREER[topPassion] || ""}</div>
           </div>
         </div>
+
+        {/* Selected Subjects */}
+        {subjects && subjects.length > 0 && (
+          <div className="px-6 pb-8">
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-6">
+              <div className="text-xs font-bold text-blue-600 mb-2">YOUR SELECTED SUBJECTS</div>
+              <div className="flex flex-wrap gap-2">
+                {subjects.map((subject, idx) => (
+                  <span key={idx} className="bg-white border border-blue-200 text-blue-800 text-sm font-semibold px-3 py-1 rounded-full">
+                    {subject}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* PDF Notice */}
         <div className="px-6 pb-8">

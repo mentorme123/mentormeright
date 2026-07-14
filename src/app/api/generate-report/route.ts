@@ -8,7 +8,7 @@ export const maxDuration = 60; // Attempt to increase duration if they are on Pr
 
 export async function POST(req: NextRequest) {
   try {
-    const { answers, audience, userName, userId } = await req.json();
+    const { answers, audience, userName, userId, grade, subjects } = await req.json();
 
     if (!answers || Object.keys(answers).length === 0) {
       return NextResponse.json({ error: 'No assessment data provided' }, { status: 400 });
@@ -24,24 +24,35 @@ export async function POST(req: NextRequest) {
     }
 
     const clientName = userName ? String(userName).slice(0, 100).replace(/[<>]/g, '') : 'Student';
+    const gradeLabel = grade ? `Class ${grade}` : 'N/A';
+    const isSenior = String(grade || '') === '11' || String(grade || '') === '12';
+    const selectedSubjects = Array.isArray(subjects) ? subjects.filter(Boolean) : [];
+    const subjectsLine = selectedSubjects.length > 0
+      ? `Student's selected subjects: ${selectedSubjects.join(', ')}`
+      : 'Student\'s selected subjects: not provided';
 
     const prompt = `
 You are an elite career intelligence counselor at MentorMe (mentormeright.in).
 A client named "${clientName}" has completed a 90-question psychometric assessment.
+Grade level: ${gradeLabel}
+${subjectsLine}
 
 Here are ${clientName}'s SCORED results across all 17 parameters:
 
 ${scoreSummary}
 
+${isSenior && selectedSubjects.length > 0 ? `IMPORTANT: This is a Class 11-12 student. Their selected subjects are: ${selectedSubjects.join(', ')}. Use these subjects explicitly in the academicRoadmap.focusSubjects field and tailor excellentFitCareers and goodFitCareers to align with their chosen subjects. Do not mention subjects they did not select.` : ''}
+
 Based STRICTLY on these scores, generate a detailed, personalised career intelligence report in JSON format for ${clientName}.
 Use the scores to determine realistic skill ratings, career fits, and development areas.
 High scores (>75%) = strength. Medium (50-75%) = moderate. Low (<50%) = develop.
 Top RIASEC traits drive career recommendations. Top skill scores confirm those careers.
+${isSenior && selectedSubjects.length > 0 ? 'CRITICAL: The focusSubjects field MUST list only the student\'s selected subjects: ' + selectedSubjects.join(', ') + '. Career recommendations must be compatible with these subjects.' : ''}
 
 Return ONLY valid JSON with this structure:
 {
   "clientName": "${clientName}",
-  "grade": "N/A",
+  "grade": "${gradeLabel}",
   "executiveSummary": "3-4 sentences personalised overview based on their actual scores",
   "coreStrengths": [
     { "name": "...", "score": number, "max": number, "desc": "why this is a strength based on their score" }
@@ -60,7 +71,7 @@ Return ONLY valid JSON with this structure:
   ],
   "academicRoadmap": {
     "recommendedStream": "...",
-    "focusSubjects": "...",
+    "focusSubjects": "${isSenior && selectedSubjects.length > 0 ? selectedSubjects.join(', ') : '...'}",
     "programmingNote": "...",
     "extraCurricular": "..."
   },

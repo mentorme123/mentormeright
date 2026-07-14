@@ -416,6 +416,12 @@ export default function AdminDashboard() {
                         )}
                       </div>
                     </div>
+                    <Button 
+                      className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-4"
+                      onClick={() => router.push(`/assessment-report?userId=${encodeURIComponent(selectedUser.id)}`)}
+                    >
+                      View Report
+                    </Button>
                   </div>
                 )}
                 

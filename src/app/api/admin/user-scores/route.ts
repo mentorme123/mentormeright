@@ -52,6 +52,8 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
+    console.log('Fetching scores: direct result for userId', targetUserId, JSON.stringify(data).slice(0, 300));
+
     if (!data?.scores) {
       console.log('No assessment found for userId:', targetUserId, 'email:', userEmail);
       console.log('No assessment: data payload', JSON.stringify(data).slice(0, 300));
@@ -83,6 +85,8 @@ export async function GET(req: NextRequest) {
             .limit(1)
             .maybeSingle();
 
+          console.log('Fallback candidate', candidateId, 'result', JSON.stringify(altResult).slice(0, 200), 'error', altError);
+
           if (!altError && altResult?.scores) {
             const { data: altUser } = await supabaseAdmin
               .from('users')
@@ -101,6 +105,8 @@ export async function GET(req: NextRequest) {
             });
           }
         }
+
+        console.log('No assessment found after fallback for userId:', targetUserId, 'email:', userEmail);
       }
 
       return NextResponse.json({ error: 'No assessment found for this user' }, { status: 404 });
@@ -114,6 +120,7 @@ export async function GET(req: NextRequest) {
 
     console.log('Found assessment for userId:', targetUserId, 'user:', user?.name || 'unknown');
 
+    console.log('Returning scores for userId:', targetUserId, 'email:', userEmail, 'report subjects:', data.report?.subjects);
     return NextResponse.json({
       scores: data.scores,
       completedAt: data.completed_at,

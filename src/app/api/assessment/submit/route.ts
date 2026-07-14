@@ -34,10 +34,25 @@ export async function POST(req: NextRequest) {
     const generatedUserId = existingUser?.id || crypto.randomUUID();
     console.log('Assessment submit: resolved userId', { incomingEmail, normalizedEmail, generatedUserId, existingId: existingUser?.id, existingEmail: existingUser?.email });
 
-    const { error: profileUpsertError } = await supabaseAdmin
-      .from('users')
-      .upsert(
-        [
+    if (existingUser?.id) {
+      const { error: profileUpdateError } = await supabaseAdmin
+        .from('users')
+        .update({
+          name: name || normalizedEmail.split('@')[0],
+          role: 'individual',
+          audience_type: audience_type || 'ST',
+          education_level: educationLevel,
+        })
+        .eq('id', existingUser.id);
+
+      if (profileUpdateError) {
+        console.error('Error updating user profile:', profileUpdateError);
+        return NextResponse.json({ error: profileUpdateError.message }, { status: 500 });
+      }
+    } else {
+      const { error: profileInsertError } = await supabaseAdmin
+        .from('users')
+        .insert([
           {
             id: generatedUserId,
             email: normalizedEmail,
@@ -46,13 +61,12 @@ export async function POST(req: NextRequest) {
             audience_type: audience_type || 'ST',
             education_level: educationLevel,
           },
-        ],
-        { onConflict: 'email' }
-      );
+        ]);
 
-    if (profileUpsertError) {
-      console.error('Error upserting user profile:', profileUpsertError);
-      return NextResponse.json({ error: profileUpsertError.message }, { status: 500 });
+      if (profileInsertError) {
+        console.error('Error creating user profile:', profileInsertError);
+        return NextResponse.json({ error: profileInsertError.message }, { status: 500 });
+      }
     }
 
     console.log('Assessment submit: saving results', { userId: generatedUserId, scoresKeys: Object.keys(scores || {}), email });
@@ -77,7 +91,7 @@ export async function POST(req: NextRequest) {
 
     const { data: verifyResult } = await supabaseAdmin
       .from('assessment_results')
-      .select('id, user_id, completed_at')
+      .select('id, user_id, completed_at, report')
       .eq('user_id', generatedUserId)
       .order('completed_at', { ascending: false })
       .limit(1)

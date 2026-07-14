@@ -202,9 +202,12 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         const json = await res.json();
 
         if (!res.ok) {
+          console.warn('CareerDashboard: scores API error', res.status, json.error);
           setLoading(false);
           return;
         }
+
+        console.log('CareerDashboard: raw API response scores keys:', json.scores ? Object.keys(json.scores) : 'none', 'sample:', json.scores);
 
         let normalizedScores = json.scores;
         if (normalizedScores && typeof normalizedScores === 'object') {

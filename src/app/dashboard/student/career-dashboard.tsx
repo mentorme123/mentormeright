@@ -162,6 +162,7 @@ const getCareerReadinessScore = (scores: DashboardScores) => {
 
 export default function CareerDashboard({ userId }: { userId: string }) {
   const [scores, setScores] = useState<DashboardScores | null>(null);
+  const [report, setReport] = useState<any>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -186,7 +187,24 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           return;
         }
 
-        setScores(json.scores);
+        let normalizedScores = json.scores;
+        if (normalizedScores && typeof normalizedScores.passion === 'object') {
+           const flat: any = {};
+           const processCategory = (category: any, expectedMax: number) => {
+             if (!category) return;
+             Object.entries(category).forEach(([key, val]: [string, any]) => {
+               let normalizedKey = key.replace(/\s+/g, '');
+               flat[normalizedKey] = (val.score / Math.max(val.max, 1)) * expectedMax; 
+             });
+           };
+           processCategory(normalizedScores.passion, MAX_RIASEC);
+           processCategory(normalizedScores.skills, MAX_SKILL);
+           processCategory(normalizedScores.individuality, MAX_SKILL);
+           normalizedScores = flat;
+        }
+
+        setScores(normalizedScores);
+        setReport(json.report);
       } catch {
       } finally {
         setLoading(false);
@@ -208,7 +226,8 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
   const displayScores: DashboardScores = scores || {
     Realistic: 0, Investigative: 0, Artistic: 0, Social: 0, Enterprising: 0, Conventional: 0,
-    Logical: 0, Numerical: 0, Mechanical: 0, Verbal: 0, Administrative: 0
+    Logical: 0, Numerical: 0, Mechanical: 0, Verbal: 0, Administrative: 0,
+    EmotionalIntelligence: 0, Efficiency: 0, Empathy: 0, Engagement: 0, Exploration: 0
   };
 
   const topRIASEC = getTopRIASEC(displayScores);
@@ -224,7 +243,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const isSchool = profile?.education_level?.toLowerCase().includes("school") || 
                    profile?.audience_type === "ST";
 
-  const counselorRecs = getCounselorRecommendations(displayScores, isSchool);
+  const counselorRecs = report?.nextSteps || getCounselorRecommendations(displayScores, isSchool);
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4">
@@ -266,7 +285,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           {isSchool ? (
             <>
               <KPICard label="Career Clarity Score" value={`${overallScore}%`} color="text-[#1B3A6B]" bg="bg-blue-50" />
-              <KPICard label="Recommended Stream" value={stream.stream} color="text-[#15803D]" bg="bg-white" />
+              <KPICard label="Recommended Stream" value={report?.academicRoadmap?.recommendedStream || stream.stream} color="text-[#15803D]" bg="bg-white" />
               <KPICard label="Subject Readiness" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#7C3AED]" bg="bg-purple-50" />
               <KPICard label="Personality & Interest Alignment" value={`${pct(displayScores[topRIASEC.key] || 0, MAX_RIASEC)}%`} color="text-[#C2410C]" bg="bg-orange-50" />
             </>
@@ -275,7 +294,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
               <KPICard label="Overall Academic Fit" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#1B3A6B]" bg="bg-blue-50" />
               <KPICard label="Profile Strength Score" value={`${profileStrengthScore}/100`} color="text-[#7C3AED]" bg="bg-purple-50" />
               <KPICard label="Career Readiness Score" value={`${careerReadinessScore}%`} color="text-[#15803D]" bg="bg-emerald-50" />
-              <KPICard label="Target Course" value={stream.courses[0]} color="text-[#C2410C]" bg="bg-orange-50" />
+              <KPICard label="Target Course" value={report?.educationPathways?.degrees?.[0] || stream.courses[0]} color="text-[#C2410C]" bg="bg-orange-50" />
             </>
           )}
         </div>
@@ -290,7 +309,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                 {isSchool ? "Career Match Index" : "Academic Fitness"}
               </h3>
               {isSchool && profile?.education_level && (
-                <p className="text-xs text-slate-500 mb-4 italic">Target: {stream.courses[0]} Computer Science</p>
+                <p className="text-xs text-slate-500 mb-4 italic">Target: {report?.educationPathways?.degrees?.[0] || stream.courses[0]} Computer Science</p>
               )}
               {isSchool ? (
                 <div className="space-y-4">
@@ -382,11 +401,11 @@ export default function CareerDashboard({ userId }: { userId: string }) {
               </h3>
               <p className="text-sm text-emerald-700 mb-4">
                 {isSchool
-                  ? `Strong suitability for Commerce and Business pathways based on current performance.`
+                  ? `Strong suitability for ${report?.academicRoadmap?.recommendedStream || stream.stream} pathways based on current performance.`
                   : `Strong suitability for ${stream.courses[0]} and related career pathways based on current performance.`}
               </p>
               <div className="space-y-3">
-                {counselorRecs.map((rec, i) => (
+                {(counselorRecs || []).map((rec: string, i: number) => (
                   <div key={i} className="flex items-start gap-3">
                     <ChevronRight size={16} className="text-emerald-600 mt-0.5 shrink-0" />
                     <p className="text-sm text-emerald-800 font-medium">{rec}</p>
@@ -403,7 +422,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
             <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 inline-flex items-center gap-2">
               <span className="text-emerald-600 font-bold text-sm">✓</span>
               <span className="text-sm text-emerald-800 font-medium">
-                Recommended Stream: <span className="font-bold">Commerce</span>
+                Recommended Stream: <span className="font-bold">{report?.academicRoadmap?.recommendedStream || stream.stream}</span>
               </span>
             </div>
           </div>

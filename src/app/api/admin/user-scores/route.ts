@@ -68,7 +68,8 @@ export async function GET(req: NextRequest) {
       completedAt: data.completed_at,
       userName: user?.name || null,
       userClass: user?.education_level || null,
-      subjects: data.report?.subjects || []
+      subjects: data.report?.subjects || [],
+      report: data.report || null
     });
   } catch (error: unknown) {
     const err = error as Error;

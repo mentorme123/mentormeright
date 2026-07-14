@@ -108,7 +108,7 @@ export default function AdminDashboard() {
         }
       } catch (e) {
         setHasAssessment(false);
-        setAssessmentError(e?.message || 'Network error');
+        setAssessmentError(e instanceof Error ? e.message : 'Network error');
       } finally {
         setCheckingAssessment(false);
       }
@@ -354,7 +354,7 @@ export default function AdminDashboard() {
                             }
                           } catch (e) {
                             setHasAssessment(false);
-                            setAssessmentError(e?.message || 'Network error');
+                            setAssessmentError(e instanceof Error ? e.message : 'Network error');
                           } finally {
                             setCheckingAssessment(false);
                           }
@@ -397,7 +397,7 @@ export default function AdminDashboard() {
                             }
                           } catch (e) {
                             setHasAssessment(false);
-                            setAssessmentError(e?.message || 'Network error');
+                            setAssessmentError(e instanceof Error ? e.message : 'Network error');
                           } finally {
                             setCheckingAssessment(false);
                           }

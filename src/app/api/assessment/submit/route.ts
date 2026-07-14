@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
             education_level: educationLevel,
           },
         ],
-        { onConflict: 'id' }
+        { onConflict: 'email' }
       );
 
     if (profileUpsertError) {
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: profileUpsertError.message }, { status: 500 });
     }
 
-    console.log('Assessment submit: saving results', { userId: authUserId, scoresKeys: Object.keys(scores || {}) });
+    console.log('Assessment submit: saving results', { userId: authUserId, scoresKeys: Object.keys(scores || {}), email });
 
     // Save assessment results
     const { error: insertError } = await supabaseAdmin
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: insertError.message }, { status: 500 });
     }
 
-    console.log('Assessment saved successfully for user:', authUserId);
+    console.log('Assessment saved successfully for user:', authUserId, 'email:', email);
     return NextResponse.json({ success: true, userId: authUserId });
   } catch (error: unknown) {
     const err = error as Error;

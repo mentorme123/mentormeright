@@ -46,7 +46,7 @@ export default function LoginPage() {
       } else if (role === 'counselor') {
         window.location.href = '/dashboard/counselor';
       } else {
-        window.location.href = '/career-assessment.html';
+        window.location.href = `/career-assessment.html?email=${encodeURIComponent(email || '')}`;
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";

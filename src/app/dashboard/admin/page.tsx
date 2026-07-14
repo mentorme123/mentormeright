@@ -100,8 +100,10 @@ export default function AdminDashboard() {
       setHasAssessment(false);
       setAssessmentError(null);
       try {
-        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
-        setHasAssessment(res.ok);
+      console.log('AdminDashboard: checking assessment for', selectedUser.id, selectedUser.email);
+      const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
+      console.log('AdminDashboard: assessment check response', res.status, await res.json().catch(() => 'no body'));
+      setHasAssessment(res.ok);
         if (!res.ok) {
           const j = await res.json().catch(() => ({}));
           setAssessmentError(j?.error || `HTTP ${res.status}`);
@@ -114,6 +116,11 @@ export default function AdminDashboard() {
       }
     }
     checkAssessment();
+  }, [selectedUser]);
+
+  useEffect(() => {
+    if (!selectedUser) return;
+    console.log('AdminDashboard: checking assessment for', selectedUser.id, selectedUser.email);
   }, [selectedUser]);
 
   useEffect(() => {

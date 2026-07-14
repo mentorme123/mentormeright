@@ -1650,6 +1650,12 @@ function swTab(id,el){document.querySelectorAll('.adm-pane').forEach(t=>t.classL
 window.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('img[alt="MentorMe"]').forEach(el=>el.src=LOGO_SRC);
   if(window.location.search.includes('admin=1')) goTo('pg-adm-login');
+  const emailField=document.getElementById('r-email');
+  if(emailField && !emailField.value){
+    const urlParams=new URLSearchParams(window.location.search);
+    const emailParam=urlParams.get('email');
+    if(emailParam) emailField.value=emailParam;
+  }
 });
 </script>
 </body>

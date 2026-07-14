@@ -207,19 +207,41 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         }
 
         let normalizedScores = json.scores;
-        if (normalizedScores && typeof normalizedScores.passion === 'object') {
-           const flat: any = {};
-           const processCategory = (category: any, expectedMax: number) => {
-             if (!category) return;
-             Object.entries(category).forEach(([key, val]: [string, any]) => {
-               let normalizedKey = key.replace(/\s+/g, '');
-               flat[normalizedKey] = (val.score / Math.max(val.max, 1)) * expectedMax; 
-             });
-           };
-           processCategory(normalizedScores.passion, MAX_RIASEC);
-           processCategory(normalizedScores.skills, MAX_SKILL);
-           processCategory(normalizedScores.individuality, MAX_SKILL);
-           normalizedScores = flat;
+        if (normalizedScores && typeof normalizedScores === 'object') {
+          if (typeof normalizedScores.passion === 'object') {
+            const flat: Record<string, number> = {};
+            const processCategory = (category: any, expectedMax: number) => {
+              if (!category || typeof category !== 'object') return;
+              Object.entries(category).forEach(([key, val]: [string, any]) => {
+                const normalizedKey = key.replace(/\s+/g, '');
+                flat[normalizedKey] = ((val?.score ?? 0) / Math.max(val?.max ?? 1, 1)) * expectedMax;
+              });
+            };
+            processCategory(normalizedScores.passion, MAX_RIASEC);
+            processCategory(normalizedScores.skills, MAX_SKILL);
+            processCategory(normalizedScores.individuality, MAX_SKILL);
+            normalizedScores = flat;
+          } else if (typeof normalizedScores.Realistic === 'number') {
+            const flat: Record<string, number> = {};
+            const keyMap: Record<string, string> = {
+              Realistic: 'Realistic', Investigative: 'Investigative', Artistic: 'Artistic',
+              Social: 'Social', Enterprising: 'Enterprising', Conventional: 'Conventional',
+              Logical: 'Logical', Numerical: 'Numerical', Mechanical: 'Mechanical',
+              Verbal: 'Verbal', Administrative: 'Administrative',
+              EmotionalIntelligence: 'EmotionalIntelligence', Efficiency: 'Efficiency',
+              Empathy: 'Empathy', Engagement: 'Engagement', Exploration: 'Exploration',
+            };
+            Object.entries(normalizedScores).forEach(([k, v]) => {
+              const mapped = keyMap[k];
+              if (mapped && typeof v === 'number') flat[mapped] = v;
+            });
+            normalizedScores = flat;
+          }
+        }
+
+        const hasAnyScore = normalizedScores && Object.values(normalizedScores).some((v: any) => (typeof v === 'number' ? v : 0) > 0);
+        if (!hasAnyScore) {
+          console.warn('CareerDashboard: no valid scores found for userId', userId, 'raw:', json.scores);
         }
 
         setScores(normalizedScores);

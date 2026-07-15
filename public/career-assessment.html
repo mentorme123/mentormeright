@@ -143,7 +143,7 @@ body{font-family:var(--f);background:#eef2fb;min-height:100vh;color:var(--text)}
 .career-txt{font-size:13px;color:#7c4c0a;line-height:1.65}
 .rp-box{margin:18px 22px;background:var(--surf);border:1.5px dashed var(--bdr);border-radius:var(--r2);padding:20px;text-align:center}
 .res-actions{padding:18px 22px;display:flex;flex-direction:column;gap:10px;align-items:center}
-.score-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 22px 0}
+.score-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 22px 0}
 .sc-card{background:var(--surf);border-radius:var(--r);padding:12px;text-align:center}
 .sc-n{font-family:var(--fp);font-size:24px;font-weight:800;color:var(--blue)}
 .sc-l{font-size:10px;color:var(--t3);margin-top:2px;text-transform:uppercase;letter-spacing:.3px}
@@ -1248,6 +1248,7 @@ async function buildResults(){
     <h2 style="font-family:var(--fp);margin-bottom:4px">Outstanding, ${fn}!</h2>
     <p style="font-size:13px;color:var(--t2);margin-bottom:12px">All 3 sections complete. Your MentorMe counsellor is preparing your personalised report.</p>
     <div class="score-strip">
+      <a href="/dashboard/student" class="btn btn-navy" style="font-size:11px;padding:8px 10px;display:inline-flex;align-items:center;justify-content:center;text-align:center;line-height:1.2;height:100%">Student<br/>Dashboard →</a>
       <div class="sc-card"><div class="sc-n">${ovr}%</div><div class="sc-l">Overall</div></div>
       <div class="sc-card"><div class="sc-n" style="color:var(--amber2)">Class ${student.cls}</div><div class="sc-l">Your class</div></div>
       <div class="sc-card"><div class="sc-n">90</div><div class="sc-l">Completed</div></div>
@@ -1300,7 +1301,6 @@ async function buildResults(){
   <div class="res-actions">
     <a href="https://wa.me/91XXXXXXXXXX?text=Hi+MentorMe!+I+just+completed+my+Career+Discovery+Assessment+(${encodeURIComponent(student.name)}%2C+Class+${student.cls}).+Looking+forward+to+my+report!" target="_blank" class="btn btn-green">Chat with a MentorMe counsellor →</a>
     <button class="btn btn-ghost" onclick="goTo('pg-welcome')" style="font-size:13px;padding:9px 18px">Back to home</button>
-    <a href="/dashboard/student" class="btn btn-navy" style="font-size:13px;padding:9px 18px;margin-top:8px;display:inline-flex">Student Dashboard →</a>
   </div>`;
 
    document.getElementById('res-body').innerHTML=html;

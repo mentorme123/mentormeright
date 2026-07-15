@@ -11,9 +11,9 @@ interface Overrides {
   counselorRecommendations?: string[];
 }
 
-export default function AdminStudentEditPage({ searchParams }: { searchParams: { userId?: string } }) {
+export default function AdminStudentEditPage({ params }: { params: { userId: string } }) {
   const router = useRouter();
-  const userId = searchParams?.userId || "";
+  const userId = params?.userId || "";
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

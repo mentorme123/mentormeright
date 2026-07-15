@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Printer } from "lucide-react";
+import { ArrowLeft, Printer, LayoutDashboard } from "lucide-react";
+import Link from "next/link";
 
 interface ScoreParam {
   score: number;
@@ -178,7 +179,15 @@ export default function ReportClient({ userId }: { userId: string }) {
             Outstanding, {firstName}!
           </h2>
           <p className="text-blue-200 text-sm mb-8">All 3 sections complete. Your MentorMe counsellor is preparing your personalised report.</p>
-          <div className="flex justify-center gap-4">
+          <div className="flex items-center justify-center gap-4">
+            <Link 
+              href={`/dashboard/student/career-dashboard?userId=${encodeURIComponent(userId)}`}
+              className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white font-bold px-4 py-2.5 rounded-xl transition-all text-sm whitespace-nowrap"
+            >
+              <LayoutDashboard size={16} />
+              <span className="hidden sm:inline">Student Dashboard</span>
+              <span className="sm:hidden">Dashboard</span>
+            </Link>
             <div className="bg-white/10 rounded-xl px-6 py-4 min-w-[100px]">
               <div className="text-2xl font-black">{overall}%</div>
               <div className="text-xs text-blue-200 mt-1">OVERALL</div>

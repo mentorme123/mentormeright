@@ -297,6 +297,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     );
   }
 
+  const adminOverrides = report?.adminOverrides || {};
   const displayScores: DashboardScores = scores || {
     Realistic: 0, Investigative: 0, Artistic: 0, Social: 0, Enterprising: 0, Conventional: 0,
     Logical: 0, Numerical: 0, Mechanical: 0, Verbal: 0, Administrative: 0,
@@ -306,17 +307,32 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const topRIASEC = getTopRIASEC(displayScores);
   const topSkills = getTopSkills(displayScores);
   const stream = getStreamFromRIASEC(topRIASEC.key);
-  const careerMatches = getCareerMatches(displayScores);
-  const subjectReadiness = getSubjectReadiness(displayScores);
   const isSchool = profile?.education_level?.toLowerCase().includes("school") || 
                    profile?.audience_type === "ST";
-  const academicFitness = getAcademicFitness(displayScores, !isSchool ? subjects : []);
-  const careerPaths = getCareerPathReadiness(displayScores);
+
+  const computedCareerMatches = getCareerMatches(displayScores);
+  const computedAcademicFitness = getAcademicFitness(displayScores, !isSchool ? subjects : []);
+  const computedSubjectReadiness = getSubjectReadiness(displayScores);
+  const computedCareerPaths = getCareerPathReadiness(displayScores);
+
+  const careerMatches = adminOverrides.academicFitness
+    ? Object.entries(adminOverrides.academicFitness).map(([name, pct]) => ({ name, pct: pct as number, color: "#1B3A6B" }))
+    : isSchool ? computedCareerMatches : computedAcademicFitness;
+
+  const subjectReadiness = adminOverrides.careerPathReadiness
+    ? Object.entries(adminOverrides.careerPathReadiness).map(([name, pct]) => ({ name, pct: pct as number, color: "#F59E0B" }))
+    : isSchool ? computedSubjectReadiness : computedCareerPaths;
+
+  const academicFitness = isSchool ? computedCareerMatches : computedAcademicFitness;
+  const careerPaths = isSchool ? computedSubjectReadiness : computedCareerPaths;
+
   const overallScore = getOverallScore(displayScores);
   const careerReadinessScore = getCareerReadinessScore(displayScores);
   const profileStrengthScore = Math.round(overallScore * 0.72);
 
-  const counselorRecs = report?.nextSteps || getCounselorRecommendations(displayScores, isSchool);
+  const counselorRecs = adminOverrides.counselorRecommendations?.length
+    ? adminOverrides.counselorRecommendations
+    : (report?.nextSteps || getCounselorRecommendations(displayScores, isSchool));
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 px-4">

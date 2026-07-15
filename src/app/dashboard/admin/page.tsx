@@ -383,6 +383,12 @@ export default function AdminDashboard() {
                     >
                       View Generated Report
                     </Button>
+                    <Button 
+                      className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm mt-2"
+                      onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}`)}
+                    >
+                      Edit Student Dashboard
+                    </Button>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -428,6 +434,12 @@ export default function AdminDashboard() {
                       onClick={() => router.push(`/assessment-report?userId=${encodeURIComponent(selectedUser.id)}`)}
                     >
                       View Report
+                    </Button>
+                    <Button 
+                      className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm mt-2"
+                      onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}`)}
+                    >
+                      Edit Student Dashboard
                     </Button>
                   </div>
                 )}

@@ -135,3 +135,47 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: err.message || 'Failed to fetch scores' }, { status: 500 });
   }
 }
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { userId, overrides } = body;
+
+    if (!userId) {
+      return NextResponse.json({ error: 'userId is required' }, { status: 400 });
+    }
+
+    const { data: existing } = await supabaseAdmin
+      .from('assessment_results')
+      .select('id, report')
+      .eq('user_id', userId)
+      .order('completed_at', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (!existing) {
+      return NextResponse.json({ error: 'No assessment found for this user' }, { status: 404 });
+    }
+
+    const updatedReport = {
+      ...(existing.report || {}),
+      adminOverrides: overrides || {}
+    };
+
+    const { error } = await supabaseAdmin
+      .from('assessment_results')
+      .update({ report: updatedReport })
+      .eq('id', existing.id);
+
+    if (error) {
+      console.error('Error updating overrides:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, report: updatedReport });
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error('Error in PATCH /api/admin/user-scores:', err);
+    return NextResponse.json({ error: err.message || 'Failed to update overrides' }, { status: 500 });
+  }
+}

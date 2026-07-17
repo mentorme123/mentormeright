@@ -42,7 +42,7 @@ export default function AssessmentReportPage({
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f0f7ff] flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-brand-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-slate-600 font-medium">Loading career dashboard...</p>
@@ -53,7 +53,7 @@ export default function AssessmentReportPage({
 
   if (!targetUserId) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f0f7ff] flex items-center justify-center">
         <div className="text-center max-w-md p-8">
           <div className="text-6xl mb-4">📋</div>
           <h2 className="text-2xl font-bold text-slate-800 mb-2">User ID Required</h2>
@@ -67,7 +67,7 @@ export default function AssessmentReportPage({
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#f0f7ff]">
       <div className="fixed top-4 right-4 z-50 print:hidden">
         <Button
           onClick={() => window.print()}

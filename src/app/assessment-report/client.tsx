@@ -143,7 +143,7 @@ export default function ReportClient({ userId }: { userId: string }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f0f7ff] flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-brand-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-slate-600 font-medium">Loading assessment report...</p>
@@ -172,7 +172,7 @@ export default function ReportClient({ userId }: { userId: string }) {
   const topPassion = getTopPassion();
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-[#f0f7ff]">
       <div className="max-w-2xl mx-auto bg-white shadow-sm border border-slate-200">
         {/* Header */}
         <div className="bg-[#0f2460] text-white text-center py-16 px-6">

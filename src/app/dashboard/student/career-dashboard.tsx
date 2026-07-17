@@ -350,7 +350,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     : (report?.nextSteps || getCounselorRecommendations(displayScores, isSchool));
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
+    <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">

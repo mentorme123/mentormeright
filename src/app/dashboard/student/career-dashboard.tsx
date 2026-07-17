@@ -392,6 +392,38 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
         )}
 
+        {/* Student Info */}
+        {(profile?.name || profile?.email || profile?.phone || profile?.education_level) && (
+          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-8">
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-base text-slate-700">
+              {profile?.name && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-slate-900">Name:</span>
+                  <span className="font-medium">{profile.name}</span>
+                </div>
+              )}
+              {profile?.email && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-slate-900">Email:</span>
+                  <span className="font-medium">{profile.email}</span>
+                </div>
+              )}
+              {profile?.phone && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-slate-900">Phone:</span>
+                  <span className="font-medium">{profile.phone}</span>
+                </div>
+              )}
+              {profile?.education_level && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-slate-900">Grade:</span>
+                  <span className="font-medium">{profile.education_level}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* KPI Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {isSchool ? (
@@ -410,32 +442,6 @@ export default function CareerDashboard({ userId }: { userId: string }) {
             </>
           )}
         </div>
-
-        {/* Student Info */}
-        {(profile?.name || profile?.email || profile?.phone) && (
-          <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm mb-8">
-            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-slate-600">
-              {profile?.name && (
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-slate-800">Name:</span>
-                  <span>{profile.name}</span>
-                </div>
-              )}
-              {profile?.email && (
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-slate-800">Email:</span>
-                  <span>{profile.email}</span>
-                </div>
-              )}
-              {profile?.phone && (
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold text-slate-800">Phone:</span>
-                  <span>{profile.phone}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

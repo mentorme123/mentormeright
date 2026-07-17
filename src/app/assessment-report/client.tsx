@@ -208,25 +208,31 @@ export default function ReportClient({ userId }: { userId: string }) {
         </div>
 
         {/* Student Info */}
-        {(userName || userEmail || userPhone) && (
+        {(userName || userEmail || userPhone || userClass) && (
           <div className="px-6 py-4 bg-white border-b border-slate-200">
-            <div className="max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-600">
+            <div className="max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-slate-700">
               {userName && (
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-slate-800">Name:</span>
-                  <span>{userName}</span>
+                  <span className="font-bold text-slate-900">Name:</span>
+                  <span className="font-medium">{userName}</span>
                 </div>
               )}
               {userEmail && (
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-slate-800">Email:</span>
-                  <span>{userEmail}</span>
+                  <span className="font-bold text-slate-900">Email:</span>
+                  <span className="font-medium">{userEmail}</span>
                 </div>
               )}
               {userPhone && (
                 <div className="flex items-center gap-2">
-                  <span className="font-semibold text-slate-800">Phone:</span>
-                  <span>{userPhone}</span>
+                  <span className="font-bold text-slate-900">Phone:</span>
+                  <span className="font-medium">{userPhone}</span>
+                </div>
+              )}
+              {userClass && (
+                <div className="flex items-center gap-2">
+                  <span className="font-bold text-slate-900">Grade:</span>
+                  <span className="font-medium">{userClass}</span>
                 </div>
               )}
             </div>

@@ -38,7 +38,7 @@ export default function AssessmentReportPage({
     fetchData();
   }, [userId]);
 
-  const targetUserId = authUserId || userId;
+  const targetUserId = userId || authUserId;
 
   if (loading) {
     return (

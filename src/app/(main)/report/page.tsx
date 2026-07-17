@@ -54,7 +54,7 @@ export default function ReportPage({ searchParams }: { searchParams: { userId?: 
     );
   }
 
-  const targetUserId = authUserId || userId;
+  const targetUserId = userId || authUserId;
   if (!targetUserId) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 text-center bg-background">

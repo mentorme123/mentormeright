@@ -13,6 +13,7 @@ interface UserProfile {
   role: string;
   education_level: string | null;
   audience_type: string | null;
+  phone: string | null;
 }
 
 interface DashboardScores extends ParameterScores {
@@ -409,6 +410,32 @@ export default function CareerDashboard({ userId }: { userId: string }) {
             </>
           )}
         </div>
+
+        {/* Student Info */}
+        {(profile?.name || profile?.email || profile?.phone) && (
+          <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm mb-8">
+            <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-slate-600">
+              {profile?.name && (
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-slate-800">Name:</span>
+                  <span>{profile.name}</span>
+                </div>
+              )}
+              {profile?.email && (
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-slate-800">Email:</span>
+                  <span>{profile.email}</span>
+                </div>
+              )}
+              {profile?.phone && (
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-slate-800">Phone:</span>
+                  <span>{profile.phone}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

@@ -75,6 +75,8 @@ export default function ReportClient({ userId }: { userId: string }) {
   const [scores, setScores] = useState<Scores | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
   const [userClass, setUserClass] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userPhone, setUserPhone] = useState<string | null>(null);
   const [subjects, setSubjects] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -93,6 +95,8 @@ export default function ReportClient({ userId }: { userId: string }) {
         setScores(data.scores);
         setUserName(data.userName);
         setUserClass(data.userClass);
+        setUserEmail(data.userEmail);
+        setUserPhone(data.userPhone);
         setSubjects(data.subjects || []);
       } catch {
         setError("Failed to load assessment");
@@ -202,6 +206,32 @@ export default function ReportClient({ userId }: { userId: string }) {
             </div>
           </div>
         </div>
+
+        {/* Student Info */}
+        {(userName || userEmail || userPhone) && (
+          <div className="px-6 py-4 bg-white border-b border-slate-200">
+            <div className="max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-600">
+              {userName && (
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-slate-800">Name:</span>
+                  <span>{userName}</span>
+                </div>
+              )}
+              {userEmail && (
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-slate-800">Email:</span>
+                  <span>{userEmail}</span>
+                </div>
+              )}
+              {userPhone && (
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-slate-800">Phone:</span>
+                  <span>{userPhone}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* Sections */}
         <div className="p-6 space-y-8">

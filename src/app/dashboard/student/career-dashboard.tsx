@@ -306,13 +306,14 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     EmotionalIntelligence: 0, Efficiency: 0, Empathy: 0, Engagement: 0, Exploration: 0
   };
 
+  const eduLower = (profile?.education_level || '').toLowerCase();
+  const isSchool = eduLower.includes('school') || eduLower.includes('class 9') || eduLower.includes('class 10');
+
   const getKpiValue = (label: string, fallback: string) => kpiOverrides[label] || fallback;
 
   const topRIASEC = getTopRIASEC(displayScores);
   const topSkills = getTopSkills(displayScores);
   const stream = getStreamFromRIASEC(topRIASEC.key);
-  const isSchool = profile?.education_level?.toLowerCase().includes("school") || 
-                   profile?.audience_type === "ST";
 
   const computedCareerMatches = getCareerMatches(displayScores);
   const computedAcademicFitness = getAcademicFitness(displayScores, !isSchool ? subjects : []);

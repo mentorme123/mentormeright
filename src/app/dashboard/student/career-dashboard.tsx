@@ -352,37 +352,37 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   return (
     <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-black mb-1">
-                Student Career Dashboard {isSchool ? "– Class 9 & 10" : " – Class 11 & 12"}
-              </h1>
-              <p className="text-blue-200 text-sm">
-                {isSchool 
-                  ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas" 
-                  : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
-              </p>
-            </div>
-            <div className="flex gap-3">
-              <Button
-                onClick={() => window.print()}
-                variant="outline"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-              >
-                <Printer size={16} className="mr-2" /> Print
-              </Button>
-              <Button
-                onClick={() => window.location.href = "/"}
-                variant="ghost"
-                className="text-white hover:bg-white/10"
-              >
-                <Home size={16} className="mr-2" /> Back to Homepage
-              </Button>
-            </div>
-          </div>
-        </div>
+         {/* Header */}
+         <div className="bg-blue-50 text-slate-800 rounded-2xl p-6 sm:p-8 mb-8 shadow-xl border border-blue-100">
+           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+             <div>
+               <h1 className="text-2xl sm:text-3xl font-black mb-1">
+                 Student Career Dashboard {isSchool ? "– Class 9 & 10" : " – Class 11 & 12"}
+               </h1>
+               <p className="text-blue-600 text-sm">
+                 {isSchool 
+                   ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas" 
+                   : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
+               </p>
+             </div>
+             <div className="flex gap-3">
+               <Button
+                 onClick={() => window.print()}
+                 variant="outline"
+                 className="bg-white border-blue-200 text-blue-700 hover:bg-blue-50"
+               >
+                 <Printer size={16} className="mr-2" /> Print
+               </Button>
+               <Button
+                 onClick={() => window.location.href = "/"}
+                 variant="ghost"
+                 className="text-blue-700 hover:bg-blue-100"
+               >
+                 <Home size={16} className="mr-2" /> Back to Homepage
+               </Button>
+             </div>
+           </div>
+         </div>
 
         {scoresMessage && (
           <div className="max-w-6xl mx-auto mb-6">

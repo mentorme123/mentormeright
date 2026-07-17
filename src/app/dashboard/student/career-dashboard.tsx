@@ -254,7 +254,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
             const walk = (obj: any) => {
               if (!obj || typeof obj !== 'object') return;
               Object.entries(obj).forEach(([k, v]) => {
-                if (v && typeof v === 'object' && !(typeof v.score === 'number')) {
+                if (v && typeof v === 'object' && !(typeof (v as any).score === 'number')) {
                   walk(v);
                 } else if (typeof v === 'number') {
                   flat[k.replace(/\s+/g, '')] = v;
@@ -353,13 +353,13 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
       <div className="max-w-6xl mx-auto">
          {/* Header */}
-         <div className="bg-blue-50 text-slate-800 rounded-2xl p-6 sm:p-8 mb-8 shadow-xl border border-blue-100">
+         <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
              <div>
                <h1 className="text-2xl sm:text-3xl font-black mb-1">
                  Student Career Dashboard {isSchool ? "– Class 9 & 10" : " – Class 11 & 12"}
                </h1>
-               <p className="text-blue-600 text-sm">
+               <p className="text-blue-200 text-sm">
                  {isSchool 
                    ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas" 
                    : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
@@ -369,14 +369,14 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                <Button
                  onClick={() => window.print()}
                  variant="outline"
-                 className="bg-white border-blue-200 text-blue-700 hover:bg-blue-50"
+                 className="bg-white/10 border-white/20 text-white hover:bg-white/20"
                >
                  <Printer size={16} className="mr-2" /> Print
                </Button>
                <Button
                  onClick={() => window.location.href = "/"}
                  variant="ghost"
-                 className="text-blue-700 hover:bg-blue-100"
+                 className="text-white hover:bg-white/10"
                >
                  <Home size={16} className="mr-2" /> Back to Homepage
                </Button>
@@ -395,29 +395,29 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         {/* Student Info */}
         {(profile?.name || profile?.email || profile?.phone || profile?.education_level) && (
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-8">
-            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-base text-slate-700">
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-lg text-slate-700">
               {profile?.name && (
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">Name:</span>
-                  <span className="font-medium">{profile.name}</span>
+                  <span className="font-bold text-slate-900 text-xl">Name:</span>
+                  <span className="font-semibold text-xl">{profile.name}</span>
                 </div>
               )}
               {profile?.email && (
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">Email:</span>
-                  <span className="font-medium">{profile.email}</span>
+                  <span className="font-bold text-slate-900 text-xl">Email:</span>
+                  <span className="font-semibold text-xl">{profile.email}</span>
                 </div>
               )}
               {profile?.phone && (
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">Phone:</span>
-                  <span className="font-medium">{profile.phone}</span>
+                  <span className="font-bold text-slate-900 text-xl">Phone:</span>
+                  <span className="font-semibold text-xl">{profile.phone}</span>
                 </div>
               )}
               {profile?.education_level && (
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">Grade:</span>
-                  <span className="font-medium">{profile.education_level}</span>
+                  <span className="font-bold text-slate-900 text-xl">Grade:</span>
+                  <span className="font-semibold text-xl">{profile.education_level}</span>
                 </div>
               )}
             </div>

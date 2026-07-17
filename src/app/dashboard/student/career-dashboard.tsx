@@ -299,11 +299,14 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   }
 
   const adminOverrides = report?.adminOverrides || {};
+  const kpiOverrides = adminOverrides.kpiOverrides || {};
   const displayScores: DashboardScores = scores || {
     Realistic: 0, Investigative: 0, Artistic: 0, Social: 0, Enterprising: 0, Conventional: 0,
     Logical: 0, Numerical: 0, Mechanical: 0, Verbal: 0, Administrative: 0,
     EmotionalIntelligence: 0, Efficiency: 0, Empathy: 0, Engagement: 0, Exploration: 0
   };
+
+  const getKpiValue = (label: string, fallback: string) => kpiOverrides[label] || fallback;
 
   const topRIASEC = getTopRIASEC(displayScores);
   const topSkills = getTopSkills(displayScores);
@@ -424,24 +427,24 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
         )}
 
-        {/* KPI Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {isSchool ? (
-            <>
-              <KPICard label="Career Clarity Score" value={`${overallScore}%`} color="text-[#1B3A6B]" bg="bg-blue-50" />
-              <KPICard label="Recommended Stream" value={report?.academicRoadmap?.recommendedStream || stream.stream} color="text-[#15803D]" bg="bg-white" />
-              <KPICard label="Subject Readiness" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#7C3AED]" bg="bg-purple-50" />
-              <KPICard label="Personality & Interest Alignment" value={`${pct(displayScores[topRIASEC.key] || 0, MAX_RIASEC)}%`} color="text-[#C2410C]" bg="bg-orange-50" />
-            </>
-          ) : (
-            <>
-              <KPICard label="Overall Academic Fit" value={`${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`} color="text-[#1B3A6B]" bg="bg-blue-50" />
-              <KPICard label="Profile Strength Score" value={`${profileStrengthScore}/100`} color="text-[#7C3AED]" bg="bg-purple-50" />
-              <KPICard label="Career Readiness Score" value={`${careerReadinessScore}%`} color="text-[#15803D]" bg="bg-emerald-50" />
-              <KPICard label="Target Course" value={report?.educationPathways?.degrees?.[0] || stream.courses[0]} color="text-[#C2410C]" bg="bg-orange-50" />
-            </>
-          )}
-        </div>
+         {/* KPI Cards */}
+         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+           {isSchool ? (
+             <>
+               <KPICard label="Career Clarity Score" value={getKpiValue("Career Clarity Score", `${overallScore}%`)} color="text-[#1B3A6B]" bg="bg-blue-50" />
+               <KPICard label="Recommended Stream" value={getKpiValue("Recommended Stream", report?.academicRoadmap?.recommendedStream || stream.stream)} color="text-[#15803D]" bg="bg-white" />
+               <KPICard label="Subject Readiness" value={getKpiValue("Subject Readiness", `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#7C3AED]" bg="bg-purple-50" />
+               <KPICard label="Personality & Interest Alignment" value={getKpiValue("Personality & Interest Alignment", `${pct(displayScores[topRIASEC.key] || 0, MAX_RIASEC)}%`)} color="text-[#C2410C]" bg="bg-orange-50" />
+             </>
+           ) : (
+             <>
+               <KPICard label="Overall Academic Fit" value={getKpiValue("Overall Academic Fit", `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#1B3A6B]" bg="bg-blue-50" />
+               <KPICard label="Profile Strength Score" value={getKpiValue("Profile Strength Score", `${profileStrengthScore}/100`)} color="text-[#7C3AED]" bg="bg-purple-50" />
+               <KPICard label="Career Readiness Score" value={getKpiValue("Career Readiness Score", `${careerReadinessScore}%`)} color="text-[#15803D]" bg="bg-emerald-50" />
+               <KPICard label="Target Course" value={getKpiValue("Target Course", report?.educationPathways?.degrees?.[0] || stream.courses[0])} color="text-[#C2410C]" bg="bg-orange-50" />
+             </>
+           )}
+         </div>
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

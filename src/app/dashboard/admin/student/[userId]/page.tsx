@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, Loader2 } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Overrides {
   academicFitness?: Record<string, number>;
   careerPathReadiness?: Record<string, number>;
   counselorRecommendations?: string[];
+  kpiOverrides?: Record<string, string>;
 }
 
 export default function AdminStudentEditPage({ params }: { params: { userId: string } }) {
@@ -322,6 +323,89 @@ export default function AdminStudentEditPage({ params }: { params: { userId: str
                   + Add Recommendation
                 </Button>
               </div>
+            </div>
+          </div>
+
+          {/* KPI Card Overrides */}
+          <div className="bg-slate-50 rounded-2xl p-6 border border-slate-200">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-black text-slate-800">KPI Card Overrides</h3>
+                <p className="text-xs text-slate-500 mt-1">Update the four summary cards shown on the student dashboard. You can edit individually or bulk upload via CSV.</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  id="kpi-bulk-upload"
+                  type="file"
+                  accept=".csv,.tsv,.txt"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                      const text = ev.target?.result as string;
+                      const lines = text.split(/\r?\n/).filter(line => line.trim());
+                      const newKpiOverrides: Record<string, string> = {};
+                      lines.forEach((line, idx) => {
+                        const parts = line.split(/[,;|\t]/);
+                        if (parts.length >= 2) {
+                          const label = parts[0].trim();
+                          const value = parts.slice(1).join(',').trim();
+                          if (label && idx > 0) {
+                            newKpiOverrides[label] = value;
+                          }
+                        }
+                      });
+                      if (Object.keys(newKpiOverrides).length > 0) {
+                        setOverrides({
+                          ...overrides,
+                          kpiOverrides: { ...(overrides.kpiOverrides || {}), ...newKpiOverrides }
+                        });
+                      }
+                    };
+                    reader.readAsText(file);
+                    e.target.value = '';
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => document.getElementById('kpi-bulk-upload')?.click()}
+                  className="flex items-center gap-2"
+                >
+                  <Upload size={16} />
+                  Bulk Upload CSV
+                </Button>
+              </div>
+            </div>
+            <p className="text-xs text-slate-400 mb-4">CSV format: <code className="bg-white px-1 py-0.5 rounded border border-slate-200">label,value</code> on each line. Header row is ignored.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {(overrides.kpiOverrides ? Object.entries(overrides.kpiOverrides) : [
+                ['Career Clarity Score', ''],
+                ['Recommended Stream', ''],
+                ['Subject Readiness', ''],
+                ['Personality & Interest Alignment', ''],
+                ['Overall Academic Fit', ''],
+                ['Profile Strength Score', ''],
+                ['Career Readiness Score', ''],
+                ['Target Course', '']
+              ]).map(([label, value]) => (
+                <div key={label}>
+                  <label className="block text-sm font-bold text-slate-700 mb-1">{label}</label>
+                  <input
+                    type="text"
+                    value={value}
+                    onChange={(e) => setOverrides({
+                      ...overrides,
+                      kpiOverrides: { ...(overrides.kpiOverrides || {}), [label]: e.target.value }
+                    })}
+                    className="w-full px-4 py-2 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue"
+                    placeholder="Enter value"
+                  />
+                </div>
+              ))}
             </div>
           </div>
 

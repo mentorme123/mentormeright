@@ -306,8 +306,10 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     EmotionalIntelligence: 0, Efficiency: 0, Empathy: 0, Engagement: 0, Exploration: 0
   };
 
-  const eduLower = (profile?.education_level || '').toLowerCase();
-  const isSchool = eduLower.includes('school') || eduLower.includes('class 9') || eduLower.includes('class 10');
+  const eduLower = (profile?.education_level || '').trim().toLowerCase();
+  const gradeMatch = (profile?.education_level || '').match(/class\s*(\d+)/i);
+  const gradeNum = gradeMatch ? parseInt(gradeMatch[1], 10) : null;
+  const isSchool = gradeNum === 9 || gradeNum === 10 || /school/i.test(profile?.education_level || '');
 
   const getKpiValue = (label: string, fallback: string) => kpiOverrides[label] || fallback;
 

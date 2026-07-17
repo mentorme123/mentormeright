@@ -377,12 +377,15 @@ export default function AdminDashboard() {
                         <p className="text-emerald-600 text-xs mt-1">The psychometric report was successfully generated.</p>
                       </div>
                     </div>
-                    <Button 
-                      className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2"
-                      onClick={() => router.push(`/assessment-report?userId=${encodeURIComponent(selectedUser.id)}`)}
-                    >
-                      View Generated Report
-                    </Button>
+                       <Button 
+                         className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2"
+                         onClick={() => {
+                           console.log('Admin View Generated Report clicked', { selectedUserId: selectedUser?.id, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
+                           router.push(`/assessment-report?userId=${encodeURIComponent(selectedUser.id)}`)
+                         }}
+                       >
+                         View Generated Report
+                       </Button>
                     <Button 
                       className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm mt-2"
                       onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}`)}
@@ -431,7 +434,10 @@ export default function AdminDashboard() {
                     </div>
                     <Button 
                       className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-4"
-                      onClick={() => router.push(`/assessment-report?userId=${encodeURIComponent(selectedUser.id)}`)}
+                      onClick={() => {
+                        console.log('Admin View Report clicked (not completed)', { selectedUserId: selectedUser?.id, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
+                        router.push(`/assessment-report?userId=${encodeURIComponent(selectedUser.id)}`)
+                      }}
                     >
                       View Report
                     </Button>

@@ -201,6 +201,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           .maybeSingle();
 
         setProfile(userProfile || null);
+        console.log('CareerDashboard setProfile userId:', userId, 'profile:', userProfile);
 
         let resolvedEmail = userProfile?.email || null;
         if (!resolvedEmail) {

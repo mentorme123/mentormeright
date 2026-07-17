@@ -39,6 +39,7 @@ export default function AssessmentReportPage({
   }, [userId]);
 
   const targetUserId = userId || authUserId;
+  console.log('AssessmentReportPage targetUserId:', targetUserId, 'from userId:', userId, 'authUserId:', authUserId);
 
   if (loading) {
     return (

@@ -187,6 +187,8 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const [loading, setLoading] = useState(true);
   const [scoresMessage, setScoresMessage] = useState<string | null>(null);
 
+  console.log('CareerDashboard rendered with userId:', userId);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -306,10 +308,15 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     EmotionalIntelligence: 0, Efficiency: 0, Empathy: 0, Engagement: 0, Exploration: 0
   };
 
-  const eduLower = (profile?.education_level || '').trim().toLowerCase();
-  const gradeMatch = (profile?.education_level || '').match(/class\s*(\d+)/i);
+  const rawEducation = (profile?.education_level || '').trim();
+  const eduLower = rawEducation.toLowerCase();
+  const gradeMatch = rawEducation.match(/class\s*(\d+)/i);
   const gradeNum = gradeMatch ? parseInt(gradeMatch[1], 10) : null;
-  const isSchool = gradeNum === 9 || gradeNum === 10 || /school/i.test(profile?.education_level || '');
+  const isSchool = gradeNum === 9 || gradeNum === 10 || /school/i.test(rawEducation);
+
+  if (profile?.education_level) {
+    console.log('CareerDashboard profile education_level:', JSON.stringify(profile.education_level), 'gradeNum:', gradeNum, 'isSchool:', isSchool, 'profile:', profile);
+  }
 
   const getKpiValue = (label: string, fallback: string) => kpiOverrides[label] || fallback;
 

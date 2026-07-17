@@ -210,29 +210,29 @@ export default function ReportClient({ userId }: { userId: string }) {
         {/* Student Info */}
         {(userName || userEmail || userPhone || userClass) && (
           <div className="px-6 py-4 bg-white border-b border-slate-200">
-            <div className="max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-slate-700">
+            <div className="max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-lg text-slate-700">
               {userName && (
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">Name:</span>
-                  <span className="font-medium">{userName}</span>
+                  <span className="font-bold text-slate-900 text-xl">Name:</span>
+                  <span className="font-semibold text-xl">{userName}</span>
                 </div>
               )}
               {userEmail && (
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">Email:</span>
-                  <span className="font-medium">{userEmail}</span>
+                  <span className="font-bold text-slate-900 text-xl">Email:</span>
+                  <span className="font-semibold text-xl">{userEmail}</span>
                 </div>
               )}
               {userPhone && (
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">Phone:</span>
-                  <span className="font-medium">{userPhone}</span>
+                  <span className="font-bold text-slate-900 text-xl">Phone:</span>
+                  <span className="font-semibold text-xl">{userPhone}</span>
                 </div>
               )}
               {userClass && (
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900">Grade:</span>
-                  <span className="font-medium">{userClass}</span>
+                  <span className="font-bold text-slate-900 text-xl">Grade:</span>
+                  <span className="font-semibold text-xl">{userClass}</span>
                 </div>
               )}
             </div>

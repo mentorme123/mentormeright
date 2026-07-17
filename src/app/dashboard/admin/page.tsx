@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -45,6 +45,7 @@ export default function AdminDashboard() {
    
   // Modals
   const [selectedUser, setSelectedUser] = useState<DBUser | null>(null);
+  const selectedUserIdRef = useRef<string | null>(null);
   const [hasAssessment, setHasAssessment] = useState(false);
   const [checkingAssessment, setCheckingAssessment] = useState(false);
   const [assessmentError, setAssessmentError] = useState<string | null>(null);
@@ -377,15 +378,16 @@ export default function AdminDashboard() {
                         <p className="text-emerald-600 text-xs mt-1">The psychometric report was successfully generated.</p>
                       </div>
                     </div>
-                       <Button 
-                         className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2"
-                         onClick={() => {
-                           console.log('Admin View Generated Report clicked', { selectedUserId: selectedUser?.id, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
-                           router.push(`/assessment-report?userId=${encodeURIComponent(selectedUser.id)}`)
-                         }}
-                       >
-                         View Generated Report
-                       </Button>
+                     <Button 
+                       className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2"
+                       onClick={() => {
+                         const idToUse = selectedUserIdRef.current || selectedUser?.id;
+                         console.log('Admin View Generated Report clicked', { selectedUserId: idToUse, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
+                         router.push(`/assessment-report?userId=${encodeURIComponent(idToUse)}`)
+                       }}
+                     >
+                       View Generated Report
+                     </Button>
                     <Button 
                       className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm mt-2"
                       onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}`)}
@@ -435,8 +437,9 @@ export default function AdminDashboard() {
                     <Button 
                       className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-4"
                       onClick={() => {
-                        console.log('Admin View Report clicked (not completed)', { selectedUserId: selectedUser?.id, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
-                        router.push(`/assessment-report?userId=${encodeURIComponent(selectedUser.id)}`)
+                        const idToUse = selectedUserIdRef.current || selectedUser?.id;
+                        console.log('Admin View Report clicked (not completed)', { selectedUserId: idToUse, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
+                        router.push(`/assessment-report?userId=${encodeURIComponent(idToUse)}`)
                       }}
                     >
                       View Report
@@ -684,12 +687,15 @@ export default function AdminDashboard() {
                           {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <Button 
-                            variant="ghost" 
-                            size="sm" 
-                            onClick={() => setSelectedUser(user)}
-                            className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
+                             <Button 
+                               variant="ghost" 
+                               size="sm" 
+                               onClick={() => {
+                                 selectedUserIdRef.current = user.id;
+                                 setSelectedUser(user);
+                               }}
+                               className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                             >
                             View Details <ChevronRight size={16} className="ml-1" />
                           </Button>
                         </td>

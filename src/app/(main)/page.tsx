@@ -1014,23 +1014,23 @@ export default function Home() {
                </div>
 
                {/* Building Vibrant Community - top */}
-               <div className="absolute flex flex-col items-center" style={{ top: '2%', left: '50%', transform: 'translateX(-50%)' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#1e40af] flex items-center justify-center text-white shadow-lg">
+               <div className="absolute flex flex-col items-center" style={{ top: '0%', left: '50%', transform: 'translateX(-50%)' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#1e3a5f] flex items-center justify-center text-white shadow-lg">
                    <Users size={32} />
                  </div>
-                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Building Vibrant<br/>Community</p>
+                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Building<br/>Vibrant<br/>Community</p>
                </div>
 
                {/* Better Admissions - top right */}
-               <div className="absolute flex flex-col items-center" style={{ top: '18%', right: '4%' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#06b6d4] flex items-center justify-center text-white shadow-lg">
+               <div className="absolute flex flex-col items-center" style={{ top: '18%', right: '2%' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#3b82f6] flex items-center justify-center text-white shadow-lg">
                    <ClipboardList size={32} />
                  </div>
                  <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Better<br/>Admissions</p>
                </div>
 
                {/* Marketing & Branding - right middle */}
-               <div className="absolute flex flex-col items-center" style={{ top: '50%', right: '-2%', transform: 'translateY(-50%)' }}>
+               <div className="absolute flex flex-col items-center" style={{ top: '50%', right: '-4%', transform: 'translateY(-50%)' }}>
                  <div className="w-20 h-20 rounded-full bg-[#7c3aed] flex items-center justify-center text-white shadow-lg">
                    <Megaphone size={32} />
                  </div>
@@ -1038,23 +1038,23 @@ export default function Home() {
                </div>
 
                {/* Fundraising - bottom right */}
-               <div className="absolute flex flex-col items-center" style={{ bottom: '16%', right: '6%' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#ea580c] flex items-center justify-center text-white shadow-lg">
+               <div className="absolute flex flex-col items-center" style={{ bottom: '14%', right: '4%' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#f97316] flex items-center justify-center text-white shadow-lg">
                    <CircleDollarSign size={32} />
                  </div>
                  <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Fundraising</p>
                </div>
 
                {/* Placements - bottom */}
-               <div className="absolute flex flex-col items-center" style={{ bottom: '2%', left: '50%', transform: 'translateX(-50%)' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#16a34a] flex items-center justify-center text-white shadow-lg">
+               <div className="absolute flex flex-col items-center" style={{ bottom: '0%', left: '50%', transform: 'translateX(-50%)' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#22c55e] flex items-center justify-center text-white shadow-lg">
                    <Briefcase size={32} />
                  </div>
                  <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Placements</p>
                </div>
 
                {/* Alumni Benefits - bottom left */}
-               <div className="absolute flex flex-col items-center" style={{ bottom: '16%', left: '6%' }}>
+               <div className="absolute flex flex-col items-center" style={{ bottom: '14%', left: '4%' }}>
                  <div className="w-20 h-20 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-lg">
                    <Award size={32} />
                  </div>
@@ -1062,8 +1062,8 @@ export default function Home() {
                </div>
 
                {/* Student Career Success - left middle */}
-               <div className="absolute flex flex-col items-center" style={{ top: '50%', left: '-2%', transform: 'translateY(-50%)' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#D4A017] flex items-center justify-center text-white shadow-lg">
+               <div className="absolute flex flex-col items-center" style={{ top: '50%', left: '-4%', transform: 'translateY(-50%)' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#eab308] flex items-center justify-center text-white shadow-lg">
                    <GraduationCap size={32} />
                  </div>
                  <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Student Career<br/>Success</p>

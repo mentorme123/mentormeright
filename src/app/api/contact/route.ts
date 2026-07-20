@@ -107,23 +107,32 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
-    const sgResult = await sendViaSendGrid('admin@mentormeright.in', email, `New Contact Form Inquiry: ${subject || 'General Inquiry'}`, html);
+    const apiKey = process.env.SENDGRID_KEY || process.env.SENDGRID_API_KEY;
 
-    if (sgResult.success) {
-      return NextResponse.json({ success: true, messageId: sgResult.messageId, provider: 'sendgrid' });
+    if (!apiKey) {
+      console.error('Contact email error: SENDGRID_KEY is not configured.');
+      return NextResponse.json({ error: 'Email service is not configured on the server.' }, { status: 500 });
     }
 
-    const smtpResult = await sendViaSmtp('admin@mentormeright.in', email, `New Contact Form Inquiry: ${subject || 'General Inquiry'}`, html);
+    try {
+      const mod = await import('@sendgrid/mail');
+      const sgMail = mod.default || mod;
+      sgMail.setApiKey(apiKey);
 
-    if (smtpResult.success) {
-      return NextResponse.json({ success: true, messageId: smtpResult.messageId, provider: 'smtp' });
+      await sgMail.send({
+        from: process.env.EMAIL_FROM || process.env.SMTP_USER || 'no-reply@mentormeright.in',
+        to: 'admin@mentormeright.in',
+        replyTo: email,
+        subject: `New Contact Form Inquiry: ${subject || 'General Inquiry'}`,
+        html,
+      });
+
+      return NextResponse.json({ success: true, messageId: 'sg-sent', provider: 'sendgrid' });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'SendGrid send failed.';
+      console.error('Contact email error (SendGrid):', message);
+      return NextResponse.json({ error: message }, { status: 500 });
     }
-
-    console.error('Contact email error: SendGrid:', sgResult.error, 'SMTP:', smtpResult.error);
-    return NextResponse.json(
-      { error: sgResult.error || smtpResult.error || 'Failed to send email via all providers.' },
-      { status: 500 }
-    );
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Contact email error:', err);

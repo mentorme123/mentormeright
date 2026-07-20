@@ -1002,73 +1002,73 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right icon cluster */}
-            <div className="relative h-[520px] hidden lg:block">
-              {/* Central logo */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="10" y="10" width="60" height="60" rx="16" fill="#1B3A6B" />
-                  <rect x="20" y="20" width="40" height="40" rx="10" fill="#FF7A1A" />
-                  <rect x="30" y="30" width="20" height="20" rx="6" fill="#1B3A6B" />
-                </svg>
-              </div>
+             {/* Right icon cluster */}
+             <div className="relative h-[520px] hidden lg:block">
+               {/* Central logo */}
+               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                 <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                   <rect x="10" y="10" width="60" height="60" rx="16" fill="#1B3A6B" />
+                   <rect x="20" y="20" width="40" height="40" rx="10" fill="#FF7A1A" />
+                   <rect x="30" y="30" width="20" height="20" rx="6" fill="#1B3A6B" />
+                 </svg>
+               </div>
 
-              {/* Building Vibrant Community - top */}
-              <div className="absolute flex flex-col items-center" style={{ top: '2%', left: '50%', transform: 'translateX(-50%)' }}>
-                <div className="w-20 h-20 rounded-full bg-[#1e40af] flex items-center justify-center text-white shadow-lg">
-                  <Users size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Building Vibrant<br/>Community</p>
-              </div>
+               {/* Building Vibrant Community - top */}
+               <div className="absolute flex flex-col items-center" style={{ top: '2%', left: '50%', transform: 'translateX(-50%)' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#1e40af] flex items-center justify-center text-white shadow-lg">
+                   <Users size={32} />
+                 </div>
+                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Building Vibrant<br/>Community</p>
+               </div>
 
-              {/* Better Admissions - top right */}
-              <div className="absolute flex flex-col items-center" style={{ top: '18%', right: '4%' }}>
-                <div className="w-20 h-20 rounded-full bg-[#06b6d4] flex items-center justify-center text-white shadow-lg">
-                  <ClipboardList size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Better<br/>Admissions</p>
-              </div>
+               {/* Better Admissions - top right */}
+               <div className="absolute flex flex-col items-center" style={{ top: '18%', right: '4%' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#06b6d4] flex items-center justify-center text-white shadow-lg">
+                   <ClipboardList size={32} />
+                 </div>
+                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Better<br/>Admissions</p>
+               </div>
 
-              {/* Marketing & Branding - right middle */}
-              <div className="absolute flex flex-col items-center" style={{ top: '50%', right: '-2%', transform: 'translateY(-50%)' }}>
-                <div className="w-20 h-20 rounded-full bg-[#7c3aed] flex items-center justify-center text-white shadow-lg">
-                  <Megaphone size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Marketing<br/>&amp; Branding</p>
-              </div>
+               {/* Marketing & Branding - right middle */}
+               <div className="absolute flex flex-col items-center" style={{ top: '50%', right: '-2%', transform: 'translateY(-50%)' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#7c3aed] flex items-center justify-center text-white shadow-lg">
+                   <Megaphone size={32} />
+                 </div>
+                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Marketing<br/>&amp; Branding</p>
+               </div>
 
-              {/* Fundraising - bottom right */}
-              <div className="absolute flex flex-col items-center" style={{ bottom: '16%', right: '6%' }}>
-                <div className="w-20 h-20 rounded-full bg-[#ea580c] flex items-center justify-center text-white shadow-lg">
-                  <CircleDollarSign size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Fundraising</p>
-              </div>
+               {/* Fundraising - bottom right */}
+               <div className="absolute flex flex-col items-center" style={{ bottom: '16%', right: '6%' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#ea580c] flex items-center justify-center text-white shadow-lg">
+                   <CircleDollarSign size={32} />
+                 </div>
+                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Fundraising</p>
+               </div>
 
-              {/* Placements - bottom */}
-              <div className="absolute flex flex-col items-center" style={{ bottom: '2%', left: '50%', transform: 'translateX(-50%)' }}>
-                <div className="w-20 h-20 rounded-full bg-[#16a34a] flex items-center justify-center text-white shadow-lg">
-                  <Briefcase size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Placements</p>
-              </div>
+               {/* Placements - bottom */}
+               <div className="absolute flex flex-col items-center" style={{ bottom: '2%', left: '50%', transform: 'translateX(-50%)' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#16a34a] flex items-center justify-center text-white shadow-lg">
+                   <Briefcase size={32} />
+                 </div>
+                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Placements</p>
+               </div>
 
-              {/* Alumni Benefits - bottom left */}
-              <div className="absolute flex flex-col items-center" style={{ bottom: '16%', left: '6%' }}>
-                <div className="w-20 h-20 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-lg">
-                  <Award size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Alumni<br/>Benefits</p>
-              </div>
+               {/* Alumni Benefits - bottom left */}
+               <div className="absolute flex flex-col items-center" style={{ bottom: '16%', left: '6%' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-lg">
+                   <Award size={32} />
+                 </div>
+                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Alumni<br/>Benefits</p>
+               </div>
 
-              {/* Student Career Success - left middle */}
-              <div className="absolute flex flex-col items-center" style={{ top: '50%', left: '-2%', transform: 'translateY(-50%)' }}>
-                <div className="w-20 h-20 rounded-full bg-[#D4A017] flex items-center justify-center text-white shadow-lg">
-                  <GraduationCap size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Student Career<br/>Success</p>
-              </div>
-            </div>
+               {/* Student Career Success - left middle */}
+               <div className="absolute flex flex-col items-center" style={{ top: '50%', left: '-2%', transform: 'translateY(-50%)' }}>
+                 <div className="w-20 h-20 rounded-full bg-[#D4A017] flex items-center justify-center text-white shadow-lg">
+                   <GraduationCap size={32} />
+                 </div>
+                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Student Career<br/>Success</p>
+               </div>
+             </div>
           </div>
         </div>
 

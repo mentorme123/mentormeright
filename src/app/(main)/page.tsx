@@ -1013,61 +1013,44 @@ export default function Home() {
                  </svg>
                </div>
 
-               {/* Building Vibrant Community - top */}
-               <div className="absolute flex flex-col items-center" style={{ top: '0%', left: '50%', transform: 'translateX(-50%)' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#1e3a5f] flex items-center justify-center text-white shadow-lg">
-                   <Users size={32} />
-                 </div>
-                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Building<br/>Vibrant<br/>Community</p>
-               </div>
+               {(() => {
+                 const radius = 180;
+                 const centerX = 260;
+                 const centerY = 260;
+                 const iconSize = 80;
 
-               {/* Better Admissions - top right */}
-               <div className="absolute flex flex-col items-center" style={{ top: '18%', right: '2%' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#3b82f6] flex items-center justify-center text-white shadow-lg">
-                   <ClipboardList size={32} />
-                 </div>
-                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Better<br/>Admissions</p>
-               </div>
+                 const circularIcons = [
+                   { Icon: Users, label: "Building Vibrant<br/>Community", color: "bg-[#1e3a5f]" },
+                   { Icon: ClipboardList, label: "Better<br/>Admissions", color: "bg-[#3b82f6]" },
+                   { Icon: Megaphone, label: "Marketing<br/>&amp; Branding", color: "bg-[#7c3aed]" },
+                   { Icon: CircleDollarSign, label: "Fundraising", color: "bg-[#f97316]" },
+                   { Icon: Briefcase, label: "Placements", color: "bg-[#22c55e]" },
+                   { Icon: Award, label: "Alumni<br/>Benefits", color: "bg-[#dc2626]" },
+                   { Icon: GraduationCap, label: "Student Career<br/>Success", color: "bg-[#eab308]" },
+                 ];
 
-               {/* Marketing & Branding - right middle */}
-               <div className="absolute flex flex-col items-center" style={{ top: '50%', right: '-4%', transform: 'translateY(-50%)' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#7c3aed] flex items-center justify-center text-white shadow-lg">
-                   <Megaphone size={32} />
-                 </div>
-                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Marketing<br/>&amp; Branding</p>
-               </div>
+                 const positions = circularIcons.map((_, i) => {
+                   const angle = (i * 2 * Math.PI) / 7 - Math.PI / 2;
+                   const x = Math.cos(angle) * radius;
+                   const y = Math.sin(angle) * radius;
+                   return {
+                     top: centerY + y - iconSize / 2,
+                     left: centerX + x - iconSize / 2,
+                   };
+                 });
 
-               {/* Fundraising - bottom right */}
-               <div className="absolute flex flex-col items-center" style={{ bottom: '14%', right: '4%' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#f97316] flex items-center justify-center text-white shadow-lg">
-                   <CircleDollarSign size={32} />
-                 </div>
-                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Fundraising</p>
-               </div>
-
-               {/* Placements - bottom */}
-               <div className="absolute flex flex-col items-center" style={{ bottom: '0%', left: '50%', transform: 'translateX(-50%)' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#22c55e] flex items-center justify-center text-white shadow-lg">
-                   <Briefcase size={32} />
-                 </div>
-                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Placements</p>
-               </div>
-
-               {/* Alumni Benefits - bottom left */}
-               <div className="absolute flex flex-col items-center" style={{ bottom: '14%', left: '4%' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-lg">
-                   <Award size={32} />
-                 </div>
-                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Alumni<br/>Benefits</p>
-               </div>
-
-               {/* Student Career Success - left middle */}
-               <div className="absolute flex flex-col items-center" style={{ top: '50%', left: '-4%', transform: 'translateY(-50%)' }}>
-                 <div className="w-20 h-20 rounded-full bg-[#eab308] flex items-center justify-center text-white shadow-lg">
-                   <GraduationCap size={32} />
-                 </div>
-                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Student Career<br/>Success</p>
-               </div>
+                 return circularIcons.map((item, i) => {
+                   const pos = positions[i];
+                   return (
+                     <div key={i} className="absolute flex flex-col items-center" style={{ top: `${pos.top}px`, left: `${pos.left}px` }}>
+                       <div className={`w-20 h-20 rounded-full ${item.color} flex items-center justify-center text-white shadow-lg`}>
+                         <item.Icon size={32} />
+                       </div>
+                       <p className="text-white text-xs font-bold mt-2 text-center leading-tight" dangerouslySetInnerHTML={{ __html: item.label }} />
+                     </div>
+                   );
+                 });
+               })()}
              </div>
           </div>
         </div>

@@ -9,55 +9,79 @@ export async function registerUser(data: {
   role: string;
 }) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
   const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  const { data: authData, error: authError } = await supabase.auth.signUp({
-    email: data.email,
+  const normalizedEmail = data.email.trim().toLowerCase();
+
+  const { data: existingUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({
+    email: normalizedEmail,
+  });
+
+  if (listError) {
+    console.error("User lookup error:", listError);
+    return { success: false, error: "Unable to verify account status. Try again." };
+  }
+
+  const existing = existingUsers.users.find((u) => u.email?.toLowerCase() === normalizedEmail);
+
+  if (existing) {
+    if (existing.email_confirmed_at) {
+      return {
+        success: true,
+        user: { id: existing.id, email: normalizedEmail },
+        emailConfirmed: true,
+        alreadyExists: true,
+      };
+    }
+
+    const { error: confirmError } = await supabaseAdmin.auth.admin.updateUserById(
+      existing.id,
+      { email_confirm: true }
+    );
+
+    if (confirmError) {
+      console.error("Email confirmation error:", confirmError);
+    }
+
+    return {
+      success: true,
+      user: { id: existing.id, email: normalizedEmail },
+      emailConfirmed: !confirmError,
+      alreadyExists: true,
+    };
+  }
+
+  const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+    email: normalizedEmail,
     password: data.password,
-    options: {
-      data: { full_name: data.fullName },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-    },
+    email_confirm: true,
+    user_metadata: { full_name: data.fullName },
   });
 
   if (authError) {
     return { success: false, error: authError.message };
   }
-  if (!authData.user) {
-    return { success: false, error: "Registration failed to return user data." };
-  }
 
   const userId = authData.user.id;
 
-  const { error: profileError } = await supabase
+  const { error: profileError } = await supabaseAdmin
     .from("users")
     .upsert(
-      [{ id: userId, email: data.email, name: data.fullName, role: data.role }],
+      [{ id: userId, email: normalizedEmail, name: data.fullName, role: data.role }],
       { onConflict: "id" }
     );
 
   if (profileError) {
-    console.warn("Profile upsert delay:", profileError.message);
-  }
-
-  const { error: confirmError } = await supabaseAdmin.auth.admin.updateUserById(
-    userId,
-    { email_confirm: true }
-  );
-
-  if (confirmError) {
-    console.error("Email confirmation error:", confirmError);
+    console.warn("Profile upsert error:", profileError.message);
   }
 
   return {
     success: true,
-    user: { id: userId, email: data.email },
-    emailConfirmed: !confirmError,
+    user: { id: userId, email: normalizedEmail },
+    emailConfirmed: true,
   };
 }

@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { registerUser } from "./actions";
 
 export default function RegisterPage() {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,19 +14,10 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [cooldown, setCooldown] = useState(0);
-
-  useEffect(() => {
-    if (cooldown <= 0) return;
-    const timer = setInterval(() => {
-      setCooldown((prev) => Math.max(0, prev - 1));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [cooldown]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading || cooldown > 0) return;
+    if (loading) return;
     setLoading(true);
     setError("");
 
@@ -38,10 +27,6 @@ export default function RegisterPage() {
       const result = await registerUser({ email, password, fullName: name, role });
 
       if (!result.success || !result.user) {
-        if (result.error?.toLowerCase().includes("rate limit") || result.error?.toLowerCase().includes("email rate limit exceeded")) {
-          setCooldown(300);
-          throw new Error("Too many sign-up attempts. Please wait a few minutes and then try again.");
-        }
         throw new Error(result.error || "Registration failed.");
       }
 
@@ -49,6 +34,14 @@ export default function RegisterPage() {
 
       if (role === "individual") {
         localStorage.setItem("mentorme_audience", audienceType);
+      }
+
+      if (result.alreadyExists) {
+        setError("An account with this email already exists. Redirecting to login...");
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+        return;
       }
 
       if (result.emailConfirmed) {
@@ -67,11 +60,7 @@ export default function RegisterPage() {
     } catch (err: unknown) {
       console.error("Registration Error:", err);
       const message = err instanceof Error ? err.message : "Registration failed. Try again.";
-      if (message.toLowerCase().includes("rate limit")) {
-        setError("Too many sign-up attempts. Please wait a few minutes and try again.");
-      } else {
-        setError(message);
-      }
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -193,11 +182,11 @@ export default function RegisterPage() {
 
               <button
                 type="submit"
-                disabled={loading || cooldown > 0}
-                className={`w-full py-4 rounded-xl text-white font-black text-lg shadow-xl transition-all active:scale-95 ${loading || cooldown > 0 ? 'bg-slate-300 cursor-not-allowed' : 'bg-brand-blue hover:bg-brand-blue/90'
+                disabled={loading}
+                className={`w-full py-4 rounded-xl text-white font-black text-lg shadow-xl transition-all active:scale-95 ${loading ? 'bg-slate-300 cursor-not-allowed' : 'bg-brand-blue hover:bg-brand-blue/90'
                   }`}
               >
-                {loading ? "CREATING ACCOUNT..." : cooldown > 0 ? `Wait ${Math.floor(cooldown / 60)}:${String(cooldown % 60).padStart(2, "0")} before retrying` : "CREATE ACCOUNT NOW"}
+                {loading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT NOW"}
               </button>
 
               <button

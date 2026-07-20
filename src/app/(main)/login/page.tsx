@@ -27,6 +27,13 @@ export default function LoginPage() {
     return () => subscription.unsubscribe();
   }, [supabase]);
 
+  useEffect(() => {
+    const alreadyShown = typeof window !== 'undefined' && localStorage.getItem(ENQUIRY_SHOWN_KEY) === 'true';
+    if (!alreadyShown) {
+      setShowEnquiry(true);
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
@@ -50,14 +57,7 @@ export default function LoginPage() {
       else if (role === 'admin') target = '/dashboard/admin';
       else if (role === 'counselor') target = '/dashboard/counselor';
 
-      const alreadyShown = typeof window !== 'undefined' && localStorage.getItem(ENQUIRY_SHOWN_KEY) === 'true';
-
-      setRedirectTarget(target);
-      if (!alreadyShown) {
-        setShowEnquiry(true);
-      } else {
-        window.location.href = target;
-      }
+      window.location.href = target;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";
       if (message.includes("Unexpected token '<'") || message.toLowerCase().includes("rate limit")) {

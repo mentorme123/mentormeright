@@ -6,6 +6,8 @@ import { createClient } from "@/lib/supabase";
 import { X, Loader2 } from "lucide-react";
 import Link from "next/link";
 
+const ENQUIRY_SHOWN_KEY = 'mentorme_enquiry_shown';
+
 export default function LoginPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -48,8 +50,14 @@ export default function LoginPage() {
       else if (role === 'admin') target = '/dashboard/admin';
       else if (role === 'counselor') target = '/dashboard/counselor';
 
+      const alreadyShown = typeof window !== 'undefined' && localStorage.getItem(ENQUIRY_SHOWN_KEY) === 'true';
+
       setRedirectTarget(target);
-      setShowEnquiry(true);
+      if (!alreadyShown) {
+        setShowEnquiry(true);
+      } else {
+        window.location.href = target;
+      }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";
       if (message.includes("Unexpected token '<'") || message.toLowerCase().includes("rate limit")) {
@@ -93,6 +101,9 @@ export default function LoginPage() {
         throw new Error(json.error || "Failed to send enquiry.");
       }
 
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(ENQUIRY_SHOWN_KEY, 'true');
+      }
       setEnquirySuccess(true);
       setTimeout(() => {
         setShowEnquiry(false);
@@ -105,6 +116,16 @@ export default function LoginPage() {
       alert(err instanceof Error ? err.message : "Failed to send enquiry. Please try again.");
     } finally {
       setEnquirySubmitting(false);
+    }
+  };
+
+  const handleCloseEnquiry = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(ENQUIRY_SHOWN_KEY, 'true');
+    }
+    setShowEnquiry(false);
+    if (redirectTarget) {
+      window.location.href = redirectTarget;
     }
   };
 
@@ -220,10 +241,7 @@ export default function LoginPage() {
                 <p className="text-white/80 text-xs mt-1">Tell us what you’re looking for so we can help faster.</p>
               </div>
               <button
-                onClick={() => {
-                  setShowEnquiry(false);
-                  if (redirectTarget) window.location.href = redirectTarget;
-                }}
+                onClick={handleCloseEnquiry}
                 className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all"
               >
                 <X size={18} />

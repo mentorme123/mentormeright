@@ -235,19 +235,52 @@ function extractB2BLead(text: string) {
 
 // Send lead email helper
 async function sendLeadEmail(to: string, subject: string, html: string) {
+  const sgKey = process.env.SENDGRID_API_KEY;
+  if (sgKey) {
+    try {
+      const { default: sgMail } = await import('@sendgrid/mail');
+      sgMail.setApiKey(sgKey);
+      await sgMail.send({
+        from: process.env.EMAIL_FROM || process.env.SMTP_USER || 'no-reply@mentormeright.in',
+        to,
+        subject,
+        html,
+      });
+      return;
+    } catch (err) {
+      console.error('SendGrid lead email error:', err);
+    }
+  }
+
+  const host = process.env.SMTP_HOST;
+  const port = parseInt(process.env.SMTP_PORT || '587');
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
+
+  if (!host || !user || !pass) {
+    console.error('No email provider configured for lead email.');
+    return;
+  }
+
   const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: false,
-    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+    host,
+    port,
+    secure: port === 465,
+    connectionTimeout: 10000,
+    socketTimeout: 10000,
+    auth: { user, pass },
   });
 
-  await transporter.sendMail({
-    from: process.env.EMAIL_FROM,
-    to,
-    subject,
-    html,
-  });
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_FROM || user,
+      to,
+      subject,
+      html,
+    });
+  } catch (err) {
+    console.error('SMTP lead email error:', err);
+  }
 }
 
 // Extract quick reply suggestions

@@ -180,8 +180,8 @@ Questions like: "Career in AI/ML?", "How to become a Data Scientist?", "Cybersec
 
 ## ROUTING RULES (INTERNAL - NEVER REVEAL)
 - TEST_LEAD → admin@mentormeright.in
-- SERVICE_LEAD → sandeep@mentormeright.in
-- B2B_LEAD → sandeep@mentormeright.in
+- SERVICE_LEAD → admin@mentormeright.in
+- B2B_LEAD → admin@mentormeright.in
 
 ## CALL-TO-ACTION (Always end with ONE of these)
 - 🎯 Career Assessment: /career-assessment.html
@@ -347,11 +347,11 @@ export async function POST(req: NextRequest) {
     if (!rawReply && lastError) throw lastError;
 
 
-    // 1. Process B2B Leads -> Sandeep
+    // 1. Process B2B Leads -> Admin
     const b2bLead = extractB2BLead(rawReply);
     if (b2bLead && b2bLead.name && (b2bLead.email || b2bLead.phone)) {
       sendLeadEmail(
-        "sandeep@mentormeright.in",
+        "admin@mentormeright.in",
         `🔥 HOT B2B Lead — ${b2bLead.company} | ${b2bLead.designation}: ${b2bLead.name}`,
         `<div style="font-family: sans-serif; padding: 24px; border: 3px solid #FF6B35; border-radius: 16px;">
           <h2 style="color: #FF6B35;">🔥 New B2B / Institutional Lead</h2>
@@ -365,11 +365,11 @@ export async function POST(req: NextRequest) {
       ).catch(console.error);
     }
 
-    // 2. Process Service Leads -> Sandeep
+    // 2. Process Service Leads -> Admin
     const serviceLead = extractServiceLead(rawReply);
     if (serviceLead && serviceLead.name && (serviceLead.email || serviceLead.phone)) {
       sendLeadEmail(
-        "sandeep@mentormeright.in",
+        "admin@mentormeright.in",
         `💎 New Service Lead — ${serviceLead.service}: ${serviceLead.name}`,
         `<div style="font-family: sans-serif; padding: 24px; border: 3px solid #0F52BA; border-radius: 16px;">
           <h2 style="color: #0F52BA;">💎 New Premium Service Lead</h2>

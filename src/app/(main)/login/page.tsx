@@ -13,6 +13,10 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showEnquiry, setShowEnquiry] = useState(false);
+  const [enquirySubmitting, setEnquirySubmitting] = useState(false);
+  const [enquirySuccess, setEnquirySuccess] = useState(false);
+  const [redirectTarget, setRedirectTarget] = useState<string | null>(null);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
@@ -39,15 +43,13 @@ export default function LoginPage() {
 
       const role = profile?.role || (data.user.user_metadata as Record<string, string | undefined>)?.role || 'individual';
 
-      if (role === 'institutional') {
-        window.location.href = '/dashboard/institution';
-      } else if (role === 'admin') {
-        window.location.href = '/dashboard/admin';
-      } else if (role === 'counselor') {
-        window.location.href = '/dashboard/counselor';
-      } else {
-        window.location.href = `/career-assessment.html?email=${encodeURIComponent(email || '')}`;
-      }
+      let target = '/career-assessment.html';
+      if (role === 'institutional') target = '/dashboard/institution';
+      else if (role === 'admin') target = '/dashboard/admin';
+      else if (role === 'counselor') target = '/dashboard/counselor';
+
+      setRedirectTarget(target);
+      setShowEnquiry(true);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Login failed. Please check your credentials.";
       if (message.includes("Unexpected token '<'") || message.toLowerCase().includes("rate limit")) {
@@ -57,6 +59,52 @@ export default function LoginPage() {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEnquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setEnquirySubmitting(true);
+    try {
+      const form = e.currentTarget;
+      const formData = new FormData(form);
+      const payload = {
+        firstName: formData.get("name")?.toString().trim() || "",
+        lastName: "",
+        email: formData.get("email")?.toString().trim() || email,
+        subject: formData.get("subject")?.toString().trim() || "Post-login enquiry",
+        message: formData.get("message")?.toString().trim() || "",
+      };
+
+      if (!payload.firstName || !payload.email) {
+        alert("Please enter your name and email.");
+        setEnquirySubmitting(false);
+        return;
+      }
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error || "Failed to send enquiry.");
+      }
+
+      setEnquirySuccess(true);
+      setTimeout(() => {
+        setShowEnquiry(false);
+        if (redirectTarget) {
+          window.location.href = redirectTarget;
+        }
+      }, 1200);
+    } catch (err) {
+      console.error("Enquiry submit error:", err);
+      alert(err instanceof Error ? err.message : "Failed to send enquiry. Please try again.");
+    } finally {
+      setEnquirySubmitting(false);
     }
   };
 
@@ -155,13 +203,100 @@ export default function LoginPage() {
 
         <div className="bg-slate-50 p-6 border-t border-slate-100 text-center">
           <p className="text-sm font-medium text-slate-500">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/register" className="text-brand-orange font-black hover:underline transition-all">
               Register here
             </Link>
           </p>
         </div>
       </div>
+
+      {showEnquiry && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div className="bg-brand-blue px-6 py-5 flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-black text-white">Welcome to MentorMe 🎉</h2>
+                <p className="text-white/80 text-xs mt-1">Tell us what you’re looking for so we can help faster.</p>
+              </div>
+              <button
+                onClick={() => {
+                  setShowEnquiry(false);
+                  if (redirectTarget) window.location.href = redirectTarget;
+                }}
+                className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="p-6">
+              {enquirySuccess ? (
+                <div className="text-center py-10 space-y-4">
+                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="w-8 h-8 text-emerald-600">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6L21 6.75" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-black text-slate-800">Enquiry Sent!</h3>
+                  <p className="text-slate-500 text-sm">Our team will reach out to you shortly.</p>
+                </div>
+              ) : (
+                <form onSubmit={handleEnquirySubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-black text-slate-500 uppercase">Full Name *</label>
+                      <input
+                        name="name"
+                        required
+                        className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-700 focus:border-brand-blue focus:outline-none"
+                        placeholder="Your full name"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-black text-slate-500 uppercase">Email *</label>
+                      <input
+                        name="email"
+                        type="email"
+                        required
+                        defaultValue={email}
+                        className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-700 focus:border-brand-blue focus:outline-none"
+                        placeholder="you@example.com"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-black text-slate-500 uppercase">Subject</label>
+                    <input
+                      name="subject"
+                      className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-700 focus:border-brand-blue focus:outline-none"
+                      placeholder="e.g., Career counselling, Assessment help"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-black text-slate-500 uppercase">Message</label>
+                    <textarea
+                      name="message"
+                      rows={4}
+                      className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-700 focus:border-brand-blue focus:outline-none resize-none"
+                      placeholder="Tell us what you need help with..."
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={enquirySubmitting}
+                    className={`w-full py-4 rounded-xl text-white font-black text-base shadow-lg transition-all active:scale-95 ${
+                      enquirySubmitting ? "bg-slate-300" : "bg-brand-orange hover:bg-brand-orange/90"
+                    }`}
+                  >
+                    {enquirySubmitting ? <span className="inline-flex items-center gap-2"><Loader2 className="animate-spin" size={18} /> Sending...</span> : "Send Enquiry"}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

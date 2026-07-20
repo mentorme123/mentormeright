@@ -6,7 +6,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { CheckCircle2, Phone, Mail, MapPin, Briefcase, GraduationCap, Globe2, X, Loader2 } from "lucide-react";
+import { CheckCircle2, Phone, Mail, MapPin, Briefcase, GraduationCap, Globe2, X, Loader2, Users, ClipboardList, Megaphone, CircleDollarSign, Award } from "lucide-react";
 
 function Counter({ value }: { value: string }) {
   const [count, setCount] = useState(0);
@@ -932,7 +932,6 @@ export default function Home() {
 
   const slides = [
     {
-      image: "/images/home-hero-1.png",
       heading: "Build Future-Ready Careers",
       highlight: "with AI",
       subtitle: "MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.",
@@ -942,7 +941,6 @@ export default function Home() {
       btn2Link: "/contact"
     },
     {
-      image: "/images/home-hero-2.png",
       heading: "AI-Powered Career ",
       highlight: "Intelligence",
       subtitle: "Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.",
@@ -952,7 +950,6 @@ export default function Home() {
       btn2Link: "/services"
     },
     {
-      image: "/images/home-hero-3.png",
       heading: "Future Skills & ",
       highlight: "Employability",
       subtitle: "Master AI, Robotics, emerging technologies, and workplace skills that drive academic, professional, and career success.",
@@ -968,7 +965,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
@@ -976,79 +973,118 @@ export default function Home() {
     <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden w-full max-w-full">
 
       {/* Hero Section Carousel */}
-      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-24 pb-16 lg:pt-36 lg:pb-28 min-h-[500px] lg:min-h-[600px] text-white overflow-hidden">
-        {/* Background Image Carousel (Horizontal Slide transition) */}
-        <div className="absolute inset-0 -z-10 w-full h-full overflow-hidden">
-          {slides.map((slide, idx) => {
-            let translateClass = "translate-x-full";
-            if (idx === currentSlide) {
-              translateClass = "translate-x-0";
-            } else if (idx === (currentSlide - 1 + slides.length) % slides.length) {
-              translateClass = "-translate-x-full";
-            }
-            return (
-              <div
-                key={idx}
-                className={`absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-[800ms] ease-in-out ${translateClass}`}
-                style={{
-                  backgroundImage: `url('${slide.image}')`,
-                }}
-              />
-            );
-          })}
-          {/* Rich modern dark gradient overlay for optimal readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#071324]/90 via-[#0a182b]/85 to-[#0b1b30]/95 z-0" />
-        </div>
-
-        {/* Dynamic content with horizontal slide animation */}
-        <div className="max-w-5xl space-y-8 relative z-10 px-4">
-          <motion.div
-            key={currentSlide}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="space-y-8"
-          >
-              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
+      <section className="relative py-20 lg:py-28 overflow-hidden" style={{ backgroundColor: '#0B1B30' }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left content */}
+            <div className="text-center lg:text-left">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
                 {slides[currentSlide].heading}
                 <br className="hidden md:block" />
                 <span className="text-brand-orange drop-shadow-[0_2px_8px_rgba(244,114,22,0.25)]">
                   {slides[currentSlide].highlight}
                 </span>
               </h1>
-
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-200 max-w-3xl mx-auto leading-relaxed px-2 drop-shadow-md">
+              <p className="mt-6 text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                 {slides[currentSlide].subtitle}
               </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-10">
                 <Link href={slides[currentSlide].btn1Link} className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full h-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-lg sm:text-xl px-10 py-5 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-2 border-white/20">
+                  <Button size="lg" className="w-full h-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-lg px-10 py-5 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-2 border-white/20">
                     {slides[currentSlide].btn1Text}
                   </Button>
                 </Link>
                 <Link href={slides[currentSlide].btn2Link} className="w-full sm:w-auto">
-                  <Button size="lg" variant="ghost" className="w-full h-auto text-lg sm:text-xl font-extrabold px-10 py-5 rounded-full border-2 border-white/30 hover:border-white/60 text-white hover:bg-white/10 transition-all">
+                  <Button size="lg" variant="ghost" className="w-full h-auto text-lg font-extrabold px-10 py-5 rounded-full border-2 border-white/30 hover:border-white/60 text-white hover:bg-white/10 transition-all">
                     {slides[currentSlide].btn2Text}
                   </Button>
                 </Link>
               </div>
-            </motion.div>
+            </div>
 
-          {/* Dots Navigation Indicator */}
-          <div className="flex justify-center gap-3 pt-12">
-            {slides.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentSlide(idx)}
-                className={`h-3 rounded-full transition-all duration-300 ${idx === currentSlide
-                  ? "w-8 bg-brand-orange"
-                  : "w-3 bg-white/40 hover:bg-white/60"
-                  }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
+            {/* Right icon cluster */}
+            <div className="relative h-[500px] hidden lg:block">
+              {/* Central logo */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="10" y="10" width="60" height="60" rx="16" fill="#1B3A6B" />
+                  <rect x="20" y="20" width="40" height="40" rx="10" fill="#FF7A1A" />
+                  <rect x="30" y="30" width="20" height="20" rx="6" fill="#1B3A6B" />
+                </svg>
+              </div>
+
+              {/* Student Career Success - left */}
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-[#D4A017] flex items-center justify-center text-white shadow-lg">
+                  <GraduationCap size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Student Career<br/>Success</p>
+              </div>
+
+              {/* Building Vibrant Community - top */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-[#1e40af] flex items-center justify-center text-white shadow-lg">
+                  <Users size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Building Vibrant<br/>Community</p>
+              </div>
+
+              {/* Better Admissions - top right */}
+              <div className="absolute top-[12%] right-0 flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-[#06b6d4] flex items-center justify-center text-white shadow-lg">
+                  <ClipboardList size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Better<br/>Admissions</p>
+              </div>
+
+              {/* Alumni Benefits - bottom left */}
+              <div className="absolute bottom-[12%] left-[5%] flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-lg">
+                  <Award size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Alumni<br/>Benefits</p>
+              </div>
+
+              {/* Placements - bottom */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-[#16a34a] flex items-center justify-center text-white shadow-lg">
+                  <Briefcase size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Placements</p>
+              </div>
+
+              {/* Fundraising - bottom right */}
+              <div className="absolute bottom-[12%] right-[5%] flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-[#ea580c] flex items-center justify-center text-white shadow-lg">
+                  <CircleDollarSign size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Fundraising</p>
+              </div>
+
+              {/* Marketing & Branding - right */}
+              <div className="absolute top-1/2 right-0 -translate-y-1/2 flex flex-col items-center">
+                <div className="w-20 h-20 rounded-full bg-[#7c3aed] flex items-center justify-center text-white shadow-lg">
+                  <Megaphone size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Marketing<br/>&amp; Branding</p>
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* Dots Navigation Indicator */}
+        <div className="flex justify-center gap-3 pt-12">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentSlide(idx)}
+              className={`h-3 rounded-full transition-all duration-300 ${idx === currentSlide
+                ? "w-8 bg-brand-orange"
+                : "w-3 bg-white/40 hover:bg-white/60"
+                }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
         </div>
       </section>
 

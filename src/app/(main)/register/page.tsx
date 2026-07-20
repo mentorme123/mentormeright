@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
@@ -16,10 +16,19 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    if (cooldown <= 0) return;
+    const timer = setInterval(() => {
+      setCooldown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldown]);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (loading) return;
+    if (loading || cooldown > 0) return;
     setLoading(true);
     setError("");
 
@@ -30,6 +39,7 @@ export default function RegisterPage() {
 
       if (!result.success || !result.user) {
         if (result.error?.toLowerCase().includes("rate limit") || result.error?.toLowerCase().includes("email rate limit exceeded")) {
+          setCooldown(300);
           throw new Error("Too many sign-up attempts. Please wait a few minutes and then try again.");
         }
         throw new Error(result.error || "Registration failed.");
@@ -183,11 +193,11 @@ export default function RegisterPage() {
 
               <button
                 type="submit"
-                disabled={loading}
-                className={`w-full py-4 rounded-xl text-white font-black text-lg shadow-xl transition-all active:scale-95 ${loading ? 'bg-slate-300' : 'bg-brand-blue hover:bg-brand-blue/90'
+                disabled={loading || cooldown > 0}
+                className={`w-full py-4 rounded-xl text-white font-black text-lg shadow-xl transition-all active:scale-95 ${loading || cooldown > 0 ? 'bg-slate-300 cursor-not-allowed' : 'bg-brand-blue hover:bg-brand-blue/90'
                   }`}
               >
-                {loading ? "CREATING ACCOUNT..." : "CREATE ACCOUNT NOW"}
+                {loading ? "CREATING ACCOUNT..." : cooldown > 0 ? `Wait ${Math.floor(cooldown / 60)}:${String(cooldown % 60).padStart(2, "0")} before retrying` : "CREATE ACCOUNT NOW"}
               </button>
 
               <button

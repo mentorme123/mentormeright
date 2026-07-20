@@ -186,6 +186,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const [subjects, setSubjects] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [scoresMessage, setScoresMessage] = useState<string | null>(null);
+  const [userClass, setUserClass] = useState<string | null>(null);
 
   console.log('CareerDashboard rendered with userId:', userId);
 
@@ -280,6 +281,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         setScores(normalizedScores);
         setReport(json.report);
         setSubjects((json.subjects || []) as string[]);
+        setUserClass(json.userClass || null);
       } catch (error) {
         console.error('CareerDashboard: fetch error', error);
         setScoresMessage('Something went wrong while loading your dashboard. Please refresh or retake the assessment.');
@@ -309,8 +311,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     EmotionalIntelligence: 0, Efficiency: 0, Empathy: 0, Engagement: 0, Exploration: 0
   };
 
-  const rawEducation = (profile?.education_level || '').trim();
-  const eduLower = rawEducation.toLowerCase();
+  const rawEducation = (userClass || profile?.education_level || '').trim();
   const gradeMatch = rawEducation.match(/class\s*(\d+)/i);
   const gradeNum = gradeMatch ? parseInt(gradeMatch[1], 10) : null;
   const isSchool = gradeNum === 9 || gradeNum === 10 || /school/i.test(rawEducation);

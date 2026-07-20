@@ -965,7 +965,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(timer);
   }, []);
 
@@ -973,7 +973,7 @@ export default function Home() {
     <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden w-full max-w-full">
 
       {/* Hero Section Carousel */}
-      <section className="relative py-20 lg:py-28 overflow-hidden" style={{ backgroundColor: '#0B1B30' }}>
+      <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-[#0B1B30] via-[#1B3A6B] to-[#0a1628]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left content */}
@@ -1003,26 +1003,18 @@ export default function Home() {
             </div>
 
             {/* Right icon cluster */}
-            <div className="relative h-[500px] hidden lg:block">
+            <div className="relative h-[520px] hidden lg:block">
               {/* Central logo */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <rect x="10" y="10" width="60" height="60" rx="16" fill="#1B3A6B" />
                   <rect x="20" y="20" width="40" height="40" rx="10" fill="#FF7A1A" />
                   <rect x="30" y="30" width="20" height="20" rx="6" fill="#1B3A6B" />
                 </svg>
               </div>
 
-              {/* Student Career Success - left */}
-              <div className="absolute top-1/2 left-0 -translate-y-1/2 flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full bg-[#D4A017] flex items-center justify-center text-white shadow-lg">
-                  <GraduationCap size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Student Career<br/>Success</p>
-              </div>
-
               {/* Building Vibrant Community - top */}
-              <div className="absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
+              <div className="absolute flex flex-col items-center" style={{ top: '2%', left: '50%', transform: 'translateX(-50%)' }}>
                 <div className="w-20 h-20 rounded-full bg-[#1e40af] flex items-center justify-center text-white shadow-lg">
                   <Users size={32} />
                 </div>
@@ -1030,43 +1022,51 @@ export default function Home() {
               </div>
 
               {/* Better Admissions - top right */}
-              <div className="absolute top-[12%] right-0 flex flex-col items-center">
+              <div className="absolute flex flex-col items-center" style={{ top: '18%', right: '4%' }}>
                 <div className="w-20 h-20 rounded-full bg-[#06b6d4] flex items-center justify-center text-white shadow-lg">
                   <ClipboardList size={32} />
                 </div>
                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Better<br/>Admissions</p>
               </div>
 
-              {/* Alumni Benefits - bottom left */}
-              <div className="absolute bottom-[12%] left-[5%] flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-lg">
-                  <Award size={32} />
+              {/* Marketing & Branding - right middle */}
+              <div className="absolute flex flex-col items-center" style={{ top: '50%', right: '-2%', transform: 'translateY(-50%)' }}>
+                <div className="w-20 h-20 rounded-full bg-[#7c3aed] flex items-center justify-center text-white shadow-lg">
+                  <Megaphone size={32} />
                 </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Alumni<br/>Benefits</p>
-              </div>
-
-              {/* Placements - bottom */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full bg-[#16a34a] flex items-center justify-center text-white shadow-lg">
-                  <Briefcase size={32} />
-                </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Placements</p>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Marketing<br/>&amp; Branding</p>
               </div>
 
               {/* Fundraising - bottom right */}
-              <div className="absolute bottom-[12%] right-[5%] flex flex-col items-center">
+              <div className="absolute flex flex-col items-center" style={{ bottom: '16%', right: '6%' }}>
                 <div className="w-20 h-20 rounded-full bg-[#ea580c] flex items-center justify-center text-white shadow-lg">
                   <CircleDollarSign size={32} />
                 </div>
                 <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Fundraising</p>
               </div>
 
-              {/* Marketing & Branding - right */}
-              <div className="absolute top-1/2 right-0 -translate-y-1/2 flex flex-col items-center">
-                <div className="w-20 h-20 rounded-full bg-[#7c3aed] flex items-center justify-center text-white shadow-lg">
-                  <Megaphone size={32} />
+              {/* Placements - bottom */}
+              <div className="absolute flex flex-col items-center" style={{ bottom: '2%', left: '50%', transform: 'translateX(-50%)' }}>
+                <div className="w-20 h-20 rounded-full bg-[#16a34a] flex items-center justify-center text-white shadow-lg">
+                  <Briefcase size={32} />
                 </div>
-                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Marketing<br/>&amp; Branding</p>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Placements</p>
+              </div>
+
+              {/* Alumni Benefits - bottom left */}
+              <div className="absolute flex flex-col items-center" style={{ bottom: '16%', left: '6%' }}>
+                <div className="w-20 h-20 rounded-full bg-[#dc2626] flex items-center justify-center text-white shadow-lg">
+                  <Award size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Alumni<br/>Benefits</p>
+              </div>
+
+              {/* Student Career Success - left middle */}
+              <div className="absolute flex flex-col items-center" style={{ top: '50%', left: '-2%', transform: 'translateY(-50%)' }}>
+                <div className="w-20 h-20 rounded-full bg-[#D4A017] flex items-center justify-center text-white shadow-lg">
+                  <GraduationCap size={32} />
+                </div>
+                <p className="text-white text-xs font-bold mt-2 text-center leading-tight">Student Career<br/>Success</p>
               </div>
             </div>
           </div>

@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 export const dynamic = 'force-dynamic';
 
 async function sendViaSendGrid(to: string, replyTo: string, subject: string, html: string) {
-  const apiKey = process.env.SENDGRID_API_KEY;
+  const apiKey = process.env.SENDGRID_KEY || process.env.SENDGRID_API_KEY;
   if (!apiKey) {
     return { skipped: true as const };
   }

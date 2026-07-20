@@ -235,7 +235,7 @@ function extractB2BLead(text: string) {
 
 // Send lead email helper
 async function sendLeadEmail(to: string, subject: string, html: string) {
-  const sgKey = process.env.SENDGRID_API_KEY;
+  const sgKey = process.env.SENDGRID_KEY || process.env.SENDGRID_API_KEY;
   if (sgKey) {
     try {
       const { default: sgMail } = await import('@sendgrid/mail');

@@ -1002,16 +1002,12 @@ export default function Home() {
               </div>
             </div>
 
-             {/* Right icon cluster */}
-             <div className="relative h-[520px] hidden lg:block">
-               {/* Central logo */}
-               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-                 <svg width="72" height="72" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                   <rect x="10" y="10" width="60" height="60" rx="16" fill="#1B3A6B" />
-                   <rect x="20" y="20" width="40" height="40" rx="10" fill="#FF7A1A" />
-                   <rect x="30" y="30" width="20" height="20" rx="6" fill="#1B3A6B" />
-                 </svg>
-               </div>
+              {/* Right icon cluster */}
+              <div className="relative h-[520px] hidden lg:block">
+                {/* Central logo */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+                  <Image src="/logo.png" alt="MentorMe" width={120} height={120} className="drop-shadow-2xl" priority />
+                </div>
 
                {(() => {
                  const radius = 180;

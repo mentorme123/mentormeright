@@ -998,6 +998,9 @@ export default function Home() {
           })}
         </div>
 
+        {/* Light blue overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-100/50 via-blue-50/40 to-blue-100/60 -z-10" />
+
         {/* Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div className="text-center">

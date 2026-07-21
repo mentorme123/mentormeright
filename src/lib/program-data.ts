@@ -907,44 +907,88 @@ export const programsData: Record<string, Program> = {
       "Project Leadership Skills"
     ]
   },
-  "financial-analysis-corporate": {
-    slug: "financial-analysis-corporate",
-    title: "Financial Analysis",
-    category: "Corporate Professionals",
-    image: "/images/programs/financial-analysis-corporate.png",
-    subtitle: "Convert Financial Data into Business Intelligence.",
-    description: "Designed for managers and finance professionals, this program helps participants interpret financial statements, assess business performance, and make informed financial decisions.",
-    howWeOffer: [],
-    keyHighlights: [],
-    benefits: [
-      "Better business decisions",
-      "Improved financial understanding",
-      "Strong analytical skills",
-      "Enhanced profitability focus"
-    ],
-    usp: [
-      "Real company financials",
-      "Practical business cases",
-      "Finance expert facilitators"
-    ],
-    modules: [
-      "Financial Statements Analysis",
-      "Ratio Analysis",
-      "Cash Flow Analysis",
-      "Budgeting",
-      "Cost Control",
-      "Business Performance Review"
-    ],
-    learningOutcomes: "Participants confidently evaluate financial performance and support business decision-making.",
-    mentorMeAdvantage: [
-      "Real company financials",
-      "Practical business cases",
-      "Finance expert facilitators"
-    ],
-    seoKeywords: [
-      "Financial Analysis Training",
-      "Finance for Non-Finance Managers",
-      "Business Finance Course"
-    ]
-  }
-};
+   "financial-analysis-corporate": {
+     slug: "financial-analysis-corporate",
+     title: "Financial Analysis",
+     category: "Corporate Professionals",
+     image: "/images/programs/financial-analysis-corporate.png",
+     subtitle: "Convert Financial Data into Business Intelligence.",
+     description: "Designed for managers and finance professionals, this program helps participants interpret financial statements, assess business performance, and make informed financial decisions.",
+     howWeOffer: [],
+     keyHighlights: [],
+     benefits: [
+       "Better business decisions",
+       "Improved financial understanding",
+       "Strong analytical skills",
+       "Enhanced profitability focus"
+     ],
+     usp: [
+       "Real company financials",
+       "Practical business cases",
+       "Finance expert facilitators"
+     ],
+     modules: [
+       "Financial Statements Analysis",
+       "Ratio Analysis",
+       "Cash Flow Analysis",
+       "Budgeting",
+       "Cost Control",
+       "Business Performance Review"
+     ],
+     learningOutcomes: "Participants confidently evaluate financial performance and support business decision-making.",
+     mentorMeAdvantage: [
+       "Real company financials",
+       "Practical business cases",
+       "Finance expert facilitators"
+     ],
+     seoKeywords: [
+       "Financial Analysis Training",
+       "Finance for Non-Finance Managers",
+       "Business Finance Course"
+     ]
+   },
+
+   // --- 21st Century Skills Hub - Entrepreneurship ---
+   "entrepreneurship": {
+     slug: "entrepreneurship",
+     title: "Entrepreneurship",
+     category: "21st Century Skills Hub",
+     image: "/images/programs/ai-career-accelerator.png",
+     subtitle: "Free Entrepreneurship Material & Startup Resources.",
+     description: "Access free entrepreneurship material, startup guides, business planning resources, and practical modules to kickstart your entrepreneurial journey. This section provides free learning material for aspiring entrepreneurs.",
+     howWeOffer: [],
+     keyHighlights: [],
+     benefits: [
+       "Free entrepreneurship resources",
+       "Startup planning guides",
+       "Business model development",
+       "Practical entrepreneurial skills"
+     ],
+     usp: [
+       "Free learning material",
+       "Industry-aligned content",
+       "Self-paced modules",
+       "Practical startup frameworks"
+     ],
+     modules: [
+       "Entrepreneurship Fundamentals",
+       "Business Model Canvas",
+       "Market Research & Validation",
+       "Pitch Deck Creation",
+       "Funding & Investment Basics",
+       "Startup Launch Strategy"
+     ],
+     learningOutcomes: "Aspiring entrepreneurs gain practical knowledge and free resources to plan and launch their startup ideas.",
+     mentorMeAdvantage: [
+       "Free learning material",
+       "Industry-aligned content",
+       "Self-paced modules",
+       "Practical startup frameworks"
+     ],
+     seoKeywords: [
+       "Free Entrepreneurship Material",
+       "Startup Resources",
+       "Entrepreneurship Course Free"
+     ]
+   }
+ };

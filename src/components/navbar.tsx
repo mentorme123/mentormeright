@@ -214,21 +214,42 @@ export function Navbar() {
                     </div>
                   </div>
 
-                  {/* Corporate Section */}
-                  <div className="mb-2">
-                    <button 
-                      onClick={(e) => { e.preventDefault(); setSkillsHubAccordion(skillsHubAccordion === "corporate" ? null : "corporate"); }}
-                      className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
-                    >
-                      <span>3. Corporate Professionals</span>
-                      <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${skillsHubAccordion === "corporate" ? "rotate-180" : ""}`} />
-                    </button>
-                    <div className={`overflow-hidden transition-all duration-300 ${skillsHubAccordion === "corporate" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                      <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
-                        <Link href="/programs/leadership-development-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Leadership Development</Link>
-                        <Link href="/programs/project-management-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Project Management</Link>
-                        <Link href="/programs/financial-analysis-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Financial Analysis</Link>
-                      </div>
+                   {/* Corporate Section */}
+                   <div className="mb-2">
+                     <button 
+                       onClick={(e) => { e.preventDefault(); setSkillsHubAccordion(skillsHubAccordion === "corporate" ? null : "corporate"); }}
+                       className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                     >
+                       <span>3. Corporate Professionals</span>
+                       <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${skillsHubAccordion === "corporate" ? "rotate-180" : ""}`} />
+                     </button>
+                     <div className={`overflow-hidden transition-all duration-300 ${skillsHubAccordion === "corporate" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+                       <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
+                         <Link href="/programs/leadership-development-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Leadership Development</Link>
+                         <Link href="/programs/project-management-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Project Management</Link>
+                         <Link href="/programs/financial-analysis-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Financial Analysis</Link>
+                       </div>
+                     </div>
+                   </div>
+
+                   {/* Entrepreneurship Section */}
+                   <div className="mb-2">
+                     <button 
+                       onClick={(e) => { e.preventDefault(); setSkillsHubAccordion(skillsHubAccordion === "entrepreneurship" ? null : "entrepreneurship"); }}
+                       className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                     >
+                       <span>4. Entrepreneurship</span>
+                       <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${skillsHubAccordion === "entrepreneurship" ? "rotate-180" : ""}`} />
+                     </button>
+                     <div className={`overflow-hidden transition-all duration-300 ${skillsHubAccordion === "entrepreneurship" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+                       <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
+                         <Link href="/programs/entrepreneurship" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Free Entrepreneurship Material</Link>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
                     </div>
                   </div>
                 </div>

@@ -276,7 +276,7 @@ export function Navbar() {
                    <ChevronDown size={14} className={`text-slate-500 transition-transform ${profileOpen ? "rotate-180" : ""}`} />
                  </button>
 
-                <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                 <div className={`absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${profileOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
                   <div className="p-4 border-b border-slate-100 bg-slate-50">
                     <p className="font-bold text-slate-800 text-sm truncate">{profileName}</p>
                     <p className="text-xs text-slate-500 truncate">{user?.email || ""}</p>

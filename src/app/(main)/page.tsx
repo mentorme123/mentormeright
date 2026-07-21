@@ -998,8 +998,8 @@ export default function Home() {
           })}
         </div>
 
-        {/* Light blue overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-100/50 via-blue-50/40 to-blue-100/60 z-10 pointer-events-none" />
+        {/* Blue overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-200/70 via-blue-100/60 to-blue-200/80 z-10 pointer-events-none" />
 
         {/* Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">

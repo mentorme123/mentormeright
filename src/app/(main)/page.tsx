@@ -56,10 +56,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const alreadyShown = typeof window !== 'undefined' && localStorage.getItem('mentorme_enquiry_shown') === 'true';
-    if (!alreadyShown) {
-      setShowEnquiry(true);
-    }
+    setShowEnquiry(true);
   }, []);
 
   const handleEnquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,9 +90,6 @@ export default function Home() {
         throw new Error(json.error || "Failed to send enquiry.");
       }
 
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('mentorme_enquiry_shown', 'true');
-      }
       setEnquirySuccess(true);
       setTimeout(() => {
         setShowEnquiry(false);
@@ -109,9 +103,6 @@ export default function Home() {
   };
 
   const handleCloseEnquiry = () => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('mentorme_enquiry_shown', 'true');
-    }
     setShowEnquiry(false);
   };
 

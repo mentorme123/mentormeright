@@ -5,9 +5,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Users, Briefcase, GraduationCap, Globe2, ArrowRight, CheckCircle2, Phone, Mail, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
 
 const slides = [
   {
+    image: "/images/home-hero-1.png",
     heading: "Build Future-Ready Careers",
     highlight: "with AI",
     subtitle: "MentorMe helps school students, college learners, and working professionals discover career paths, build future-ready skills, and achieve success in an AI-driven world.",
@@ -17,6 +19,7 @@ const slides = [
     btn2Link: "/contact"
   },
   {
+    image: "/images/home-hero-2.png",
     heading: "AI-Powered Career ",
     highlight: "Intelligence",
     subtitle: "Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.",
@@ -26,6 +29,7 @@ const slides = [
     btn2Link: "/services"
   },
   {
+    image: "/images/home-hero-3.png",
     heading: "Future Skills & ",
     highlight: "Employability",
     subtitle: "Master AI, Robotics, emerging technologies, and workplace skills that drive academic, professional, and career success.",
@@ -113,50 +117,79 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section Carousel */}
-      <section className="relative py-20 lg:py-28 overflow-hidden bg-gradient-to-br from-[#0B1B30] via-[#1B3A6B] to-[#0a1628]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Left content */}
-            <div className="text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
+      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-24 pb-16 lg:pt-36 lg:pb-28 min-h-[500px] lg:min-h-[600px] text-white overflow-hidden">
+        {/* Background Image Carousel (Horizontal Slide transition) */}
+        <div className="absolute inset-0 -z-10 w-full h-full overflow-hidden">
+          {slides.map((slide, idx) => {
+            let translateClass = "translate-x-full";
+            if (idx === currentSlide) {
+              translateClass = "translate-x-0";
+            } else if (idx === (currentSlide - 1 + slides.length) % slides.length) {
+              translateClass = "-translate-x-full";
+            }
+            return (
+              <div
+                key={idx}
+                className={`absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-[800ms] ease-in-out ${translateClass}`}
+                style={{
+                  backgroundImage: `url('${slide.image}')`,
+                }}
+              />
+            );
+          })}
+          {/* Rich modern dark gradient overlay for optimal readability */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#071324]/90 via-[#0a182b]/85 to-[#0b1b30]/95 z-0" />
+        </div>
+
+        {/* Dynamic content with horizontal slide animation */}
+        <div className="max-w-5xl space-y-8 relative z-10 px-4">
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            className="space-y-8"
+          >
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-tight">
                 {slides[currentSlide].heading}
                 <br className="hidden md:block" />
                 <span className="text-brand-orange drop-shadow-[0_2px_8px_rgba(244,114,22,0.25)]">
                   {slides[currentSlide].highlight}
                 </span>
               </h1>
-              <p className="mt-6 text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-200 max-w-3xl mx-auto leading-relaxed px-2 drop-shadow-md">
                 {slides[currentSlide].subtitle}
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mt-10">
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
                 <Link href={slides[currentSlide].btn1Link} className="w-full sm:w-auto">
-                  <Button size="lg" className="w-full h-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-lg px-10 py-5 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-2 border-white/20">
+                  <Button size="lg" className="w-full h-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-lg sm:text-xl px-10 py-5 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-2 border-white/20">
                     {slides[currentSlide].btn1Text}
                   </Button>
                 </Link>
                 <Link href={slides[currentSlide].btn2Link} className="w-full sm:w-auto">
-                  <Button size="lg" variant="ghost" className="w-full h-auto text-lg font-extrabold px-10 py-5 rounded-full border-2 border-white/30 hover:border-white/60 text-white hover:bg-white/10 transition-all">
+                  <Button size="lg" variant="ghost" className="w-full h-auto text-lg sm:text-xl font-extrabold px-10 py-5 rounded-full border-2 border-white/30 hover:border-white/60 text-white hover:bg-white/10 transition-all">
                     {slides[currentSlide].btn2Text}
                   </Button>
                 </Link>
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
 
-        {/* Dots Navigation Indicator */}
-        <div className="flex justify-center gap-3 pt-12">
-          {slides.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentSlide(idx)}
-              className={`h-3 rounded-full transition-all duration-300 ${idx === currentSlide
-                ? "w-8 bg-brand-orange"
-                : "w-3 bg-white/40 hover:bg-white/60"
-                }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
-          ))}
+          {/* Dots Navigation Indicator */}
+          <div className="flex justify-center gap-3 pt-12">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                className={`h-3 rounded-full transition-all duration-300 ${idx === currentSlide
+                  ? "w-8 bg-brand-orange"
+                  : "w-3 bg-white/40 hover:bg-white/60"
+                  }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </section>
 

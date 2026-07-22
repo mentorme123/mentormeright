@@ -394,12 +394,6 @@ export default function AdminDashboard() {
                      >
                        Edit Student Dashboard
                      </Button>
-                     <Button 
-                       className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold shadow-sm mt-2"
-                       onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}/senior-dashboard`)}
-                     >
-                       Class 11 & 12 Dashboard
-                     </Button>
                    </div>
                  ) : (
                    <div className="space-y-4">
@@ -453,17 +447,11 @@ export default function AdminDashboard() {
                      <Button 
                        className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm mt-2"
                        onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}`)}
-                     >
-                       Edit Student Dashboard
-                     </Button>
-                     <Button 
-                       className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold shadow-sm mt-2"
-                       onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}/senior-dashboard`)}
-                     >
-                       Class 11 & 12 Dashboard
-                     </Button>
-                   </div>
-                 )}
+                      >
+                        Edit Student Dashboard
+                      </Button>
+                    </div>
+                  )}
                 
                 {selectedUser.role === 'institutional' && (
                   <div className="space-y-4">

@@ -85,24 +85,24 @@ export default function ReportPage({ searchParams }: { searchParams: { userId?: 
       `}</style>
 
       {/* Floating Web Print Controls */}
-      <div className="fixed bottom-4 left-3 md:bottom-6 md:left-6 z-[200] print:hidden flex flex-col items-start gap-2">
+      <div className="fixed bottom-3 left-1 md:bottom-4 md:left-3 z-[200] print:hidden flex flex-col items-start gap-1.5">
         <Button 
           onClick={handlePrint} 
           size="sm"
-          className="bg-gradient-to-r from-brand-blue to-brand-orange hover:from-brand-blue/90 hover:to-brand-orange/90 text-white font-black shadow-xl rounded-xl py-2.5 px-3 flex gap-1.5 items-center justify-center border border-white/20 transition-all hover:scale-105"
+          className="bg-gradient-to-r from-brand-blue to-brand-orange hover:from-brand-blue/90 hover:to-brand-orange/90 text-white font-black shadow-xl rounded-lg py-2 px-2.5 flex gap-1 items-center justify-center border border-white/20 transition-all hover:scale-105"
         >
-          <Printer size={14} />
-          <span className="text-xs font-bold">PDF</span>
+          <Printer size={12} />
+          <span className="text-[10px] font-bold">PDF</span>
         </Button>
 
         <Link href="/">
           <Button 
             size="sm"
             variant="ghost"
-            className="bg-white/90 backdrop-blur-sm text-brand-blue hover:bg-slate-50 font-bold shadow-lg rounded-xl py-2 px-3 flex gap-1.5 items-center justify-center border border-slate-200 transition-all hover:scale-105"
+            className="bg-white/90 backdrop-blur-sm text-brand-blue hover:bg-slate-50 font-bold shadow-lg rounded-lg py-1.5 px-2.5 flex gap-1 items-center justify-center border border-slate-200 transition-all hover:scale-105"
           >
-            <Home size={14} />
-            <span className="text-xs font-bold">Back</span>
+            <Home size={12} />
+            <span className="text-[10px] font-bold">Back</span>
           </Button>
         </Link>
       </div>

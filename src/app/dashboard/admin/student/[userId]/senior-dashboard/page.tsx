@@ -328,6 +328,24 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
         {/* Header */}
         <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => router.back()}
+                  variant="ghost"
+                  className="text-white hover:bg-white/10"
+                >
+                  <ArrowLeft size={16} className="mr-2" /> Back
+                </Button>
+                <Button
+                  onClick={() => window.location.href = "/dashboard/admin"}
+                  variant="ghost"
+                  className="text-white hover:bg-white/10"
+                >
+                  <Home size={16} className="mr-2" /> Admin Home
+                </Button>
+              </div>
+            </div>
             <div>
               <h1 className="text-2xl sm:text-3xl font-black mb-1">
                 Student Career Dashboard – Class 11 &amp; 12 <span className="text-blue-200 text-lg font-bold">(Admin View)</span>
@@ -335,22 +353,6 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
               <p className="text-blue-200 text-sm">
                 {profile?.name ? `${profile.name} — ` : ''}Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength
               </p>
-            </div>
-            <div className="flex gap-3">
-              <Button
-                onClick={() => router.back()}
-                variant="ghost"
-                className="text-white hover:bg-white/10"
-              >
-                <ArrowLeft size={16} className="mr-2" /> Back
-              </Button>
-              <Button
-                onClick={() => window.location.href = "/dashboard/admin"}
-                variant="ghost"
-                className="text-white hover:bg-white/10"
-              >
-                <Home size={16} className="mr-2" /> Admin Home
-              </Button>
             </div>
           </div>
         </div>

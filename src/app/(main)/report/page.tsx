@@ -85,23 +85,24 @@ export default function ReportPage({ searchParams }: { searchParams: { userId?: 
       `}</style>
 
       {/* Floating Web Print Controls */}
-      <div className="fixed bottom-6 left-6 md:bottom-8 md:left-8 z-[200] print:hidden flex flex-col items-start gap-3 max-w-sm">
+      <div className="fixed bottom-4 left-3 md:bottom-6 md:left-6 z-[200] print:hidden flex flex-col items-start gap-2">
         <Button 
           onClick={handlePrint} 
-          size="lg" 
-          className="bg-gradient-to-r from-brand-blue to-brand-orange hover:from-brand-blue/90 hover:to-brand-orange/90 text-white font-black shadow-2xl rounded-2xl py-6 px-6 sm:px-8 flex gap-3 items-center justify-center border border-white/20 transition-all hover:scale-105 hover:shadow-brand-orange/20"
+          size="sm"
+          className="bg-gradient-to-r from-brand-blue to-brand-orange hover:from-brand-blue/90 hover:to-brand-orange/90 text-white font-black shadow-xl rounded-xl py-2.5 px-3 flex gap-1.5 items-center justify-center border border-white/20 transition-all hover:scale-105"
         >
-          <Printer size={20} />
-          <span>Download & Print PDF</span>
+          <Printer size={14} />
+          <span className="text-xs font-bold">PDF</span>
         </Button>
 
         <Link href="/">
           <Button 
-            size="lg" 
-            className="bg-white text-brand-blue hover:bg-slate-50 font-black shadow-2xl rounded-2xl py-6 px-6 sm:px-8 flex gap-3 items-center justify-center border border-slate-200 transition-all hover:scale-105 hover:shadow-brand-blue/20"
+            size="sm"
+            variant="ghost"
+            className="bg-white/90 backdrop-blur-sm text-brand-blue hover:bg-slate-50 font-bold shadow-lg rounded-xl py-2 px-3 flex gap-1.5 items-center justify-center border border-slate-200 transition-all hover:scale-105"
           >
-            <Home size={20} />
-            <span>Go to Home Page</span>
+            <Home size={14} />
+            <span className="text-xs font-bold">Back</span>
           </Button>
         </Link>
       </div>

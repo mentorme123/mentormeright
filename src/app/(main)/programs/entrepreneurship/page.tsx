@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, AlertCircle, Shield, FileText, BookOpen } from "lucide-react";
 
 interface Module {
@@ -31,7 +32,10 @@ const MODULES: Module[] = [
   },
 ];
 
-export default function EntrepreneurshipViewerPage() {
+function PDFViewerContent() {
+  const searchParams = useSearchParams();
+  const moduleParam = searchParams.get("module");
+
   const [activeModule, setActiveModule] = useState<Module>(MODULES[0]);
   const [pdfDoc, setPdfDoc] = useState<any>(null);
   const [pageNum, setPageNum] = useState(1);
@@ -44,6 +48,17 @@ export default function EntrepreneurshipViewerPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const renderTaskRef = useRef<any>(null);
   const pdfjsLibRef = useRef<any>(null);
+
+  // Sync active module with query parameter
+  useEffect(() => {
+    if (moduleParam) {
+      const id = parseInt(moduleParam, 10);
+      const mod = MODULES.find((m) => m.id === id);
+      if (mod) {
+        setActiveModule(mod);
+      }
+    }
+  }, [moduleParam]);
 
   // Security restrictions
   useEffect(() => {
@@ -87,7 +102,17 @@ export default function EntrepreneurshipViewerPage() {
       const lib = (window as any)["pdfjs-dist/build/pdf"];
       lib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
       pdfjsLibRef.current = lib;
-      loadDocument(activeModule.filename, lib);
+      
+      // Determine initial document path from query parameters
+      let initialUrl = MODULES[0].filename;
+      if (moduleParam) {
+        const id = parseInt(moduleParam, 10);
+        const mod = MODULES.find((m) => m.id === id);
+        if (mod) {
+          initialUrl = mod.filename;
+        }
+      }
+      loadDocument(initialUrl, lib);
     };
     script.onerror = () => {
       setError("Failed to load PDF library.");
@@ -370,5 +395,18 @@ export default function EntrepreneurshipViewerPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function EntrepreneurshipViewerPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center gap-3 text-slate-400">
+        <Shield size={40} className="animate-pulse opacity-50" />
+        <p className="text-sm font-medium">Loading viewer...</p>
+      </div>
+    }>
+      <PDFViewerContent />
+    </Suspense>
   );
 }

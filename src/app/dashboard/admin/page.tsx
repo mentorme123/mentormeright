@@ -93,6 +93,16 @@ export default function AdminDashboard() {
     loadCurrentAdmin();
   }, [supabase]);
 
+  useEffect(() => {
+    const savedUrl = localStorage.getItem('mentorme_admin_analytics_url');
+    if (savedUrl) setAnalyticsUrl(savedUrl);
+  }, []);
+
+  const saveAnalyticsUrl = () => {
+    localStorage.setItem('mentorme_admin_analytics_url', analyticsUrl);
+    setIsEditingAnalytics(false);
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     window.location.href = '/login';
@@ -788,5 +798,6 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
 
 

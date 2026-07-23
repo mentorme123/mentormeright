@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { BookOpen, ChevronLeft, ChevronRight, Home } from "lucide-react";
@@ -82,7 +82,7 @@ const MODULES = [
   },
 ];
 
-export default function EntrepreneurshipPage() {
+function ModuleContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const moduleParam = searchParams.get("module");
@@ -104,6 +104,104 @@ export default function EntrepreneurshipPage() {
   };
 
   return (
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="flex flex-col lg:flex-row gap-6">
+        {/* Left Sidebar */}
+        <div className="w-full lg:w-80 shrink-0 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-slate-100 bg-slate-50">
+            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Modules</h2>
+          </div>
+          <div className="p-2">
+            {MODULES.map((mod, idx) => (
+              <button
+                key={idx}
+                onClick={() => updateModule(idx)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
+                  active === idx
+                    ? "bg-brand-blue text-white shadow-md"
+                    : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-100"
+                }`}
+              >
+                <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                  active === idx ? "bg-white/20" : "bg-slate-100"
+                }`}>
+                  <BookOpen size={18} className={active === idx ? "text-white" : "text-slate-600"} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold leading-tight">Module {idx + 1}</p>
+                  <p className={`text-xs ${active === idx ? "text-blue-100" : "text-slate-500"} leading-tight`}>
+                    {mod.title.split(": ")[1]}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Content */}
+        <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="p-6 sm:p-8 border-b border-slate-100 bg-slate-50">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="px-2.5 py-1 rounded-full bg-brand-blue text-white text-xs font-bold">
+                MODULE {active + 1}
+              </span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-800 mb-2">
+              {MODULES[active].title}
+            </h2>
+            <p className="text-slate-600 font-medium">{MODULES[active].description}</p>
+          </div>
+
+          <div className="p-6 sm:p-8">
+            {/* Objectives */}
+            <div className="mb-8">
+              <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <span className="w-6 h-6 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs font-bold">✓</span>
+                Learning Objectives
+              </h3>
+              <p className="text-sm text-slate-600 mb-3">By the end of this module, you will be able to:</p>
+              <ul className="space-y-2">
+                {MODULES[active].objectives.map((obj, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
+                    <span className="text-brand-blue font-bold mt-0.5">•</span>
+                    <span>{obj}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Content */}
+            <div className="prose prose-slate max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: MODULES[active].content }} />
+            </div>
+          </div>
+
+          {/* Navigation Buttons */}
+          <div className="p-6 sm:p-8 pt-0 flex items-center justify-between">
+            <Button
+              variant="outline"
+              onClick={() => updateModule(Math.max(0, active - 1))}
+              disabled={active === 0}
+              className="flex items-center gap-2"
+            >
+              <ChevronLeft size={16} /> Previous
+            </Button>
+            <Button
+              onClick={() => updateModule(Math.min(MODULES.length - 1, active + 1))}
+              disabled={active === MODULES.length - 1}
+              className="flex items-center gap-2 bg-brand-blue hover:bg-brand-blue/90"
+            >
+              Next <ChevronRight size={16} />
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function EntrepreneurshipPage() {
+  return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="bg-[#0f2460] text-white">
@@ -122,100 +220,25 @@ export default function EntrepreneurshipPage() {
         </div>
       </div>
 
-      {/* Main Layout */}
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Left Sidebar */}
-          <div className="w-full lg:w-80 shrink-0 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-slate-100 bg-slate-50">
-              <h2 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Modules</h2>
-            </div>
-            <div className="p-2">
-              {MODULES.map((mod, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => updateModule(idx)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
-                    active === idx
-                      ? "bg-brand-blue text-white shadow-md"
-                      : "bg-white text-slate-700 hover:bg-slate-50 border border-slate-100"
-                  }`}
-                >
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                    active === idx ? "bg-white/20" : "bg-slate-100"
-                  }`}>
-                    <BookOpen size={18} className={active === idx ? "text-white" : "text-slate-600"} />
-                  </div>
-                  <div>
-                    <p className="text-sm font-bold leading-tight">Module {idx + 1}</p>
-                    <p className={`text-xs ${active === idx ? "text-blue-100" : "text-slate-500"} leading-tight`}>
-                      {mod.title.split(": ")[1]}
-                    </p>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Content */}
-          <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="p-6 sm:p-8 border-b border-slate-100 bg-slate-50">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="px-2.5 py-1 rounded-full bg-brand-blue text-white text-xs font-bold">
-                  MODULE {active + 1}
-                </span>
-              </div>
-              <h2 className="text-2xl sm:text-3xl font-black text-slate-800 mb-2">
-                {MODULES[active].title}
-              </h2>
-              <p className="text-slate-600 font-medium">{MODULES[active].description}</p>
-            </div>
-
-            <div className="p-6 sm:p-8">
-              {/* Objectives */}
-              <div className="mb-8">
-                <h3 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs font-bold">✓</span>
-                  Learning Objectives
-                </h3>
-                <p className="text-sm text-slate-600 mb-3">By the end of this module, you will be able to:</p>
-                <ul className="space-y-2">
-                  {MODULES[active].objectives.map((obj, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-slate-700">
-                      <span className="text-brand-blue font-bold mt-0.5">•</span>
-                      <span>{obj}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Content */}
-              <div className="prose prose-slate max-w-none">
-                <div dangerouslySetInnerHTML={{ __html: MODULES[active].content }} />
+      <Suspense fallback={
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="w-full lg:w-80 shrink-0 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-pulse">
+              <div className="h-12 bg-slate-100" />
+              <div className="p-2 space-y-2">
+                {[1,2,3].map((i) => (
+                  <div key={i} className="h-16 bg-slate-50 rounded-xl" />
+                ))}
               </div>
             </div>
-
-            {/* Navigation Buttons */}
-            <div className="p-6 sm:p-8 pt-0 flex items-center justify-between">
-              <Button
-                variant="outline"
-                onClick={() => updateModule(Math.max(0, active - 1))}
-                disabled={active === 0}
-                className="flex items-center gap-2"
-              >
-                <ChevronLeft size={16} /> Previous
-              </Button>
-              <Button
-                onClick={() => updateModule(Math.min(MODULES.length - 1, active + 1))}
-                disabled={active === MODULES.length - 1}
-                className="flex items-center gap-2 bg-brand-blue hover:bg-brand-blue/90"
-              >
-                Next <ChevronRight size={16} />
-              </Button>
+            <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-pulse">
+              <div className="h-48 bg-slate-100" />
             </div>
           </div>
         </div>
-      </div>
+      }>
+        <ModuleContent />
+      </Suspense>
     </div>
   );
 }

@@ -245,11 +245,11 @@ export function Navbar() {
                                Free Entrepreneurship Material
                              </button>
                              <div className={`overflow-hidden transition-all duration-300 ${entrepreneurshipModulesOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                               <div className="pl-3 space-y-1">
-                                 <Link href="/programs/entrepreneurship?module=1" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => { setSkillsHubOpen(false); setEntrepreneurshipModulesOpen(false); }}>Module 1: Entrepreneurial Mindset</Link>
-                                 <Link href="/programs/entrepreneurship?module=2" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => { setSkillsHubOpen(false); setEntrepreneurshipModulesOpen(false); }}>Module 2: Opportunity Identification</Link>
-                                 <Link href="/programs/entrepreneurship?module=3" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => { setSkillsHubOpen(false); setEntrepreneurshipModulesOpen(false); }}>Module 3: Business Models</Link>
-                               </div>
+                             <div className="pl-3 space-y-1">
+                               <Link href="/programs/entrepreneurship" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => { setSkillsHubOpen(false); setEntrepreneurshipModulesOpen(false); }}>Module 1: Entrepreneurial Mindset</Link>
+                               <Link href="/programs/entrepreneurship" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => { setSkillsHubOpen(false); setEntrepreneurshipModulesOpen(false); }}>Module 2: Opportunity Identification</Link>
+                               <Link href="/programs/entrepreneurship" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => { setSkillsHubOpen(false); setEntrepreneurshipModulesOpen(false); }}>Module 3: Business Models</Link>
+                             </div>
                              </div>
                            </div>
                          </div>

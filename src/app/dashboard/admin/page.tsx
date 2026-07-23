@@ -624,8 +624,9 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Website Traffic Analytics (Looker Studio) */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Website Traffic Analytics (Looker Studio) */}
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
            <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
              <div>
                <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
@@ -793,7 +794,7 @@ export default function AdminDashboard() {
               </div>
             )}
           </div>
-
+        </div>
       </div>
     </div>
   );

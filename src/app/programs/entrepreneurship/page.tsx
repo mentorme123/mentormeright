@@ -72,39 +72,6 @@ const MODULES = [
       </ul>
     `,
   },
-  {
-    title: "Module 3: Business Models",
-    description: "Designing How Your Business Creates Value",
-    objectives: [
-      "Learn the core components of a business model.",
-      "Use the Business Model Canvas.",
-      "Define revenue streams and cost structures.",
-      "Map key partnerships and activities.",
-      "Build a lean model for your startup idea.",
-    ],
-    quote: "A great business model turns ideas into sustainable value.",
-    content: `
-      <h2>What is a Business Model?</h2>
-      <p>A business model describes how your company creates, delivers, and captures value.</p>
-      <h2>Business Model Canvas</h2>
-      <ul>
-        <li> Value Propositions </li>
-        <li> Customer Segments </li>
-        <li> Channels & Relationships </li>
-        <li> Revenue Streams </li>
-        <li> Key Resources & Activities </li>
-      </ul>
-      <h2>Lean Thinking</h2>
-      <p>Start small. Test assumptions. Iterate fast based on real customer feedback rather than perfect planning.</p>
-      <img src="/images/entrepreneurship/business-models-hero.png" alt="Business Models" className="w-full rounded-2xl mt-8 mb-4" />
-      <h2>Examples</h2>
-      <ul>
-        <li>Subscription model for educational content</li>
-        <li>Freemium model for SaaS products</li>
-        <li>Marketplace model connecting buyers and sellers</li>
-      </ul>
-    `,
-  },
 ];
 
 function ModuleContent() {

@@ -55,7 +55,7 @@ export default function AdminDashboard() {
   const [currentAdmin, setCurrentAdmin] = useState<{ name: string; email: string } | null>(null);
 
   // Analytics Embed URL
-  const [analyticsUrl, setAnalyticsUrl] = useState("");
+  const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
   const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
 
   // Fetch Live Data

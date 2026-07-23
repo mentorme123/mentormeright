@@ -86,7 +86,6 @@ const MODULES = [
     quote: "Ideas are easy. Business models make ideas profitable.",
     content: `
       <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-        {/* Hero Section */}
         <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 sm:p-12">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-between mb-6">
@@ -99,7 +98,6 @@ const MODULES = [
           </div>
         </div>
 
-        {/* Learning Objectives Section */}
         <div className="p-6 sm:p-8 border-b border-slate-100">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="md:w-1/3">
@@ -138,7 +136,6 @@ const MODULES = [
           </div>
         </div>
 
-        {/* PDF Viewer */}
         <div className="p-6 sm:p-8 border-b border-slate-100">
           <h3 className="text-lg font-bold text-slate-800 mb-4">Module 3 PDF</h3>
           <div className="w-full h-[600px] rounded-xl border border-slate-200 overflow-hidden">
@@ -152,7 +149,6 @@ const MODULES = [
           </div>
         </div>
 
-        {/* Quote Section */}
         <div className="bg-slate-50 p-8 sm:p-12 border-b border-slate-100">
           <div className="max-w-3xl mx-auto text-center">
             <div className="text-6xl text-brand-blue/20 font-serif absolute top-4 left-4">"</div>
@@ -162,7 +158,6 @@ const MODULES = [
           </div>
         </div>
 
-        {/* Deliverables Section */}
         <div className="p-6 sm:p-8 border-b border-slate-100">
           <h3 className="text-lg font-bold text-slate-800 mb-4">Deliverables</h3>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -189,7 +184,6 @@ const MODULES = [
           </div>
         </div>
 
-        {/* Bottom Banner */}
         <div className="bg-[#0a1628] text-white p-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
             <div className="flex flex-col items-center text-center">

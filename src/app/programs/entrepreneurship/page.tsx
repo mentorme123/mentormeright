@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { BookOpen, ChevronLeft, ChevronRight, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -82,7 +83,25 @@ const MODULES = [
 ];
 
 export default function EntrepreneurshipPage() {
-  const [active, setActive] = useState(0);
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const moduleParam = searchParams.get("module");
+  const initialModule = moduleParam ? Math.max(0, Math.min(MODULES.length - 1, parseInt(moduleParam) - 1)) : 0;
+  const [active, setActive] = useState(initialModule);
+
+  useEffect(() => {
+    if (moduleParam) {
+      const idx = Math.max(0, Math.min(MODULES.length - 1, parseInt(moduleParam) - 1));
+      setActive(idx);
+    }
+  }, [moduleParam]);
+
+  const updateModule = (idx: number) => {
+    setActive(idx);
+    const url = new URL(window.location.href);
+    url.searchParams.set("module", String(idx + 1));
+    router.replace(url.pathname + url.search, { scroll: false });
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -115,7 +134,7 @@ export default function EntrepreneurshipPage() {
               {MODULES.map((mod, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setActive(idx)}
+                  onClick={() => updateModule(idx)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all ${
                     active === idx
                       ? "bg-brand-blue text-white shadow-md"
@@ -180,14 +199,14 @@ export default function EntrepreneurshipPage() {
             <div className="p-6 sm:p-8 pt-0 flex items-center justify-between">
               <Button
                 variant="outline"
-                onClick={() => setActive((prev) => Math.max(0, prev - 1))}
+                onClick={() => updateModule(Math.max(0, active - 1))}
                 disabled={active === 0}
                 className="flex items-center gap-2"
               >
                 <ChevronLeft size={16} /> Previous
               </Button>
               <Button
-                onClick={() => setActive((prev) => Math.min(MODULES.length - 1, prev + 1))}
+                onClick={() => updateModule(Math.min(MODULES.length - 1, active + 1))}
                 disabled={active === MODULES.length - 1}
                 className="flex items-center gap-2 bg-brand-blue hover:bg-brand-blue/90"
               >

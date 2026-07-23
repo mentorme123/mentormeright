@@ -56,7 +56,8 @@ export default function AdminDashboard() {
 
   // Analytics Embed URL
   const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
-  const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
+   const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
+   const [adminTab, setAdminTab] = useState<"analytics" | "users">("analytics");
 
   // Fetch Live Data
   useEffect(() => {
@@ -624,177 +625,202 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Website Traffic Analytics (Looker Studio) */}
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-           <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-             <div>
-               <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
-                 <BarChart3 size={24} className="text-brand-blue" />
-                 Website Traffic & Analytics
-               </h2>
-               <p className="text-slate-500 text-sm mt-1">Live visitor data powered by Google Analytics (Looker Studio)</p>
-             </div>
-             <Button variant="outline" size="sm" onClick={() => setIsEditingAnalytics(!isEditingAnalytics)} className="font-bold">
-               {isEditingAnalytics ? "Cancel" : analyticsUrl ? "Edit Connection" : "Connect Report"}
-             </Button>
-           </div>
-           
-           {isEditingAnalytics && (
-             <div className="p-6 bg-slate-50 border-b border-slate-200">
-               <label className="block text-sm font-bold text-slate-700 mb-2">Looker Studio Embed URL</label>
-               <div className="flex flex-col sm:flex-row gap-3">
-                 <input 
-                   type="text" 
-                   value={analyticsUrl}
-                   onChange={(e) => setAnalyticsUrl(e.target.value)}
-                   placeholder="https://lookerstudio.google.com/embed/reporting/..." 
-                   className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue shadow-sm"
-                 />
-                 <Button onClick={saveAnalyticsUrl} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-2.5 px-6 rounded-xl shadow-md">
-                   Save Connection
-                 </Button>
-               </div>
-               <div className="mt-5 text-sm text-slate-600 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                 <p className="font-bold text-slate-800 mb-2">How to get your Embed URL:</p>
-                 <ol className="list-decimal pl-4 space-y-1.5">
-                   <li>Go to <a href="https://lookerstudio.google.com/" target="_blank" rel="noreferrer" className="text-brand-blue font-bold hover:underline">Looker Studio</a> and create a report connecting to your Google Analytics 4 property.</li>
-                   <li>Click <strong>File &gt; Embed report</strong> in the top menu.</li>
-                   <li>Enable embedding and select <strong>Embed URL</strong>.</li>
-                   <li>Copy the URL provided and paste it into the field above.</li>
-                 </ol>
-               </div>
-             </div>
-           )}
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="border-b border-slate-100 bg-slate-50 p-2 flex gap-2">
+              <button
+                onClick={() => setAdminTab("analytics")}
+                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all ${
+                  adminTab === "analytics"
+                    ? "bg-white text-brand-blue shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Website Traffic & Analytics
+              </button>
+              <button
+                onClick={() => setAdminTab("users")}
+                className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all ${
+                  adminTab === "users"
+                    ? "bg-white text-brand-blue shadow-sm"
+                    : "text-slate-500 hover:text-slate-700"
+                }`}
+              >
+                Live User Directory
+              </button>
+            </div>
 
-           <div className="p-0 bg-slate-100 w-full h-[600px] relative flex items-center justify-center border-t border-slate-200">
-             {analyticsUrl ? (
-               <iframe 
-                 src={analyticsUrl}
-                 frameBorder="0" 
-                 style={{ border: 0, width: "100%", height: "100%" }} 
-                 allowFullScreen 
-                 sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-                 className="w-full h-full absolute inset-0 z-10 bg-white"
-               ></iframe>
-             ) : (
-               <div className="text-center z-0 p-8 max-w-lg">
-                  <BarChart3 size={56} className="mx-auto text-slate-300 mb-4" />
-                  <h3 className="text-xl font-black text-slate-700 mb-2">Analytics Not Connected</h3>
-                  <p className="text-slate-500 text-sm mb-6 leading-relaxed">
-                    Connect your Google Looker Studio report to view real-time website traffic, page views, and visitor demographics directly inside this dashboard.
-                  </p>
-                  <Button onClick={() => setIsEditingAnalytics(true)} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold shadow-md">
-                    Connect Google Analytics
-                  </Button>
-               </div>
-             )}
-           </div>
-        </div>
-
-        {/* User Management Table */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
-           <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-             <div>
-               <h2 className="text-xl font-black text-slate-800">Live User Directory</h2>
-               <p className="text-slate-500 text-sm mt-1">Search, view, and manage all accounts directly from the database.</p>
-             </div>
-             <div className="relative w-full sm:w-72">
-               <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                 <Search size={16} className="text-slate-400" />
-               </div>
-               <input 
-                 type="text" 
-                 value={searchTerm}
-                 onChange={(e) => setSearchTerm(e.target.value)}
-                 placeholder="Search by name, email, or role..." 
-                 className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all shadow-sm"
-               />
-             </div>
-           </div>
-
-           <div className="overflow-x-auto">
-             <table className="w-full text-left border-collapse min-w-[600px]">
-                <thead>
-                  <tr className="bg-white text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
-                    <th className="px-6 py-4 font-bold">#</th>
-                    <th className="px-6 py-4 font-bold">Name</th>
-                    <th className="px-6 py-4 font-bold">Email</th>
-                    <th className="px-6 py-4 font-bold">Role</th>
-                    <th className="px-6 py-4 font-bold">Joined</th>
-                    <th className="px-6 py-4 font-bold text-right">Actions</th>
-                  </tr>
-                </thead>
-               <tbody className="divide-y divide-slate-100">
-                 {loading ? (
-                   <tr>
-                     <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
-                       <div className="flex flex-col items-center justify-center">
-                         <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                         <p className="font-medium">Fetching live database records...</p>
-                       </div>
-                     </td>
-                   </tr>
-                 ) : filteredUsers.length === 0 ? (
-                   <tr>
-                     <td colSpan={5} className="px-6 py-12 text-center text-slate-500 font-medium">
-                       No users found matching &quot;{searchTerm}&quot;
-                     </td>
-                   </tr>
-                  ) : (
-                    filteredUsers.map((user, idx) => (
-                      <tr key={user.id} className="hover:bg-slate-50 transition-colors group">
-                        <td className="px-6 py-4 text-slate-500 font-mono text-sm">{idx + 1}</td>
-                        <td className="px-6 py-4 font-bold text-slate-800">
-                         <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
-                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">
-                               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                             </svg>
-                            </div>
-                            {sanitizeText(user.name) || "N/A"}
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 text-slate-500 font-medium">{sanitizeText(user.email)}</td>
-                        <td className="px-6 py-4">
-                          <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${
-                            user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
-                            user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
-                            'bg-purple-50 text-purple-700 border border-purple-100'
-                          }`}>
-                            {sanitizeText(user.role)}
-                          </span>
-                        </td>
-                        <td className="px-6 py-4 text-slate-500 text-sm font-medium">
-                          {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                             <Button 
-                               variant="ghost" 
-                               size="sm" 
-                               onClick={() => {
-                                 selectedUserIdRef.current = user.id;
-                                 setSelectedUser(user);
-                               }}
-                               className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold opacity-0 group-hover:opacity-100 transition-opacity"
-                             >
-                            View Details <ChevronRight size={16} className="ml-1" />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+            {adminTab === "analytics" && (
+            <div>
+            <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
+                  <BarChart3 size={24} className="text-brand-blue" />
+                  Website Traffic & Analytics
+                </h2>
+                <p className="text-slate-500 text-sm mt-1">Live visitor data powered by Google Analytics (Looker Studio)</p>
+              </div>
+              <Button variant="outline" size="sm" onClick={() => setIsEditingAnalytics(!isEditingAnalytics)} className="font-bold">
+                {isEditingAnalytics ? "Cancel" : analyticsUrl ? "Edit Connection" : "Connect Report"}
+              </Button>
             </div>
             
-            {!loading && (
-              <div className="p-4 border-t border-slate-100 bg-slate-50 text-center text-sm font-bold text-slate-500">
-                Showing {filteredUsers.length} of {users.length} live records
+            {isEditingAnalytics && (
+              <div className="p-6 bg-slate-50 border-b border-slate-200">
+                <label className="block text-sm font-bold text-slate-700 mb-2">Looker Studio Embed URL</label>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input 
+                    type="text" 
+                    value={analyticsUrl}
+                    onChange={(e) => setAnalyticsUrl(e.target.value)}
+                    placeholder="https://lookerstudio.google.com/embed/reporting/..." 
+                    className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue shadow-sm"
+                  />
+                  <Button onClick={saveAnalyticsUrl} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-2.5 px-6 rounded-xl shadow-md">
+                    Save Connection
+                  </Button>
+                </div>
+                <div className="mt-5 text-sm text-slate-600 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                  <p className="font-bold text-slate-800 mb-2">How to get your Embed URL:</p>
+                  <ol className="list-decimal pl-4 space-y-1.5">
+                    <li>Go to <a href="https://lookerstudio.google.com/" target="_blank" rel="noreferrer" className="text-brand-blue font-bold hover:underline">Looker Studio</a> and create a report connecting to your Google Analytics 4 property.</li>
+                    <li>Click <strong>File &gt; Embed report</strong> in the top menu.</li>
+                    <li>Enable embedding and select <strong>Embed URL</strong>.</li>
+                    <li>Copy the URL provided and paste it into the field above.</li>
+                  </ol>
+                </div>
               </div>
             )}
+
+            <div className="p-0 bg-slate-100 w-full h-[600px] relative flex items-center justify-center border-t border-slate-200">
+              {analyticsUrl ? (
+                <iframe 
+                  src={analyticsUrl}
+                  frameBorder="0" 
+                  style={{ border: 0, width: "100%", height: "100%" }} 
+                  allowFullScreen 
+                  sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                  className="w-full h-full absolute inset-0 z-10 bg-white"
+                ></iframe>
+              ) : (
+                <div className="text-center z-0 p-8 max-w-lg">
+                   <BarChart3 size={56} className="mx-auto text-slate-300 mb-4" />
+                   <h3 className="text-xl font-black text-slate-700 mb-2">Analytics Not Connected</h3>
+                   <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                     Connect your Google Looker Studio report to view real-time website traffic, page views, and visitor demographics directly inside this dashboard.
+                   </p>
+                   <Button onClick={() => setIsEditingAnalytics(true)} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold shadow-md">
+                     Connect Google Analytics
+                   </Button>
+                </div>
+              )}
+            </div>
+            </div>
+            )}
+
+            {adminTab === "users" && (
+            <div>
+            <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <h2 className="text-xl font-black text-slate-800">Live User Directory</h2>
+                <p className="text-slate-500 text-sm mt-1">Search, view, and manage all accounts directly from the database.</p>
+              </div>
+              <div className="relative w-full sm:w-72">
+                <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                  <Search size={16} className="text-slate-400" />
+                </div>
+                <input 
+                  type="text" 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search by name, email, or role..." 
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all shadow-sm"
+                />
+              </div>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse min-w-[600px]">
+                 <thead>
+                   <tr className="bg-white text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
+                     <th className="px-6 py-4 font-bold">#</th>
+                     <th className="px-6 py-4 font-bold">Name</th>
+                     <th className="px-6 py-4 font-bold">Email</th>
+                     <th className="px-6 py-4 font-bold">Role</th>
+                     <th className="px-6 py-4 font-bold">Joined</th>
+                     <th className="px-6 py-4 font-bold text-right">Actions</th>
+                   </tr>
+                 </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {loading ? (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-12 text-center text-slate-500">
+                        <div className="flex flex-col items-center justify-center">
+                          <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                          <p className="font-medium">Fetching live database records...</p>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : filteredUsers.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-12 text-center text-slate-500 font-medium">
+                        No users found matching &quot;{searchTerm}&quot;
+                      </td>
+                    </tr>
+                   ) : (
+                     filteredUsers.map((user, idx) => (
+                       <tr key={user.id} className="hover:bg-slate-50 transition-colors group">
+                         <td className="px-6 py-4 text-slate-500 font-mono text-sm">{idx + 1}</td>
+                         <td className="px-6 py-4 font-bold text-slate-800">
+                          <div className="flex items-center gap-3">
+                             <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
+                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                              </svg>
+                             </div>
+                             {sanitizeText(user.name) || "N/A"}
+                           </div>
+                         </td>
+                         <td className="px-6 py-4 text-slate-500 font-medium">{sanitizeText(user.email)}</td>
+                         <td className="px-6 py-4">
+                           <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${
+                             user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
+                             user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                             'bg-purple-50 text-purple-700 border border-purple-100'
+                           }`}>
+                             {sanitizeText(user.role)}
+                           </span>
+                         </td>
+                         <td className="px-6 py-4 text-slate-500 text-sm font-medium">
+                           {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                         </td>
+                         <td className="px-6 py-4 text-right">
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => {
+                                  selectedUserIdRef.current = user.id;
+                                  setSelectedUser(user);
+                                }}
+                                className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                             View Details <ChevronRight size={16} className="ml-1" />
+                           </Button>
+                         </td>
+                       </tr>
+                     ))
+                   )}
+                 </tbody>
+               </table>
+             </div>
+             
+             {!loading && (
+               <div className="p-4 border-t border-slate-100 bg-slate-50 text-center text-sm font-bold text-slate-500">
+                 Showing {filteredUsers.length} of {users.length} live records
+               </div>
+             )}
+            </div>
+            )}
           </div>
-        </div>
       </div>
     </div>
   );

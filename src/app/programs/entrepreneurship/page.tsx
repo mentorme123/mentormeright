@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { BookOpen, ChevronLeft, ChevronRight, Home, Search, ZoomIn, ZoomOut, Shield, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { Navbar } from "@/components/navbar";
 
 const MODULES = [
   {
@@ -47,7 +48,7 @@ function ModuleContent() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-0 min-h-[calc(100vh-64px)]">
+    <div className="flex flex-col lg:flex-row gap-0 h-[calc(100vh-80px)] overflow-hidden">
       {/* Left Sidebar */}
       <div className="w-full lg:w-80 shrink-0 bg-slate-900 p-6 text-white">
         <div className="flex items-center gap-3 mb-6">
@@ -122,7 +123,7 @@ function ModuleContent() {
         </div>
 
         {/* PDF Viewer */}
-        <div className="flex-1 relative w-full h-[calc(100vh-64px-56px)] bg-[#e5e7eb]">
+        <div className="flex-1 relative w-full h-[calc(100vh-80px-56px)] bg-[#e5e7eb]">
           <iframe
             src={`${MODULES[active].pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
             className="w-full h-full border-none"
@@ -136,7 +137,8 @@ function ModuleContent() {
 
 export default function EntrepreneurshipPage() {
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
+      <Navbar />
       <Suspense fallback={
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col lg:flex-row gap-6">

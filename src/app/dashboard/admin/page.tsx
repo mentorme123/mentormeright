@@ -54,6 +54,10 @@ export default function AdminDashboard() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState<{ name: string; email: string } | null>(null);
 
+  // Analytics Embed URL
+  const [analyticsUrl, setAnalyticsUrl] = useState("");
+  const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
+
   // Fetch Live Data
   useEffect(() => {
     async function fetchDashboardData() {
@@ -610,6 +614,73 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Website Traffic Analytics (Looker Studio) */}
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+           <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+             <div>
+               <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
+                 <BarChart3 size={24} className="text-brand-blue" />
+                 Website Traffic & Analytics
+               </h2>
+               <p className="text-slate-500 text-sm mt-1">Live visitor data powered by Google Analytics (Looker Studio)</p>
+             </div>
+             <Button variant="outline" size="sm" onClick={() => setIsEditingAnalytics(!isEditingAnalytics)} className="font-bold">
+               {isEditingAnalytics ? "Cancel" : analyticsUrl ? "Edit Connection" : "Connect Report"}
+             </Button>
+           </div>
+           
+           {isEditingAnalytics && (
+             <div className="p-6 bg-slate-50 border-b border-slate-200">
+               <label className="block text-sm font-bold text-slate-700 mb-2">Looker Studio Embed URL</label>
+               <div className="flex flex-col sm:flex-row gap-3">
+                 <input 
+                   type="text" 
+                   value={analyticsUrl}
+                   onChange={(e) => setAnalyticsUrl(e.target.value)}
+                   placeholder="https://lookerstudio.google.com/embed/reporting/..." 
+                   className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue shadow-sm"
+                 />
+                 <Button onClick={saveAnalyticsUrl} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-2.5 px-6 rounded-xl shadow-md">
+                   Save Connection
+                 </Button>
+               </div>
+               <div className="mt-5 text-sm text-slate-600 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                 <p className="font-bold text-slate-800 mb-2">How to get your Embed URL:</p>
+                 <ol className="list-decimal pl-4 space-y-1.5">
+                   <li>Go to <a href="https://lookerstudio.google.com/" target="_blank" rel="noreferrer" className="text-brand-blue font-bold hover:underline">Looker Studio</a> and create a report connecting to your Google Analytics 4 property.</li>
+                   <li>Click <strong>File &gt; Embed report</strong> in the top menu.</li>
+                   <li>Enable embedding and select <strong>Embed URL</strong>.</li>
+                   <li>Copy the URL provided and paste it into the field above.</li>
+                 </ol>
+               </div>
+             </div>
+           )}
+
+           <div className="p-0 bg-slate-100 w-full h-[600px] relative flex items-center justify-center border-t border-slate-200">
+             {analyticsUrl ? (
+               <iframe 
+                 src={analyticsUrl}
+                 frameBorder="0" 
+                 style={{ border: 0, width: "100%", height: "100%" }} 
+                 allowFullScreen 
+                 sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                 className="w-full h-full absolute inset-0 z-10 bg-white"
+               ></iframe>
+             ) : (
+               <div className="text-center z-0 p-8 max-w-lg">
+                  <BarChart3 size={56} className="mx-auto text-slate-300 mb-4" />
+                  <h3 className="text-xl font-black text-slate-700 mb-2">Analytics Not Connected</h3>
+                  <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                    Connect your Google Looker Studio report to view real-time website traffic, page views, and visitor demographics directly inside this dashboard.
+                  </p>
+                  <Button onClick={() => setIsEditingAnalytics(true)} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold shadow-md">
+                    Connect Google Analytics
+                  </Button>
+               </div>
+             )}
+           </div>
+        </div>
+
         {/* User Management Table */}
         <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
            <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -717,3 +788,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+

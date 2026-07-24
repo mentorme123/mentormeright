@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ParameterScores } from "@/lib/scoring";
-import { Button } from "@/components/ui/button";
-import { ChevronRight, Home } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 interface UserProfile {
   id: string;
@@ -367,28 +366,22 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   return (
     <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
       <div className="max-w-6xl mx-auto">
-          {/* Header */}
-          <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
-            <div className="flex justify-end gap-3 mb-6">
-              <Button
-                onClick={() => window.location.href = "/"}
-                variant="ghost"
-                className="text-white hover:bg-white/10"
-              >
-                <Home size={16} className="mr-2" /> Back to Homepage
-              </Button>
-            </div>
-            <div className="text-center">
-              <h1 className="text-2xl sm:text-3xl font-black mb-1">
-                Student Career Dashboard {isSchool ? "– Class 9 & 10" : " – Class 11 & 12"}
-              </h1>
-              <p className="text-blue-200 text-sm">
-                {isSchool 
-                  ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas" 
-                  : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
-              </p>
-            </div>
+        <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
+          <div className="flex justify-between items-center">
+            <div className="font-bold text-sm sm:text-base">MentorMe | Career Intelligence Partner for Schools</div>
+            <div className="font-bold text-sm sm:text-base">{isSchool ? "DASHBOARD 1 OF 2" : "DASHBOARD 2 OF 2"}</div>
           </div>
+          <div className="text-center mt-6">
+            <h1 className="text-2xl sm:text-3xl font-black mb-1">
+              Student Career Dashboard (sample only) – {isSchool ? "Class 9 & 10" : "Class 11 & 12"}
+            </h1>
+            <p className="text-blue-200 text-sm">
+              {isSchool
+                ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas"
+                : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
+            </p>
+          </div>
+        </div>
 
         {scoresMessage && (
           <div className="max-w-6xl mx-auto mb-6">
@@ -398,69 +391,30 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
         )}
 
-        {/* Student Info */}
-        {(profile?.name || profile?.email || profile?.phone || profile?.education_level) && (
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-8">
-            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-lg text-slate-700">
-              {profile?.name && (
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900 text-xl">Name:</span>
-                  <span className="font-semibold text-xl">{profile.name}</span>
-                </div>
-              )}
-              {profile?.email && (
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900 text-xl">Email:</span>
-                  <span className="font-semibold text-xl">{profile.email}</span>
-                </div>
-              )}
-              {profile?.phone && (
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900 text-xl">Phone:</span>
-                  <span className="font-semibold text-xl">{profile.phone}</span>
-                </div>
-              )}
-              {profile?.education_level && (
-                <div className="flex items-center gap-2">
-                  <span className="font-bold text-slate-900 text-xl">Grade:</span>
-                  <span className="font-semibold text-xl">{profile.education_level}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          {isSchool ? (
+            <>
+              <KPICard label="Career Clarity Score" value={getKpiValue("Career Clarity Score", `${overallScore}%`)} color="text-[#1B3A6B]" bg="bg-blue-50" />
+              <KPICard label="Recommended Stream" value={getKpiValue("Recommended Stream", report?.academicRoadmap?.recommendedStream || stream.stream)} color="text-[#15803D]" bg="bg-emerald-50" />
+              <KPICard label="Subject Readiness" value={getKpiValue("Subject Readiness", `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#7C3AED]" bg="bg-purple-50" />
+              <KPICard label="Personality & Interest Alignment" value={getKpiValue("Personality & Interest Alignment", `${pct(displayScores[topRIASEC.key] || 0, MAX_RIASEC)}%`)} color="text-[#C2410C]" bg="bg-orange-50" />
+            </>
+          ) : (
+            <>
+              <KPICard label="Overall Academic Fit" value={getKpiValue("Overall Academic Fit", `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#1B3A6B]" bg="bg-blue-50" />
+              <KPICard label="Profile Strength Score" value={getKpiValue("Profile Strength Score", `${profileStrengthScore}/100`)} color="text-[#7C3AED]" bg="bg-purple-50" />
+              <KPICard label="Career Readiness Score" value={getKpiValue("Career Readiness Score", `${careerReadinessScore}%`)} color="text-[#15803D]" bg="bg-emerald-50" />
+              <KPICard label="Target Course" value={getKpiValue("Target Course", report?.educationPathways?.degrees?.[0] || stream.courses[0])} color="text-[#C2410C]" bg="bg-orange-50" />
+            </>
+          )}
+        </div>
 
-         {/* KPI Cards */}
-         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-           {isSchool ? (
-             <>
-               <KPICard label="Career Clarity Score" value={getKpiValue("Career Clarity Score", `${overallScore}%`)} color="text-[#1B3A6B]" bg="bg-blue-50" />
-               <KPICard label="Recommended Stream" value={getKpiValue("Recommended Stream", report?.academicRoadmap?.recommendedStream || stream.stream)} color="text-[#15803D]" bg="bg-white" />
-               <KPICard label="Subject Readiness" value={getKpiValue("Subject Readiness", `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#7C3AED]" bg="bg-purple-50" />
-               <KPICard label="Personality & Interest Alignment" value={getKpiValue("Personality & Interest Alignment", `${pct(displayScores[topRIASEC.key] || 0, MAX_RIASEC)}%`)} color="text-[#C2410C]" bg="bg-orange-50" />
-             </>
-           ) : (
-             <>
-               <KPICard label="Overall Academic Fit" value={getKpiValue("Overall Academic Fit", `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#1B3A6B]" bg="bg-blue-50" />
-               <KPICard label="Profile Strength Score" value={getKpiValue("Profile Strength Score", `${profileStrengthScore}/100`)} color="text-[#7C3AED]" bg="bg-purple-50" />
-               <KPICard label="Career Readiness Score" value={getKpiValue("Career Readiness Score", `${careerReadinessScore}%`)} color="text-[#15803D]" bg="bg-emerald-50" />
-               <KPICard label="Target Course" value={getKpiValue("Target Course", report?.educationPathways?.degrees?.[0] || stream.courses[0])} color="text-[#C2410C]" bg="bg-orange-50" />
-             </>
-           )}
-         </div>
-
-         {/* Main Content Grid */}
-         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
-           
-           {/* Left Column: Career Match Index / Academic Fitness */}
-           <div className="lg:col-span-1 h-full">
-             <div className={`rounded-2xl p-6 border shadow-sm h-full ${isSchool ? 'border-blue-200 bg-blue-50/30' : 'border-slate-200 bg-white'}`}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+          <div className="lg:col-span-1 h-full">
+            <div className="rounded-2xl p-6 border shadow-sm h-full bg-blue-50 border-blue-100">
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Career Match Index" : "Academic Fitness"}
               </h3>
-              {isSchool && profile?.education_level && (
-                <p className="text-xs text-slate-500 mb-4 italic">Target: {report?.educationPathways?.degrees?.[0] || stream.courses[0]} Computer Science</p>
-              )}
               {isSchool ? (
                 <div className="space-y-4">
                   {careerMatches.map((career, i) => (
@@ -499,9 +453,8 @@ export default function CareerDashboard({ userId }: { userId: string }) {
             </div>
           </div>
 
-           {/* Middle Column: Subject Readiness / Career Path Readiness */}
-           <div className="lg:col-span-1 h-full">
-             <div className={`rounded-2xl p-6 border shadow-sm h-full ${isSchool ? 'bg-orange-50 border-orange-100' : 'bg-white border-slate-200'}`}>
+          <div className="lg:col-span-1 h-full">
+            <div className={`rounded-2xl p-6 border shadow-sm h-full bg-orange-50 border-orange-100`}>
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Subject Readiness" : "Career Path Readiness"}
               </h3>
@@ -540,11 +493,17 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                   ))}
                 </div>
               )}
+              {isSchool && (
+                <div className="mt-4 pt-4 border-t border-orange-200">
+                  <button className="w-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold py-2 px-4 rounded-xl hover:bg-emerald-100 transition">
+                    Recommended Stream: Commerce
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Right Column: Counselor Recommendation */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 h-full">
             <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 shadow-sm h-full">
               <h3 className="text-lg font-black text-emerald-800 mb-4">
                 {isSchool ? "Counselor Recommendation" : "Counselor Recommendations"}
@@ -566,27 +525,12 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
         </div>
 
-        {/* Recommended Stream Badge */}
-        {isSchool && (
-          <div className="mt-8">
-            <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 inline-flex items-center gap-2">
-              <span className="text-emerald-600 font-bold text-sm">✓</span>
-              <span className="text-sm text-emerald-800 font-medium">
-                Recommended Stream: <span className="font-bold">{report?.academicRoadmap?.recommendedStream || stream.stream}</span>
-              </span>
-            </div>
-          </div>
-        )}
-
-        {/* Footer Contact */}
         <div className="mt-8 text-center text-xs text-slate-400">
-          <a href="https://www.mentormeright.com" target="_blank" rel="noopener noreferrer" className="hover:text-slate-600 underline">www.mentormeright.com</a>
+          <span>www.mentormeright.com</span>
           <span className="mx-2">|</span>
-          <a href="mailto:admin@mentormeright.in" className="hover:text-slate-600 underline">admin@mentormeright.in</a>
+          <span>sirishakode@mentormeright.in</span>
           <span className="mx-2">|</span>
-          <a href="tel:+919392707596" className="hover:text-slate-600 underline">+91-9392707596</a>
-          <span className="mx-2">|</span>
-          <a href="tel:+918188824440" className="hover:text-slate-600 underline">+91-8188824440</a>
+          <span>+91-84310 97872</span>
         </div>
       </div>
     </div>

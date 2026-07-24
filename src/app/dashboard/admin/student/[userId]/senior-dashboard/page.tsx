@@ -455,7 +455,7 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
           </div>
 
           {/* Right Column: Counselor Recommendation */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 h-full">
             <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 shadow-sm h-full">
               <h3 className="text-lg font-black text-emerald-800 mb-4">
                 Counselor Recommendations

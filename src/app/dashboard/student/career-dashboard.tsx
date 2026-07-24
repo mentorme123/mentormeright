@@ -449,12 +449,12 @@ export default function CareerDashboard({ userId }: { userId: string }) {
            )}
          </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          
-          {/* Left Column: Career Match Index / Academic Fitness */}
-          <div className="lg:col-span-1">
-            <div className={`bg-white rounded-2xl p-6 border shadow-sm ${isSchool ? 'border-blue-200 bg-blue-50/30' : 'border-slate-200'}`}>
+         {/* Main Content Grid */}
+         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+           
+           {/* Left Column: Career Match Index / Academic Fitness */}
+           <div className="lg:col-span-1 h-full">
+             <div className={`rounded-2xl p-6 border shadow-sm h-full ${isSchool ? 'border-blue-200 bg-blue-50/30' : 'border-slate-200 bg-white'}`}>
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Career Match Index" : "Academic Fitness"}
               </h3>
@@ -499,9 +499,9 @@ export default function CareerDashboard({ userId }: { userId: string }) {
             </div>
           </div>
 
-          {/* Middle Column: Subject Readiness / Career Path Readiness */}
-          <div className="lg:col-span-1">
-            <div className={`rounded-2xl p-6 border shadow-sm ${isSchool ? 'bg-orange-50 border-orange-100' : 'bg-white border-slate-200'}`}>
+           {/* Middle Column: Subject Readiness / Career Path Readiness */}
+           <div className="lg:col-span-1 h-full">
+             <div className={`rounded-2xl p-6 border shadow-sm h-full ${isSchool ? 'bg-orange-50 border-orange-100' : 'bg-white border-slate-200'}`}>
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Subject Readiness" : "Career Path Readiness"}
               </h3>

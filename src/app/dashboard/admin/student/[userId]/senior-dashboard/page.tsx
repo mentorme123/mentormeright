@@ -402,11 +402,11 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
           
           {/* Left Column: Academic Fitness */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div className="lg:col-span-1 h-full">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm h-full">
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 Academic Fitness
               </h3>
@@ -430,8 +430,8 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
           </div>
 
           {/* Middle Column: Career Path Readiness */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+          <div className="lg:col-span-1 h-full">
+            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm h-full">
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 Career Path Readiness
               </h3>

@@ -324,34 +324,34 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
 
   return (
     <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
-      <div className="max-w-6xl mx-auto">
-         {/* Header */}
-         <div className="bg-[#0f2460] text-white rounded-2xl p-6 sm:p-8 mb-8 shadow-xl">
-           <div className="flex justify-end gap-3 mb-6">
-             <Button
-               onClick={() => router.back()}
-               variant="ghost"
-               className="text-white hover:bg-white/10"
-             >
-               <ArrowLeft size={16} className="mr-2" /> Back
-             </Button>
-             <Button
-               onClick={() => window.location.href = "/dashboard/admin"}
-               variant="ghost"
-               className="text-white hover:bg-white/10"
-             >
-               <Home size={16} className="mr-2" /> Admin Home
-             </Button>
-           </div>
-           <div className="text-center">
-             <h1 className="text-2xl sm:text-3xl font-black mb-1">
-               Student Career Dashboard – Class 11 &amp; 12 <span className="text-blue-200 text-lg font-bold">(Admin View)</span>
-             </h1>
-             <p className="text-blue-200 text-sm">
-               {profile?.name ? `${profile.name} — ` : ''}Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength
-             </p>
-           </div>
-         </div>
+       <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="bg-[#0f2460] text-white rounded-2xl p-3 sm:p-5 mb-6 shadow-xl">
+            <div className="flex justify-end gap-3 mb-3">
+              <Button
+                onClick={() => router.back()}
+                variant="ghost"
+                className="text-white hover:bg-white/10 h-8 px-3 text-xs"
+              >
+                <ArrowLeft size={14} className="mr-1" /> Back
+              </Button>
+              <Button
+                onClick={() => window.location.href = "/dashboard/admin"}
+                variant="ghost"
+                className="text-white hover:bg-white/10 h-8 px-3 text-xs"
+              >
+                <Home size={14} className="mr-1" /> Admin Home
+              </Button>
+            </div>
+            <div className="text-center mt-2">
+              <h1 className="text-xl sm:text-2xl font-black mb-0.5">
+                Student Career Dashboard – Class 11 &amp; 12 <span className="text-blue-200 text-sm font-bold">(Admin View)</span>
+              </h1>
+              <p className="text-blue-200 text-xs">
+                {profile?.name ? `${profile.name} — ` : ''}Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength
+              </p>
+            </div>
+          </div>
 
         {scoresMessage && (
           <div className="max-w-6xl mx-auto mb-6">

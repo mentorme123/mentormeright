@@ -115,7 +115,7 @@ export default function CareerLibrary() {
     <div className="min-h-screen bg-slate-50 pt-24 pb-12">
       {/* Header */}
       <div className="bg-white border-b border-slate-200 py-16 px-4 mb-8">
-        <div className="max-w-7xl mx-auto text-center space-y-6">
+        <div className="max-w-7xl text-center space-y-6">
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -134,7 +134,7 @@ export default function CareerLibrary() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl px-4 grid lg:grid-cols-4 gap-8">
         
         {/* Filters Sidebar */}
         <div className="lg:col-span-1 space-y-8">

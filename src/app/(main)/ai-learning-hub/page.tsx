@@ -33,7 +33,7 @@ export default function AILearningHubPage() {
 
   return (
     <section className="py-24 px-4 bg-gradient-to-br from-pink-50 via-white to-purple-50">
-      <div className="max-w-6xl mx-auto space-y-12">
+      <div className="max-w-6xl space-y-12">
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold">AI Learning Hub</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

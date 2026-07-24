@@ -45,7 +45,7 @@ export default function CounsellorsLanding() {
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-20">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-6xl px-4">
         
         {/* Hero Section */}
         <div className="bg-white rounded-[3rem] p-8 md:p-16 border border-slate-200 shadow-xl overflow-hidden relative mb-12">

@@ -44,7 +44,7 @@ export default function CareersPage() {
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
       {/* Hero Section */}
       <section className="bg-brand-blue/5 py-24 px-4 text-center">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-4xl space-y-6">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-orange/10 border border-brand-orange/20 text-brand-orange text-sm font-bold uppercase mb-4 tracking-wider">
             Join Our Team
           </div>
@@ -59,7 +59,7 @@ export default function CareersPage() {
 
       {/* Why Work With Us */}
       <section className="py-20 px-4">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-800">Why MentorMe?</h2>
             <p className="text-slate-500 mt-4 max-w-2xl mx-auto">We believe in fostering a culture of innovation, continuous learning, and absolute empathy.</p>
@@ -92,7 +92,7 @@ export default function CareersPage() {
 
       {/* Open Positions */}
       <section className="bg-slate-50 py-20 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl">
           <h2 className="text-3xl font-bold text-slate-800 mb-8 text-center">Open Positions</h2>
           
           <div className="space-y-4">

@@ -1,7 +1,7 @@
 export default function RefundPage() {
   return (
     <div className="bg-slate-50 min-h-screen py-20 px-4">
-      <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200">
+      <div className="max-w-4xl bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-slate-200">
         <h1 className="text-4xl md:text-5xl font-black text-brand-orange mb-4">Refund & Cancellation Policy</h1>
         <p className="text-slate-500 mb-10 font-medium">Last Updated: April 2026</p>
 

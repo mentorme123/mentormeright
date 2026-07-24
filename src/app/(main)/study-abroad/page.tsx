@@ -52,7 +52,7 @@ export default function StudyAbroadHub() {
           <div className="absolute inset-0 bg-gradient-to-b from-brand-blue/80 to-[#001529]"></div>
         </div>
         
-        <div className="relative z-10 max-w-5xl mx-auto px-4 text-center space-y-8">
+        <div className="relative z-10 max-w-5xl px-4 text-center space-y-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -87,7 +87,7 @@ export default function StudyAbroadHub() {
       </section>
 
       {/* Pillars Section */}
-      <section className="py-24 max-w-7xl mx-auto px-4">
+      <section className="py-24 max-w-7xl px-4">
         <div className="text-center mb-16 space-y-4">
           <h2 className="text-4xl md:text-5xl font-black text-slate-900">How We <span className="text-brand-blue">Support You</span></h2>
           <p className="text-slate-500 text-lg max-w-2xl mx-auto">Comprehensive end-to-end services designed to minimize your burden and maximize your chances of admission.</p>
@@ -120,7 +120,7 @@ export default function StudyAbroadHub() {
 
       {/* Destinations Grid */}
       <section id="destinations" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl px-4">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-black text-slate-900">Top Study <span className="text-brand-orange">Destinations</span></h2>
@@ -173,7 +173,7 @@ export default function StudyAbroadHub() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-48 -mt-48 blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-brand-orange/20 rounded-full -ml-48 -mb-48 blur-3xl"></div>
         
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10 space-y-8">
+        <div className="max-w-4xl px-4 text-center relative z-10 space-y-8">
           <h2 className="text-4xl md:text-5xl font-black text-white">Ready to Start Your <span className="text-brand-orange">Global Career?</span></h2>
           <p className="text-xl text-blue-100">Our experts have helped 500+ students secure admissions in top 1% global universities. Your success starts with a single click.</p>
           <div className="flex flex-wrap justify-center gap-4">

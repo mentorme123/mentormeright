@@ -74,7 +74,7 @@ export default function ExamPredictorPage() {
 
   return (
     <div className="min-h-screen bg-white pt-24 pb-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-8">
+      <div className="max-w-5xl px-4 sm:px-8">
         {/* Header */}
         <div className="text-center mb-12">
           <motion.div

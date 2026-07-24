@@ -91,7 +91,7 @@ export default function GamifyPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-8">
+      <div className="max-w-5xl px-4 sm:px-8">
         {/* Header */}
         <div className="bg-gradient-to-br from-brand-blue to-blue-900 rounded-3xl p-8 sm:p-10 text-white mb-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />

@@ -36,7 +36,7 @@ export default function ServicesPage() {
     <div className="flex flex-col min-h-[calc(100vh-4rem)] bg-slate-50">
       {/* Header */}
       <section className="bg-brand-blue/5 py-16 px-4">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-6xl">
           <div className="flex gap-2 text-sm text-muted-foreground mb-6">
             <Link href="/" className="hover:text-brand-blue">Home</Link>
             <span>|</span>
@@ -78,7 +78,7 @@ export default function ServicesPage() {
 
       {/* Career Guidance Section */}
       <section id="guidance" className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto space-y-8">
+        <div className="max-w-6xl space-y-8">
           <div className="border border-blue-200 rounded-3xl p-8 lg:p-12 shadow-sm">
             <h2 className="text-4xl font-bold mb-4">Career Guidance</h2>
             <p className="text-slate-500 text-lg mb-10">Scientifically validated psychometric assessments for every stage of life.</p>
@@ -173,7 +173,7 @@ export default function ServicesPage() {
       {/* Study Abroad Section */}
       <section id="abroad" className="py-24 px-4 bg-gradient-to-br from-brand-blue to-[#112D55] text-white text-center relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-orange/10 blur-[120px] rounded-full -mr-64 -mt-64 z-0"></div>
-        <div className="max-w-4xl mx-auto space-y-8 relative z-10">
+        <div className="max-w-4xl space-y-8 relative z-10">
           <Globe2 size={64} className="mx-auto text-brand-orange" />
           <h2 className="text-4xl font-bold">Study Abroad Support</h2>
           <p className="text-xl opacity-90 max-w-2xl mx-auto">

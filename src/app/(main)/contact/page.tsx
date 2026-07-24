@@ -163,7 +163,7 @@ export default function ContactPage() {
     <div className="flex flex-col min-h-[calc(100vh-4rem)]">
       {/* Header */}
       <section className="bg-brand-blue/5 py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
+        <div className="max-w-4xl text-center space-y-4">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -184,7 +184,7 @@ export default function ContactPage() {
 
       {/* Main Content */}
       <section className="py-16 px-4 flex-1">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16">
+        <div className="max-w-6xl grid lg:grid-cols-2 gap-16">
           
           {/* Contact Details */}
           <motion.div 
@@ -281,7 +281,7 @@ export default function ContactPage() {
 
       {/* Map Section */}
       <section className="py-16 px-4 bg-brand-blue/5">
-        <div className="max-w-6xl mx-auto space-y-8">
+        <div className="max-w-6xl space-y-8">
           <div className="text-center space-y-4">
             <h2 className="text-3xl font-bold text-foreground">Visit Our Office</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">

@@ -32,7 +32,7 @@ export default function DestinationDetail() {
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl px-4">
         {/* Back Link */}
         <Link href="/study-abroad" className="inline-flex items-center gap-2 text-slate-500 hover:text-brand-blue font-bold mb-8 transition-colors group">
           <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:bg-brand-blue group-hover:text-white transition-all">

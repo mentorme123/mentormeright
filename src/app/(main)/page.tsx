@@ -973,7 +973,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-4rem)] overflow-hidden w-full max-w-full">
+    <div className="flex flex-col min-h-[calc(100vh-4rem)] w-full max-w-full">
 
       {/* Hero Section Carousel */}
       <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-24 pb-16 lg:pt-36 lg:pb-28 min-h-[500px] lg:min-h-[600px] text-white overflow-hidden">

@@ -187,8 +187,8 @@ export default function CounsellorMarketplace() {
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-12">
       {/* Header */}
-      <div className="bg-white border-b border-slate-200 py-16 px-4 mb-10">
-        <div className="max-w-7xl mx-auto text-center space-y-4">
+      <div className="max-w-[1700px] mx-auto px-4 bg-white border-b border-slate-200 py-16 mb-10">
+        <div className="text-center space-y-4">
           <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
             <span className="px-4 py-2 bg-brand-orange/10 text-brand-orange font-black text-xs uppercase tracking-widest rounded-full">World-Class Experts</span>
             <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight mt-4">

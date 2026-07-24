@@ -217,7 +217,7 @@ export default function AdminDashboard() {
     }
   ];
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 pb-12 px-4 sm:px-8 relative">
+    <div className="min-h-screen bg-slate-50 pb-12 px-4 sm:px-8 relative">
 
       {/* Onboarding Tour Overlay */}
       <AnimatePresence>
@@ -691,7 +691,7 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            <div className="p-0 bg-slate-100 w-full h-[900px] relative flex items-center justify-center border-t border-slate-200">
+            <div className="p-0 bg-slate-100 w-full min-h-[600px] max-h-[90vh] relative flex items-center justify-center border-t border-slate-200 overflow-auto">
               {analyticsUrl ? (
                 <iframe 
                   src={analyticsUrl}

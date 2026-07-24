@@ -691,7 +691,7 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            <div className="p-0 bg-slate-100 w-full h-[600px] relative flex items-center justify-center border-t border-slate-200">
+            <div className="p-0 bg-slate-100 w-full h-[900px] relative flex items-center justify-center border-t border-slate-200">
               {analyticsUrl ? (
                 <iframe 
                   src={analyticsUrl}

@@ -323,7 +323,7 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
     : (report?.nextSteps || getCounselorRecommendations(displayScores));
 
   return (
-    <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
+    <div className="min-h-screen bg-white py-8 px-4">
        <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="bg-[#0f2460] text-white rounded-2xl p-3 sm:p-5 mb-6 shadow-xl">

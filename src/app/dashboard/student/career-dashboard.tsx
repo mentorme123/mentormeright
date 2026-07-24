@@ -410,7 +410,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
           <div className="lg:col-span-1 h-full">
-            <div className="rounded-2xl p-6 border shadow-sm h-full bg-blue-50 border-blue-100">
+            <div className="rounded-2xl p-6 border-2 shadow-sm h-full bg-blue-50 border-blue-200">
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Career Match Index" : "Academic Fitness"}
               </h3>
@@ -453,7 +453,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
 
           <div className="lg:col-span-1 h-full">
-            <div className={`rounded-2xl p-6 border shadow-sm h-full bg-orange-50 border-orange-100`}>
+            <div className={`rounded-2xl p-6 border-2 shadow-sm h-full bg-orange-50 border-orange-200`}>
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 {isSchool ? "Subject Readiness" : "Career Path Readiness"}
               </h3>
@@ -503,7 +503,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
 
           <div className="lg:col-span-1 h-full">
-            <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 shadow-sm h-full">
+            <div className="bg-emerald-50 rounded-2xl p-6 border-2 border-emerald-200 shadow-sm h-full">
               <h3 className="text-lg font-black text-emerald-800 mb-4">
                 {isSchool ? "Counselor Recommendation" : "Counselor Recommendations"}
               </h3>
@@ -538,7 +538,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
 function KPICard({ label, value, color, bg }: { label: string; value: string; color: string; bg?: string }) {
   return (
-    <div className={`rounded-2xl p-4 sm:p-6 border shadow-sm ${bg || 'bg-white'} border-slate-200`}>
+    <div className={`rounded-2xl p-4 sm:p-6 border-2 shadow-sm ${bg || 'bg-white'} border-slate-300`}>
       <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">{label}</p>
       <p className={`text-xl sm:text-2xl font-black ${color}`}>{value}</p>
     </div>

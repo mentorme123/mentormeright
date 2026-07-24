@@ -363,7 +363,7 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
 
         {/* Student Info */}
         {(profile?.name || profile?.email || profile?.phone || profile?.education_level) && (
-          <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm mb-8">
+          <div className="bg-white rounded-2xl p-6 border-2 border-slate-300 shadow-sm mb-8">
             <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-lg text-slate-700">
               {profile?.name && (
                 <div className="flex items-center gap-2">
@@ -404,9 +404,9 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
           
-          {/* Left Column: Academic Fitness */}
-          <div className="lg:col-span-1 h-full">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm h-full">
+           {/* Left Column: Academic Fitness */}
+           <div className="lg:col-span-1 h-full">
+             <div className="bg-white rounded-2xl p-6 border-2 border-slate-300 shadow-sm h-full">
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 Academic Fitness
               </h3>
@@ -429,9 +429,9 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
             </div>
           </div>
 
-          {/* Middle Column: Career Path Readiness */}
-          <div className="lg:col-span-1 h-full">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm h-full">
+           {/* Middle Column: Career Path Readiness */}
+           <div className="lg:col-span-1 h-full">
+             <div className="bg-white rounded-2xl p-6 border-2 border-slate-300 shadow-sm h-full">
               <h3 className="text-lg font-black text-slate-800 mb-4">
                 Career Path Readiness
               </h3>
@@ -456,7 +456,7 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
 
           {/* Right Column: Counselor Recommendation */}
           <div className="lg:col-span-1 h-full">
-            <div className="bg-emerald-50 rounded-2xl p-6 border border-emerald-100 shadow-sm h-full">
+            <div className="bg-emerald-50 rounded-2xl p-6 border-2 border-emerald-200 shadow-sm h-full">
               <h3 className="text-lg font-black text-emerald-800 mb-4">
                 Counselor Recommendations
               </h3>
@@ -492,7 +492,7 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
 
 function KPICard({ label, value, color, bg }: { label: string; value: string; color: string; bg?: string }) {
   return (
-    <div className={`rounded-2xl p-4 sm:p-6 border shadow-sm ${bg || 'bg-white'} border-slate-200`}>
+    <div className={`rounded-2xl p-4 sm:p-6 border-2 shadow-sm ${bg || 'bg-white'} border-slate-300`}>
       <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-2">{label}</p>
       <p className={`text-xl sm:text-2xl font-black ${color}`}>{value}</p>
     </div>

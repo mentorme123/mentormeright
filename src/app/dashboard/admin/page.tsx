@@ -39,6 +39,8 @@ export default function AdminDashboard() {
   const [roleCounts, setRoleCounts] = useState<Record<string, number>>({ total: 0, individual: 0, institutional: 0, admin: 0, counselor: 0 });
   const [loading, setLoading] = useState(true);
   const [isExporting, setIsExporting] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
    
   // Search and Filter
   const [searchTerm, setSearchTerm] = useState("");
@@ -60,25 +62,28 @@ export default function AdminDashboard() {
    const [adminTab, setAdminTab] = useState<"analytics" | "users">("analytics");
 
   // Fetch Live Data
-  useEffect(() => {
-    async function fetchDashboardData() {
-      try {
-        const [data, counts] = await Promise.all([fetchAllUsers(), fetchRoleCounts()]);
-        if (data) setUsers(data);
-        if (counts) setRoleCounts(counts);
-        
-        const hasSeenTour = localStorage.getItem('mentorme_admin_tour');
-        if (!hasSeenTour) {
-          setShowTour(true);
-        }
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
+  const fetchData = async () => {
+    setRefreshing(true);
+    try {
+      const [data, counts] = await Promise.all([fetchAllUsers(), fetchRoleCounts()]);
+      if (data) setUsers(data);
+      if (counts) setRoleCounts(counts);
+      setLastUpdated(new Date());
+      
+      const hasSeenTour = localStorage.getItem('mentorme_admin_tour');
+      if (!hasSeenTour) {
+        setShowTour(true);
       }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
     }
-    
-    fetchDashboardData();
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -494,22 +499,38 @@ export default function AdminDashboard() {
              <h1 className="text-3xl font-black text-purple-700 uppercase tracking-tight flex items-center gap-2">
                <ShieldAlert size={28} /> System Admin
              </h1>
-             <p className="text-slate-500 font-medium">Live global overview and database management.</p>
-           </div>
+              <p className="text-slate-500 font-medium">Live global overview and database management.</p>
+              {lastUpdated && (
+                <p className="text-xs text-slate-400 mt-1">
+                  Last updated: {lastUpdated.toLocaleTimeString()} | {refreshing && <span className="text-brand-blue animate-pulse">Refreshing...</span>}
+                </p>
+              )}
+            </div>
             <div className="flex items-center gap-3">
               <button
                 type="button"
-                onClick={() => { window.location.href = '/'; }}
-                className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+                onClick={fetchData}
+                disabled={refreshing || loading}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
               >
-                <ArrowLeft size={16} /> Back to Home
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`}>
+                  <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-3.236 1.927l.563.367a4.5 4.5 0 002.638-2.452l.247-.275-.247.275zm-9.624.006l-.247-.275.247.275zm.447 2.967l-.358.672a4.5 4.5 0 002.638-2.452l.563-.367a5.5 5.5 0 01-6.316-1.927l-.003-.002-.003.002a5.5 5.5 0 013.323 3.773zm9.303-4.99l-4.243-4.243-1.414 1.414 4.243 4.243 1.414-1.414zm-11.951.01L4.293 5.293l1.414 1.414-1.414 1.414-1.414-1.414z" clipRule="evenodd" />
+                </svg>
+                Refresh
               </button>
-              <div className="relative">
                <button
                  type="button"
-                 onClick={() => setShowProfileMenu((v) => !v)}
-                 className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-2.5 hover:border-brand-blue/30 transition-all shadow-sm"
+                 onClick={() => { window.location.href = '/'; }}
+                 className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
                >
+                  <ArrowLeft size={16} /> Back to Home
+                </button>
+                <div className="relative">
+                 <button
+                  type="button"
+                  onClick={() => setShowProfileMenu((v) => !v)}
+                  className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-2.5 hover:border-brand-blue/30 transition-all shadow-sm"
+                >
                  <div className="w-8 h-8 bg-brand-blue text-white rounded-full flex items-center justify-center font-bold text-sm">
                    {currentAdmin?.name?.charAt(0)?.toUpperCase() || 'A'}
                  </div>

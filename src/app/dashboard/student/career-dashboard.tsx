@@ -366,6 +366,21 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   return (
     <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
       <div className="max-w-6xl mx-auto">
+        <div className="bg-[#0f2460] text-white rounded-2xl p-3 sm:p-5 mb-6 shadow-xl">
+          <div className="flex justify-between items-center">
+            <div className="font-bold text-xs sm:text-sm">MentorMe | Career Intelligence Partner for Schools</div>
+          </div>
+          <div className="text-center mt-3">
+            <h1 className="text-2xl sm:text-3xl font-black mb-1">
+              Student Career Dashboard (sample only) – {isSchool ? "Class 9 & 10" : "Class 11 & 12"}
+            </h1>
+            <p className="text-blue-200 text-sm">
+              {isSchool
+                ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas"
+                : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
+            </p>
+          </div>
+        </div>
 
         {scoresMessage && (
           <div className="max-w-6xl mx-auto mb-6">

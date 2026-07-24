@@ -976,7 +976,7 @@ export default function Home() {
     <div className="flex flex-col min-h-[calc(100vh-4rem)] w-full max-w-full">
 
       {/* Hero Section Carousel */}
-      <section className="relative flex-1 flex flex-col items-center justify-center text-center px-4 pt-24 pb-16 lg:pt-36 lg:pb-28 min-h-[500px] lg:min-h-[600px] text-white overflow-hidden">
+      <section className="relative flex-1 flex flex-col items-center justify-center text-center mx-[-1rem] sm:mx-[-1.5rem] lg:mx-[-2rem] xl:mx-[-3rem] pt-24 pb-16 lg:pt-36 lg:pb-28 min-h-[500px] lg:min-h-[600px] text-white overflow-hidden">
         {/* Background Image Carousel (Horizontal Slide transition) */}
         <div className="absolute inset-0 -z-10 w-full h-full overflow-hidden">
           {slides.map((slide, idx) => {

@@ -11,10 +11,8 @@ export default function MainLayout({
     <>
       <Navbar />
       <BackButton />
-      <main className="flex-1 flex flex-col w-full max-w-[1700px] mx-auto">
-        <div className="w-full mx-[-1rem] sm:mx-[-1.5rem] lg:mx-[-2rem] xl:mx-[-3rem]">
-          {children}
-        </div>
+      <main className="flex-1 flex flex-col w-full max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+        {children}
       </main>
       <Footer />
     </>

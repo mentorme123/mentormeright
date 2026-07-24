@@ -714,15 +714,15 @@ export default function AdminDashboard() {
               </div>
             )}
 
-            <div className="p-0 bg-slate-100 w-full min-h-[600px] max-h-[90vh] relative flex items-center justify-center border-t border-slate-200 overflow-auto">
+            <div className="p-0 bg-slate-100 w-full border-t border-slate-200">
               {analyticsUrl ? (
                 <iframe 
                   src={analyticsUrl}
                   frameBorder="0" 
-                  style={{ border: 0, width: "100%", height: "100%" }} 
+                  style={{ border: 0, width: "100%", height: "85vh" }} 
                   allowFullScreen 
                   sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-                  className="w-full h-full absolute inset-0 z-10 bg-white"
+                  className="w-full block bg-white"
                 ></iframe>
               ) : (
                 <div className="text-center z-0 p-8 max-w-lg">

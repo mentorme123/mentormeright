@@ -365,22 +365,6 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
   return (
     <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
-      {/* Floating action buttons */}
-      <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-        <button
-          onClick={() => window.print()}
-          className="bg-white text-slate-700 border border-slate-200 rounded-full px-4 py-2 shadow-lg text-xs font-bold hover:bg-slate-50"
-        >
-          Print Dashboard
-        </button>
-        <button
-          onClick={() => window.location.href = "/dashboard/admin"}
-          className="bg-white text-slate-700 border border-slate-200 rounded-full px-4 py-2 shadow-lg text-xs font-bold hover:bg-slate-50"
-        >
-          Back to Dashboard
-        </button>
-      </div>
-
       <div className="max-w-6xl mx-auto">
 
         {scoresMessage && (
@@ -528,9 +512,9 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         <div className="mt-8 text-center text-xs text-slate-400">
           <span>www.mentormeright.com</span>
           <span className="mx-2">|</span>
-          <span>sirishakode@mentormeright.in</span>
+          <span>admin@mentormeright.in</span>
           <span className="mx-2">|</span>
-          <span>+91-84310 97872</span>
+          <span>+91-9392707596, +91-8188824440</span>
         </div>
       </div>
     </div>

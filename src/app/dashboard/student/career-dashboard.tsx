@@ -382,6 +382,22 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           </div>
         </div>
 
+        {/* Floating action buttons */}
+        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
+          <button
+            onClick={() => window.print()}
+            className="bg-white text-slate-700 border border-slate-200 rounded-full px-4 py-2 shadow-lg text-xs font-bold hover:bg-slate-50"
+          >
+            Print Dashboard
+          </button>
+          <button
+            onClick={() => window.location.href = "/dashboard/student"}
+            className="bg-white text-slate-700 border border-slate-200 rounded-full px-4 py-2 shadow-lg text-xs font-bold hover:bg-slate-50"
+          >
+            Back to Dashboard
+          </button>
+        </div>
+
         {scoresMessage && (
           <div className="max-w-6xl mx-auto mb-6">
             <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-xl p-4 text-sm">

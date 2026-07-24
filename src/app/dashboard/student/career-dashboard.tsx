@@ -365,38 +365,23 @@ export default function CareerDashboard({ userId }: { userId: string }) {
 
   return (
     <div className="min-h-screen bg-[#f0f7ff] py-8 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-[#0f2460] text-white rounded-2xl p-3 sm:p-5 mb-6 shadow-xl">
-          <div className="flex justify-between items-center">
-            <div className="font-bold text-xs sm:text-sm">MentorMe | Career Intelligence Partner for Schools</div>
-          </div>
-          <div className="text-center mt-3">
-            <h1 className="text-2xl sm:text-3xl font-black mb-1">
-              Student Career Dashboard (sample only) – {isSchool ? "Class 9 & 10" : "Class 11 & 12"}
-            </h1>
-            <p className="text-blue-200 text-sm">
-              {isSchool
-                ? "Grades 9 & 10 — Career pathway discovery, stream readiness & academic improvement areas"
-                : "Grades 11 & 12 — Academic fitness, entrance exam tracking & profile strength"}
-            </p>
-          </div>
-        </div>
+      {/* Floating action buttons */}
+      <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
+        <button
+          onClick={() => window.print()}
+          className="bg-white text-slate-700 border border-slate-200 rounded-full px-4 py-2 shadow-lg text-xs font-bold hover:bg-slate-50"
+        >
+          Print Dashboard
+        </button>
+        <button
+          onClick={() => window.location.href = "/dashboard/admin"}
+          className="bg-white text-slate-700 border border-slate-200 rounded-full px-4 py-2 shadow-lg text-xs font-bold hover:bg-slate-50"
+        >
+          Back to Dashboard
+        </button>
+      </div>
 
-        {/* Floating action buttons */}
-        <div className="fixed top-4 right-4 z-50 flex flex-col gap-2">
-          <button
-            onClick={() => window.print()}
-            className="bg-white text-slate-700 border border-slate-200 rounded-full px-4 py-2 shadow-lg text-xs font-bold hover:bg-slate-50"
-          >
-            Print Dashboard
-          </button>
-          <button
-            onClick={() => window.location.href = "/dashboard/student"}
-            className="bg-white text-slate-700 border border-slate-200 rounded-full px-4 py-2 shadow-lg text-xs font-bold hover:bg-slate-50"
-          >
-            Back to Dashboard
-          </button>
-        </div>
+      <div className="max-w-6xl mx-auto">
 
         {scoresMessage && (
           <div className="max-w-6xl mx-auto mb-6">

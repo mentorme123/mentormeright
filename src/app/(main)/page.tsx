@@ -1787,8 +1787,8 @@ export default function Home() {
 
       {showVideo && (
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-            <div className="flex items-center justify-end p-4">
+          <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div className="flex items-center justify-end p-3">
               <button
                 onClick={() => setShowVideo(false)}
                 className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-all"
@@ -1796,14 +1796,14 @@ export default function Home() {
                 <X size={18} />
               </button>
             </div>
-            <div className="px-4 pb-6">
+            <div className="px-4 pb-4">
               <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black">
                 <iframe
                   src="https://www.youtube.com/embed/4RUmqLLP9O8?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0"
                   title="Enquiry video"
                   allow="autoplay; encrypted-media"
                   allowFullScreen
-                  className="w-full max-h-[70vh]"
+                  className="w-full"
                   style={{ aspectRatio: '9/16' }}
                 />
               </div>

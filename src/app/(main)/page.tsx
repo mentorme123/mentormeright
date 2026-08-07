@@ -1725,12 +1725,11 @@ export default function Home() {
                   <h3 className="text-2xl font-black text-slate-800">Enquiry Sent!</h3>
                   <p className="text-slate-500 text-sm mb-2">Our team will reach out to you shortly.</p>
                   <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black">
-                    <video
-                      src="/videos/WhatsApp%20Video%202026-08-02%20at%208.33.31%20PM%20(1).mp4"
-                      autoPlay
-                      muted
-                      controls
-                      playsInline
+                    <iframe
+                      src="https://www.youtube.com/embed/4RUmqLLP9O8"
+                      title="Enquiry video"
+                      allow="autoplay; encrypted-media"
+                      allowFullScreen
                       className="w-full max-h-[420px]"
                     />
                   </div>

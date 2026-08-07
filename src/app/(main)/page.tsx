@@ -1719,20 +1719,21 @@ export default function Home() {
               </button>
             </div>
 
-            <div className="p-6">
+            <div className="p-6 space-y-4">
+              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black">
+                <iframe
+                  src="https://www.youtube.com/embed/4RUmqLLP9O8"
+                  title="Enquiry video"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  className="w-full max-h-[420px]"
+                />
+              </div>
+
               {enquirySuccess ? (
-                <div className="text-center py-6 space-y-4">
+                <div className="text-center py-2">
                   <h3 className="text-2xl font-black text-slate-800">Enquiry Sent!</h3>
-                  <p className="text-slate-500 text-sm mb-2">Our team will reach out to you shortly.</p>
-                  <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black">
-                    <iframe
-                      src="https://www.youtube.com/embed/4RUmqLLP9O8"
-                      title="Enquiry video"
-                      allow="autoplay; encrypted-media"
-                      allowFullScreen
-                      className="w-full max-h-[420px]"
-                    />
-                  </div>
+                  <p className="text-slate-500 text-sm">Our team will reach out to you shortly.</p>
                 </div>
               ) : (
                 <form onSubmit={handleEnquirySubmit} className="space-y-4">

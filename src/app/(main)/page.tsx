@@ -1797,13 +1797,14 @@ export default function Home() {
               </button>
             </div>
             <div className="px-4 pb-6">
-              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black aspect-video">
+              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black">
                 <iframe
                   src="https://www.youtube.com/embed/4RUmqLLP9O8?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0"
                   title="Enquiry video"
                   allow="autoplay; encrypted-media"
                   allowFullScreen
-                  className="w-full h-full"
+                  className="w-full max-h-[70vh]"
+                  style={{ aspectRatio: '9/16' }}
                 />
               </div>
             </div>

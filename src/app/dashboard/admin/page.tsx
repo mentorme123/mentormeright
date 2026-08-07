@@ -1,0 +1,885 @@
+"use client";
+
+export const dynamic = 'force-dynamic';
+
+import { useState, useEffect, useRef } from "react";
+import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
+import { fetchAllUsers, fetchRoleCounts } from "./actions";
+import { createClient } from "@/lib/supabase/client";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+// Types
+type DBUser = {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  phone: string | null;
+  gender: string | null;
+  country: string | null;
+  state: string | null;
+  education_level: string | null;
+  current_package: string | null;
+  target_package: string | null;
+  audience_type: string | null;
+  created_at: string;
+};
+
+// Sanitize text to prevent XSS
+const sanitizeText = (text: string | null) => {
+  if (!text) return '';
+  return String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+};
+
+export default function AdminDashboard() {
+  const router = useRouter();
+  const supabase = createClient();
+  const [users, setUsers] = useState<DBUser[]>([]);
+  const [roleCounts, setRoleCounts] = useState<Record<string, number>>({ total: 0, individual: 0, institutional: 0, admin: 0, counselor: 0 });
+  const [loading, setLoading] = useState(true);
+  const [isExporting, setIsExporting] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Search and Filter
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Modals
+  const [selectedUser, setSelectedUser] = useState<DBUser | null>(null);
+  const selectedUserIdRef = useRef<string | null>(null);
+  const [hasAssessment, setHasAssessment] = useState(false);
+  const [checkingAssessment, setCheckingAssessment] = useState(false);
+  const [assessmentError, setAssessmentError] = useState<string | null>(null);
+  const [showTour, setShowTour] = useState(false);
+  const [tourStep, setTourStep] = useState(0);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [currentAdmin, setCurrentAdmin] = useState<{ name: string; email: string } | null>(null);
+
+  // Analytics Embed URL
+  const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
+  const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
+  const [adminTab, setAdminTab] = useState<"analytics" | "users">("analytics");
+
+  // Fetch Live Data
+  const fetchData = async () => {
+    setRefreshing(true);
+    try {
+      const [data, counts] = await Promise.all([fetchAllUsers(), fetchRoleCounts()]);
+      if (data) setUsers(data);
+      if (counts) setRoleCounts(counts);
+      setLastUpdated(new Date());
+
+      const hasSeenTour = localStorage.getItem('mentorme_admin_tour');
+      if (!hasSeenTour) {
+        setShowTour(true);
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function loadCurrentAdmin() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setCurrentAdmin({
+          name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Admin',
+          email: user.email || ''
+        });
+      }
+    }
+    loadCurrentAdmin();
+  }, [supabase]);
+
+  useEffect(() => {
+    const savedUrl = localStorage.getItem('mentorme_admin_analytics_url');
+    if (savedUrl) setAnalyticsUrl(savedUrl);
+  }, []);
+
+  const saveAnalyticsUrl = () => {
+    localStorage.setItem('mentorme_admin_analytics_url', analyticsUrl);
+    setIsEditingAnalytics(false);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    window.location.href = '/login';
+  };
+
+  useEffect(() => {
+    async function checkAssessment() {
+      if (!selectedUser) return;
+      setCheckingAssessment(true);
+      setHasAssessment(false);
+      setAssessmentError(null);
+      try {
+        console.log('AdminDashboard: checking assessment for', selectedUser.id, selectedUser.email);
+        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
+        console.log('AdminDashboard: assessment check response', res.status, await res.json().catch(() => 'no body'));
+        setHasAssessment(res.ok);
+        if (!res.ok) {
+          const j = await res.json().catch(() => ({}));
+          setAssessmentError(j?.error || `HTTP ${res.status}`);
+        }
+      } catch (e) {
+        setHasAssessment(false);
+        setAssessmentError(e instanceof Error ? e.message : 'Network error');
+      } finally {
+        setCheckingAssessment(false);
+      }
+    }
+    checkAssessment();
+  }, [selectedUser]);
+
+  useEffect(() => {
+    if (!selectedUser) return;
+    console.log('AdminDashboard: checking assessment for', selectedUser.id, selectedUser.email);
+  }, [selectedUser]);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (showProfileMenu && !(event.target as Element).closest('.relative')) {
+        setShowProfileMenu(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showProfileMenu]);
+
+  // Stats from DB role counts
+  const totalUsers = roleCounts.total ?? 0;
+  const totalStudents = roleCounts.individual ?? 0;
+  const totalInstitutions = roleCounts.institutional ?? 0;
+  const totalAdmins = roleCounts.admin ?? 0;
+  const totalCounselors = roleCounts.counselor ?? 0;
+
+  // Filtering
+  const filteredUsers = users.filter(u => {
+    const term = searchTerm.toLowerCase();
+    return (
+      (u.name && u.name.toLowerCase().includes(term)) ||
+      (u.email && u.email.toLowerCase().includes(term)) ||
+      (u.role && u.role.toLowerCase().includes(term))
+    );
+  });
+
+  const handleExportData = () => {
+    setIsExporting(true);
+    setTimeout(() => {
+      const headers = "ID,Name,Email,Role,JoinedDate\n";
+      // Sanitize CSV data to prevent CSV injection
+      const sanitizeCsv = (value: string) => {
+        if (value.includes(',') || value.includes('\n') || value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@')) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+        return value;
+      };
+      const rows = users.map(u => `${sanitizeCsv(u.id)},${sanitizeCsv(u.name || 'N/A')},${sanitizeCsv(u.email)},${sanitizeCsv(u.role)},${sanitizeCsv(new Date(u.created_at).toLocaleDateString())}`).join("\n");
+      const csvData = headers + rows;
+
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `MentorMe_Live_DB_Export_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setIsExporting(false);
+    }, 1500);
+  };
+
+  const closeTour = () => {
+    setShowTour(false);
+    localStorage.setItem('mentorme_admin_tour', 'true');
+  };
+
+  // Tour Content
+  const tourSlides = [
+    {
+      title: "Welcome to the Command Center",
+      text: "This is your live production Admin Dashboard. From here, you have complete control over the MentorMe platform.",
+      icon: <ShieldAlert size={48} className="text-purple-600 mb-4" />
+    },
+    {
+      title: "Real-Time Global Analytics",
+      text: "The statistics at the top of the screen are connected directly to your Supabase database, showing exact live numbers.",
+      icon: <Users size={48} className="text-brand-blue mb-4" />
+    },
+    {
+      title: "Advanced Search & Impersonation",
+      text: "Use the search bar to instantly find any user. Click 'View Details' on any row to open their full profile and assessment status.",
+      icon: <Search size={48} className="text-brand-orange mb-4" />
+    }
+  ];
+  return (
+    <div className="min-h-screen bg-slate-50 pb-12 px-4 sm:px-8 relative">
+
+      {/* Onboarding Tour Overlay */}
+      <AnimatePresence>
+        {showTour && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative text-center"
+            >
+              <button onClick={closeTour} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <X size={20} />
+              </button>
+
+              <div className="flex flex-col items-center">
+                {tourSlides[tourStep].icon}
+                <h2 className="text-2xl font-black text-slate-800 mb-3">{tourSlides[tourStep].title}</h2>
+                <p className="text-slate-600 leading-relaxed mb-8">{tourSlides[tourStep].text}</p>
+
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex gap-2">
+                    {tourSlides.map((_, i) => (
+                      <div key={i} className={`w-2 h-2 rounded-full ${i === tourStep ? 'bg-purple-600' : 'bg-slate-200'}`} />
+                    ))}
+                  </div>
+
+                  {tourStep < tourSlides.length - 1 ? (
+                    <Button onClick={() => setTourStep(s => s + 1)} className="bg-purple-600 hover:bg-purple-700 text-white font-bold">
+                      Next <ChevronRight size={16} className="ml-1" />
+                    </Button>
+                  ) : (
+                    <Button onClick={closeTour} className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold">
+                      Get Started
+                    </Button>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Student View Modal */}
+      <AnimatePresence>
+        {selectedUser && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-end bg-slate-900/40 backdrop-blur-sm"
+            onClick={() => setSelectedUser(null)}
+          >
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+              className="bg-white w-full max-w-lg h-full shadow-2xl p-6 sm:p-8 overflow-y-auto"
+              onClick={e => e.stopPropagation()}
+            >
+              <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-black text-slate-800">User Profile</h2>
+                <button onClick={() => setSelectedUser(null)} className="p-2 bg-slate-100 rounded-full text-slate-500 hover:bg-slate-200 transition-colors">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex items-center gap-4 pb-6 border-b border-slate-100">
+                  <div className="w-16 h-16 bg-brand-blue/10 rounded-full flex items-center justify-center text-brand-blue">
+                    <UserCircle size={32} />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-800">{sanitizeText(selectedUser.name) || "Unnamed User"}</h3>
+                    <p className="text-slate-500">{sanitizeText(selectedUser.email)}</p>
+                    <span className="inline-block mt-2 px-2 py-1 bg-slate-100 text-xs font-bold text-slate-600 rounded uppercase tracking-wider">
+                      Role: {sanitizeText(selectedUser.role)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Account Details</h4>
+                  <div className="bg-slate-50 p-4 rounded-xl space-y-3 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">User ID</span>
+                      <span className="font-mono text-slate-700">{selectedUser.id.split('-')[0]}...</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Joined Date</span>
+                      <span className="font-medium text-slate-700">{new Date(selectedUser.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Phone</span>
+                      <span className="font-medium text-slate-700">{sanitizeText(selectedUser.phone) || 'Not provided'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Gender</span>
+                      <span className="font-medium text-slate-700">{sanitizeText(selectedUser.gender) || 'Not provided'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Location</span>
+                      <span className="font-medium text-slate-700">{selectedUser.state && selectedUser.country ? `${sanitizeText(selectedUser.state)}, ${sanitizeText(selectedUser.country)}` : 'Not provided'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Education</span>
+                      <span className="font-medium text-slate-700">{sanitizeText(selectedUser.education_level) || 'Not provided'}</span>
+                    </div>
+                    {selectedUser.current_package && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Current CTC</span>
+                        <span className="font-medium text-slate-700">{sanitizeText(selectedUser.current_package)}</span>
+                      </div>
+                    )}
+                    {selectedUser.target_package && (
+                      <div className="flex justify-between">
+                        <span className="text-slate-500">Target CTC</span>
+                        <span className="font-medium text-slate-700">{sanitizeText(selectedUser.target_package)}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {checkingAssessment ? (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                    </div>
+                    <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-start gap-3">
+                      <div className="w-5 h-5 border-2 border-slate-300 border-t-transparent rounded-full animate-spin"></div>
+                      <p className="text-slate-500 text-sm">Checking assessment status...</p>
+                    </div>
+                  </div>
+                ) : hasAssessment ? (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={async () => {
+                          setCheckingAssessment(true);
+                          setHasAssessment(false);
+                          setAssessmentError(null);
+                          try {
+                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
+                            setHasAssessment(res.ok);
+                            if (!res.ok) {
+                              const j = await res.json().catch(() => ({}));
+                              setAssessmentError(j?.error || `HTTP ${res.status}`);
+                            }
+                          } catch (e) {
+                            setHasAssessment(false);
+                            setAssessmentError(e instanceof Error ? e.message : 'Network error');
+                          } finally {
+                            setCheckingAssessment(false);
+                          }
+                        }}
+                      >
+                        Refresh
+                      </Button>
+                    </div>
+                    <div className="bg-emerald-50 border border-emerald-100 p-4 rounded-xl flex items-start gap-3">
+                      <CheckCircle2 className="text-emerald-600 shrink-0" size={20} />
+                      <div>
+                        <p className="font-bold text-emerald-800 text-sm">Assessment Completed</p>
+                        <p className="text-emerald-600 text-xs mt-1">The psychometric report was successfully generated.</p>
+                      </div>
+                    </div>
+                    <Button
+                      className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2"
+                      onClick={() => {
+                        const idToUse = selectedUserIdRef.current || selectedUser?.id;
+                        console.log('Admin View Psychometric Report clicked', { selectedUserId: idToUse, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
+                        router.push(`/assessment-report?userId=${encodeURIComponent(idToUse)}`)
+                      }}
+                    >
+                      View Psychometric Report
+                    </Button>
+                    <Button
+                      className="w-full bg-[#1B3A6B] hover:bg-[#1B3A6B]/90 text-white font-bold shadow-sm mt-2"
+                      onClick={() => {
+                        const idToUse = selectedUserIdRef.current || selectedUser?.id;
+                        window.open(`/report?userId=${encodeURIComponent(idToUse)}`, '_blank');
+                      }}
+                    >
+                      View Student Career Dashboard
+                    </Button>
+                    <Button
+                      className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2"
+                      onClick={() => {
+                        const idToUse = selectedUserIdRef.current || selectedUser?.id;
+                        console.log('Admin View Career Report clicked', { selectedUserId: idToUse, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
+                        window.open(`/mentorme_report_generator.html?userId=${encodeURIComponent(idToUse)}`, '_blank')
+                      }}
+                    >
+                      View Career Report
+                    </Button>
+                    <Button
+                      className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm mt-2"
+                      onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}`)}
+                    >
+                      Edit Student Dashboard
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Assessment Status</h4>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={async () => {
+                          setCheckingAssessment(true);
+                          setHasAssessment(false);
+                          setAssessmentError(null);
+                          try {
+                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
+                            setHasAssessment(res.ok);
+                            if (!res.ok) {
+                              const j = await res.json().catch(() => ({}));
+                              setAssessmentError(j?.error || `HTTP ${res.status}`);
+                            }
+                          } catch (e) {
+                            setHasAssessment(false);
+                            setAssessmentError(e instanceof Error ? e.message : 'Network error');
+                          } finally {
+                            setCheckingAssessment(false);
+                          }
+                        }}
+                      >
+                        Refresh
+                      </Button>
+                    </div>
+                    <div className="bg-slate-50 border border-slate-100 p-4 rounded-xl flex items-start gap-3">
+                      <AlertCircle className="text-slate-400 shrink-0" size={20} />
+                      <div>
+                        <p className="font-bold text-slate-700 text-sm">Not Completed</p>
+                        <p className="text-slate-500 text-xs mt-1">This user has not completed the career assessment yet.</p>
+                        {assessmentError && (
+                          <p className="text-amber-600 text-xs mt-2 font-medium">Last check: {assessmentError}</p>
+                        )}
+                      </div>
+                    </div>
+                    <Button
+                      className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-4"
+                      onClick={() => {
+                        const idToUse = selectedUserIdRef.current || selectedUser?.id;
+                        console.log('Admin View Report clicked (not completed)', { selectedUserId: idToUse, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
+                        router.push(`/assessment-report?userId=${encodeURIComponent(idToUse)}`)
+                      }}
+                    >
+                      View Report
+                    </Button>
+                    <Button
+                      className="w-full bg-[#1B3A6B] hover:bg-[#1B3A6B]/90 text-white font-bold shadow-sm mt-2"
+                      onClick={() => {
+                        const idToUse = selectedUserIdRef.current || selectedUser?.id;
+                        window.open(`/report?userId=${encodeURIComponent(idToUse)}`, '_blank');
+                      }}
+                    >
+                      View New Career Report
+                    </Button>
+                    <Button
+                      className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm mt-2"
+                      onClick={() => router.push(`/dashboard/admin/student/${encodeURIComponent(selectedUser.id)}`)}
+                    >
+                      Edit Student Dashboard
+                    </Button>
+                  </div>
+                )}
+
+                {selectedUser.role === 'institutional' && (
+                  <div className="space-y-4">
+                    <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Institution Data</h4>
+                    <div className="bg-orange-50 border border-orange-100 p-4 rounded-xl flex items-start gap-3">
+                      <AlertCircle className="text-brand-orange shrink-0" size={20} />
+                      <div>
+                        <p className="font-bold text-orange-800 text-sm">Action Required</p>
+                        <p className="text-brand-orange text-xs mt-1">This institution has not bulk-provisioned their students yet.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="max-w-7xl mx-auto space-y-8">
+
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-3xl font-black text-purple-700 uppercase tracking-tight flex items-center gap-2">
+              <ShieldAlert size={28} /> System Admin
+            </h1>
+            <p className="text-slate-500 font-medium">Live global overview and database management.</p>
+            {lastUpdated && (
+              <p className="text-xs text-slate-400 mt-1">
+                Last updated: {lastUpdated.toLocaleTimeString()} | {refreshing && <span className="text-brand-blue animate-pulse">Refreshing...</span>}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={fetchData}
+              disabled={refreshing || loading}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className={`w-4 h-4 ${refreshing ? 'animate-spin' : ''}`}>
+                <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-3.236 1.927l.563.367a4.5 4.5 0 002.638-2.452l.247-.275-.247.275zm-9.624.006l-.247-.275.247.275zm.447 2.967l-.358.672a4.5 4.5 0 002.638-2.452l.563-.367a5.5 5.5 0 01-6.316-1.927l-.003-.002-.003.002a5.5 5.5 0 013.323 3.773zm9.303-4.99l-4.243-4.243-1.414 1.414 4.243 4.243 1.414-1.414zm-11.951.01L4.293 5.293l1.414 1.414-1.414 1.414-1.414-1.414z" clipRule="evenodd" />
+              </svg>
+              Refresh
+            </button>
+            <button
+              type="button"
+              onClick={() => { window.location.href = '/'; }}
+              className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+            >
+              <ArrowLeft size={16} /> Back to Home
+            </button>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowProfileMenu((v) => !v)}
+                className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-2.5 hover:border-brand-blue/30 transition-all shadow-sm"
+              >
+                <div className="w-8 h-8 bg-brand-blue text-white rounded-full flex items-center justify-center font-bold text-sm">
+                  {currentAdmin?.name?.charAt(0)?.toUpperCase() || 'A'}
+                </div>
+                <span className="text-sm font-bold text-slate-700">Hi, {currentAdmin?.name?.split(' ')[0] || 'Admin'}</span>
+              </button>
+
+              {showProfileMenu && (
+                <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden">
+                  <div className="p-4 border-b border-slate-100 bg-slate-50">
+                    <p className="font-bold text-slate-800 text-sm truncate">{currentAdmin?.name || 'Admin'}</p>
+                    <p className="text-xs text-slate-500 truncate">{currentAdmin?.email || ''}</p>
+                  </div>
+                  <div className="p-2">
+                    <Link href="/dashboard/admin/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
+                      <User size={18} className="text-brand-blue" />
+                      <div>
+                        <p className="text-sm font-bold text-slate-700">My Profile</p>
+                        <p className="text-xs text-slate-500">Account settings and more</p>
+                      </div>
+                      <ChevronRight size={16} className="ml-auto text-slate-400" />
+                    </Link>
+                  </div>
+                  <div className="p-2">
+                    <button
+                      type="button"
+                      onClick={() => window.location.href = '/settings'}
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left"
+                    >
+                      <Settings size={18} className="text-brand-orange" />
+                      <div>
+                        <p className="text-sm font-bold text-slate-700">Settings</p>
+                        <p className="text-xs text-slate-500">Preferences and configuration</p>
+                      </div>
+                      <ChevronRight size={16} className="ml-auto text-slate-400" />
+                    </button>
+                  </div>
+                  <div className="p-2 border-t border-slate-100">
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left border border-red-200"
+                    >
+                      <LogOut size={18} className="text-red-600" />
+                      <span className="text-sm font-bold text-red-600">SIGN OUT</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Button
+                onClick={() => window.location.href = "/dashboard/admin/report"}
+                className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
+              >
+                <BarChart3 size={16} className="mr-1.5" />
+                Student Report
+              </Button>
+              <Button
+                onClick={handleExportData}
+                disabled={isExporting || loading}
+                className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all text-xs"
+              >
+                {isExporting ? "Compiling Backup..." : <><Download size={16} className="mr-1.5" /> Download DB</>}
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-brand-blue/10 rounded-full flex items-center justify-center text-brand-blue">
+              <Users size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Users</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalUsers}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-brand-blue">
+              <Users size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Students</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalStudents}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-brand-orange">
+              <Building2 size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Institutions</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalInstitutions}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+              <UserCircle size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Counselors</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalCounselors}</p>
+            </div>
+          </div>
+          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+            <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+              <ShieldAlert size={24} />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Admins</p>
+              <p className="text-2xl font-black text-slate-800">{loading ? '-' : totalAdmins}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden">
+          <div className="border-b border-slate-100 bg-slate-50 p-2 flex gap-2">
+            <button
+              onClick={() => setAdminTab("analytics")}
+              className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all ${adminTab === "analytics"
+                ? "bg-white text-brand-blue shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
+                }`}
+            >
+              Website Traffic & Analytics
+            </button>
+            <button
+              onClick={() => setAdminTab("users")}
+              className={`flex-1 py-2.5 px-4 rounded-xl text-sm font-bold transition-all ${adminTab === "users"
+                ? "bg-white text-brand-blue shadow-sm"
+                : "text-slate-500 hover:text-slate-700"
+                }`}
+            >
+              Live User Directory
+            </button>
+          </div>
+
+          {adminTab === "analytics" && (
+            <div>
+              <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h2 className="text-xl font-black text-slate-800 flex items-center gap-2">
+                    <BarChart3 size={24} className="text-brand-blue" />
+                    Website Traffic & Analytics
+                  </h2>
+                  <p className="text-slate-500 text-sm mt-1">Live visitor data powered by Google Analytics (Looker Studio)</p>
+                </div>
+                <Button variant="outline" size="sm" onClick={() => setIsEditingAnalytics(!isEditingAnalytics)} className="font-bold">
+                  {isEditingAnalytics ? "Cancel" : analyticsUrl ? "Edit Connection" : "Connect Report"}
+                </Button>
+              </div>
+
+              {isEditingAnalytics && (
+                <div className="p-6 bg-slate-50 border-b border-slate-200">
+                  <label className="block text-sm font-bold text-slate-700 mb-2">Looker Studio Embed URL</label>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="text"
+                      value={analyticsUrl}
+                      onChange={(e) => setAnalyticsUrl(e.target.value)}
+                      placeholder="https://lookerstudio.google.com/embed/reporting/..."
+                      className="flex-1 px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue shadow-sm"
+                    />
+                    <Button onClick={saveAnalyticsUrl} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-2.5 px-6 rounded-xl shadow-md">
+                      Save Connection
+                    </Button>
+                  </div>
+                  <div className="mt-5 text-sm text-slate-600 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <p className="font-bold text-slate-800 mb-2">How to get your Embed URL:</p>
+                    <ol className="list-decimal pl-4 space-y-1.5">
+                      <li>Go to <a href="https://lookerstudio.google.com/" target="_blank" rel="noreferrer" className="text-brand-blue font-bold hover:underline">Looker Studio</a> and create a report connecting to your Google Analytics 4 property.</li>
+                      <li>Click <strong>File &gt; Embed report</strong> in the top menu.</li>
+                      <li>Enable embedding and select <strong>Embed URL</strong>.</li>
+                      <li>Copy the URL provided and paste it into the field above.</li>
+                    </ol>
+                  </div>
+                </div>
+              )}
+
+              <div className="p-0 bg-slate-100 w-full border-t border-slate-200">
+                {analyticsUrl ? (
+                  <iframe
+                    src={analyticsUrl}
+                    frameBorder="0"
+                    style={{ border: 0, width: "100%", height: "85vh" }}
+                    allowFullScreen
+                    sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+                    className="w-full block bg-white"
+                  ></iframe>
+                ) : (
+                  <div className="text-center z-0 p-8 max-w-lg">
+                    <BarChart3 size={56} className="mx-auto text-slate-300 mb-4" />
+                    <h3 className="text-xl font-black text-slate-700 mb-2">Analytics Not Connected</h3>
+                    <p className="text-slate-500 text-sm mb-6 leading-relaxed">
+                      Connect your Google Looker Studio report to view real-time website traffic, page views, and visitor demographics directly inside this dashboard.
+                    </p>
+                    <Button onClick={() => setIsEditingAnalytics(true)} className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold shadow-md">
+                      Connect Google Analytics
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {adminTab === "users" && (
+            <div>
+              <div className="border-b border-slate-100 bg-slate-50 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <h2 className="text-xl font-black text-slate-800">Live User Directory</h2>
+                  <p className="text-slate-500 text-sm mt-1">Search, view, and manage all accounts directly from the database.</p>
+                </div>
+                <div className="relative w-full sm:w-72">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                    <Search size={16} className="text-slate-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search by name, email, or role..."
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all shadow-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="p-4">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-white text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
+                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>#</th>
+                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Name</th>
+                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Email</th>
+                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Class</th>
+                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Role</th>
+                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Joined</th>
+                        <th className="py-4 font-bold text-right" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {loading ? (
+                        <tr>
+                          <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
+                            <div className="flex flex-col items-center justify-center">
+                              <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                              <p className="font-medium">Fetching live database records...</p>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : filteredUsers.length === 0 ? (
+                        <tr>
+                          <td colSpan={6} className="px-6 py-12 text-center text-slate-500 font-medium">
+                            No users found matching &quot;{searchTerm}&quot;
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredUsers.map((user, idx) => (
+                          <tr key={user.id} className="hover:bg-slate-50 transition-colors group">
+                             <td className="py-4 text-slate-500 font-mono text-sm" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{idx + 1}</td>
+                             <td className="py-4 font-bold text-slate-800" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                              <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
+                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                  </svg>
+                                </div>
+                                {sanitizeText(user.name) || "N/A"}
+                              </div>
+                            </td>
+                             <td className="py-4 text-slate-500 font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{sanitizeText(user.email)}</td>
+                             <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                              <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-xs font-black uppercase tracking-wider">
+                                {sanitizeText(user.education_level) || "General"}
+                              </span>
+                            </td>
+                             <td className="py-4" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                              <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
+                                user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                                  'bg-purple-50 text-purple-700 border border-purple-100'
+                                }`}>
+                                {sanitizeText(user.role)}
+                              </span>
+                            </td>
+                             <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                              {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                            </td>
+                             <td className="py-4 text-right" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  selectedUserIdRef.current = user.id;
+                                  setSelectedUser(user);
+                                }}
+                                className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold whitespace-nowrap ml-auto"
+                              >
+                                View Details <ChevronRight size={16} className="ml-1" />
+                              </Button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {!loading && (
+                  <div className="p-4 border-t border-slate-100 bg-slate-50 text-center text-sm font-bold text-slate-500">
+                    Showing {filteredUsers.length} of {users.length} live records
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+

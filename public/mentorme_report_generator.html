@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MentorMe — Career Report Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<style>
+:root{
+  --navy:#1B3A6B;--navy-light:#2A5298;--orange:#E8762C;--teal:#2E9E8F;
+  --teal-light:#3DBDAA;--gold:#F5A623;--cream:#F8F9FB;--white:#fff;
+  --ink:#1C2434;--muted:#6B7A99;--border:#E2E8F0;--success:#22C55E;
+  --red:#EF4444;--card-shadow:0 2px 12px rgba(27,58,107,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden;}
+
+/* ── TOP NAV ── */
+.topnav{background:var(--navy);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.25);}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-logo{width:34px;height:34px;background:var(--orange);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;color:#fff;font-size:15px;letter-spacing:-1px;}
+.brand-name{font-family:'Poppins',sans-serif;font-weight:700;color:#fff;font-size:16px;}
+.brand-sub{color:rgba(255,255,255,.55);font-size:11px;font-weight:400;margin-left:2px;}
+.nav-actions{display:flex;gap:10px;align-items:center;}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .18s;font-family:'Inter',sans-serif;}
+.btn-ghost{background:rgba(255,255,255,.12);color:#fff;}
+.btn-ghost:hover{background:rgba(255,255,255,.22);}
+.btn-primary{background:var(--orange);color:#fff;}
+.btn-primary:hover{background:#d4681f;transform:translateY(-1px);}
+.btn-teal{background:var(--teal);color:#fff;}
+.btn-teal:hover{background:#26897c;}
+.btn-sm{padding:6px 13px;font-size:12px;}
+.btn svg{width:15px;height:15px;flex-shrink:0;}
+
+/* ── LAYOUT ── */
+.layout{display:grid;grid-template-columns:400px 1fr;height:calc(100vh - 58px);}
+
+/* ── SIDEBAR ── */
+.sidebar{background:#fff;border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;}
+.sidebar-tabs{display:flex;border-bottom:2px solid var(--border);flex-shrink:0;}
+.stab{flex:1;padding:13px 8px;text-align:center;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .18s;}
+.stab.active{color:var(--navy);border-bottom-color:var(--navy);}
+.stab-panel{display:none;flex:1;overflow-y:auto;padding:20px 18px;}
+.stab-panel.active{display:block;}
+
+/* ── FORM ELEMENTS ── */
+.form-section{margin-bottom:22px;}
+.form-section-title{font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.form-row{margin-bottom:12px;}
+.form-row label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
+.form-row input,.form-row select,.form-row textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'Inter',sans-serif;color:var(--ink);background:#fff;transition:border-color .18s;}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{outline:none;border-color:var(--navy);}
+.form-row textarea{resize:vertical;min-height:64px;font-size:12px;}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* ── SCORE SLIDERS ── */
+.score-item{margin-bottom:14px;}
+.score-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.score-label{font-size:12px;font-weight:600;color:var(--ink);}
+.score-val{font-size:13px;font-weight:700;color:var(--navy);min-width:36px;text-align:right;}
+.score-track{position:relative;height:8px;background:#EEF2FF;border-radius:99px;overflow:hidden;}
+.score-fill{height:100%;border-radius:99px;transition:width .3s ease;background:linear-gradient(90deg,var(--teal),var(--navy));}
+.score-input-row{display:flex;align-items:center;gap:8px;margin-top:5px;}
+.score-input-row input[type=range]{flex:1;-webkit-appearance:none;height:4px;background:#EEF2FF;border-radius:99px;cursor:pointer;}
+.score-input-row input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--navy);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.score-input-row input[type=number]{width:62px;padding:5px 8px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:600;text-align:center;color:var(--navy);}
+
+/* ── CAREER PREFERENCES ── */
+.career-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+.career-tag{padding:5px 10px;border-radius:20px;font-size:11px;font-weight:600;background:#EEF2FF;color:var(--navy);cursor:pointer;border:1.5px solid transparent;transition:all .18s;user-select:none;}
+.career-tag.selected{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* ── STUDENT LIST ── */
+.student-card{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:13px 14px;margin-bottom:10px;cursor:pointer;transition:all .18s;position:relative;}
+.student-card:hover{border-color:var(--navy);box-shadow:var(--card-shadow);}
+.student-card.active-student{border-color:var(--teal);background:#F0FAFA;}
+.sc-name{font-weight:700;font-size:13px;color:var(--ink);}
+.sc-meta{font-size:11px;color:var(--muted);margin-top:3px;}
+.sc-actions{display:flex;gap:6px;margin-top:8px;}
+.sc-badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--teal);color:#fff;}
+.sc-del{position:absolute;top:10px;right:12px;background:none;border:none;color:#ccc;cursor:pointer;font-size:16px;}
+.sc-del:hover{color:var(--red);}
+
+/* ── MAIN PANEL ── */
+.main-panel{overflow-y:auto;padding:28px 32px;background:var(--cream);}
+
+/* ── REPORT PREVIEW ── */
+.preview-card{background:#fff;border-radius:16px;box-shadow:var(--card-shadow);overflow:hidden;max-width:860px;margin:0 auto;}
+.report-cover{background:linear-gradient(135deg,var(--navy) 0%,#2A5298 100%);padding:40px 44px 34px;position:relative;overflow:hidden;}
+.report-cover::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);}
+.report-cover::after{content:'';position:absolute;right:40px;bottom:-60px;width:140px;height:140px;border-radius:50%;background:rgba(232,118,44,.12);}
+.report-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);padding:5px 12px;border-radius:20px;font-size:11px;color:rgba(255,255,255,.8);font-weight:600;margin-bottom:18px;}
+.report-title{font-family:'Poppins',sans-serif;font-size:28px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:6px;}
+.report-subtitle{font-size:13px;color:rgba(255,255,255,.65);font-style:italic;margin-bottom:20px;}
+.report-student{display:flex;align-items:center;gap:14px;}
+.report-avatar{width:52px;height:52px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:800;font-size:20px;color:#fff;flex-shrink:0;}
+.report-student-info .name{font-family:'Poppins',sans-serif;font-size:18px;font-weight:700;color:#fff;}
+.report-student-info .meta{font-size:12px;color:rgba(255,255,255,.65);margin-top:2px;}
+.report-body{padding:32px 44px;}
+.r-section{margin-bottom:36px;}
+.r-section-title{font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;color:var(--navy);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:8px;}
+.r-section-num{background:var(--navy);color:#fff;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.r-body-text{font-size:13px;line-height:1.75;color:#374151;margin-bottom:12px;}
+.r-italic{font-style:italic;color:var(--muted);}
+
+/* ── TABLES ── */
+.r-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:16px;}
+.r-table th{background:var(--navy);color:#fff;padding:9px 12px;text-align:left;font-weight:600;font-size:11px;letter-spacing:.3px;}
+.r-table th:first-child{border-radius:6px 0 0 0;}
+.r-table th:last-child{border-radius:0 6px 0 0;}
+.r-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5;}
+.r-table tr:nth-child(even) td{background:#F9FAFB;}
+.r-table tr:last-child td{border-bottom:none;}
+.cat-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:10px;font-weight:700;white-space:nowrap;}
+.badge-best{background:#DCF5F2;color:#1A7A6E;}
+.badge-cond{background:#FFF0E5;color:#B85D16;}
+.badge-dev{background:#FFF9E5;color:#9A7200;}
+.badge-asp{background:#F0EAFF;color:#6B3FA0;}
+
+/* ── SCORE BARS (preview) ── */
+.score-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.score-bar-label{font-size:11px;font-weight:600;color:var(--ink);width:130px;flex-shrink:0;}
+.score-bar-track{flex:1;height:10px;background:#EEF2FF;border-radius:99px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:99px;}
+.fill-navy{background:linear-gradient(90deg,#3B82F6,var(--navy));}
+.fill-teal{background:linear-gradient(90deg,var(--teal-light),var(--teal));}
+.fill-orange{background:linear-gradient(90deg,#FBB26A,var(--orange));}
+.score-bar-pct{font-size:11px;font-weight:700;color:var(--navy);width:32px;text-align:right;}
+
+/* ── CHARTS ── */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+.chart-box{background:var(--cream);border-radius:12px;padding:16px;text-align:center;}
+.chart-box-title{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;}
+.chart-box canvas{max-width:100%;}
+.chart-box-full{background:var(--cream);border-radius:12px;padding:16px;margin-bottom:20px;text-align:center;}
+
+/* ── RIASEC GRID ── */
+.riasec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.riasec-cell{background:var(--cream);border-radius:10px;padding:12px;text-align:center;}
+.riasec-letter{font-family:'Poppins',sans-serif;font-size:20px;font-weight:800;color:var(--navy);}
+.riasec-name{font-size:10px;font-weight:600;color:var(--muted);margin:2px 0 6px;}
+.riasec-pct{font-size:16px;font-weight:700;}
+.riasec-pct.high{color:var(--teal);}
+.riasec-pct.med{color:var(--orange);}
+.riasec-pct.low{color:var(--muted);}
+
+/* ── CTA BLOCK ── */
+.cta-block{background:linear-gradient(135deg,var(--navy),#2A5298);border-radius:12px;padding:22px 28px;text-align:center;margin-top:24px;}
+.cta-block h4{font-family:'Poppins',sans-serif;color:#fff;font-size:15px;font-weight:700;margin-bottom:6px;}
+.cta-block p{color:rgba(255,255,255,.7);font-size:12px;margin-bottom:12px;}
+.cta-contact{color:var(--orange);font-weight:700;font-size:13px;}
+
+/* ── EMPTY STATE ── */
+.empty-state{text-align:center;padding:80px 40px;color:var(--muted);}
+.empty-state svg{width:60px;height:60px;margin:0 auto 16px;display:block;opacity:.3;}
+.empty-state h3{font-family:'Poppins',sans-serif;font-size:16px;color:var(--ink);margin-bottom:8px;}
+.empty-state p{font-size:13px;line-height:1.6;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.25);transform:translateY(80px);opacity:0;transition:all .3s;z-index:9999;display:flex;align-items:center;gap:8px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:var(--teal);}
+.toast.error{background:var(--red);}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.modal h3{font-family:'Poppins',sans-serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.modal p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;}
+
+/* ── GENERATE BTN ── */
+.generate-bar{background:#fff;border-top:1px solid var(--border);padding:14px 18px;display:flex;gap:10px;align-items:center;flex-shrink:0;}
+.generate-bar .btn{flex:1;justify-content:center;padding:11px;}
+
+/* ── LOADING OVERLAY ── */
+.loading-overlay{position:fixed;inset:0;background:rgba(27,58,107,.85);z-index:300;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.loading-overlay.open{display:flex;}
+.loading-spinner{width:48px;height:48px;border:4px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{color:#fff;font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:3px;}
+
+/* ── PRINT / DOWNLOAD NOTICE ── */
+.dl-badge{display:inline-flex;align-items:center;gap:5px;background:#DCF5F2;color:#1A7A6E;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;margin-left:8px;}
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="brand">
+    <div class="brand-logo">M</div>
+    <div>
+      <div class="brand-name">MentorMe <span class="brand-sub">Career Report Generator</span></div>
+    </div>
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-ghost btn-sm" onclick="importJSON()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Import JSON
+    </button>
+    <button class="btn btn-ghost btn-sm" onclick="exportAllJSON()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export All
+    </button>
+  </div>
+</nav>
+
+<div class="layout">
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sidebar-tabs">
+    <div class="stab active" onclick="switchTab('form')">📝 New Student</div>
+    <div class="stab" onclick="switchTab('students')">👥 Database <span id="db-count" style="background:var(--orange);color:#fff;border-radius:10px;padding:1px 6px;font-size:10px;margin-left:4px;">0</span></div>
+  </div>
+
+  <!-- FORM TAB -->
+  <div class="stab-panel active" id="tab-form">
+    <!-- Basic Info -->
+    <div class="form-section">
+      <div class="form-section-title">👤 Student Information</div>
+      <div class="form-row"><label>Full Name *</label><input id="f-name" type="text" placeholder="e.g. Kevin Joseph Guduri" oninput="livePreview()"/></div>
+      <div class="form-row-2">
+        <div class="form-row"><label>Grade / Class *</label><input id="f-grade" type="text" placeholder="e.g. Grade 10" oninput="livePreview()"/></div>
+        <div class="form-row"><label>School</label><input id="f-school" type="text" placeholder="School name" oninput="livePreview()"/></div>
+      </div>
+      <div class="form-row-2">
+        <div class="form-row"><label>Age</label><input id="f-age" type="number" min="10" max="20" placeholder="16" oninput="livePreview()"/></div>
+        <div class="form-row"><label>Date</label><input id="f-date" type="date" oninput="livePreview()"/></div>
+      </div>
+    </div>
+
+    <!-- Individuality Profile -->
+    <div class="form-section">
+      <div class="form-section-title">🧠 Individuality Profile</div>
+      <div id="individuality-scores"></div>
+    </div>
+
+    <!-- Skill Proficiency -->
+    <div class="form-section">
+      <div class="form-section-title">⚡ Skill Proficiency</div>
+      <div id="skill-scores"></div>
+    </div>
+
+    <!-- RIASEC -->
+    <div class="form-section">
+      <div class="form-section-title">🎯 RIASEC Interest Scores</div>
+      <div id="riasec-scores"></div>
+    </div>
+
+    <!-- Career Preferences -->
+    <div class="form-section">
+      <div class="form-section-title">🚀 Career Preferences</div>
+      <div class="form-row"><label>Preferred Careers (select all that apply)</label>
+        <div class="career-tags" id="career-tags"></div>
+      </div>
+      <div class="form-row"><label>Parent's Chosen Career (if any)</label>
+        <input id="f-parent-career" type="text" placeholder="e.g. Pilot, Doctor, Engineer" oninput="livePreview()"/>
+      </div>
+      <div class="form-row"><label>Additional Notes</label>
+        <textarea id="f-notes" placeholder="Any special observations, interests, or context..." oninput="livePreview()"></textarea>
+      </div>
+    </div>
+
+    <div class="generate-bar">
+      <button class="btn btn-teal" onclick="saveStudent()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        Save
+      </button>
+      <button class="btn btn-primary" onclick="generatePDF()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 1-2 2v16a2 2 0 0 1 2 2h12a2 2 0 0 1 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Generate PDF
+      </button>
+    </div>
+  </div>
+
+  <!-- STUDENTS TAB -->
+  <div class="stab-panel" id="tab-students">
+    <div style="margin-bottom:14px;display:flex;gap:8px;">
+      <input type="text" id="search-input" placeholder="🔍  Search students..." 
+        style="flex:1;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;" 
+        oninput="renderStudentList()"/>
+    </div>
+    <div id="student-list"></div>
+  </div>
+</aside>
+
+<!-- ══ MAIN PANEL ══ -->
+<main class="main-panel" id="main-panel">
+  <div class="empty-state" id="empty-state">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+    <h3>No report preview yet</h3>
+    <p>Fill in the student assessment data on the left and the report preview will appear here in real time.</p>
+  </div>
+  <div id="report-preview" style="display:none;"></div>
+</main>
+</div>
+
+<!-- Hidden canvases for PDF chart generation -->
+<canvas id="pdf-radar" width="400" height="400" style="display:none;position:absolute;left:-9999px;"></canvas>
+<canvas id="pdf-skills" width="500" height="280" style="display:none;position:absolute;left:-9999px;"></canvas>
+<canvas id="pdf-individuality" width="500" height="280" style="display:none;position:absolute;left:-9999px;"></canvas>
+
+<!-- Import input -->
+<input type="file" id="import-input" accept=".json" style="display:none;" onchange="handleImport(event)"/>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-spinner"></div>
+  <div class="loading-text" id="loading-text">Generating PDF report…</div>
+</div>
+
+<!-- Delete modal -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="modal">
+    <h3>Delete Student?</h3>
+    <p>This will permanently remove the student and all their assessment data from the database. This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" style="color:var(--ink);" onclick="closeModal()">Cancel</button>
+      <button class="btn" style="background:var(--red);color:#fff;" onclick="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════
+//  DATA DEFINITIONS
+// ═══════════════════════════════════════════════════════════════════
+const INDIVIDUALITY_TRAITS = [
+  {id:'ei',            label:'Emotional Intelligence'},
+  {id:'efficiency',    label:'Efficiency'},
+  {id:'empathy',       label:'Empathy'},
+  {id:'engagement',    label:'Engagement'},
+  {id:'exploration',   label:'Exploration'},
+];
+const SKILL_TRAITS = [
+  {id:'logical',       label:'Logical'},
+  {id:'numerical',     label:'Numerical'},
+  {id:'mechanical',    label:'Mechanical'},
+  {id:'verbal',        label:'Verbal'},
+  {id:'administrative',label:'Administrative'},
+];
+const RIASEC_TRAITS = [
+  {id:'realistic',     label:'Realistic',    letter:'R'},
+  {id:'investigative', label:'Investigative',letter:'I'},
+  {id:'artistic',      label:'Artistic',     letter:'A'},
+  {id:'social',        label:'Social',       letter:'S'},
+  {id:'enterprising',  label:'Enterprising', letter:'E'},
+  {id:'conventional',  label:'Conventional', letter:'C'},
+];
+const ALL_CAREERS = [
+  'Medicine / MBBS','Aeronautical Engineering','Culinary Arts','Software Engineering',
+  'Architecture','Law','Commerce / Finance','Pilot / Aviation',
+  'Psychology','Teaching / Education','Civil Engineering','Business Management',
+  'Graphic Design','Journalism / Media','Fashion Design','Biotechnology',
+  'Data Science / AI','Hotel Management','Defence / Army / Navy / Air Force',
+  'Civil Services / IAS','Sports / Athletics','Film / Entertainment',
+  'Pharmacy','Nursing / Allied Health','Environmental Science',
+];
+
+// ═══════════════════════════════════════════════════════════════════
+//  CAREER INTELLIGENCE DATABASE
+//  (Rules engine: maps RIASEC + skills → career analysis)
+// ═══════════════════════════════════════════════════════════════════
+const CAREER_DB = {
+  'Medicine / MBBS': {
+    fit:'best',
+    riasec:['realistic','investigative'],
+    skills:['numerical','logical'],
+    salaryEarly:'₹8L–₹15L+', salaryGrowth:'₹18L–₹40L+', salaryLead:'₹50L–₹1.5Cr+',
+    rationale:'Realistic + Investigative RIASEC is the archetypal medical profile: hands-on clinical work combined with deep analytical diagnosis. Logical and Numerical skills support pharmacology and clinical decision-making.',
+    stream:'Science with PCB (Biology mandatory)',
+    exam:'NEET UG',
+    colleges:['AIIMS New Delhi','JIPMER Puducherry','Osmania Medical College Hyderabad','Kasturba Medical College Manipal','Maulana Azad Medical College Delhi'],
+    ugDegree:'MBBS (5.5 Years)',
+    pgDegree:'MD/MS via NEET PG',
+    cost:'₹5L–₹15L (Govt) / ₹50L–₹1Cr+ (Private)',
+  },
+  'Aeronautical Engineering': {
+    fit:'best',
+    riasec:['realistic','investigative'],
+    skills:['numerical','mechanical','logical'],
+    salaryEarly:'₹6L–₹12L+', salaryGrowth:'₹15L–₹30L+', salaryLead:'₹40L–₹80L+',
+    rationale:'Realistic (hands-on) + Investigative (systems analysis) is the exact RIASEC match for Aeronautical Engineering. Numerical and Mechanical aptitude support aircraft design calculations and structural mechanics.',
+    stream:'Science with PCM',
+    exam:'JEE Main / BITSAT',
+    colleges:['IIT Bombay / Madras / Kharagpur','BITS Pilani','MIT Manipal','Madras Institute of Technology','VIT Vellore'],
+    ugDegree:'B.Tech Aeronautical / Aerospace Engineering (4 Years)',
+    pgDegree:'M.Tech Aerospace / MBA / GATE to IITs',
+    cost:'₹5L–₹12L (NIT/IIIT) / ₹15L–₹28L (Private)',
+  },
+  'Culinary Arts': {
+    fit:'best',
+    riasec:['realistic','artistic'],
+    skills:['administrative','verbal'],
+    salaryEarly:'₹4L–₹8L+', salaryGrowth:'₹10L–₹22L+', salaryLead:'₹25L–₹60L+',
+    rationale:'Realistic (hands-on craft) + Artistic (creative innovation) is the classic chef/culinary scientist profile. Administrative skills support kitchen management. Verbal skills aid guest interaction and menu communication.',
+    stream:'Any stream; Biology/Chemistry helps for Food Science pathway',
+    exam:'NCHM JEE / Direct Admission',
+    colleges:['IHM Hyderabad','WGSHA Manipal','Academy of Pastry Arts Bangalore','Lavonne Academy Bangalore','Oberoi Centre of Learning & Development'],
+    ugDegree:'B.Sc. Culinary Arts / Hotel Management (3 Years)',
+    pgDegree:'Master of Culinary Arts (Le Cordon Bleu / CIA USA)',
+    cost:'₹3L–₹8L (IHM Govt) / ₹5L–₹20L (Private)',
+  },
+  'Software Engineering': {
+    fit:'best',
+    riasec:['investigative','conventional'],
+    skills:['logical','numerical'],
+    salaryEarly:'₹6L–₹15L+', salaryGrowth:'₹18L–₹45L+', salaryLead:'₹50L–₹2Cr+',
+    rationale:'Investigative (analytical problem-solving) + Conventional (systematic coding discipline) is the core software engineering profile. Logical and Numerical skills directly power algorithm design and software architecture.',
+    stream:'Science with PCM; Computer Science preferred',
+    exam:'JEE Main / BITSAT / College Specific',
+    colleges:['IIT (via JEE Advanced)','BITS Pilani','NIT Trichy / Warangal','VIT Vellore','SRM / Manipal / Amity'],
+    ugDegree:'B.Tech Computer Science / IT (4 Years)',
+    pgDegree:'M.Tech CS / MBA (IIMs) / MS (USA/Europe)',
+    cost:'₹5L–₹12L (NIT) / ₹12L–₹28L (Private)',
+  },
+  'Architecture': {
+    fit:'best',
+    riasec:['realistic','artistic','investigative'],
+    skills:['numerical','logical'],
+    salaryEarly:'₹4L–₹8L+', salaryGrowth:'₹10L–₹22L+', salaryLead:'₹25L–₹60L+',
+    rationale:'Realistic + Artistic + Investigative — Architecture uniquely requires hands-on spatial thinking, creative design, and technical structural analysis. Numerical skills support structural calculations.',
+    stream:'Science with PCM or Arts with adequate Mathematics',
+    exam:'NATA / JEE Paper 2 (B.Arch)',
+    colleges:['SPA New Delhi','CEPT University Ahmedabad','BMS College of Architecture Bangalore','Manipal School of Architecture','VIT School of Architecture'],
+    ugDegree:'B.Arch (5 Years)',
+    pgDegree:'M.Arch / Urban Design / MFA',
+    cost:'₹5L–₹20L',
+  },
+  'Law': {
+    fit:'conditional',
+    riasec:['investigative','social','enterprising'],
+    skills:['verbal','logical'],
+    salaryEarly:'₹4L–₹10L+', salaryGrowth:'₹12L–₹30L+', salaryLead:'₹30L–₹1Cr+',
+    rationale:'Investigative (case analysis) + Social (courtroom advocacy) + Enterprising (negotiation) drives legal careers. Verbal fluency and logical reasoning are non-negotiable core skills.',
+    stream:'Any stream (Science, Commerce, or Arts)',
+    exam:'CLAT / AILET / LSAT India',
+    colleges:['NLSIU Bangalore','NALSAR Hyderabad','NLU Delhi','Symbiosis Law School Pune','Christ University Bangalore'],
+    ugDegree:'BA LLB / BBA LLB (5 Years)',
+    pgDegree:'LLM / MBA Law / Judiciary preparation',
+    cost:'₹5L–₹20L',
+  },
+  'Commerce / Finance': {
+    fit:'best',
+    riasec:['conventional','enterprising'],
+    skills:['numerical','logical','administrative'],
+    salaryEarly:'₹5L–₹10L+', salaryGrowth:'₹12L–₹28L+', salaryLead:'₹30L–₹70L+',
+    rationale:'Conventional (structured accuracy) + Enterprising (commercial instinct) is the financial services profile. Numerical aptitude powers financial modelling; Administrative skill supports audit and compliance roles.',
+    stream:'Commerce with Mathematics preferred; Science PCM also valid',
+    exam:'CA Foundation / CUET / IPMAT',
+    colleges:['SRCC Delhi','Loyola College Chennai','St. Xavier\'s Mumbai','NMIMS Mumbai','Christ University Bangalore'],
+    ugDegree:'B.Com (Hons) / BBA Finance (3 Years)',
+    pgDegree:'CA / CFA / MBA Finance (IIM)',
+    cost:'₹2L–₹12L',
+  },
+  'Pilot / Aviation': {
+    fit:'aspirational',
+    riasec:['realistic','enterprising'],
+    skills:['numerical','mechanical'],
+    salaryEarly:'₹12L–₹25L+', salaryGrowth:'₹30L–₹60L+', salaryLead:'₹70L–₹1.5Cr+',
+    rationale:'Realistic (technical aircraft systems) + Enterprising (leadership under pressure) is the pilot profile. High numerical aptitude for navigation and fuel calculations is essential. DGCA medical fitness is mandatory.',
+    stream:'Science with PCM (Physics mandatory)',
+    exam:'DGCA CPL / Airline Cadet Programme (IndiGo, Air India)',
+    colleges:['Indira Gandhi Rashtriya Uran Akademi (IGRUA)','National Flying Training Institute (NFTI) Gondia','Bombay Flying Club','Redbird Flight Academy'],
+    ugDegree:'Commercial Pilot Licence (CPL) — 18–24 months training',
+    pgDegree:'Airline Transport Pilot Licence (ATPL)',
+    cost:'₹35L–₹60L (CPL training)',
+  },
+  'Psychology': {
+    fit:'conditional',
+    riasec:['investigative','social'],
+    skills:['verbal','ei'],
+    salaryEarly:'₹3L–₹7L+', salaryGrowth:'₹8L–₹20L+', salaryLead:'₹20L–₹50L+',
+    rationale:'Investigative (research and analysis) + Social (human connection) drives psychology. High Emotional Intelligence and Empathy are critical for clinical and counselling roles.',
+    stream:'Science with Biology or Arts/Humanities',
+    exam:'CUET / University specific',
+    colleges:['Delhi University','Christ University Bangalore','Fergusson College Pune','Amity University','NIMHANS Bangalore (PG)'],
+    ugDegree:'B.Sc. / BA Psychology (3 Years)',
+    pgDegree:'M.Sc. Psychology / M.Phil Clinical Psychology / PhD',
+    cost:'₹2L–₹10L',
+  },
+  'Civil Engineering': {
+    fit:'best',
+    riasec:['realistic','conventional'],
+    skills:['numerical','mechanical','logical'],
+    salaryEarly:'₹5L–₹10L+', salaryGrowth:'₹12L–₹25L+', salaryLead:'₹30L–₹60L+',
+    rationale:'Realistic (site work) + Conventional (precision documentation) is the civil engineering profile. India\'s infrastructure boom under PM Gati Shakti creates sustained demand. Numerical and Mechanical aptitude underpin structural calculations.',
+    stream:'Science with PCM',
+    exam:'JEE Main / State Engineering CETs',
+    colleges:['NIT Warangal / Trichy / Surathkal','BITS Pilani','VIT Vellore','SRM Chennai','Osmania University Hyderabad'],
+    ugDegree:'B.Tech Civil Engineering (4 Years)',
+    pgDegree:'M.Tech Structural / Environmental / M.B.A Construction',
+    cost:'₹5L–₹12L (NIT) / ₹12L–₹25L (Private)',
+  },
+  'Business Management': {
+    fit:'best',
+    riasec:['enterprising','social','conventional'],
+    skills:['administrative','numerical','verbal'],
+    salaryEarly:'₹5L–₹10L+', salaryGrowth:'₹12L–₹25L+', salaryLead:'₹30L–₹80L+',
+    rationale:'Enterprising (commercial drive) + Social (team leadership) + Conventional (operational discipline) is the management profile. Administrative and Numerical skills support planning, budgeting, and people management.',
+    stream:'Commerce / Science / Arts (any)',
+    exam:'IPMAT / CUET / DU JAT / SET',
+    colleges:['IIM Indore (IPM)','Symbiosis Pune','NMIMS Mumbai','Christ University Bangalore','BIM Trichy'],
+    ugDegree:'BBA / BMS (3 Years)',
+    pgDegree:'MBA (IIM via CAT)',
+    cost:'₹4L–₹20L (UG) / ₹15L–₹35L (MBA)',
+  },
+  'Data Science / AI': {
+    fit:'conditional',
+    riasec:['investigative','conventional'],
+    skills:['logical','numerical'],
+    salaryEarly:'₹8L–₹18L+', salaryGrowth:'₹20L–₹50L+', salaryLead:'₹60L–₹2Cr+',
+    rationale:'Investigative (analytical inquiry) + Conventional (systematic data processing) is the data science profile. Strong Logical and Numerical skills are mandatory for machine learning and statistical modelling.',
+    stream:'Science with PCM; Computer Science a strong plus',
+    exam:'JEE / CUET / College specific',
+    colleges:['IIT (CSE with specialisation)','IIIT Hyderabad','NIT CS','VIT / SRM Data Science','BITS Pilani'],
+    ugDegree:'B.Tech CS / B.Sc. Data Science (3–4 Years)',
+    pgDegree:'M.Tech AI/ML / MS (USA) / MTech IIT',
+    cost:'₹5L–₹20L',
+  },
+  'Biotechnology': {
+    fit:'conditional',
+    riasec:['investigative','realistic'],
+    skills:['logical','numerical'],
+    salaryEarly:'₹4L–₹8L+', salaryGrowth:'₹10L–₹22L+', salaryLead:'₹25L–₹60L+',
+    rationale:'Investigative (research curiosity) + Realistic (lab work) is the biotechnology profile. India\'s growing biopharma sector and healthcare technology industry create strong opportunities.',
+    stream:'Science with PCB (Biology mandatory)',
+    exam:'CUET / JEE / University specific',
+    colleges:['IIT (Biotech)','VIT Vellore','Manipal','Amity University','SRM Chennai'],
+    ugDegree:'B.Tech / B.Sc. Biotechnology (3–4 Years)',
+    pgDegree:'M.Sc. Biotechnology / PhD / MBA Healthcare',
+    cost:'₹4L–₹18L',
+  },
+  'Hotel Management': {
+    fit:'best',
+    riasec:['social','enterprising','artistic'],
+    skills:['administrative','verbal'],
+    salaryEarly:'₹4L–₹8L+', salaryGrowth:'₹10L–₹25L+', salaryLead:'₹30L–₹70L+',
+    rationale:'Social (guest interaction) + Enterprising (hospitality business leadership) + Artistic (aesthetic sensibility for spaces and experiences) is the hotel management profile. Administrative and Verbal skills are foundational.',
+    stream:'Any stream; English proficiency critical',
+    exam:'NCHM JEE / IIHM E-chalk',
+    colleges:['IHM Mumbai / Delhi / Hyderabad','WGSHA Manipal','Oberoi OCLD','Taj SATHYA Hotels','IHM Bangalore'],
+    ugDegree:'B.Sc. Hospitality (3 Years)',
+    pgDegree:'MBA Hospitality / International Hotel School',
+    cost:'₹3L–₹12L',
+  },
+  'Civil Services / IAS': {
+    fit:'conditional',
+    riasec:['investigative','social','enterprising'],
+    skills:['verbal','logical','administrative'],
+    salaryEarly:'₹7L–₹12L+', salaryGrowth:'₹15L–₹25L+', salaryLead:'₹25L–₹40L+ (plus perks)',
+    rationale:'Investigative (policy analysis) + Social (public service leadership) + Enterprising (governance and administration) drives IAS/IPS/IFS aspirants. Verbal articulation and Logical reasoning are tested heavily in UPSC.',
+    stream:'Any stream with strong General Studies foundation',
+    exam:'UPSC CSE (Prelims → Mains → Interview)',
+    colleges:['Any graduation (DU, BHU, Osmania preferred) + Dedicated UPSC coaching'],
+    ugDegree:'Any Bachelor\'s Degree (3–5 Years)',
+    pgDegree:'UPSC CSE is the primary qualification pathway',
+    cost:'₹3L–₹8L (UG) + ₹1L–₹3L (UPSC coaching)',
+  },
+  'Defence / Army / Navy / Air Force': {
+    fit:'conditional',
+    riasec:['realistic','enterprising'],
+    skills:['mechanical','logical','numerical'],
+    salaryEarly:'₹7L–₹12L+', salaryGrowth:'₹15L–₹25L+', salaryLead:'₹30L–₹50L+ (pay + perks)',
+    rationale:'Realistic (physical operational roles) + Enterprising (leadership command) drives defence careers. NDA entry requires strong PCM foundation; physical fitness standards are non-negotiable.',
+    stream:'Science with PCM (for NDA/TES technical entry)',
+    exam:'NDA / CDS / AFCAT / Technical Entry Scheme (TES)',
+    colleges:['National Defence Academy (NDA) Pune','Indian Military Academy (IMA) Dehradun','Naval Academy Ezhimala','Air Force Academy Dundigal'],
+    ugDegree:'NDA + Degree from JNU (3 Years integrated)',
+    pgDegree:'Staff College / DS&P / Defence Management',
+    cost:'Fully funded by Government of India',
+  },
+  'Pharmacy': {
+    fit:'conditional',
+    riasec:['investigative','conventional'],
+    skills:['numerical','logical'],
+    salaryEarly:'₹4L–₹8L+', salaryGrowth:'₹10L–₹20L+', salaryLead:'₹25L–₹50L+',
+    rationale:'Investigative (drug research) + Conventional (precise dispensing protocols) is the pharmacy profile. Strong growth in India\'s pharmaceutical exports sector creates sustained demand.',
+    stream:'Science with PCB (Chemistry critical)',
+    exam:'NEET / State Pharmacy CETs / Direct admission',
+    colleges:['Manipal College of Pharmaceutical Sciences','JSS Pharmacy Mysore','BITS Pilani (Pharmacy)','Jamia Hamdard Delhi','ICT Mumbai'],
+    ugDegree:'B.Pharm (4 Years)',
+    pgDegree:'M.Pharm / Pharm.D / MBA Pharma',
+    cost:'₹3L–₹12L',
+  },
+};
+
+// ═══════════════════════════════════════════════════════════════════
+//  INDEXED DB — STUDENT DATABASE
+// ═══════════════════════════════════════════════════════════════════
+let db = null;
+const DB_NAME = 'MentorMeDB';
+const STORE = 'students';
+
+function initDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB_NAME, 1);
+    req.onupgradeneeded = e => {
+      const idb = e.target.result;
+      if (!idb.objectStoreNames.contains(STORE)) {
+        const store = idb.createObjectStore(STORE, { keyPath: 'id', autoIncrement: true });
+        store.createIndex('name', 'name', { unique: false });
+        store.createIndex('date', 'date', { unique: false });
+      }
+    };
+    req.onsuccess = e => { db = e.target.result; resolve(db); };
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function dbGetAll() {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readonly');
+    const req = tx.objectStore(STORE).getAll();
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function dbSave(student) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    const store = tx.objectStore(STORE);
+    const req = student.id ? store.put(student) : store.add(student);
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function dbDelete(id) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction(STORE, 'readwrite');
+    tx.objectStore(STORE).delete(id).onsuccess = resolve;
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  APP STATE
+// ═══════════════════════════════════════════════════════════════════
+let currentStudent = null;
+let deleteTargetId = null;
+let previewCharts = {};
+
+// ═══════════════════════════════════════════════════════════════════
+//  FORM RENDERING
+// ═══════════════════════════════════════════════════════════════════
+function renderScoreGroup(containerId, traits) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  traits.forEach(t => {
+    const val = currentStudent ? (currentStudent[t.id] ?? 0) : 0;
+    el.innerHTML += `
+      <div class="score-item">
+        <div class="score-header">
+          <span class="score-label">${t.label}</span>
+          <span class="score-val" id="val-${t.id}">${val}%</span>
+        </div>
+        <div class="score-track"><div class="score-fill" id="fill-${t.id}" style="width:${val}%"></div></div>
+        <div class="score-input-row">
+          <input type="range" min="0" max="100" step="10" value="${val}" 
+            oninput="updateScore('${t.id}',this.value)" id="range-${t.id}"/>
+          <input type="number" min="0" max="100" step="10" value="${val}" 
+            oninput="updateScore('${t.id}',this.value)" id="num-${t.id}"/>
+        </div>
+      </div>`;
+  });
+}
+
+function renderCareerTags() {
+  const el = document.getElementById('career-tags');
+  const selected = currentStudent?.preferredCareers || [];
+  el.innerHTML = ALL_CAREERS.map(c => 
+    `<div class="career-tag ${selected.includes(c)?'selected':''}" 
+      onclick="toggleCareer(this,'${c.replace(/'/g,"\\'")}');">${c}</div>`
+  ).join('');
+}
+
+function updateScore(id, val) {
+  val = Math.min(100, Math.max(0, parseInt(val)||0));
+  document.getElementById(`fill-${id}`).style.width = val+'%';
+  document.getElementById(`val-${id}`).textContent = val+'%';
+  document.getElementById(`range-${id}`).value = val;
+  document.getElementById(`num-${id}`).value = val;
+  livePreview();
+}
+
+function toggleCareer(el, career) {
+  el.classList.toggle('selected');
+  livePreview();
+}
+
+function getFormData() {
+  const scores = {};
+  [...INDIVIDUALITY_TRAITS, ...SKILL_TRAITS, ...RIASEC_TRAITS].forEach(t => {
+    const el = document.getElementById(`range-${t.id}`);
+    scores[t.id] = el ? parseInt(el.value)||0 : 0;
+  });
+  return {
+    name: document.getElementById('f-name').value.trim(),
+    grade: document.getElementById('f-grade').value.trim(),
+    school: document.getElementById('f-school').value.trim(),
+    age: document.getElementById('f-age').value,
+    date: document.getElementById('f-date').value,
+    parentCareer: document.getElementById('f-parent-career').value.trim(),
+    notes: document.getElementById('f-notes').value.trim(),
+    preferredCareers: (function() {
+      const selectedTags = [...document.querySelectorAll('.career-tag.selected')].map(e=>e.textContent);
+      if (selectedTags.length > 0) return selectedTags;
+      return currentStudent?.preferredCareers || [];
+    })(),
+    ...scores
+  };
+}
+
+function populateForm(student) {
+  currentStudent = student;
+  document.getElementById('f-name').value = student.name || '';
+  document.getElementById('f-grade').value = student.grade || '';
+  document.getElementById('f-school').value = student.school || '';
+  document.getElementById('f-age').value = student.age || '';
+  document.getElementById('f-date').value = student.date || '';
+  document.getElementById('f-parent-career').value = student.parentCareer || '';
+  document.getElementById('f-notes').value = student.notes || '';
+  
+  renderScoreGroup('individuality-scores', INDIVIDUALITY_TRAITS);
+  renderScoreGroup('skill-scores', SKILL_TRAITS);
+  renderScoreGroup('riasec-scores', RIASEC_TRAITS);
+  renderCareerTags();
+  livePreview();
+}
+
+function clearForm() {
+  currentStudent = null;
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-grade').value = '';
+  document.getElementById('f-school').value = '';
+  document.getElementById('f-age').value = '';
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('f-parent-career').value = '';
+  document.getElementById('f-notes').value = '';
+  
+  [...INDIVIDUALITY_TRAITS, ...SKILL_TRAITS, ...RIASEC_TRAITS].forEach(t => {
+    const r = document.getElementById(`range-${t.id}`);
+    const n = document.getElementById(`num-${t.id}`);
+    const f = document.getElementById(`fill-${t.id}`);
+    const v = document.getElementById(`val-${t.id}`);
+    if(r) r.value = 0;
+    if(n) n.value = 0;
+    if(f) f.style.width = '0%';
+    if(v) v.textContent = '0%';
+  });
+  renderCareerTags();
+  document.getElementById('empty-state').style.display = 'block';
+  document.getElementById('report-preview').style.display = 'none';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  CAREER ANALYSIS ENGINE
+// ═══════════════════════════════════════════════════════════════════
+function analyzeCareer(data) {
+  const preferred = data.preferredCareers || [];
+  const results = { best:[], conditional:[], dev:[], aspirational:[] };
+  const analyzed = new Set();
+  
+  // Score each career in DB
+  const careerScores = {};
+  Object.entries(CAREER_DB).forEach(([name, info]) => {
+    let score = 0;
+    info.riasec.forEach(r => { score += (data[r]||0) * 0.6; });
+    info.skills.forEach(s => { score += (data[s]||0) * 0.4; });
+    careerScores[name] = score / (info.riasec.length + info.skills.length);
+  });
+
+  // Classify preferred careers
+  preferred.forEach(c => {
+    if (CAREER_DB[c]) {
+      const info = CAREER_DB[c];
+      const score = careerScores[c];
+      let bucket = 'dev';
+      if (score >= 35) bucket = 'best';
+      else if (score >= 20) bucket = 'conditional';
+      else if (info.fit === 'aspirational') bucket = 'aspirational';
+      results[bucket].push(c);
+      analyzed.add(c);
+    }
+  });
+
+  // Add parent career
+  if (data.parentCareer) {
+    const match = Object.keys(CAREER_DB).find(c => 
+      data.parentCareer.toLowerCase().includes(c.toLowerCase().split('/')[0].trim())
+    );
+    if (match && !analyzed.has(match)) {
+      results.aspirational.push(match + ' (Parent\'s Choice)');
+      analyzed.add(match);
+    }
+  }
+
+  // Auto-suggest from top scoring unselected careers
+  const sorted = Object.entries(careerScores)
+    .filter(([n]) => !analyzed.has(n))
+    .sort((a,b) => b[1]-a[1]);
+  
+  sorted.slice(0,2).forEach(([n]) => {
+    if (careerScores[n] >= 35) { results.best.push(n); analyzed.add(n); }
+  });
+
+  return results;
+}
+
+function getTopTraits(data, traits, n=3) {
+  return traits
+    .map(t => ({...t, val: data[t.id]||0}))
+    .sort((a,b) => b.val-a.val)
+    .slice(0, n);
+}
+
+function getRIASECColor(val) {
+  if (val >= 50) return 'high';
+  if (val >= 30) return 'med';
+  return 'low';
+}
+
+function generateExecutiveSummary(data) {
+  const name = data.name ? data.name.split(' ')[0] : 'The student';
+  const topRiasec = getTopTraits(data, RIASEC_TRAITS, 2).filter(t => t.val > 0);
+  const topSkill = getTopTraits(data, SKILL_TRAITS, 1)[0];
+  const topIndiv = getTopTraits(data, INDIVIDUALITY_TRAITS, 1)[0];
+
+  const riasecDesc = topRiasec.map(t => t.label).join('–') || 'Balanced';
+  const careers = data.preferredCareers?.length
+    ? data.preferredCareers.join(', ')
+    : 'various professional fields';
+
+  return `${name} demonstrates a strong ${riasecDesc} personality orientation with a pronounced interest in ${topRiasec.map(t=>t.label.toLowerCase()).join(', ')} environments. ${topSkill ? `The highest demonstrated skill is ${topSkill.label} (${topSkill.val}%), reflecting structured, precision-driven thinking.` : ''} ${topIndiv ? `${name}'s strongest personal trait is ${topIndiv.label} (${topIndiv.val}%), indicating ${topIndiv.id==='engagement'?'strong task commitment and goal-directedness':topIndiv.id==='empathy'?'high interpersonal sensitivity':topIndiv.id==='ei'?'strong emotional regulation and social awareness':'broad intellectual curiosity'}.` : ''}
+
+The assessment indicates strong long-term alignment with ${careers}. This report provides a structured, evidence-based roadmap across academic planning, entrance examinations, college selection, and career development — balancing aspiration with realism to ensure all recommended pathways are achievable, financially rewarding, and sustainable.`;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  LIVE PREVIEW RENDERER
+// ═══════════════════════════════════════════════════════════════════
+function livePreview() {
+  const data = getFormData();
+  if (!data.name) {
+    document.getElementById('empty-state').style.display = 'block';
+    document.getElementById('report-preview').style.display = 'none';
+    return;
+  }
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('report-preview').style.display = 'block';
+  
+  const initials = data.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  const careers = analyzeCareer(data);
+  const summary = generateExecutiveSummary(data);
+  const topRiasec = getTopTraits(data, RIASEC_TRAITS, 3);
+  const topSkills = getTopTraits(data, SKILL_TRAITS, 5);
+  const topIndiv  = getTopTraits(data, INDIVIDUALITY_TRAITS, 3);
+  
+  // Build career fit table rows
+  const fitRows = [
+    {label:'Best-fit Careers', cls:'badge-best', items: careers.best},
+    {label:'Conditional Fit',  cls:'badge-cond', items: careers.conditional},
+    {label:'Development Dependent', cls:'badge-dev', items: careers.dev},
+    {label:'Aspirational / Parent Choice', cls:'badge-asp', items: careers.aspirational},
+  ].filter(r => r.items.length > 0)
+   .map(r => `<tr><td><span class="cat-badge ${r.cls}">${r.label}</span></td>
+     <td>${r.items.join(' &nbsp;·&nbsp; ')}</td></tr>`).join('');
+
+  // Score bar rows
+  const skillBars = topSkills.map(t => `
+    <div class="score-bar-row">
+      <span class="score-bar-label">${t.label}</span>
+      <div class="score-bar-track"><div class="score-bar-fill fill-navy" style="width:${t.val}%"></div></div>
+      <span class="score-bar-pct">${t.val}%</span>
+    </div>`).join('');
+
+  const indivBars = topIndiv.map(t => `
+    <div class="score-bar-row">
+      <span class="score-bar-label">${t.label}</span>
+      <div class="score-bar-track"><div class="score-bar-fill fill-teal" style="width:${t.val}%"></div></div>
+      <span class="score-bar-pct">${t.val}%</span>
+    </div>`).join('');
+
+  // RIASEC cells
+  const riasecCells = RIASEC_TRAITS.map(t => {
+    const val = data[t.id]||0;
+    return `<div class="riasec-cell">
+      <div class="riasec-letter">${t.letter}</div>
+      <div class="riasec-name">${t.label}</div>
+      <div class="riasec-pct ${getRIASECColor(val)}">${val}%</div>
+    </div>`;
+  }).join('');
+
+  const selectedCareers = data.preferredCareers || [];
+
+  // Best careers detail
+  const careerDetails = selectedCareers.slice(0,4).map(c => {
+    const key = c.replace(/ \(Parent.*\)$/,'');
+    const info = CAREER_DB[key];
+    if (!info) return '';
+    return `<tr>
+      <td><strong>${c}</strong></td>
+      <td>${info.salaryEarly}</td>
+      <td>${info.salaryGrowth}</td>
+      <td>${info.salaryLead}</td>
+      <td style="font-size:11px;color:#374151;">${info.rationale}</td>
+    </tr>`;
+  }).join('');
+
+  // Exam details
+  const examRows = [...new Set(selectedCareers.map(c=>{
+    const k = c.replace(/ \(Parent.*\)$/,'');
+    return CAREER_DB[k];
+  }).filter(Boolean).map(i=>i.exam))].slice(0,5)
+  .map(e => `<tr><td><strong>${e}</strong></td><td style="font-size:11px;">Refer detailed preparation plan during counselling session</td></tr>`).join('');
+
+  // Stream recommendation
+  const streams = [...new Set(selectedCareers.map(c=>{
+    const k=c.replace(/ \(Parent.*\)$/,'');
+    return CAREER_DB[k]?.stream;
+  }).filter(Boolean))];
+  const primaryStream = streams[0] || 'Science with PCM';
+
+  // Investment table
+  const investRows = [...new Set(selectedCareers.slice(0,3).map(c=>{
+    const k=c.replace(/ \(Parent.*\)$/,'');
+    return CAREER_DB[k];
+  }).filter(Boolean))].map(i=>`<tr>
+    <td>${i.ugDegree}</td>
+    <td style="color:var(--teal);font-weight:600;">${i.cost}</td>
+  </tr>`).join('');
+
+  document.getElementById('report-preview').innerHTML = `
+<div class="preview-card">
+  <div class="report-cover">
+    <div class="report-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Premium Career Intelligence & Future Readiness Assessment
+    </div>
+    <div class="report-title">CAREER STRATEGY REPORT</div>
+    <div class="report-subtitle">Confidential · Generated by MentorMe Career Intelligence & Training Pvt. Ltd.</div>
+    <div class="report-student">
+      <div class="report-avatar">${initials}</div>
+      <div class="report-student-info">
+        <div class="name">${data.name}</div>
+        <div class="meta">${[data.grade, data.school, data.age ? `Age ${data.age}` : '', data.date ? new Date(data.date).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : ''].filter(Boolean).join('  ·  ')}</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="report-body">
+    <!-- 1. EXECUTIVE SUMMARY -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">1</span> EXECUTIVE SUMMARY</div>
+      <div class="r-body-text">${summary.replace(/\n\n/g,'</div><div class="r-body-text">')}</div>
+      ${data.notes ? `<div class="r-body-text r-italic">Counsellor Notes: ${data.notes}</div>` : ''}
+      
+      <table class="r-table" style="margin-top:16px;">
+        <thead><tr><th width="30%">Category</th><th>Careers</th></tr></thead>
+        <tbody>${fitRows || '<tr><td colspan="2" style="color:var(--muted);font-style:italic;">Select career preferences to see fit classification</td></tr>'}</tbody>
+      </table>
+      
+      <div style="background:#F0FDF4;border-left:3px solid var(--teal);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px;color:#155E3E;margin-top:8px;">
+        <strong>Recommended Stream (Grade 11–12):</strong> ${primaryStream}
+      </div>
+    </div>
+
+    <!-- 2. PERSONALITY SNAPSHOT -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">2</span> CAREER PERSONALITY SNAPSHOT</div>
+      <div class="charts-row">
+        <div class="chart-box">
+          <div class="chart-box-title">Skill Proficiency</div>
+          ${skillBars}
+        </div>
+        <div class="chart-box">
+          <div class="chart-box-title">Individuality Profile</div>
+          ${indivBars}
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. RIASEC -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">3</span> RIASEC INTEREST PROFILE</div>
+      <div class="riasec-grid">${riasecCells}</div>
+      <canvas id="preview-radar" height="200" style="max-height:200px;"></canvas>
+    </div>
+
+    <!-- 4. CAREER PATHWAYS -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">4</span> CAREER PATHWAYS — MATCHED TO PROFILE</div>
+      <table class="r-table">
+        <thead><tr><th>Career</th><th>Early (0–5y)</th><th>Growth (5–12y)</th><th>Leadership (12y+)</th><th>Why It Fits</th></tr></thead>
+        <tbody>${careerDetails || '<tr><td colspan="5" style="color:var(--muted);font-style:italic;">Select career preferences to see detailed analysis</td></tr>'}</tbody>
+      </table>
+    </div>
+
+    <!-- 5. ACADEMIC ROADMAP -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">5</span> ACADEMIC ROADMAP</div>
+      <table class="r-table">
+        <thead><tr><th width="28%">Stage</th><th>Recommendation</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Grade 11–12 Stream</strong></td><td>${primaryStream} — Refer section 1 for rationale. Add a 5th subject (Biology / Economics / CS) based on priority career.</td></tr>
+          <tr><td><strong>Focus Subjects</strong></td><td>${topSkills[0]?`Develop <strong>${topSkills[0].label}</strong> skills (current: ${topSkills[0].val}%) as highest priority — critical across all recommended pathways.`:''} Maintain Science subjects for NEET/JEE preparation alongside board exams.</td></tr>
+          <tr><td><strong>Skill Development</strong></td><td>Begin domain-specific online courses (free: Khan Academy, Coursera). Participate in Olympiads. Seek internship or job-shadow experience in target industry by Grade 12.</td></tr>
+          <tr><td><strong>Extra-Curricular</strong></td><td>Science exhibitions, NCC (discipline + leadership), community service (Empathy development), school committee roles, subject-related competitions.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 6. ENTRANCE EXAMS -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">6</span> ENTRANCE EXAMS & PREPARATION</div>
+      <table class="r-table">
+        <thead><tr><th width="35%">Exam</th><th>Preparation Notes</th></tr></thead>
+        <tbody>${examRows || '<tr><td colspan="2" style="color:var(--muted);font-style:italic;">Select career preferences to see relevant exams</td></tr>'}</tbody>
+      </table>
+    </div>
+
+    <!-- 7. RECOMMENDED COLLEGES -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">7</span> RECOMMENDED COLLEGES</div>
+      ${selectedCareers.slice(0,3).map(c => {
+        const k=c.replace(/ \(Parent.*\)$/,'');
+        const info=CAREER_DB[k];
+        if(!info||!info.colleges) return '';
+        return `<div style="margin-bottom:12px;">
+          <div style="font-size:12px;font-weight:700;color:var(--navy);margin-bottom:6px;">${c}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            ${info.colleges.map(col=>`<span style="background:#EEF2FF;color:var(--navy);padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;">${col}</span>`).join('')}
+          </div>
+        </div>`;
+      }).join('') || '<p style="color:var(--muted);font-size:12px;font-style:italic;">Select career preferences to see college recommendations</p>'}
+    </div>
+
+    <!-- 8. INVESTMENT -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">8</span> EDUCATION INVESTMENT PLANNING</div>
+      <table class="r-table">
+        <thead><tr><th>Programme</th><th>Estimated Cost (India)</th></tr></thead>
+        <tbody>${investRows || '<tr><td colspan="2" style="color:var(--muted);font-style:italic;">Select career preferences to see investment estimates</td></tr>'}</tbody>
+      </table>
+      <div style="background:#FFF8F0;border-left:3px solid var(--orange);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px;color:#7C4A00;margin-top:8px;">
+        <strong>Funding:</strong> National Scholarship Portal (NSP), Vidya Lakshmi Portal, SBI Scholar Loan (8–10% p.a.), Institution Merit Scholarships, SC/ST/OBC Fee Waivers. Always apply early — scholarship deadlines are strict.
+      </div>
+    </div>
+
+    <!-- 9. NEXT STEPS -->
+    <div class="r-section">
+      <div class="r-section-title"><span class="r-section-num">9</span> NEXT STEPS</div>
+      <div class="r-body-text">To receive a personalised and detailed roadmap, book a one-on-one counselling session with the MentorMe expert team.</div>
+      <ul style="margin:10px 0 0 20px;font-size:13px;line-height:2;color:#374151;">
+        <li>Detailed education roadmap and stream selection clarity</li>
+        <li>Best-fit colleges in India or abroad based on academic progression</li>
+        <li>Entrance exam preparation plan with subject-wise milestone targets</li>
+        <li>Financial planning and scholarship application support</li>
+        <li>SOP writing, interview preparation, and college application guidance</li>
+      </ul>
+    </div>
+
+    <div class="cta-block">
+      <h4>Connect with MentorMe Career Intelligence & Training Pvt. Ltd.</h4>
+      <p>Turning Passions into Professions — guiding every student towards a fulfilling and purposeful career</p>
+      <div class="cta-contact">www.mentormeright.com &nbsp;|&nbsp; +91 8188824440 &nbsp;|&nbsp; admin@mentormeright.in</div>
+    </div>
+    
+    <div style="margin-top:20px;padding-top:12px;border-top:1px solid var(--border);font-size:10px;color:var(--muted);line-height:1.6;font-style:italic;">
+      DISCLAIMER: This Career Guidance Report has been prepared by MentorMe Career Intelligence & Training Pvt. Ltd. based on psychometric assessment results provided at the time of evaluation. The report is intended for educational and career planning purposes only. MentorMe does not guarantee specific career or academic outcomes.
+    </div>
+  </div>
+</div>`;
+
+  // Draw RIASEC radar in preview
+  setTimeout(() => renderPreviewRadar(data), 50);
+}
+
+function renderPreviewRadar(data) {
+  const el = document.getElementById('preview-radar');
+  if (!el) return;
+  if (previewCharts.radar) { previewCharts.radar.destroy(); }
+  const labels = RIASEC_TRAITS.map(t => t.label);
+  const vals = RIASEC_TRAITS.map(t => data[t.id]||0);
+  previewCharts.radar = new Chart(el, {
+    type: 'radar',
+    data: {
+      labels,
+      datasets:[{
+        data: vals,
+        backgroundColor: 'rgba(27,58,107,0.2)',
+        borderColor: '#1B3A6B',
+        borderWidth: 2,
+        pointBackgroundColor: '#E8762C',
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      scales:{ r:{ min:0, max:100, ticks:{stepSize:25,font:{size:9}}, pointLabels:{font:{size:10,weight:'bold'},color:'#1B3A6B'} } },
+      plugins:{ legend:{display:false} },
+      responsive:true,
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  PDF GENERATION
+// ═══════════════════════════════════════════════════════════════════
+async function generatePDF() {
+  const data = getFormData();
+  if (!data.name) { showToast('Please enter student name first', 'error'); return; }
+  
+  showLoading('Generating charts…');
+  await new Promise(r=>setTimeout(r,100));
+  
+  const radarImg   = await renderChartToPng('pdf-radar',  'radar',  data);
+  const skillsImg  = await renderChartToPng('pdf-skills', 'skills', data);
+  const indivImg   = await renderChartToPng('pdf-individuality', 'individuality', data);
+  
+  showLoading('Building PDF…');
+  await new Promise(r=>setTimeout(r,100));
+  
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+  const W = 210, M = 14;
+  const CW = W - 2*M;
+  
+  const NAVY_RGB   = [27,58,107];
+  const ORANGE_RGB = [232,118,44];
+  const TEAL_RGB   = [46,158,143];
+  const CREAM_RGB  = [248,249,251];
+  const BORDER_RGB = [226,232,240];
+
+  function setFont(style='normal', size=10, color=[30,36,52]) {
+    doc.setFont('helvetica', style);
+    doc.setFontSize(size);
+    doc.setTextColor(...color);
+  }
+  function addHeaderFooter(pageNum) {
+    // Header
+    doc.setFillColor(...NAVY_RGB);
+    doc.rect(0,0,210,14,'F');
+    setFont('bold',9,[255,255,255]);
+    doc.text('MentorMe Career Intelligence & Training Pvt. Ltd.  |  Confidential Career Report', M, 9);
+    setFont('normal',8,[232,118,44]);
+    doc.text('www.mentormeright.com', W-M, 9, {align:'right'});
+    // Footer
+    doc.setFillColor(...BORDER_RGB);
+    doc.rect(0,286,210,0.4,'F');
+    setFont('normal',8,[150,150,150]);
+    doc.text('www.mentormeright.com  |  +91 8188824440  |  admin@mentormeright.in', M, 292);
+    doc.text(`Page ${pageNum}`, W-M, 292, {align:'right'});
+  }
+  function sectionTitle(title, y) {
+    doc.setFillColor(...NAVY_RGB);
+    doc.rect(M, y, CW, 7,'F');
+    setFont('bold',10,[255,255,255]);
+    doc.text(title, M+3, y+4.8);
+    return y + 9;
+  }
+  function subTitle(title, y, color=NAVY_RGB) {
+    setFont('bold',10,color);
+    doc.text(title, M, y);
+    doc.setDrawColor(...color);
+    doc.setLineWidth(0.4);
+    doc.line(M, y+1.5, M+CW, y+1.5);
+    return y+5;
+  }
+  function bodyText(text, y, x=M, w=CW) {
+    setFont('normal',9,[55,65,81]);
+    const lines = doc.splitTextToSize(text, w);
+    doc.text(lines, x, y);
+    return y + lines.length * 4.5 + 2;
+  }
+  function infoBox(text, y, bg=CREAM_RGB, tc=[27,58,107]) {
+    const lines = doc.splitTextToSize(text, CW-6);
+    const h = lines.length * 4.5 + 6;
+    doc.setFillColor(...bg);
+    doc.roundedRect(M, y, CW, h, 2, 2, 'F');
+    setFont('normal',9,tc);
+    doc.text(lines, M+3, y+4.5);
+    return y+h+3;
+  }
+
+  const careers = analyzeCareer(data);
+  const summary = generateExecutiveSummary(data);
+  const topSkills = getTopTraits(data, SKILL_TRAITS, 5);
+  const topIndiv  = getTopTraits(data, INDIVIDUALITY_TRAITS, 4);
+  const topRiasec = getTopTraits(data, RIASEC_TRAITS, 3);
+  const initials  = data.name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+
+  // ── PAGE 1: COVER ──────────────────────────────────────────────
+  addHeaderFooter(1);
+  // Cover gradient block
+  doc.setFillColor(...NAVY_RGB);
+  doc.rect(0,14,210,68,'F');
+  doc.setFillColor(42,82,152);
+  doc.circle(175,20,35,'F');
+  doc.setFillColor(232,118,44,0.1);
+  doc.circle(155,75,25,'F');
+
+  setFont('bold',22,[255,255,255]);
+  doc.text('CAREER STRATEGY REPORT', W/2, 34, {align:'center'});
+  setFont('italic',10,[200,210,230]);
+  doc.text('Premium Career Intelligence & Future Readiness Assessment', W/2, 41, {align:'center'});
+  doc.setDrawColor(...ORANGE_RGB);
+  doc.setLineWidth(0.6);
+  doc.line(M+20, 44.5, W-M-20, 44.5);
+
+  // Avatar circle
+  doc.setFillColor(...ORANGE_RGB);
+  doc.circle(M+10, 63, 9, 'F');
+  setFont('bold',12,[255,255,255]);
+  doc.text(initials, M+10, 66, {align:'center'});
+  setFont('bold',15,[255,255,255]);
+  doc.text(data.name, M+22, 61);
+  setFont('normal',9,[180,212,238]);
+  const metaParts = [data.grade, data.school, data.age?`Age ${data.age}`:'', data.date?new Date(data.date).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}):new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'})].filter(Boolean);
+  doc.text(metaParts.join('  ·  '), M+22, 67);
+  setFont('normal',8,[255,255,255]);
+  doc.text('Report Generated by MentorMe Career Intelligence & Training Pvt. Ltd.', M+22, 73);
+
+  let y = 90;
+
+  // Career fit summary box
+  doc.setFillColor(27,58,107,0.05);
+  y = sectionTitle('1.  EXECUTIVE SUMMARY', y);
+  y = bodyText(summary, y+2);
+
+  // Career fit table
+  y += 3;
+  setFont('bold',9,[255,255,255]);
+  const fitData = [
+    ['Category', 'Careers'],
+    ...[
+      ['Best-fit Careers', careers.best],
+      ['Conditional Fit', careers.conditional],
+      ['Development Dependent', careers.dev],
+      ['Aspirational / Parent Choice', careers.aspirational],
+    ].filter(r=>r[1].length).map(r=>[r[0], r[1].join(', ')])
+  ];
+  doc.autoTable({
+    startY: y, margin:{left:M,right:M},
+    head:[fitData[0]], body:fitData.slice(1),
+    headStyles:{fillColor:NAVY_RGB, fontSize:9, fontStyle:'bold', cellPadding:3},
+    bodyStyles:{fontSize:9, cellPadding:3},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:52}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 4;
+
+  if (data.preferredCareers?.length || data.parentCareer) {
+    const stream = ([...careers.best,...careers.conditional].map(c=>CAREER_DB[c.replace(/ \(Parent.*\)$/,'')]?.stream).filter(Boolean)[0] || 'Science with PCM');
+    y = infoBox(`📚  Recommended Stream (Grade 11–12): ${stream}`, y, [240,253,250], [21,94,78]);
+  }
+
+  // ── PAGE 2: PERSONALITY + SKILLS ──────────────────────────────
+  doc.addPage();
+  addHeaderFooter(2);
+  y = 20;
+
+  y = sectionTitle("2.  CAREER PERSONALITY SNAPSHOT", y);
+  y += 3;
+  setFont('normal',9,[55,65,81]);
+  const snapDesc = `${data.name.split(' ')[0]} performs best in structured, ${topRiasec[0]?.label.toLowerCase()||'applied'} environments. Key strengths — ${topSkills.slice(0,3).map(t=>t.label).join(', ')} — directly underpin the recommended career pathways.`;
+  y = bodyText(snapDesc, y+1);
+  y += 4;
+
+  // Skills + Individuality side by side
+  const halfW = CW/2 - 3;
+  // Skills chart
+  if (skillsImg) { doc.addImage(skillsImg,'PNG',M,y,halfW,50); }
+  // Individuality chart
+  if (indivImg) { doc.addImage(indivImg,'PNG',M+halfW+6,y,halfW,50); }
+  y += 56;
+
+  // Strengths table
+  y = subTitle('Core Strengths', y);
+  const strengthRows = [...topSkills.slice(0,3), ...topIndiv.slice(0,2)].map(t => {
+    const isSkill = SKILL_TRAITS.some(s=>s.id===t.id);
+    return [t.label, `${t.val}%`, isSkill?'Skill':'Personal Trait', `${t.val>=50?'Highest competency — directly foundational for ':t.val>=30?'Strong asset — supports ':'Developing area — targeted practice will unlock '}recommended career pathways.`];
+  });
+  doc.autoTable({
+    startY:y, margin:{left:M,right:M},
+    head:[['Strength','Score','Type','Career Implication']],
+    body:strengthRows,
+    headStyles:{fillColor:TEAL_RGB,fontSize:9,fontStyle:'bold',cellPadding:3},
+    bodyStyles:{fontSize:8.5,cellPadding:3},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:38},1:{cellWidth:16,halign:'center'},2:{cellWidth:22}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 6;
+
+  // Development areas
+  y = subTitle('Areas to Develop', y, ORANGE_RGB);
+  const devTraits = [...SKILL_TRAITS, ...INDIVIDUALITY_TRAITS]
+    .map(t=>({...t,val:data[t.id]||0}))
+    .filter(t=>t.val<35)
+    .sort((a,b)=>a.val-b.val)
+    .slice(0,4);
+  if (devTraits.length) {
+    doc.autoTable({
+      startY:y, margin:{left:M,right:M},
+      head:[['Development Area','Score','Recommended Action']],
+      body:devTraits.map(t=>[t.label,`${t.val}%`,`Build ${t.label.toLowerCase()} through structured practice, case studies, and applied exercises. Target improvement to 50%+ over 12 months.`]),
+      headStyles:{fillColor:ORANGE_RGB,fontSize:9,fontStyle:'bold',cellPadding:3},
+      bodyStyles:{fontSize:8.5,cellPadding:3},
+      alternateRowStyles:{fillColor:[255,248,245]},
+      columnStyles:{0:{fontStyle:'bold',cellWidth:38},1:{cellWidth:16,halign:'center'}},
+      theme:'plain',
+    });
+    y = doc.lastAutoTable.finalY + 4;
+  }
+
+  // ── PAGE 3: RIASEC + CAREER PATHWAYS ──────────────────────────
+  doc.addPage();
+  addHeaderFooter(3);
+  y = 20;
+
+  y = sectionTitle('3.  RIASEC INTEREST PROFILE', y);
+  y += 3;
+  // Radar chart
+  if (radarImg) {
+    doc.addImage(radarImg,'PNG',M+CW/2-35,y,70,70);
+    // RIASEC grid alongside
+    const gridX = M;
+    const gridY = y;
+    RIASEC_TRAITS.forEach((t,i) => {
+      const col = i % 3;
+      const row = Math.floor(i/3);
+      const cx = gridX + col*(halfW/3+2);
+      const cy = gridY + row*22;
+      const val = data[t.id]||0;
+      doc.setFillColor(...(val>=50?TEAL_RGB:val>=30?ORANGE_RGB:[200,210,220]));
+      doc.roundedRect(cx, cy, halfW/3, 18, 2,2,'F');
+      setFont('bold',13,[255,255,255]);
+      doc.text(t.letter, cx+halfW/6, cy+8, {align:'center'});
+      setFont('normal',7,[255,255,255]);
+      doc.text(t.label, cx+halfW/6, cy+12, {align:'center'});
+      setFont('bold',9,[255,255,255]);
+      doc.text(`${val}%`, cx+halfW/6, cy+16, {align:'center'});
+    });
+  }
+  y += 76;
+
+  // RIASEC table
+  doc.autoTable({
+    startY:y, margin:{left:M,right:M},
+    head:[['Interest (RIASEC)','Score','Career Implications']],
+    body:RIASEC_TRAITS.map(t=>[t.label,`${data[t.id]||0}%`,`${data[t.id]>=50?'Primary driver — ':data[t.id]>=30?'Secondary driver — ':'Developing — '}${CAREER_DB[ALL_CAREERS.find(c=>CAREER_DB[c]?.riasec.includes(t.id))]?.rationale?.split('.')[0]||t.label+' orientation noted'}` ]),
+    headStyles:{fillColor:NAVY_RGB,fontSize:9,fontStyle:'bold',cellPadding:3},
+    bodyStyles:{fontSize:8.5,cellPadding:3},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:35},1:{cellWidth:16,halign:'center'}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 6;
+
+  y = sectionTitle('4.  CAREER PATHWAYS — MATCHED TO PROFILE', y);
+  y += 2;
+  setFont('bold',9,TEAL_RGB);
+  doc.text('EXCELLENT FIT CAREERS', M, y+4);
+  y += 7;
+
+  const allCareers = [...careers.best,...careers.conditional,...careers.dev,...careers.aspirational];
+  const careerTableRows = allCareers.slice(0,7).map(c => {
+    const k = c.replace(/ \(Parent.*\)$/,'');
+    const info = CAREER_DB[k];
+    if (!info) return [c,'—','—','—','Selected preference'];
+    return [c, info.salaryEarly, info.salaryGrowth, info.salaryLead, info.rationale.slice(0,120)+'…'];
+  });
+
+  doc.autoTable({
+    startY:y, margin:{left:M,right:M},
+    head:[['Career','Early (0–5y)','Growth (5–12y)','Leader (12y+)','Why It Fits']],
+    body:careerTableRows,
+    headStyles:{fillColor:NAVY_RGB,fontSize:8.5,fontStyle:'bold',cellPadding:2.5},
+    bodyStyles:{fontSize:7.5,cellPadding:2.5},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:38},1:{cellWidth:22},2:{cellWidth:22},3:{cellWidth:22}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 4;
+
+  // ── PAGE 4: ACADEMICS + EXAMS + COLLEGES ──────────────────────
+  doc.addPage();
+  addHeaderFooter(4);
+  y = 20;
+
+  y = sectionTitle('5.  ACADEMIC ROADMAP', y);
+  const stream = ([...careers.best,...careers.conditional].map(c=>CAREER_DB[c.replace(/ \(Parent.*\)$/,'')]?.stream).filter(Boolean)[0]||'Science with PCM');
+  y += 2;
+  doc.autoTable({
+    startY:y, margin:{left:M,right:M},
+    head:[['Stage','Recommendation']],
+    body:[
+      ['Grade 11–12 Stream', stream],
+      ['Why this stream?', 'Preserves the broadest career optionality across all recommended pathways. Strategy must focus on capability development, not marks alone.'],
+      ['Focus Subjects', `${topSkills[0]?.label||'Mathematics'} (highest priority — develop from ${topSkills[0]?.val||0}% to 60%+). Physics, Chemistry, and Biology/Computer Science per stream choice.`],
+      ['5th Subject', 'Biology (for NEET + Food Science), OR Economics (for Commerce pathways), OR Computer Science (for Engineering/Tech pathways).'],
+      ['Skill Dev Priority', 'Domain-specific online learning (Khan Academy, NPTEL free courses), Olympiad participation, industry exposure visits, internship by Grade 12.'],
+      ['Extra-Curricular', 'Science exhibitions, NCC, school committee leadership, community service, subject-relevant competitions and workshops.'],
+    ],
+    headStyles:{fillColor:TEAL_RGB,fontSize:9,fontStyle:'bold',cellPadding:3},
+    bodyStyles:{fontSize:8.5,cellPadding:3},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:40}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 6;
+
+  y = sectionTitle('6.  ENTRANCE EXAMS & PREPARATION TIMELINE', y);
+  y += 2;
+  const examSet = new Set([...careers.best,...careers.conditional].map(c=>{
+    const k=c.replace(/ \(Parent.*\)$/,'');
+    return CAREER_DB[k];
+  }).filter(Boolean).map(i=>({exam:i.exam,stream:i.stream})));
+  const examRows2 = [...examSet].map(e=>[e.exam,'Grade 11 start recommended','Focus on domain subjects + mock tests + previous year papers. Begin 18–24 months before exam date.']);
+  doc.autoTable({
+    startY:y, margin:{left:M,right:M},
+    head:[['Exam','Timeline','Strategy']],
+    body:examRows2.length ? examRows2 : [['Select career preferences','—','—']],
+    headStyles:{fillColor:NAVY_RGB,fontSize:9,fontStyle:'bold',cellPadding:3},
+    bodyStyles:{fontSize:8.5,cellPadding:3},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:50},1:{cellWidth:32}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 6;
+
+  y = sectionTitle('7.  RECOMMENDED COLLEGES & UNIVERSITIES', y);
+  y += 2;
+  const collRows = [...careers.best,...careers.conditional].slice(0,4).map(c=>{
+    const k=c.replace(/ \(Parent.*\)$/,'');
+    const info=CAREER_DB[k];
+    if(!info) return null;
+    return [c, (info.colleges||[]).join(', '), info.ugDegree, info.exam];
+  }).filter(Boolean);
+  doc.autoTable({
+    startY:y, margin:{left:M,right:M},
+    head:[['Career Path','Top Institutions','UG Programme','Exam']],
+    body:collRows.length ? collRows : [['Select career preferences','—','—','—']],
+    headStyles:{fillColor:NAVY_RGB,fontSize:9,fontStyle:'bold',cellPadding:3},
+    bodyStyles:{fontSize:8,cellPadding:3},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:35},2:{cellWidth:35},3:{cellWidth:25}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 6;
+
+  // ── PAGE 5: INVESTMENT + GLOBAL + NEXT STEPS ─────────────────
+  doc.addPage();
+  addHeaderFooter(5);
+  y = 20;
+
+  y = sectionTitle('8.  EDUCATION INVESTMENT PLANNING', y);
+  y += 2;
+  const invRows = [...new Set([...careers.best,...careers.conditional].slice(0,4).map(c=>CAREER_DB[c.replace(/ \(Parent.*\)$/,'')]).filter(Boolean))].map(i=>[i.ugDegree, i.cost, 'NSP, Vidya Lakshmi Portal, SBI Scholar Loan, Institution Merit Scholarships']);
+  doc.autoTable({
+    startY:y, margin:{left:M,right:M},
+    head:[['Programme','Estimated Cost (India)','Funding Options']],
+    body:invRows.length ? invRows : [['Select preferences','—','—']],
+    headStyles:{fillColor:NAVY_RGB,fontSize:9,fontStyle:'bold',cellPadding:3},
+    bodyStyles:{fontSize:8.5,cellPadding:3},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:55},1:{cellWidth:32,fontStyle:'bold'}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 4;
+  y = infoBox('💡 Always apply for scholarships 6–12 months in advance. The National Scholarship Portal (NSP) opens in October each year. Vidya Lakshmi portal allows simultaneous education loan applications to multiple banks.', y, [240,253,250], [21,94,78]);
+
+  y += 4;
+  y = sectionTitle('9.  GLOBAL EDUCATION OPPORTUNITIES', y);
+  y += 2;
+  doc.autoTable({
+    startY:y, margin:{left:M,right:M},
+    head:[['Country','Best For','Key Highlights']],
+    body:[
+      ['United Kingdom','Medicine, Engineering','King\'s College, Imperial College, Edinburgh — 3–5 year programmes. Graduate Route Visa (2 years post-study work). UCAT for Medicine.'],
+      ['USA','Medicine (MD), Tech, Business','Top STEM universities (MIT, Purdue, Georgia Tech). OPT 3-year work authorisation. Strong MBA programmes (Harvard, Wharton, Kellogg).'],
+      ['Germany','Engineering, Sciences','Free/low-cost public universities (TU Munich, TU Berlin). DAAD scholarships. Strong Airbus/BMW/SAP industry placement.'],
+      ['Australia','Medicine, Engineering, Hospitality','University of Melbourne, Monash, UNSW. 2–4 year post-study work rights. AMC pathway to medical practice.'],
+      ['France/Switzerland','Culinary Arts, Hospitality','Le Cordon Bleu Paris, École Hôtelière Lausanne (EHL). World-class culinary and hospitality training.'],
+      ['Canada','Engineering, Business, Medicine','University of Toronto, UBC, McGill. PGWP up to 3 years. Express Entry PR pathway.'],
+    ],
+    headStyles:{fillColor:NAVY_RGB,fontSize:9,fontStyle:'bold',cellPadding:3},
+    bodyStyles:{fontSize:8,cellPadding:3},
+    alternateRowStyles:{fillColor:CREAM_RGB},
+    columnStyles:{0:{fontStyle:'bold',cellWidth:25},1:{cellWidth:35}},
+    theme:'plain',
+  });
+  y = doc.lastAutoTable.finalY + 6;
+
+  y = sectionTitle('10.  NEXT STEPS', y);
+  y += 3;
+  y = bodyText('To receive a personalised and detailed career roadmap tailored specifically to goals, strengths, and preferences, book a one-on-one counselling session with the MentorMe expert team.', y);
+  const nextSteps = ['Detailed education roadmap planning across all preferred career pathways','Stream and subject selection clarity with a week-by-week study plan','Entrance exam preparation calendar with subject-wise milestone targets','Best-fit colleges in India or abroad based on academic progression','Financial planning: scholarship identification and application support','Complete admission support — SOP writing, interview preparation, college application guidance'];
+  nextSteps.forEach(s => {
+    y = bodyText(`•  ${s}`, y-1);
+  });
+  y += 4;
+
+  // CTA block
+  doc.setFillColor(...NAVY_RGB);
+  doc.roundedRect(M, y, CW, 28, 3, 3, 'F');
+  setFont('bold',12,[255,255,255]);
+  doc.text('Connect with MentorMe Career Intelligence & Training Pvt. Ltd.', W/2, y+8, {align:'center'});
+  setFont('normal',9,[200,212,230]);
+  doc.text('Turning Passions into Professions — guiding every student towards a fulfilling career', W/2, y+14, {align:'center'});
+  setFont('bold',10,ORANGE_RGB);
+  doc.text('www.mentormeright.com  |  +91 8188824440  |  admin@mentormeright.in', W/2, y+21, {align:'center'});
+  y += 32;
+
+  // Disclaimer
+  setFont('italic',7.5,[160,160,160]);
+  const disclaimer = 'DISCLAIMER: This Career Guidance Report has been prepared by MentorMe Career Intelligence & Training Pvt. Ltd. based on psychometric assessment results provided at the time of evaluation. The report is for educational and career planning purposes only. MentorMe does not guarantee specific career or academic outcomes. Students and parents are encouraged to consult qualified career counsellors before making final decisions.';
+  const dLines = doc.splitTextToSize(disclaimer, CW);
+  doc.text(dLines, M, y);
+
+  // Save
+  const filename = `MentorMe_CareerReport_${data.name.replace(/\s+/g,'_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+  doc.save(filename);
+  hideLoading();
+  showToast(`✅ PDF downloaded: ${filename}`, 'success');
+}
+
+async function renderChartToPng(canvasId, type, data) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return null;
+  canvas.style.display = 'block';
+  
+  // Destroy any existing chart
+  const existing = Chart.getChart(canvas);
+  if (existing) existing.destroy();
+  
+  let chart;
+  if (type === 'radar') {
+    chart = new Chart(canvas, {
+      type:'radar',
+      data:{
+        labels:RIASEC_TRAITS.map(t=>t.label),
+        datasets:[{data:RIASEC_TRAITS.map(t=>data[t.id]||0),backgroundColor:'rgba(27,58,107,0.2)',borderColor:'#1B3A6B',borderWidth:2,pointBackgroundColor:'#E8762C',pointRadius:5}]
+      },
+      options:{animation:false,scales:{r:{min:0,max:100,ticks:{stepSize:25,font:{size:11}},pointLabels:{font:{size:12,weight:'bold'},color:'#1B3A6B'}}},plugins:{legend:{display:false}}}
+    });
+  } else if (type === 'skills') {
+    const traits = SKILL_TRAITS;
+    chart = new Chart(canvas, {
+      type:'bar',
+      data:{
+        labels:traits.map(t=>t.label),
+        datasets:[{data:traits.map(t=>data[t.id]||0),backgroundColor:['#1B3A6B','#2E9E8F','#E8762C','#F5A623','#6B7A99'],borderRadius:5}]
+      },
+      options:{animation:false,indexAxis:'y',scales:{x:{min:0,max:100,ticks:{font:{size:11}}},y:{ticks:{font:{size:11,weight:'bold'}}}},plugins:{legend:{display:false},title:{display:true,text:'Skill Proficiency',font:{size:13,weight:'bold'},color:'#1B3A6B'}}}
+    });
+  } else if (type === 'individuality') {
+    const traits = INDIVIDUALITY_TRAITS;
+    chart = new Chart(canvas, {
+      type:'bar',
+      data:{
+        labels:traits.map(t=>t.label),
+        datasets:[{data:traits.map(t=>data[t.id]||0),backgroundColor:['#2E9E8F','#1B3A6B','#E8762C','#F5A623'],borderRadius:5}]
+      },
+      options:{animation:false,indexAxis:'y',scales:{x:{min:0,max:100,ticks:{font:{size:11}}},y:{ticks:{font:{size:11,weight:'bold'}}}},plugins:{legend:{display:false},title:{display:true,text:'Individuality Profile',font:{size:13,weight:'bold'},color:'#1B3A6B'}}}
+    });
+  }
+  
+  await new Promise(r=>setTimeout(r,300));
+  const img = canvas.toDataURL('image/png');
+  if (existing || chart) { try{chart.destroy();}catch(e){} }
+  canvas.style.display = 'none';
+  return img;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  STUDENT DATABASE CRUD
+// ═══════════════════════════════════════════════════════════════════
+async function saveStudent() {
+  const data = getFormData();
+  if (!data.name) { showToast('Student name is required', 'error'); return; }
+  if (currentStudent?.id) data.id = currentStudent.id;
+  data.savedAt = new Date().toISOString();
+  const id = await dbSave(data);
+  currentStudent = {...data, id: data.id || id};
+  await renderStudentList();
+  updateDBCount();
+  showToast('Student saved to database ✓', 'success');
+}
+
+async function renderStudentList() {
+  const all = await dbGetAll();
+  const q = document.getElementById('search-input')?.value?.toLowerCase()||'';
+  const filtered = all.filter(s => s.name?.toLowerCase().includes(q) || s.school?.toLowerCase().includes(q));
+  const el = document.getElementById('student-list');
+  if (!filtered.length) {
+    el.innerHTML = `<div style="text-align:center;color:var(--muted);padding:40px 20px;font-size:13px;">${all.length?'No students match your search':'No students saved yet.<br/>Fill the form and click Save.'}</div>`;
+    return;
+  }
+  el.innerHTML = filtered.map(s => `
+    <div class="student-card ${currentStudent?.id===s.id?'active-student':''}" onclick="loadStudent(${s.id})">
+      <button class="sc-del" onclick="event.stopPropagation();askDelete(${s.id})">×</button>
+      <div class="sc-name">${s.name}</div>
+      <div class="sc-meta">${[s.grade,s.school,s.age?`Age ${s.age}`:''].filter(Boolean).join(' · ')}</div>
+      <div class="sc-actions">
+        <span class="sc-badge">${(s.preferredCareers||[]).length} careers</span>
+        ${s.savedAt?`<span style="font-size:10px;color:var(--muted);">Saved ${new Date(s.savedAt).toLocaleDateString()}</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+async function loadStudent(id) {
+  const all = await dbGetAll();
+  const s = all.find(x=>x.id===id);
+  if (!s) return;
+  populateForm(s);
+  switchTab('form');
+  renderStudentList();
+}
+
+async function updateDBCount() {
+  const all = await dbGetAll();
+  document.getElementById('db-count').textContent = all.length;
+}
+
+function askDelete(id) {
+  deleteTargetId = id;
+  document.getElementById('delete-modal').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('delete-modal').classList.remove('open');
+  deleteTargetId = null;
+}
+async function confirmDelete() {
+  if (deleteTargetId) {
+    await dbDelete(deleteTargetId);
+    if (currentStudent?.id === deleteTargetId) clearForm();
+    deleteTargetId = null;
+    closeModal();
+    await renderStudentList();
+    updateDBCount();
+    showToast('Student deleted', 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  IMPORT / EXPORT
+// ═══════════════════════════════════════════════════════════════════
+function importJSON() { document.getElementById('import-input').click(); }
+
+async function handleImport(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const text = await file.text();
+    const students = JSON.parse(text);
+    const arr = Array.isArray(students) ? students : [students];
+    for (const s of arr) {
+      const {id:_, ...rest} = s;
+      await dbSave(rest);
+    }
+    await renderStudentList();
+    updateDBCount();
+    showToast(`Imported ${arr.length} student(s) ✓`, 'success');
+  } catch(err) {
+    showToast('Invalid JSON file', 'error');
+  }
+  e.target.value = '';
+}
+
+async function exportAllJSON() {
+  const all = await dbGetAll();
+  if (!all.length) { showToast('No students to export', 'error'); return; }
+  const blob = new Blob([JSON.stringify(all, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `MentorMe_Students_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  showToast(`Exported ${all.length} students`, 'success');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  UI HELPERS
+// ═══════════════════════════════════════════════════════════════════
+function switchTab(tab) {
+  document.querySelectorAll('.stab').forEach((el,i) => el.classList.toggle('active', (i===0&&tab==='form')||(i===1&&tab==='students')));
+  document.querySelectorAll('.stab-panel').forEach((el,i) => el.classList.toggle('active', (i===0&&tab==='form')||(i===1&&tab==='students')));
+  if (tab==='students') renderStudentList();
+}
+
+let toastTimer;
+function showToast(msg, type='') {
+  clearTimeout(toastTimer);
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  toastTimer = setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+function showLoading(msg='Generating…') {
+  document.getElementById('loading-text').textContent = msg;
+  document.getElementById('loading').classList.add('open');
+}
+function hideLoading() {
+  document.getElementById('loading').classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════════
+async function init() {
+  // Set today's date
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  
+  // Render all score groups
+  renderScoreGroup('individuality-scores', INDIVIDUALITY_TRAITS);
+  renderScoreGroup('skill-scores', SKILL_TRAITS);
+  renderScoreGroup('riasec-scores', RIASEC_TRAITS);
+  renderCareerTags();
+  
+  // Init DB
+  await initDB();
+  await renderStudentList();
+  await updateDBCount();
+  
+  console.log('MentorMe Report Generator ready.');
+}
+
+init();
+</script>
+
+<script>
+(function() {
+  function setField(id, val) {
+    var el = document.getElementById(id);
+    if (el) el.value = val || '';
+  }
+  function setSlider(id, val) {
+    var rangeEl = document.getElementById('range-' + id);
+    var numEl = document.getElementById('num-' + id);
+    var fillEl = document.getElementById('fill-' + id);
+    var valEl = document.getElementById('val-' + id);
+    if (rangeEl) rangeEl.value = val;
+    if (numEl) numEl.value = val;
+    if (fillEl) fillEl.style.width = val + '%';
+    if (valEl) valEl.textContent = val + '%';
+  }
+  function populateReport() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var userId = urlParams.get("userId");
+    if (!userId) return;
+    console.log("Report generator: userId found", userId);
+    var layout = document.querySelector(".layout");
+    var sidebar = document.querySelector(".sidebar");
+    if (layout) layout.style.gridTemplateColumns = "1fr";
+    if (sidebar) sidebar.style.display = "none";
+    var emptyEl = document.getElementById("empty-state");
+    var previewEl = document.getElementById("report-preview");
+    if (emptyEl) emptyEl.style.display = "none";
+    if (previewEl) previewEl.style.display = "block";
+    fetch("/api/admin/user-scores?userId=" + encodeURIComponent(userId))
+      .then(function(r) { return r.ok ? r.json() : Promise.reject("HTTP " + r.status); })
+      .then(function(data) {
+        console.log("Report generator: data received", data);
+        setField('f-name', data.userName || '');
+        setField('f-grade', data.userClass || '');
+        setField('f-school', data.userEmail || '');
+        setField('f-date', new Date().toISOString().split("T")[0]);
+        var sectionMap = {
+          individuality: { "Emotional Intelligence":"ei", EmotionalIntelligence:"ei", Efficiency:"efficiency", Empathy:"empathy", Engagement:"engagement", Exploration:"exploration" },
+          skills: { Logical:"logical", Numerical:"numerical", Mechanical:"mechanical", Verbal:"verbal", Administrative:"administrative" },
+          passion: { Realistic:"realistic", Investigative:"investigative", Artistic:"artistic", Social:"social", Enterprising:"enterprising", Conventional:"conventional" }
+        };
+        var scores = {};
+        if (data.scores) {
+          var isNested = data.scores.skills || data.scores.passion || data.scores.individuality;
+          if (isNested) {
+            // Nested scores format
+            Object.entries(data.scores).forEach(function(entry) {
+              var section = entry[0];
+              var sectionData = entry[1];
+              var mapping = sectionMap[section];
+              if (!mapping || !sectionData) return;
+              Object.entries(sectionData).forEach(function(scoreEntry) {
+                var apiKey = scoreEntry[0];
+                var scoreData = scoreEntry[1];
+                var val = Math.round((scoreData.score / Math.max(scoreData.max, 0.01)) * 100);
+                var formKey = mapping[apiKey];
+                if (formKey) {
+                  scores[formKey] = val;
+                  setSlider(formKey, val);
+                }
+              });
+            });
+          } else {
+            // Flat scores format
+            var flatMap = {
+              Realistic: { key: "realistic", max: 20 },
+              Investigative: { key: "investigative", max: 20 },
+              Artistic: { key: "artistic", max: 20 },
+              Social: { key: "social", max: 20 },
+              Enterprising: { key: "enterprising", max: 20 },
+              Conventional: { key: "conventional", max: 20 },
+              EmotionalIntelligence: { key: "ei", max: 24 },
+              Efficiency: { key: "efficiency", max: 24 },
+              Empathy: { key: "empathy", max: 24 },
+              Engagement: { key: "engagement", max: 24 },
+              Exploration: { key: "exploration", max: 24 },
+              Logical: { key: "logical", max: 24 },
+              Numerical: { key: "numerical", max: 24 },
+              Mechanical: { key: "mechanical", max: 24 },
+              Verbal: { key: "verbal", max: 24 },
+              Administrative: { key: "administrative", max: 24 }
+            };
+            Object.entries(data.scores).forEach(function(entry) {
+              var apiKey = entry[0];
+              var rawVal = entry[1];
+              var mapping = flatMap[apiKey];
+              if (mapping) {
+                var val = Math.round((rawVal / mapping.max) * 100);
+                scores[mapping.key] = val;
+                setSlider(mapping.key, val);
+              }
+            });
+          }
+        }
+
+        // Dynamically extract preferred careers from report data if available
+        var reportCareers = [];
+        if (data.report && typeof ALL_CAREERS !== "undefined") {
+          var excel = data.report.excellentFitCareers || [];
+          var good = data.report.goodFitCareers || [];
+          var allReportCareers = excel.concat(good).map(function(c) { return c.title || c.name || ''; });
+          
+          allReportCareers.forEach(function(title) {
+            if (!title) return;
+            var cleanTitle = title.trim().toLowerCase();
+            
+            // Try exact match first
+            var match = ALL_CAREERS.find(function(c) { return c.toLowerCase() === cleanTitle; });
+            if (match) {
+              if (reportCareers.indexOf(match) === -1) reportCareers.push(match);
+              return;
+            }
+            
+            // Try matching normalized strings: e.g. "medicine" matches "Medicine / MBBS"
+            match = ALL_CAREERS.find(function(c) {
+              var cLower = c.toLowerCase();
+              return cleanTitle.indexOf(cLower) !== -1 || cLower.indexOf(cleanTitle) !== -1;
+            });
+            if (match) {
+              if (reportCareers.indexOf(match) === -1) reportCareers.push(match);
+              return;
+            }
+            
+            // Try split parts: e.g. "Civil Services / IAS" matched with "Civil Services"
+            match = ALL_CAREERS.find(function(c) {
+              var parts = c.toLowerCase().split(/[\/|-]/);
+              return parts.some(function(p) {
+                var pClean = p.trim();
+                return pClean.length > 2 && (cleanTitle.indexOf(pClean) !== -1 || pClean.indexOf(cleanTitle) !== -1);
+              });
+            });
+            if (match) {
+              if (reportCareers.indexOf(match) === -1) reportCareers.push(match);
+            }
+          });
+        }
+
+        var matched = [];
+        if (reportCareers && reportCareers.length > 0) {
+          matched = reportCareers.slice(0, 4);
+        }
+
+        if (matched.length < 4) {
+          var riasecMatched = [];
+          if (typeof RIASEC_TRAITS !== "undefined" && typeof ALL_CAREERS !== "undefined" && typeof CAREER_DB !== "undefined") {
+            var topRiasec = [].slice.call(RIASEC_TRAITS).sort(function(a,b){ return (scores[b.id]||0) - (scores[a.id]||0); }).slice(0,3);
+            var topIds = topRiasec.map(function(t){ return t.id; });
+            var scored = ALL_CAREERS.map(function(name) {
+              var info = CAREER_DB[name];
+              if (!info) return { name: name, score: 0 };
+              var matchCount = info.riasec.filter(function(r){ return topIds.indexOf(r) !== -1; }).length;
+              return { name: name, score: matchCount };
+            }).sort(function(a,b){ return b.score - a.score; });
+            riasecMatched = scored.filter(function(s){ return s.score > 0; }).map(function(s){ return s.name; });
+          }
+          for (var i = 0; i < riasecMatched.length; i++) {
+            var name = riasecMatched[i];
+            if (matched.indexOf(name) === -1) {
+              matched.push(name);
+              if (matched.length === 4) break;
+            }
+          }
+        }
+        if (matched.length === 0 && typeof ALL_CAREERS !== "undefined") matched = ALL_CAREERS.slice(0,4);
+
+        currentStudent = Object.assign({ preferredCareers: matched }, scores);
+        renderCareerTags();
+        renderScoreGroup('individuality-scores', INDIVIDUALITY_TRAITS);
+        renderScoreGroup('skill-scores', SKILL_TRAITS);
+        renderScoreGroup('riasec-scores', RIASEC_TRAITS);
+        console.log("Selected careers:", matched);
+        if (typeof livePreview === "function") livePreview();
+      })
+      .catch(function(err) { console.error("Report auto-fill failed:", err); });
+  }
+  if (document.readyState === "complete") populateReport();
+  else window.addEventListener("load", populateReport);
+})();
+</script></body>
+</html>
+

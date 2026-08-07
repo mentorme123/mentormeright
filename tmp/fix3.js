@@ -1,0 +1,1 @@
+const fs = require('fs'); const path = 'src/app/(main)/services/page.tsx'; let c = fs.readFileSync(path, 'utf8'); const newCode = 'NEWCODE_REPLACEMENT'; c = c.replace('NEWCODE', newCode); fs.writeFileSync(path, c); console.log('Done');

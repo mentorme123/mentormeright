@@ -84,6 +84,7 @@ export default function Home() {
   const [showEnquiry, setShowEnquiry] = useState(false);
   const [enquirySubmitting, setEnquirySubmitting] = useState(false);
   const [enquirySuccess, setEnquirySuccess] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     setShowEnquiry(true);
@@ -123,6 +124,7 @@ export default function Home() {
       setEnquirySuccess(true);
       setTimeout(() => {
         setShowEnquiry(false);
+        setShowVideo(true);
       }, 1200);
     } catch (err) {
       console.error("Enquiry submit error:", err);
@@ -134,6 +136,8 @@ export default function Home() {
 
   const handleCloseEnquiry = () => {
     setShowEnquiry(false);
+    setEnquirySuccess(false);
+    setShowVideo(true);
   };
 
   const toggleCard = (index: number) => {
@@ -1720,18 +1724,8 @@ export default function Home() {
             </div>
 
             <div className="p-6 space-y-4">
-              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black aspect-video">
-                <iframe
-                  src="https://www.youtube.com/embed/4RUmqLLP9O8"
-                  title="Enquiry video"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                  className="w-full h-full"
-                />
-              </div>
-
               {enquirySuccess ? (
-                <div className="text-center py-2">
+                <div className="text-center py-6">
                   <h3 className="text-2xl font-black text-slate-800">Enquiry Sent!</h3>
                   <p className="text-slate-500 text-sm">Our team will reach out to you shortly.</p>
                 </div>
@@ -1786,6 +1780,32 @@ export default function Home() {
                   </button>
                 </form>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showVideo && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div className="flex items-center justify-end p-4">
+              <button
+                onClick={() => setShowVideo(false)}
+                className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-all"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            <div className="px-4 pb-6">
+              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black aspect-video">
+                <iframe
+                  src="https://www.youtube.com/embed/4RUmqLLP9O8?autoplay=1"
+                  title="Enquiry video"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
             </div>
           </div>
         </div>

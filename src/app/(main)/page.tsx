@@ -1799,7 +1799,7 @@ export default function Home() {
             <div className="px-4 pb-6">
               <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black aspect-video">
                 <iframe
-                  src="https://www.youtube.com/embed/4RUmqLLP9O8?autoplay=1"
+                  src="https://www.youtube.com/embed/4RUmqLLP9O8?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0"
                   title="Enquiry video"
                   allow="autoplay; encrypted-media"
                   allowFullScreen

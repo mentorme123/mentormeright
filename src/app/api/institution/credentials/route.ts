@@ -51,11 +51,13 @@ export async function GET(req: NextRequest) {
     }
 
     const csvHeader = 'Username,Password,Class,Test\n';
+    const testLabels: Record<string, string> = { ST: 'School', UG: 'College', GR: 'Graduate' };
     const csvRows = results.map(r => {
       const escapedUsername = `"${(r.username || '').replace(/"/g, '""')}"`;
       const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
       const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
-      const test = r.audience_type ? String(r.audience_type).replace(/"/g, '""') : '';
+      const testRaw = String(r.audience_type || '').trim().toUpperCase();
+      const test = testLabels[testRaw] || r.audience_type || '';
       return `${escapedUsername},${escapedPassword},"${cls}","${test}"`;
     }).join('\n');
     const csvContent = csvHeader + csvRows;

@@ -244,6 +244,14 @@ export default function ReportClient({ userId }: { userId: string }) {
               const v = getPct(key, p);
               if (v > topPct) { topPct = v; topParam = p; }
             });
+
+            const individualityParams = ["Emotional Intelligence", "Efficiency", "Empathy", "Engagement", "Exploration"];
+            let topIndivParam = "", topIndivPct = -1;
+            individualityParams.forEach(p => {
+              const v = getPct("individuality", p);
+              if (v > topIndivPct) { topIndivPct = v; topIndivParam = p; }
+            });
+
             const bars = BARS[key];
 
             return (
@@ -272,11 +280,13 @@ export default function ReportClient({ userId }: { userId: string }) {
                   })}
                 </div>
 
-                <div className="mt-4 p-4 rounded-xl border" style={{ background: "linear-gradient(135deg, #eff6ff, #dbeafe)", borderColor: "#bfdbfe" }}>
-                  <div className="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1">Strongest trait</div>
-                  <div className="text-[15px] font-bold text-[#0f2460]">{topParam}</div>
-                  <div className="text-[13px] text-blue-600 mt-1 leading-relaxed">{TRAITS[topParam] || ""}</div>
-                </div>
+                {key === "individuality" && (
+                  <div className="mt-4 p-4 rounded-xl border" style={{ background: "linear-gradient(135deg, #eff6ff, #dbeafe)", borderColor: "#bfdbfe" }}>
+                    <div className="text-[10px] font-bold text-blue-600 uppercase tracking-wider mb-1">Key Individuality Trait</div>
+                    <div className="text-[15px] font-bold text-[#0f2460]">{topIndivParam}</div>
+                    <div className="text-[13px] text-blue-600 mt-1 leading-relaxed">{TRAITS[topIndivParam] || ""}</div>
+                  </div>
+                )}
               </div>
             );
           })}

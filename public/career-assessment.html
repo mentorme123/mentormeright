@@ -1291,9 +1291,17 @@ async function buildResults(){
           <div class="p-track"><div class="p-fill" style="width:${v}%;background:${sec.bars[pi]}"></div></div>
           <div class="p-pct">${v}%</div></div>`;
       });
-      html+=`<div class="top-trait"><div class="tt-lbl">Strongest trait</div>
-        <div class="tt-nm">${top}</div><div class="tt-desc">${TRAITS[top]||''}</div>
-      </div></div>`;
+      const indivSec = SECS.find(s => s.id === 'individuality');
+      const indivSs = scores['individuality'] || {};
+      let indivTop = '', indivTopPct = -1;
+      indivSec?.params.forEach(p => { const v = getPct(indivSs, 'individuality', p) || getPct2(indivSs, p); if (v > indivTopPct) { indivTopPct = v; indivTop = p; } });
+      if (sec.id === 'individuality') {
+        html+=`<div class="top-trait"><div class="tt-lbl">Key Individuality Trait</div>
+          <div class="tt-nm">${indivTop}</div><div class="tt-desc">${TRAITS[indivTop]||''}</div>
+        </div></div>`;
+      } else {
+        html+=`</div>`;
+      }
     });
 
     html+=`<div class="career-box">

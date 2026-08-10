@@ -37,12 +37,12 @@ const TRAITS: Record<string, string> = {
 };
 
 const CAREER: Record<string, string> = {
-  "Realistic": "Engineering, architecture, robotics, aviation, or environmental science. You build the infrastructure the world depends on.",
-  "Investigative": "Medicine, scientific research, data science, biotechnology, or academia. Your depth will push the boundaries of what humanity knows.",
-  "Artistic": "Design, film, writing, music, animation, or advertising. You shape culture — how the world looks, thinks, and feels.",
-  "Social": "Teaching, counselling, psychology, social work, or public health. You make individual lives and communities meaningfully better.",
-  "Enterprising": "Entrepreneurship, corporate leadership, law, marketing, or politics. You do not just lead teams — you lead movements.",
-  "Conventional": "Finance, chartered accountancy, data analytics, IT systems, or public administration. You are the backbone that holds great organisations together."
+  "Realistic": "You are drawn to practical, hands-on activities and enjoy working with tools, materials, machines, and physical systems. You like learning by doing and solving tangible problems.",
+  "Investigative": "You are drawn to questions, analysis, and discovery. You enjoy exploring how things work, identifying patterns, experimenting with ideas, and finding logical explanations.",
+  "Artistic": "You are drawn to creativity, imagination, and self-expression. You enjoy creating new ideas, experimenting with different forms of expression, and seeing possibilities in unique ways.",
+  "Social": "You are drawn to people, relationships, and meaningful interaction. You enjoy understanding others, helping, guiding, supporting, and working collaboratively with people.",
+  "Enterprising": "You are drawn to initiative, influence, leadership, and action. You enjoy taking responsibility, making decisions, persuading others, and turning ideas into meaningful outcomes.",
+  "Conventional": "You are drawn to structure, organisation, accuracy, and systematic processes. You enjoy working with information, organising details, following clear processes, and creating order."
 };
 
 const SECTION_CONFIG: { key: keyof Scores; title: string; icon: string; badgeColor: string }[] = [
@@ -285,7 +285,7 @@ export default function ReportClient({ userId }: { userId: string }) {
         {/* Career Direction */}
         <div className="px-5 py-5">
           <div className="rounded-xl p-5" style={{ background: "linear-gradient(135deg, #fffbeb, #fef3c7)", border: "1px solid #fde68a" }}>
-            <div className="text-[10px] font-bold text-amber-700 uppercase tracking-wider mb-1">Your career direction</div>
+            <div className="text-[10px] font-bold text-amber-700 uppercase tracking-wider mb-1">Strongest Career Interest</div>
             <div className="text-[16px] font-bold text-amber-900 mb-1">{topPassion} personality type</div>
             <div className="text-[14px] text-amber-800 leading-relaxed">{CAREER[topPassion] || ""}</div>
           </div>

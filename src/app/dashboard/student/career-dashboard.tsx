@@ -19,7 +19,8 @@ interface DashboardScores extends ParameterScores {
   [key: string]: number;
 }
 
-const MAX_RIASEC = 20;
+const MAX_RIASEC = 5;
+const MAX_INDIVIDUALITY = 6;
 const MAX_SKILL = 24;
 
 const pct = (score: number, max: number) => Math.round((score / Math.max(max, 0.01)) * 100);
@@ -167,7 +168,7 @@ const getTopSkills = (scores: DashboardScores) => {
 const getOverallScore = (scores: DashboardScores) => {
   const allScores = Object.values(scores);
   const totalScore = allScores.reduce((sum, s) => sum + s, 0);
-  const maxTotal = 6 * MAX_RIASEC + 5 * MAX_SKILL + 5 * 24;
+  const maxTotal = 6 * MAX_RIASEC + 5 * MAX_SKILL + 5 * MAX_INDIVIDUALITY;
   return pct(totalScore, maxTotal);
 };
 
@@ -235,7 +236,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
             };
             processCategory(normalizedScores.passion, MAX_RIASEC);
             processCategory(normalizedScores.skills, MAX_SKILL);
-            processCategory(normalizedScores.individuality, MAX_SKILL);
+            processCategory(normalizedScores.individuality, MAX_INDIVIDUALITY);
             normalizedScores = flat;
           } else if (typeof normalizedScores.Realistic === 'number') {
             const flat: Record<string, number> = {};

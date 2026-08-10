@@ -1,18 +1,18 @@
 // Scoring map: question ID → parameter name
 // All questions: correct answer = A (4pts), B=3, C=2, D=1
-// Section 1 (Q1-30): RIASEC passion traits
-// Section 2 (Q31-60): Individuality traits  
-// Section 3 (Q61-90): Skill proficiency (objective, A is still correct answer)
+// Section 1 (Q1-30): RIASEC passion traits (normalized: A=1.0, B=0.75, C=0.5, D=0.25)
+// Section 2 (Q31-60): Individuality traits (normalized: A=1.0, B=0.75, C=0.5, D=0.25)
+// Section 3 (Q61-90): Skill proficiency (objective, A=4, B=3, C=2, D=1)
 
 export type ParameterScores = {
-  // RIASEC (max 20 each = 5 questions × 4 pts)
+  // RIASEC (max 5 each = 5 questions × 1.0)
   Realistic: number;
   Investigative: number;
   Artistic: number;
   Social: number;
   Enterprising: number;
   Conventional: number;
-  // Individuality (max 24 each = 6 questions × 4 pts)
+  // Individuality (max 6 each = 6 questions × 1.0)
   EmotionalIntelligence: number;
   Efficiency: number;
   Empathy: number;
@@ -50,22 +50,25 @@ const PARAMETER_MAP: Record<string, number[]> = {
 };
 
 const OPTION_SCORE: Record<string, number> = { A: 4, B: 3, C: 2, D: 1 };
+const OPTION_SCORE_INDIVIDUALITY_PASSION: Record<string, number> = { A: 1.0, B: 0.75, C: 0.5, D: 0.25 };
 
 export function scoreAnswers(answers: Record<number, string>): ParameterScores {
   const scores: Record<string, number> = {};
   for (const [param, ids] of Object.entries(PARAMETER_MAP)) {
+    const isIndividualityOrPassion = ids.some(id => id >= 1 && id <= 60);
+    const optionScore = isIndividualityOrPassion ? OPTION_SCORE_INDIVIDUALITY_PASSION : OPTION_SCORE;
     scores[param] = ids.reduce((sum, id) => {
       const answer = answers[id] || "D";
-      return sum + (OPTION_SCORE[answer] ?? 1);
+      return sum + (optionScore[answer] ?? (isIndividualityOrPassion ? 0.25 : 1));
     }, 0);
   }
   return scores as unknown as ParameterScores;
 }
 
 export function buildScoreSummary(scores: ParameterScores, audience: string): string {
-  const maxRIASEC = 20; // 5 questions × 4
-  const maxIndiv = 24;  // 6 questions × 4
-  const maxSkill = 24;  // 6 questions × 4
+  const maxRIASEC = 5; // 5 questions × 1.0
+  const maxIndiv = 6;  // 6 questions × 1.0
+  const maxSkill = 24; // 6 questions × 4
 
   const pct = (v: number, max: number) => `${v}/${max} (${Math.round((v / max) * 100)}%)`;
 

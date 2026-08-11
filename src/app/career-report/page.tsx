@@ -157,6 +157,7 @@ function normalizeScoresForV4(
   }
 
   let flatScores: Record<string, number> = {};
+  let flatMax: Record<string, number> = {};
 
   if (
     typeof scores.passion === "object" ||
@@ -167,13 +168,19 @@ function normalizeScoresForV4(
       const category = scores[cat];
       if (category && typeof category === "object") {
         Object.entries(category).forEach(([key, val]: [string, any]) => {
-          flatScores[key] =
-            typeof val === "object" ? (val?.score ?? 0) : (val ?? 0);
+          if (typeof val === "object" && val !== null) {
+            flatScores[key] = typeof val.score === "number" ? val.score : 0;
+            flatMax[key] = typeof val.max === "number" ? val.max : 100;
+          } else if (typeof val === "number") {
+            flatScores[key] = val;
+            flatMax[key] = 100;
+          }
         });
       }
     });
   } else if (typeof scores.Realistic === "number") {
     flatScores = { ...scores };
+    Object.keys(flatScores).forEach(k => { flatMax[k] = 100; });
   } else {
     const walk = (obj: any) => {
       if (!obj || typeof obj !== "object") return;
@@ -186,13 +193,14 @@ function normalizeScoresForV4(
           walk(v);
         } else if (typeof v === "number") {
           flatScores[k] = v;
+          flatMax[k] = flatMax[k] || 100;
         }
       });
     };
     walk(scores);
   }
 
-  const maxMap: Record<string, number> = {
+  const hardcodedMaxMap: Record<string, number> = {
     Realistic: 5,
     Investigative: 5,
     Artistic: 5,
@@ -212,12 +220,10 @@ function normalizeScoresForV4(
   };
 
   Object.entries(flatScores).forEach(([key, value]) => {
-    const max = maxMap[key] || maxMap[key.replace(/ /g, "_")] || 100;
-    const pct = Math.round((value / max) * 100);
-    if (key === "Logical" || key === "Realistic" || key === "Emotional Intelligence" || key === "Efficiency") {
-      console.log(`[CareerReport] Normalize: ${key} = ${value} / ${max} = ${pct}%`);
-    }
-    result[key] = pct;
+    const dbMax = flatMax[key];
+    const fallbackMax = hardcodedMaxMap[key] || hardcodedMaxMap[key.replace(/ /g, "_")] || 100;
+    const max = dbMax || fallbackMax;
+    result[key] = Math.round((value / max) * 100);
   });
 
   if (result.Efficiency !== undefined) {

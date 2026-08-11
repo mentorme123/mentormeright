@@ -45,9 +45,9 @@ export default function CareerReportPage({
           return;
         }
 
-        console.log("[CareerReport] API response for userId", userId, json);
+        console.log("[CareerReport] Raw API response:", JSON.stringify(json, null, 2));
         const v4Data = transformToV4(json);
-        console.log("[CareerReport] Transformed V4 data", v4Data);
+        console.log("[CareerReport] Transformed V4 data:", JSON.stringify(v4Data, null, 2));
         setData(v4Data);
       } catch (e) {
         console.error("[CareerReport] Fetch error", e);
@@ -223,7 +223,9 @@ function normalizeScoresForV4(
     const dbMax = flatMax[key];
     const fallbackMax = hardcodedMaxMap[key] || hardcodedMaxMap[key.replace(/ /g, "_")] || 100;
     const max = dbMax || fallbackMax;
-    result[key] = Math.round((value / max) * 100);
+    const pct = Math.round((value / max) * 100);
+    console.log(`[CareerReport] ${key}: raw=${value}, max=${max}, pct=${pct}%`);
+    result[key] = pct;
   });
 
   if (result.Efficiency !== undefined) {

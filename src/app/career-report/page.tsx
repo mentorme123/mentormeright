@@ -213,7 +213,11 @@ function normalizeScoresForV4(
 
   Object.entries(flatScores).forEach(([key, value]) => {
     const max = maxMap[key] || maxMap[key.replace(/ /g, "_")] || 100;
-    result[key] = Math.round((value / max) * 100);
+    const pct = Math.round((value / max) * 100);
+    if (key === "Logical" || key === "Realistic" || key === "Emotional Intelligence" || key === "Efficiency") {
+      console.log(`[CareerReport] Normalize: ${key} = ${value} / ${max} = ${pct}%`);
+    }
+    result[key] = pct;
   });
 
   if (result.Efficiency !== undefined) {

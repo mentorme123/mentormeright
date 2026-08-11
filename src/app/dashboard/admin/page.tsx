@@ -62,6 +62,8 @@ export default function AdminDashboard() {
   const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
   const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
   const [adminTab, setAdminTab] = useState<"analytics" | "users">("analytics");
+  const [statusMap, setStatusMap] = useState<Record<string, boolean>>({});
+  const [statusLoading, setStatusLoading] = useState(false);
 
   // Fetch Live Data
   const fetchData = async () => {
@@ -84,9 +86,34 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchUserStatuses = async (userList: DBUser[]) => {
+    setStatusLoading(true);
+    const newStatusMap: Record<string, boolean> = {};
+    for (let i = 0; i < userList.length; i++) {
+      const user = userList[i];
+      try {
+        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(user.id)}&email=${encodeURIComponent(user.email || '')}`);
+        newStatusMap[user.id] = res.ok;
+      } catch {
+        newStatusMap[user.id] = false;
+      }
+      if (i < userList.length - 1) {
+        await new Promise(r => setTimeout(r, 100));
+      }
+    }
+    setStatusMap(newStatusMap);
+    setStatusLoading(false);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!loading && users.length > 0) {
+      fetchUserStatuses(users);
+    }
+  }, [users, loading]);
 
   useEffect(() => {
     async function loadCurrentAdmin() {
@@ -789,83 +816,97 @@ export default function AdminDashboard() {
 
               <div className="p-4">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="bg-white text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
-                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>#</th>
-                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Name</th>
-                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Email</th>
-                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Class</th>
-                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Role</th>
-                        <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Joined</th>
-                        <th className="py-4 font-bold text-right" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {loading ? (
-                        <tr>
-                          <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
-                            <div className="flex flex-col items-center justify-center">
-                              <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-                              <p className="font-medium">Fetching live database records...</p>
-                            </div>
-                          </td>
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-white text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>#</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Name</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Email</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Class</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Role</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Status</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Joined</th>
+                          <th className="py-4 font-bold text-right" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Actions</th>
                         </tr>
-                      ) : filteredUsers.length === 0 ? (
-                        <tr>
-                          <td colSpan={6} className="px-6 py-12 text-center text-slate-500 font-medium">
-                            No users found matching &quot;{searchTerm}&quot;
-                          </td>
-                        </tr>
-                      ) : (
-                        filteredUsers.map((user, idx) => (
-                          <tr key={user.id} className="hover:bg-slate-50 transition-colors group">
-                             <td className="py-4 text-slate-500 font-mono text-sm" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{idx + 1}</td>
-                             <td className="py-4 font-bold text-slate-800" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
-                                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                                  </svg>
-                                </div>
-                                {sanitizeText(user.name) || "N/A"}
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {loading ? (
+                          <tr>
+                            <td colSpan={8} className="px-6 py-12 text-center text-slate-500">
+                              <div className="flex flex-col items-center justify-center">
+                                <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                                <p className="font-medium">Fetching live database records...</p>
                               </div>
                             </td>
-                             <td className="py-4 text-slate-500 font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{sanitizeText(user.email)}</td>
-                             <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                              <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-xs font-black uppercase tracking-wider">
-                                {sanitizeText(user.education_level) || "General"}
-                              </span>
-                            </td>
-                             <td className="py-4" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                              <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
-                                user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
-                                  'bg-purple-50 text-purple-700 border border-purple-100'
-                                }`}>
-                                {sanitizeText(user.role)}
-                              </span>
-                            </td>
-                             <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                              {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                            </td>
-                             <td className="py-4 text-right" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => {
-                                  selectedUserIdRef.current = user.id;
-                                  setSelectedUser(user);
-                                }}
-                                className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold whitespace-nowrap ml-auto"
-                              >
-                                View Details <ChevronRight size={16} className="ml-1" />
-                              </Button>
+                          </tr>
+                        ) : filteredUsers.length === 0 ? (
+                          <tr>
+                            <td colSpan={8} className="px-6 py-12 text-center text-slate-500 font-medium">
+                              No users found matching &quot;{searchTerm}&quot;
                             </td>
                           </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
+                        ) : (
+                          filteredUsers.map((user, idx) => (
+                            <tr key={user.id} className="hover:bg-slate-50 transition-colors group">
+                               <td className="py-4 text-slate-500 font-mono text-sm" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{idx + 1}</td>
+                               <td className="py-4 font-bold text-slate-800" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                    </svg>
+                                  </div>
+                                  {sanitizeText(user.name) || "N/A"}
+                                </div>
+                              </td>
+                               <td className="py-4 text-slate-500 font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{sanitizeText(user.email)}</td>
+                               <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-xs font-black uppercase tracking-wider">
+                                  {sanitizeText(user.education_level) || "General"}
+                                </span>
+                              </td>
+                               <td className="py-4" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
+                                  user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
+                                    'bg-purple-50 text-purple-700 border border-purple-100'
+                                  }`}>
+                                  {sanitizeText(user.role)}
+                                </span>
+                              </td>
+                               <td className="py-4" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                {statusLoading ? (
+                                  <span className="text-slate-400 text-xs">Checking...</span>
+                                ) : statusMap[user.id] ? (
+                                  <span className="inline-flex items-center gap-1.5 text-emerald-700 text-xs font-bold">
+                                    <CheckCircle2 size={14} /> Completed
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1.5 text-slate-500 text-xs font-bold">
+                                    <AlertCircle size={14} /> Not Completed
+                                  </span>
+                                )}
+                              </td>
+                               <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                              </td>
+                               <td className="py-4 text-right" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => {
+                                    selectedUserIdRef.current = user.id;
+                                    setSelectedUser(user);
+                                  }}
+                                  className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold whitespace-nowrap ml-auto"
+                                >
+                                  View Details <ChevronRight size={16} className="ml-1" />
+                                </Button>
+                              </td>
+                            </tr>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
                 </div>
 
                 {!loading && (

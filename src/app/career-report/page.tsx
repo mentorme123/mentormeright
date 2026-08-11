@@ -63,33 +63,19 @@ export default function CareerReportPage({
   useEffect(() => {
     if (!data || !iframeRef.current) return;
 
-    const sendData = () => {
+    const handleLoad = () => {
       try {
-        if (iframeRef.current?.contentWindow) {
-          iframeRef.current.contentWindow.postMessage(
-            { type: "generateReport", payload: data },
-            "*"
-          );
-          console.log("[CareerReport] Data sent to iframe");
-        }
+        iframeRef.current?.contentWindow?.postMessage(
+          { type: "generateReport", payload: data },
+          "*"
+        );
       } catch (e) {
-        console.error("[CareerReport] Failed to send data to iframe", e);
+        console.error("Failed to send data to career report engine", e);
       }
     };
 
     const iframe = iframeRef.current;
-
-    const handleLoad = () => {
-      console.log("[CareerReport] Iframe loaded, sending data");
-      sendData();
-    };
-
-    if (iframe.contentWindow) {
-      console.log("[CareerReport] Iframe already ready, sending data immediately");
-      sendData();
-    } else {
-      iframe.addEventListener("load", handleLoad);
-    }
+    iframe.addEventListener("load", handleLoad);
 
     return () => {
       iframe.removeEventListener("load", handleLoad);

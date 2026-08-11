@@ -527,9 +527,9 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
           <div id="career-dashboard">
             <CareerDashboard userId={authUser.id} />
             <div className="mt-4 text-center">
-              <a href={`/report/mentorme-report?userId=${encodeURIComponent(authUser.id)}`} target="_blank" rel="noopener noreferrer">
+              <a href={`/career-report?userId=${encodeURIComponent(authUser.id)}`} target="_blank" rel="noopener noreferrer">
                 <button className="bg-[#1B3A6B] text-white font-bold px-6 py-3 rounded-xl shadow-lg text-sm hover:bg-[#1B3A6B]/90 transition-colors">
-                  View New Career Report
+                  View Career Report
                 </button>
               </a>
             </div>

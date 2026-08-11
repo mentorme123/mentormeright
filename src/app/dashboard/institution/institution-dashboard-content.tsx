@@ -716,14 +716,14 @@ export default function InstitutionDashboardContent() {
                   >
                     View Student Career Dashboard
                   </Button>
-                  <Button
-                    className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm"
-                    onClick={() => {
-                      window.open(`/mentorme_report_generator.html?userId=${encodeURIComponent(selectedStudent.id)}`, '_blank');
-                    }}
-                  >
-                    View Career Report
-                  </Button>
+                   <Button
+                     className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-sm"
+                     onClick={() => {
+                       window.open(`/career-report?userId=${encodeURIComponent(selectedStudent.id)}`, '_blank');
+                     }}
+                   >
+                     View Career Report
+                   </Button>
                 </div>
               </div>
             </motion.div>

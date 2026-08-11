@@ -94,7 +94,7 @@ export async function GET(req: NextRequest) {
           if (!altError && altResult?.scores) {
             const { data: altUser } = await getSupabaseAdmin()
               .from('users')
-              .select('name, education_level, email, phone')
+              .select('name, education_level, email, phone, institution_name')
               .eq('id', candidateId)
               .maybeSingle();
 
@@ -106,6 +106,7 @@ export async function GET(req: NextRequest) {
               userClass: altUser?.education_level || null,
               userEmail: altUser?.email || null,
               userPhone: altUser?.phone || null,
+              userSchool: altUser?.institution_name || null,
               subjects: altResult.report?.subjects || [],
               report: altResult.report || null
             });
@@ -120,7 +121,7 @@ export async function GET(req: NextRequest) {
 
     const { data: user } = await getSupabaseAdmin()
       .from('users')
-      .select('name, education_level, email, phone')
+      .select('name, education_level, email, phone, institution_name')
       .eq('id', targetUserId)
       .maybeSingle();
 
@@ -134,6 +135,7 @@ export async function GET(req: NextRequest) {
       userClass: user?.education_level || null,
       userEmail: user?.email || null,
       userPhone: user?.phone || null,
+      userSchool: user?.institution_name || null,
       subjects: data.report?.subjects || [],
       report: data.report || null
     });

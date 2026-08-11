@@ -423,8 +423,7 @@ export default function AdminDashboard() {
                       className="w-full bg-brand-blue hover:bg-brand-blue/90 font-bold text-white shadow-sm mt-2"
                       onClick={() => {
                         const idToUse = selectedUserIdRef.current || selectedUser?.id;
-                        console.log('Admin View Career Report clicked', { selectedUserId: idToUse, selectedUserName: selectedUser?.name, selectedUserEducation: selectedUser?.education_level });
-                        window.open(`/mentorme_report_generator.html?userId=${encodeURIComponent(idToUse)}`, '_blank')
+                        window.open(`/career-report?userId=${encodeURIComponent(idToUse)}`, '_blank')
                       }}
                     >
                       View Career Report

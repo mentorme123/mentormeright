@@ -196,7 +196,7 @@ function normalizeScoresForV4(
     Social: 5,
     Enterprising: 5,
     Conventional: 5,
-    EmotionalIntelligence: 6,
+    "Emotional Intelligence": 6,
     Efficiency: 6,
     Empathy: 6,
     Engagement: 6,
@@ -209,7 +209,7 @@ function normalizeScoresForV4(
   };
 
   Object.entries(flatScores).forEach(([key, value]) => {
-    const max = maxMap[key] || 100;
+    const max = maxMap[key] || maxMap[key.replace(/ /g, "_")] || 100;
     result[key] = Math.round((value / max) * 100);
   });
 

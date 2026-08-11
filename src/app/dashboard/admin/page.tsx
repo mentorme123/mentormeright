@@ -62,8 +62,6 @@ export default function AdminDashboard() {
   const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
   const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
   const [adminTab, setAdminTab] = useState<"analytics" | "users">("analytics");
-  const [statusMap, setStatusMap] = useState<Record<string, boolean>>({});
-  const [statusLoading, setStatusLoading] = useState(false);
 
   // Fetch Live Data
   const fetchData = async () => {
@@ -86,34 +84,9 @@ export default function AdminDashboard() {
     }
   };
 
-  const fetchUserStatuses = async (userList: DBUser[]) => {
-    setStatusLoading(true);
-    const newStatusMap: Record<string, boolean> = {};
-    for (let i = 0; i < userList.length; i++) {
-      const user = userList[i];
-      try {
-        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(user.id)}&email=${encodeURIComponent(user.email || '')}`);
-        newStatusMap[user.id] = res.ok;
-      } catch {
-        newStatusMap[user.id] = false;
-      }
-      if (i < userList.length - 1) {
-        await new Promise(r => setTimeout(r, 100));
-      }
-    }
-    setStatusMap(newStatusMap);
-    setStatusLoading(false);
-  };
-
   useEffect(() => {
     fetchData();
   }, []);
-
-  useEffect(() => {
-    if (!loading && users.length > 0) {
-      fetchUserStatuses(users);
-    }
-  }, [users, loading]);
 
   useEffect(() => {
     async function loadCurrentAdmin() {
@@ -824,7 +797,6 @@ export default function AdminDashboard() {
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Email</th>
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Class</th>
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Role</th>
-                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Status</th>
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Joined</th>
                           <th className="py-4 font-bold text-right" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Actions</th>
                         </tr>
@@ -832,7 +804,7 @@ export default function AdminDashboard() {
                       <tbody className="divide-y divide-slate-100">
                         {loading ? (
                           <tr>
-                            <td colSpan={8} className="px-6 py-12 text-center text-slate-500">
+                            <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
                               <div className="flex flex-col items-center justify-center">
                                 <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
                                 <p className="font-medium">Fetching live database records...</p>
@@ -841,7 +813,7 @@ export default function AdminDashboard() {
                           </tr>
                         ) : filteredUsers.length === 0 ? (
                           <tr>
-                            <td colSpan={8} className="px-6 py-12 text-center text-slate-500 font-medium">
+                            <td colSpan={6} className="px-6 py-12 text-center text-slate-500 font-medium">
                               No users found matching &quot;{searchTerm}&quot;
                             </td>
                           </tr>
@@ -872,19 +844,6 @@ export default function AdminDashboard() {
                                   }`}>
                                   {sanitizeText(user.role)}
                                 </span>
-                              </td>
-                               <td className="py-4" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                                {statusLoading ? (
-                                  <span className="text-slate-400 text-xs">Checking...</span>
-                                ) : statusMap[user.id] ? (
-                                  <span className="inline-flex items-center gap-1.5 text-emerald-700 text-xs font-bold">
-                                    <CheckCircle2 size={14} /> Completed
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center gap-1.5 text-slate-500 text-xs font-bold">
-                                    <AlertCircle size={14} /> Not Completed
-                                  </span>
-                                )}
                               </td>
                                <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
                                 {new Date(user.created_at).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}

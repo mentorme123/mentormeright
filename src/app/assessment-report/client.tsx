@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Printer, LayoutDashboard, FileText } from "lucide-react";
+import { ArrowLeft, Printer, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -317,16 +317,6 @@ export default function ReportClient({ userId }: { userId: string }) {
           <p className="text-[13px] text-slate-500 text-center max-w-md mx-auto leading-relaxed">
             Questions about your results? Our counsellors are available on WhatsApp — mention your name and the date you took the assessment.
           </p>
-          <Link
-            href={`/career-report?userId=${encodeURIComponent(userId)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block"
-          >
-            <Button className="w-full bg-[#0f2460] hover:bg-[#2952c4] text-white font-bold text-center py-3.5 rounded-xl transition-colors">
-              <FileText size={14} className="mr-2" /> Generate Career Report
-            </Button>
-          </Link>
           <a
             href={`https://api.whatsapp.com/send?phone=918188824440&text=${encodeURIComponent(`Hi MentorMe! I just completed my Career Discovery Assessment (${userName || "Student"}, Class ${userClass || "?"}). Looking forward to my report!`)}`}
             target="_blank"

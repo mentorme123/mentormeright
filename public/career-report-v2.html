@@ -30,10 +30,6 @@
 </style>
 </head>
 <body>
-<div class="toolbar no-print">
-<button onclick="loadDemo()">Load Demo</button><button onclick="generateFromBox()">Generate Report</button><button onclick="window.print()">Print / Save PDF</button><button class="secondary" onclick="toggleJSON()">Show / Hide JSON</button>
-</div>
-<textarea id="jsonBox" class="no-print" spellcheck="false"></textarea>
 <div class="app"><div id="report" class="report"></div></div>
 
 <script>
@@ -218,14 +214,11 @@ function generateReport(data){
  h+=page(`<div class="section-kicker">15 • Methodology & Disclaimer</div><h2>About Your Assessment</h2><div class="card"><p class="small">This report is generated using <b>MentorMe’s proprietary Career Intelligence Framework</b>, designed to support students in understanding their strengths, interests, preferences and personal characteristics in relation to potential career pathways.</p><p class="small">The framework uses a <b>structured psychometric assessment and career-matching methodology</b> developed by MentorMe to identify areas of alignment between an individual's profile and a broad range of career possibilities.</p><p class="small">The results are intended to help students and families <b>explore suitable career directions, understand potential academic pathways and make more informed education and career decisions.</b></p></div><div class="card" style="margin-top:10px"><h3>Important Disclaimer</h3><p class="small">This report is intended for <b>educational, career-exploration and career-planning purposes</b>. The results should be used as a guide for exploration and decision-making and <b>should not be interpreted as a definitive prediction, prescription or guarantee of an individual's future career.</b></p><p class="small">Career outcomes may be influenced by several factors, including <b>academic performance, motivation, interests, subject preferences, practical exposure, opportunities, economic conditions, personal choices and changing career landscapes</b>, many of which may not be fully captured by a single assessment.</p><p class="small">Career recommendations should therefore be considered alongside <b>academic performance, subject preferences, practical exposure and discussions with parents, educators and qualified career professionals.</b></p><p class="small">Information relating to <b>institutions, courses, entrance examinations, eligibility criteria, fees, scholarships, licensing requirements and career pathways</b> may change over time. Students and families should independently verify such information through relevant official sources before making education or career decisions or submitting applications.</p><p class="small"><b>MentorMe does not guarantee any career, admission, academic or employment outcome.</b></p></div><div style="margin-top:22px;text-align:center;color:var(--navy)"><div style="font-size:22px;font-weight:900">MENTOR<span style="color:var(--teal)">ME</span></div><div class="small">Turning Passions into Professions.</div><div class="tiny" style="margin-top:8px">www.mentormeright.com</div></div>`,13);
  document.getElementById("report").innerHTML=h;window.scrollTo({top:0,behavior:"smooth"})
 }
-function loadDemo(){document.getElementById("jsonBox").value=JSON.stringify(DEMO_DATA,null,2);generateReport(DEMO_DATA)}
-function generateFromBox(){try{generateReport(JSON.parse(document.getElementById("jsonBox").value))}catch(e){alert("Invalid JSON: "+e.message)}}
-function toggleJSON(){const b=document.getElementById("jsonBox");b.style.display=b.style.display==="none"?"block":"none"}
 window.MentorMeCareerReport={generateReport,rankCareers,normaliseScores,CAREER_MATRIX,ROADMAPS,INSTITUTIONS};
 window.generateReport=generateReport;
 
-window.addEventListener('message', function(e) {
-  if (e.data && e.data.type === 'generateReport') {
+window.addEventListener("message", function(e) {
+  if (e.data && e.data.type === "generateReport") {
     generateReport(e.data.payload);
   }
 });

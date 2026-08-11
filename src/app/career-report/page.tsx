@@ -45,9 +45,12 @@ export default function CareerReportPage({
           return;
         }
 
+        console.log("[CareerReport] API response for userId", userId, json);
         const v4Data = transformToV4(json);
+        console.log("[CareerReport] Transformed V4 data", v4Data);
         setData(v4Data);
       } catch (e) {
+        console.error("[CareerReport] Fetch error", e);
         setError("Failed to load assessment data.");
       } finally {
         setLoading(false);

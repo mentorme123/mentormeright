@@ -1,26 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {
-    const data = [
-      ['Name', 'Class'],
-      ['John Doe', 'Class 6'],
-      ['Jane Smith', 'Class 7'],
-      ['Alex Johnson', 'Class 8'],
-      ['Sarah Williams', 'Class 9'],
-      ['Michael Brown', 'Class 10'],
-      ['Emily Davis', 'Class 11'],
-      ['David Wilson', 'Class 12'],
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Students');
+    worksheet.columns = [
+      { header: 'Name', key: 'name', width: 30 },
+      { header: 'Class', key: 'class', width: 20 },
     ];
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Students');
-    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.addDataValidation({
+      type: 'list',
+      allowBlank: true,
+      formula1: '"Class 6,Class 7,Class 8,Class 9,Class 10,Class 11,Class 12"',
+      ranges: [{ column: 2, row: 2, columnCount: 1, rowCount: 1000 }],
+    });
+    const buffer = await workbook.xlsx.writeBuffer();
     const filename = `student_template_${new Date().toISOString().split('T')[0]}.xlsx`;
-    return new NextResponse(Buffer.from(wbout), {
+    return new NextResponse(Buffer.from(buffer), {
       status: 200,
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

@@ -464,6 +464,7 @@ export default function InstitutionDashboardContent() {
                   <input type="file" id="csv-upload-institution" accept=".csv,.xlsx" onChange={(e) => e.target.files?.[0] && processFile(e.target.files[0])} className="hidden" />
                 </div>
               </div>
+              <p className="text-xs text-slate-500 font-medium">Template uses: Class 6, Class 7, Class 8, Class 9, Class 10, Class 11, Class 12</p>
 
               <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
                 <div className="relative">

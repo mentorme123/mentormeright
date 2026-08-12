@@ -55,8 +55,7 @@ export async function GET(req: NextRequest) {
       const escapedUsername = `"${(r.username || '').replace(/"/g, '""')}"`;
       const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
       const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
-      const gradeMatch = String(r.education_level || '').match(/(\d+)/);
-      const gradeNum = gradeMatch ? parseInt(gradeMatch[1], 10) : NaN;
+      const gradeNum = parseInt(String(r.education_level || ''), 10);
       let test = '';
       if (!isNaN(gradeNum)) {
         if (gradeNum >= 9 && gradeNum <= 10) test = 'Category A';

@@ -631,13 +631,16 @@ export default function InstitutionDashboardContent() {
                 <input type="email" required value={createEmail} onChange={(e) => setCreateEmail(e.target.value)} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm" placeholder="rahul@example.com" />
               </div>
               <div>
-                <label className="text-sm font-bold text-slate-700 mb-1 block">Grade / Level</label>
+                <label className="text-sm font-bold text-slate-700 mb-1 block">Class</label>
                 <select value={createGrade} onChange={(e) => setCreateGrade(e.target.value)} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm">
-                  <option value="">Select Level</option>
-                  <option value="School Student">School Student</option>
-                  <option value="College/Undergraduate">College / Undergraduate</option>
-                  <option value="Graduate">Graduate</option>
-                  <option value="Working Professional">Working Professional</option>
+                  <option value="">Select Class</option>
+                  <option value="Class 6">Class 6</option>
+                  <option value="Class 7">Class 7</option>
+                  <option value="Class 8">Class 8</option>
+                  <option value="Class 9">Class 9</option>
+                  <option value="Class 10">Class 10</option>
+                  <option value="Class 11">Class 11</option>
+                  <option value="Class 12">Class 12</option>
                 </select>
               </div>
               <Button type="submit" disabled={createLoading} className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg">

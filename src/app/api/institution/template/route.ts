@@ -7,13 +7,6 @@ export async function GET(req: NextRequest) {
   try {
     const data = [
       ['Name', 'Class'],
-      ['John Doe', 'Class 6'],
-      ['Jane Smith', 'Class 7'],
-      ['Alex Johnson', 'Class 8'],
-      ['Sarah Williams', 'Class 9'],
-      ['Michael Brown', 'Class 10'],
-      ['Emily Davis', 'Class 11'],
-      ['David Wilson', 'Class 12'],
     ];
     const ws = XLSX.utils.aoa_to_sheet(data);
     const wb = XLSX.utils.book_new();

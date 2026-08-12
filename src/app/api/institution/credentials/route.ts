@@ -50,18 +50,12 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const csvHeader = 'Username,Password,Class,Test\n';
+    const csvHeader = 'Username,Password,Class\n';
     const csvRows = results.map(r => {
       const escapedUsername = `"${(r.username || '').replace(/"/g, '""')}"`;
       const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
       const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
-      const gradeNum = parseInt(String(r.education_level || ''), 10);
-      let test = '';
-      if (!isNaN(gradeNum)) {
-        if (gradeNum >= 9 && gradeNum <= 10) test = 'Category A';
-        else if (gradeNum >= 11 && gradeNum <= 12) test = 'Category B';
-      }
-      return `${escapedUsername},${escapedPassword},"${cls}","${test}"`;
+      return `${escapedUsername},${escapedPassword},"${cls}"`;
     }).join('\n');
     const csvContent = csvHeader + csvRows;
 

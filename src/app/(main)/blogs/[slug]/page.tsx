@@ -10,12 +10,25 @@ export function generateStaticParams() {
   }));
 }
 
+function getFirstParagraph(content: string) {
+  const trimmed = content.trim();
+  const firstHeading = trimmed.indexOf("\n## ");
+  if (firstHeading === -1) {
+    return trimmed;
+  }
+  const intro = trimmed.slice(0, firstHeading).trim();
+  const paragraphs = intro.split(/\n{2,}/);
+  return paragraphs[0] || intro;
+}
+
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = blogPosts.find((p) => p.slug === params.slug);
 
   if (!post) {
     notFound();
   }
+
+  const summary = getFirstParagraph(post.content);
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
@@ -43,8 +56,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             </Button>
           </Link>
 
-          <article className="prose prose-lg max-w-none whitespace-pre-line text-slate-700 leading-relaxed">
-            {post.content}
+          <article className="prose prose-lg max-w-none text-slate-700 leading-relaxed">
+            <p>{summary}</p>
           </article>
         </div>
       </section>

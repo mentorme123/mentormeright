@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { blogPosts } from "@/data/blogs";
 import { ArrowRight } from "lucide-react";
 
@@ -40,6 +41,9 @@ export default function BlogsPage() {
                 transition={{ delay: i * 0.1 }}
                 className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all"
               >
+                <div className="relative h-48 w-full bg-slate-200">
+                  <Image src={post.image} alt={post.title} fill className="object-cover" />
+                </div>
                 <div className="p-6 space-y-4">
                   <h2 className="text-xl font-bold text-slate-800 leading-snug">{post.title}</h2>
                   <p className="text-slate-600 text-sm leading-relaxed">{post.excerpt}</p>

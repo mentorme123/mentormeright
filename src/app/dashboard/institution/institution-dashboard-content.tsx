@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import * as XLSX from "xlsx";
 import {
   LayoutDashboard,
   Users,
@@ -135,15 +136,26 @@ export default function InstitutionDashboardContent() {
   };
 
   const handleDownloadTemplate = () => {
-    const csvContent = `Name,Class`;
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const ws = XLSX.utils.aoa_to_sheet([["Name", "Class"]]);
+    if (!ws["!data_validations"]) ws["!data_validations"] = { dv: [] };
+    ws["!data_validations"].dv.push({
+      type: "list",
+      allowBlank: true,
+      formula1: '"Class 6,Class 7,Class 8,Class 9,Class 10,Class 11,Class 12"',
+      ranges: [{ s: { r: 1, c: 1 }, e: { r: 1000, c: 1 } }],
+    });
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Students");
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const blob = new Blob([wbout], { type: "application/octet-stream" });
     const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', 'student_template.csv');
+    link.setAttribute("download", "student_template.xlsx");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   };
 
   const handleDownloadCredentials = async () => {
@@ -170,47 +182,67 @@ export default function InstitutionDashboardContent() {
     }
   };
 
-  const processCSV = async (file: File) => {
+  const processFile = async (file: File) => {
     setUploadStatus('processing');
     setUploadResults([]);
-    Papa.parse(file, {
-      header: true,
-      skipEmptyLines: true,
-      complete: async (results) => {
-        try {
-          const rows = results.data as Array<{ Name: string; Password?: string }>;
-          if (rows.length === 0) throw new Error("The CSV file is empty.");
-
-          const response = await fetch('/api/bulk-import', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ students: rows, institutionName })
+    try {
+      let rows: Array<{ Name: string; Class?: string }> = [];
+      if (file.name.toLowerCase().endsWith('.xlsx')) {
+        const buffer = await file.arrayBuffer();
+        const wb = XLSX.read(buffer, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(ws, { defval: '' }) as Array<Record<string, string>>;
+        rows = json.map((r) => ({
+          Name: String(r.Name || r.name || '').trim(),
+          Class: String(r.Class || r.class || '').trim(),
+        }));
+      } else {
+        await new Promise<void>((resolve, reject) => {
+          Papa.parse(file, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+              const parsed = results.data as Array<{ Name?: string; name?: string; Class?: string; class?: string }>;
+              rows = parsed.map((r) => ({
+                Name: String(r.Name || r.name || '').trim(),
+                Class: String(r.Class || r.class || '').trim(),
+              }));
+              resolve();
+            },
+            error: (err: Error) => reject(err),
           });
-
-          const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.error || "Failed to provision accounts.");
-          }
-
-          const successResults = (data.results || []).filter((r: any) => r.status === 'success' || r.status === 'partial_success');
-          const errorResults = (data.results || []).filter((r: any) => r.status === 'error');
-
-          setUploadResults(successResults);
-          setStudentsImported(successResults.length);
-          setUploadStatus(successResults.length > 0 ? 'success' : 'error');
-
-          if (successResults.length === 0 && errorResults.length > 0) {
-            setErrorMessage(`All ${errorResults.length} students failed: ${errorResults[0].error}`);
-          } else if (successResults.length > 0) {
-            await refreshStudents(institutionName);
-          }
-        } catch (err: unknown) {
-          setErrorMessage(err instanceof Error ? err.message : "An error occurred");
-          setUploadStatus('error');
-        }
+        });
       }
-    });
+      if (rows.length === 0) throw new Error('The file is empty.');
+
+      const response = await fetch('/api/bulk-import', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ students: rows, institutionName })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to provision accounts.');
+      }
+
+      const successResults = (data.results || []).filter((r: any) => r.status === 'success' || r.status === 'partial_success');
+      const errorResults = (data.results || []).filter((r: any) => r.status === 'error');
+
+      setUploadResults(successResults);
+      setStudentsImported(successResults.length);
+      setUploadStatus(successResults.length > 0 ? 'success' : 'error');
+
+      if (successResults.length === 0 && errorResults.length > 0) {
+        setErrorMessage(`All ${errorResults.length} students failed: ${errorResults[0].error}`);
+      } else if (successResults.length > 0) {
+        await refreshStudents(institutionName);
+      }
+    } catch (err: unknown) {
+      setErrorMessage(err instanceof Error ? err.message : "An error occurred");
+      setUploadStatus('error');
+    }
   };
 
   const handleCreateStudent = async (e: React.FormEvent) => {
@@ -429,9 +461,9 @@ export default function InstitutionDashboardContent() {
                     onClick={() => document.getElementById('csv-upload-institution')?.click()}
                     className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold px-4 py-2 rounded-xl shadow-sm"
                   >
-                    <Upload size={16} className="mr-2" /> Upload CSV
+                    <Upload size={16} className="mr-2" /> Upload File
                   </Button>
-                  <input type="file" id="csv-upload-institution" accept=".csv" onChange={(e) => e.target.files?.[0] && processCSV(e.target.files[0])} className="hidden" />
+                  <input type="file" id="csv-upload-institution" accept=".csv,.xlsx" onChange={(e) => e.target.files?.[0] && processFile(e.target.files[0])} className="hidden" />
                 </div>
               </div>
 

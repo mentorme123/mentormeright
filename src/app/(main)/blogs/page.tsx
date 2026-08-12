@@ -2,25 +2,42 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { blogPosts } from "@/data/blogs";
-import { ArrowRight } from "lucide-react";
-import React from "react";
+import { ArrowRight, BookOpen, Lightbulb, Settings, GraduationCap } from "lucide-react";
 
-function BlogCardImage({ src, alt }: { src: string; alt: string }) {
-  const [error, setError] = React.useState(false);
+const blogConfig = [
+  {
+    slug: "advantages-of-career-assessment-tools",
+    icon: BookOpen,
+    color: "from-brand-blue to-brand-blue/80",
+  },
+  {
+    slug: "offbeat-careers-in-india",
+    icon: Lightbulb,
+    color: "from-brand-orange to-brand-orange/80",
+  },
+  {
+    slug: "engineering-streams-in-india",
+    icon: Settings,
+    color: "from-emerald-500 to-emerald-600",
+  },
+  {
+    slug: "career-options-pcm-mpc-stream",
+    icon: GraduationCap,
+    color: "from-violet-500 to-violet-600",
+  },
+];
 
-  if (error) {
-    return (
-      <div className="h-48 w-full bg-gradient-to-br from-brand-blue/20 to-brand-orange/20 flex items-center justify-center">
-        <span className="text-brand-blue font-bold text-lg text-center px-4">{alt}</span>
-      </div>
-    );
-  }
+function BlogCardImage({ slug }: { slug: string }) {
+  const config = blogConfig.find((c) => c.slug === slug);
+  const Icon = config?.icon || BookOpen;
+  const colorClass = config?.color || "from-brand-blue to-brand-blue/80";
 
   return (
-    <div className="relative h-48 w-full bg-slate-200">
-      <Image src={src} alt={alt} fill className="object-cover" onError={() => setError(true)} />
+    <div className="p-6 pb-0">
+      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorClass} flex items-center justify-center shadow-lg`}>
+        <Icon size={28} className="text-white" />
+      </div>
     </div>
   );
 }
@@ -60,7 +77,7 @@ export default function BlogsPage() {
                 transition={{ delay: i * 0.1 }}
                 className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all"
               >
-                <BlogCardImage src={post.image} alt={post.title} />
+                <BlogCardImage slug={post.slug} />
                 <div className="p-6 space-y-4">
                   <h2 className="text-xl font-bold text-slate-800 leading-snug">{post.title}</h2>
                   <p className="text-slate-600 text-sm leading-relaxed">{post.excerpt}</p>

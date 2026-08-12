@@ -162,12 +162,12 @@ export default function ContactPage() {
   return (
     <div className="flex flex-col min-h-[calc(100vh-4rem)] relative">
       {/* Header */}
-      <section className="bg-brand-blue/5 py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
+      <section className="bg-brand-blue py-20 px-4 text-center text-white">
+        <div className="max-w-4xl mx-auto space-y-4">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold text-brand-blue"
+            className="text-4xl md:text-5xl font-bold"
           >
             Get in Touch
           </motion.h1>
@@ -175,7 +175,7 @@ export default function ContactPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-muted-foreground"
+            className="text-white/90 text-xl"
           >
             We&apos;re here to help you navigate your career journey. Reach out to the MentorMe team today.
           </motion.p>

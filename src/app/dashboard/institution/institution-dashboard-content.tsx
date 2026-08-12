@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 import {
   LayoutDashboard,
   Users,
@@ -135,21 +136,21 @@ export default function InstitutionDashboardContent() {
     window.location.href = "/login";
   };
 
-  const handleDownloadTemplate = () => {
-    const ws = XLSX.utils.aoa_to_sheet([
-      ["Name", "Class"],
-      ["John Doe", "Class 6"],
-      ["Jane Smith", "Class 7"],
-      ["Alex Johnson", "Class 8"],
-      ["Sarah Williams", "Class 9"],
-      ["Michael Brown", "Class 10"],
-      ["Emily Davis", "Class 11"],
-      ["David Wilson", "Class 12"]
-    ]);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Students");
-    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const blob = new Blob([wbout], { type: "application/octet-stream" });
+  const handleDownloadTemplate = async () => {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Students");
+    worksheet.columns = [
+      { header: "Name", key: "name", width: 30 },
+      { header: "Class", key: "class", width: 20 },
+    ];
+    worksheet.getRow(1).font = { bold: true };
+    worksheet.getColumn("class").addDataValidation({
+      type: "list",
+      allowBlank: true,
+      formula1: '"Class 6,Class 7,Class 8,Class 9,Class 10,Class 11,Class 12"',
+    });
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;

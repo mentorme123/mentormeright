@@ -32,17 +32,12 @@ export async function POST(req: NextRequest) {
       const rawName = String(student[nameKey || ''] || '').trim().replace(/\s+/g, ' ');
       if (!rawName) continue;
 
-      const usernameKey = studentKeys.find(k => k.toLowerCase() === 'username' || k.toLowerCase() === 'email');
-      const passwordKey = studentKeys.find(k => k.toLowerCase() === 'password');
       const classKey = studentKeys.find(k => k.toLowerCase() === 'class' || k.toLowerCase() === 'grade' || k.toLowerCase() === 'education_level');
-
-      const rawUsername = String(student[usernameKey || ''] || '').trim();
-      const rawPassword = String(student[passwordKey || ''] || '').trim();
       const rawClass = String(student[classKey || ''] || '').trim();
 
       const namePart = rawName.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
-      const email = rawUsername || (namePart ? `${namePart}@mentormeright.in` : `student${Date.now()}@mentormeright.in`);
-      const password = rawPassword || `MM${namePart.replace(/_/g, '')}@123`;
+      const email = namePart ? `${namePart}@mentormeright.in` : `student${Date.now()}@mentormeright.in`;
+      const password = `MM${namePart.replace(/_/g, '')}@123`;
       const sanitizedName = rawName.slice(0, 100);
       const sanitizedGrade = rawClass.slice(0, 50);
 

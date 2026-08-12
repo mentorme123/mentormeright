@@ -89,7 +89,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4 pt-20">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
-        <div className="bg-brand-blue p-8 text-center text-white relative">
+        <div className="bg-brand-blue p-4 pb-6 text-center text-white relative">
           <button
             onClick={() => router.back()}
             className="absolute top-4 right-4 w-8 h-8 bg-white/20 hover:bg-white/30 rounded-lg flex items-center justify-center text-white transition-all"
@@ -97,13 +97,13 @@ export default function LoginPage() {
           >
             <X size={18} />
           </button>
-          <div className="flex flex-col items-center justify-center gap-3">
-            <div className="bg-white/95 rounded-2xl p-3 shadow-lg">
-              <img src="/logo.png?v=7" alt="MentorMe Logo" className="h-10 w-auto" />
+            <div className="flex flex-col items-center justify-center gap-2">
+              <div className="bg-white/95 rounded-2xl p-2 shadow-lg">
+                <img src="/logo.png?v=7" alt="MentorMe Logo" className="h-8 w-auto" />
+              </div>
+              <span className="text-xl font-black tracking-tight">MentorMe</span>
+              <span className="text-xs font-semibold text-white/90">Sign In</span>
             </div>
-            <span className="text-2xl font-black tracking-tight">MentorMe</span>
-            <span className="text-sm font-semibold text-white/90">Sign In</span>
-          </div>
         </div>
         <div className="p-8">
           <form onSubmit={handleSubmit} className="space-y-6">

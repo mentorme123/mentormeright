@@ -98,9 +98,7 @@ export default function LoginPage() {
             <X size={18} />
           </button>
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="bg-white/95 rounded-2xl p-2 shadow-lg">
-                <img src="/logo.png?v=7" alt="MentorMe Logo" className="h-8 w-auto" />
-              </div>
+              <img src="/logo.png?v=7" alt="MentorMe Logo" className="h-10 w-auto" />
               <span className="text-xl font-black tracking-tight">MentorMe</span>
               <span className="text-xs font-semibold text-white/90">Sign In</span>
             </div>

@@ -97,8 +97,10 @@ export default function LoginPage() {
           >
             <X size={18} />
           </button>
-          <h1 className="text-3xl font-black uppercase">MentorMe Portal</h1>
-          <p className="text-white/80 text-sm mt-2 font-medium">Access your career intelligence dashboard</p>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <img src="/logo.png?v=7" alt="MentorMe Logo" className="h-10 w-auto" />
+            <span className="text-2xl font-black tracking-tight">MentorMe</span>
+          </div>
         </div>
         <div className="p-8">
           <form onSubmit={handleSubmit} className="space-y-6">

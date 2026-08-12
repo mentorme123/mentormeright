@@ -1,26 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import ExcelJS from 'exceljs';
+import * as XLSX from 'xlsx';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
   try {
-    const workbook = new ExcelJS.Workbook();
-    const worksheet = workbook.addWorksheet('Students');
-    worksheet.columns = [
-      { header: 'Name', key: 'name', width: 30 },
-      { header: 'Class', key: 'class', width: 20 },
+    const data = [
+      ['Name', 'Class'],
+      ['John Doe', 'Class 6'],
+      ['Jane Smith', 'Class 7'],
+      ['Alex Johnson', 'Class 8'],
+      ['Sarah Williams', 'Class 9'],
+      ['Michael Brown', 'Class 10'],
+      ['Emily Davis', 'Class 11'],
+      ['David Wilson', 'Class 12'],
     ];
-    worksheet.getRow(1).font = { bold: true };
-    worksheet.addDataValidation({
-      type: 'list',
-      allowBlank: true,
-      formula1: '"Class 6,Class 7,Class 8,Class 9,Class 10,Class 11,Class 12"',
-      ranges: [{ column: 2, row: 2, columnCount: 1, rowCount: 1000 }],
-    });
-    const buffer = await workbook.xlsx.writeBuffer();
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Students');
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     const filename = `student_template_${new Date().toISOString().split('T')[0]}.xlsx`;
-    return new NextResponse(Buffer.from(buffer), {
+    return new NextResponse(Buffer.from(wbout), {
       status: 200,
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -30,7 +30,6 @@ export async function GET(req: NextRequest) {
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Template generation error:', err);
-    const message = err?.message || 'Failed to generate template';
-    return NextResponse.json({ error: message, stack: err?.stack }, { status: 500 });
+    return NextResponse.json({ error: err.message || 'Failed to generate template' }, { status: 500 });
   }
 }

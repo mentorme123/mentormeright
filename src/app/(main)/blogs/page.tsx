@@ -5,6 +5,25 @@ import Link from "next/link";
 import Image from "next/image";
 import { blogPosts } from "@/data/blogs";
 import { ArrowRight } from "lucide-react";
+import React from "react";
+
+function BlogCardImage({ src, alt }: { src: string; alt: string }) {
+  const [error, setError] = React.useState(false);
+
+  if (error) {
+    return (
+      <div className="h-48 w-full bg-gradient-to-br from-brand-blue/20 to-brand-orange/20 flex items-center justify-center">
+        <span className="text-brand-blue font-bold text-lg text-center px-4">{alt}</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative h-48 w-full bg-slate-200">
+      <Image src={src} alt={alt} fill className="object-cover" onError={() => setError(true)} />
+    </div>
+  );
+}
 
 export default function BlogsPage() {
   return (
@@ -41,9 +60,7 @@ export default function BlogsPage() {
                 transition={{ delay: i * 0.1 }}
                 className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all"
               >
-                <div className="relative h-48 w-full bg-slate-200">
-                  <Image src={post.image} alt={post.title} fill className="object-cover" />
-                </div>
+                <BlogCardImage src={post.image} alt={post.title} />
                 <div className="p-6 space-y-4">
                   <h2 className="text-xl font-bold text-slate-800 leading-snug">{post.title}</h2>
                   <p className="text-slate-600 text-sm leading-relaxed">{post.excerpt}</p>

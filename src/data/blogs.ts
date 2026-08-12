@@ -191,4 +191,103 @@ In conclusion, the abundance of engineering specialisations in India has enabled
 Our career guidance platform is a reliable resource for students starting their engineering careers because it provides them with detailed career information based on their goals. With the help of our vast career library, insightful articles, and personalised counselling sessions, we empower aspiring engineers to make educated decisions about their futures. Whether you want to learn about the latest developments in the field, understand the difficulties of entrance exams, or explore the various engineering programs, MentorMe offers all the information you need. Our mission is to enable the brightest minds in India to realise their full potential so they may overcome obstacles and seize the numerous opportunities in the fascinating field of engineering. So, get started on your successful career journey today by contacting us!
 `,
   },
+  {
+    slug: "career-options-pcm-mpc-stream",
+    title: "What Are The Career Options in PCM/MPC Stream?",
+    excerpt:
+      "Explore the wide range of career options available to PCM/MPC students after 12th and find the right path for your future.",
+    date: "2026-08-12",
+    image: "/images/blog-pcm-mpc.jpg",
+    content: `
+Choosing a career path and securing a bright and prosperous future has never been more difficult than it is now, with 240+ career options available. Among this vast array of careers, there are a wide range of employment choices available to students who are majoring in Physics, Chemistry, and Mathematics (PCM). While this results in a whole world of opportunities, it is important to understand your options and identify the steps to guide your career in the right direction.
+
+This blog helps you identify the courses that best suit your profile and examines the top PCM or MPC career alternatives you can pursue after your 12th-grade education.
+
+## What is PCM or MPC Stream?
+
+PCM or MPC typically stands for Physics, Chemistry, and Mathematics, which are core subjects in many science-related educational programs. PCM is often one of the main streams chosen by students in high school or equivalent levels who have an interest in pursuing careers in science, engineering, technology, or related fields.
+
+Since class 12 represents the end of schooling and the start of a student's future job, it is a pivotal year for many. Depending on their interests, PCM students have a wide range of job opportunities in the scientific field. Following the 12th PCM, there are a number of career paths that concentrate on planning, multimedia, infrastructure, technology, healthcare, and planning.
+
+## What are the available career options in PCM after the 12th?
+
+Here's a list of courses available to explore after the 12th PCM:
+
+### Bachelor of Technology (BTech) Courses:
+
+B.Tech courses provide a deep understanding of various branches of engineering. The B.Tech courses available in India are:
+
+- Civil Engineering
+- Mechanical Engineering
+- Chemical Engineering
+- Electronics & Communication Engineering
+- Information Technology
+- Genetic Engineering
+- Aeronautical Engineering
+- Automobile Engineering
+- Civil and Structural Engineering
+- Industrial Engineering
+- Instrumentation & Control Engineering
+- Mining Engineering
+- Food Technology
+
+### Bachelor of Science (BSc) Courses (Pure Sciences):
+
+Strong knowledge of scientific theories and concepts is provided by pure science courses. They are for students who are interested in research and academia. Some of the popular pure science courses available in India are:
+
+- Physics
+- Chemistry
+- Mathematics
+- Economics
+- Aviation
+- Home Science
+- Robotics
+- Applied Mathematics
+- Statistics
+- Nautical Sciences
+- Data Science/ Data Analytics
+- Finance
+- Environmental Studies
+
+### Undergraduate Degree Course in Architecture:
+
+For students interested in architecture, construction and planning, the course available is:
+
+- Bachelor of Architecture
+
+### Undergraduate Degree Courses in Design:
+
+For students interested in the creative field such as design, there are several popular courses available:
+
+- BDes Product Design
+- BDes Industrial Design/Vehicle Design
+
+### Undergraduate Degree Courses in Aviation:
+
+Students interested in pursuing a career in the aviation can take up the below courses:
+
+- Commercial Pilot License
+- B.Sc with Physics and Maths for Air Traffic Controller
+
+### For careers in Merchant Navy:
+
+- B. Sc Nautical Science
+- Marine Engineering
+
+### Training in Defense Services:
+
+- National Defense Academy (NDA): Those interested in joining the defence services can join the NDA. NDA is the top training facility in India for those wanting a career in the Army, Navy, and Air Force.
+
+When you're studying PCM or MPC, it's essential to have the appropriate resources and support in navigating your educational career path. MentorMe offers an abundance of valuable resources, useful insights and helpful tools to assist you with evaluating your academic and career opportunities. We'll arm you with the information and self-assurance you need to make the best decisions, including thorough course descriptions and professional career guidance. Check out our service page career guidance for students 9th to 12th grade and get ready for a prosperous future!
+
+## Authors
+
+1. Hymavathi Garuda
+4+ years of Experience in Career Guidance.
+Certified Career Coach By NCDA.
+
+2. Meghana M.
+Educational Research and Writer.
+`,
+  },
 ];

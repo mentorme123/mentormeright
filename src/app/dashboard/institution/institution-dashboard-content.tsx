@@ -135,29 +135,25 @@ export default function InstitutionDashboardContent() {
     window.location.href = "/login";
   };
 
-  const handleDownloadTemplate = () => {
-    const ws = XLSX.utils.aoa_to_sheet([
-      ["Name", "Class"],
-      ["John Doe", "Class 6"],
-      ["Jane Smith", "Class 7"],
-      ["Alex Johnson", "Class 8"],
-      ["Sarah Williams", "Class 9"],
-      ["Michael Brown", "Class 10"],
-      ["Emily Davis", "Class 11"],
-      ["David Wilson", "Class 12"],
-    ]);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Students");
-    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const blob = new Blob([wbout], { type: "application/octet-stream" });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "student_template.xlsx");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
+  const handleDownloadTemplate = async () => {
+    try {
+      const response = await fetch('/api/institution/template');
+      if (!response.ok) throw new Error('Failed to download template');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      const disposition = response.headers.get('Content-Disposition');
+      const filenameMatch = disposition?.match(/filename="?([^"]+)"?/);
+      link.setAttribute('download', filenameMatch?.[1] || 'student_template.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err: unknown) {
+      setErrorMessage(err instanceof Error ? err.message : 'Failed to download template');
+      setUploadStatus('error');
+    }
   };
 
   const handleDownloadCredentials = async () => {

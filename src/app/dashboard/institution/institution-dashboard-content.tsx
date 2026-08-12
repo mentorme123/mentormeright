@@ -136,14 +136,16 @@ export default function InstitutionDashboardContent() {
   };
 
   const handleDownloadTemplate = () => {
-    const ws = XLSX.utils.aoa_to_sheet([["Name", "Class"]]);
-    if (!ws["!data_validations"]) ws["!data_validations"] = { dv: [] };
-    ws["!data_validations"].dv.push({
-      type: "list",
-      allowBlank: true,
-      formula1: '"Class 6,Class 7,Class 8,Class 9,Class 10,Class 11,Class 12"',
-      ranges: [{ s: { r: 1, c: 1 }, e: { r: 1000, c: 1 } }],
-    });
+    const ws = XLSX.utils.aoa_to_sheet([
+      ["Name", "Class"],
+      ["John Doe", "Class 6"],
+      ["Jane Smith", "Class 7"],
+      ["Alex Johnson", "Class 8"],
+      ["Sarah Williams", "Class 9"],
+      ["Michael Brown", "Class 10"],
+      ["Emily Davis", "Class 11"],
+      ["David Wilson", "Class 12"]
+    ]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Students");
     const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });

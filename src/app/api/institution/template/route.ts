@@ -19,9 +19,8 @@ export async function GET(req: NextRequest) {
       ranges: [{ column: 2, row: 2, columnCount: 1, rowCount: 1000 }],
     });
     const buffer = await workbook.xlsx.writeBuffer();
-    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
     const filename = `student_template_${new Date().toISOString().split('T')[0]}.xlsx`;
-    return new NextResponse(blob, {
+    return new NextResponse(Buffer.from(buffer), {
       status: 200,
       headers: {
         'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

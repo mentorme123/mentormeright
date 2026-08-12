@@ -135,17 +135,7 @@ export default function InstitutionDashboardContent() {
   };
 
   const handleDownloadTemplate = () => {
-    const csvContent = `Username,Password,Class,Test
-dinesh@mentormeright.in,MMdinesh@123,Class 12,
-dindnajin.dq@mentormeright.in,MMdindnajindq@123,,
-kndalksnkdaw@mentormeright.in,MMkndalksnkdaw@123,,
-maruthi@mentormeright.in,MMmaruthi@123,Class 11,
-mnnsdjassbkassdajnjd@mentormeright.in,MMmnnsdjassbkassdajnjd@123,,
-moksha_t@mentormeright.in,MMmoksha@123,,
-rahul.test1783489805761@gmail.com,MMrahultest1783489805761@123,SchoolStudent,
-raju@mentormeright.in,MMraju@123,SchoolStudent,
-rakesh@mentormeright.in,MMrakesh@123,,
-trisha_t@mentormeright.in,MMtrishat@123,`;
+    const csvContent = `Username,Class,Test`;
     const blob = new Blob([csvContent], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');

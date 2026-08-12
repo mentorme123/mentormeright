@@ -1,11 +1,14 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { blogPosts } from "@/data/blogs";
 import { Button } from "@/components/ui/button";
+
+export function generateStaticParams() {
+  return blogPosts.map((post) => ({
+    slug: post.slug,
+  }));
+}
 
 export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const post = blogPosts.find((p) => p.slug === params.slug);
@@ -26,18 +29,9 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             <span>{post.title}</span>
           </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold mb-6"
-          >
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
             {post.title}
-          </motion.h1>
-
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <Calendar size={14} />
-            <span>{new Date(post.date).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</span>
-          </div>
+          </h1>
         </div>
       </section>
 
@@ -56,10 +50,4 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       </section>
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  return blogPosts.map((post) => ({
-    slug: post.slug,
-  }));
 }

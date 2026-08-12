@@ -144,10 +144,11 @@ export default function InstitutionDashboardContent() {
       { header: "Class", key: "class", width: 20 },
     ];
     worksheet.getRow(1).font = { bold: true };
-    worksheet.getColumn("class").addDataValidation({
+    worksheet.addDataValidation({
       type: "list",
       allowBlank: true,
       formula1: '"Class 6,Class 7,Class 8,Class 9,Class 10,Class 11,Class 12"',
+      ranges: [{ column: 2, row: 2, columnCount: 1, rowCount: 1000 }],
     });
     const buffer = await workbook.xlsx.writeBuffer();
     const blob = new Blob([buffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });

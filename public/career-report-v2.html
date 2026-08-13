@@ -503,12 +503,12 @@ function renderReport(data) {
           </tr>
         </thead>
         <tbody>
-          ${data.top5Careers.map(c => `
+          ${(data.top5Careers || []).map(c => `
             <tr>
               <td><strong>${c.title}</strong></td>
-              <td>${c.salary.fresher}</td>
-              <td>${c.salary.mid}</td>
-              <td>${c.salary.senior}</td>
+              <td>${c.salary?.fresher || "Rs. 6 - 10 LPA"}</td>
+              <td>${c.salary?.mid || "Rs. 15 - 22 LPA"}</td>
+              <td>${c.salary?.senior || "Rs. 30+ LPA"}</td>
             </tr>
           `).join('')}
         </tbody>
@@ -525,12 +525,12 @@ function renderReport(data) {
           </tr>
         </thead>
         <tbody>
-          ${data.top5Careers.map(c => `
+          ${(data.top5Careers || []).map(c => `
             <tr>
               <td><strong>${c.title}</strong></td>
-              <td>${c.investment.degree}</td>
-              <td>${c.investment.duration}</td>
-              <td><span class="investment-total" style="font-size:11px;">${c.investment.tuition}</span></td>
+              <td>${c.investment?.degree || "Target UG Degree"}</td>
+              <td>${c.investment?.duration || "3-4 Years"}</td>
+              <td><span class="investment-total" style="font-size:11px;">${c.investment?.tuition || "Rs. 5 - 12 Lakhs"}</span></td>
             </tr>
           `).join('')}
         </tbody>
@@ -573,14 +573,14 @@ function renderReport(data) {
             </tr>
           </thead>
           <tbody>
-            ${data.top5Careers.map(c => `
+            ${(data.top5Careers || []).map(c => `
               <tr>
                 <td><strong style="color:var(--navy); font-size:9.5px;">${c.title}</strong></td>
-                <td><strong>${c.roadmap.stream}</strong></td>
-                <td>${c.roadmap.ugPathway}</td>
-                <td>${c.roadmap.entranceExam}</td>
-                <td>${c.roadmap.pgPathway}</td>
-                <td>${c.roadmap.fresherRoles}</td>
+                <td><strong>${c.roadmap?.stream || "Commerce / Science / Humanities"}</strong></td>
+                <td>${c.roadmap?.ugPathway || "Relevant UG Pathway"}</td>
+                <td>${c.roadmap?.entranceExam || "CUET / Entrance Exam"}</td>
+                <td>${c.roadmap?.pgPathway || "Relevant PG Specialization"}</td>
+                <td>${c.roadmap?.fresherRoles || "Entry Level Professional"}</td>
               </tr>
             `).join('')}
           </tbody>
@@ -622,7 +622,7 @@ function renderReport(data) {
       <h2>Indian College & University Shortlist</h2>
       <p class="lead">Top 5 recommended Indian institutions for each of your top target careers.</p>
       
-      ${data.top5Careers.map(c => `
+      ${(data.top5Careers || []).map(c => `
         <div class="institution-career card" style="margin-top:8px;">
           <h4>${c.title} - Top 5 Institutions in India</h4>
           <table class="table">
@@ -633,7 +633,7 @@ function renderReport(data) {
               </tr>
             </thead>
             <tbody>
-              ${c.institutions.map((inst, idx) => `
+              ${(c.institutions && c.institutions.length > 0 ? c.institutions : ["Top Indian University 1", "Top Indian University 2", "Top Indian University 3", "Top Indian University 4", "Top Indian University 5"]).map((inst, idx) => `
                 <tr>
                   <td><strong>${idx + 1}</strong></td>
                   <td>${inst}</td>
@@ -815,16 +815,37 @@ function buildReportDataFromAssessment(input) {
     "Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Extraversion"
   ];
 
-  allParams.forEach(p => {
-    let val = rawScores[p] !== undefined ? rawScores[p] : rawScores[p.replace(/ /g, "_")];
-    if (val === undefined) val = 0;
+  const getRawVal = (p) => {
+    const kUnderscore = p.replace(/ /g, "_");
+    const sources = [
+      rawScores[p],
+      rawScores[kUnderscore],
+      rawScores.skills?.[p],
+      rawScores.skills?.[kUnderscore],
+      rawScores.passion?.[p],
+      rawScores.passion?.[kUnderscore],
+      rawScores.individuality?.[p],
+      rawScores.individuality?.[kUnderscore],
+      input[p],
+      input[kUnderscore]
+    ];
+    for (const src of sources) {
+      if (src !== undefined && src !== null) return src;
+    }
+    return undefined;
+  };
 
+  allParams.forEach(p => {
+    let raw = getRawVal(p);
     let pct = 0;
-    if (typeof val === 'number') {
-      if (val <= 5 && val > 0 && Math.round(val) === val) {
-        pct = Math.round((val / 5) * 100);
+    if (typeof raw === 'object' && raw !== null && raw.score !== undefined) {
+      const maxVal = raw.max || 5;
+      pct = Math.round((raw.score / maxVal) * 100);
+    } else if (typeof raw === 'number') {
+      if (raw <= 5 && raw > 0) {
+        pct = Math.round((raw / 5) * 100);
       } else {
-        pct = Math.min(100, Math.max(0, Math.round(val)));
+        pct = Math.min(100, Math.max(0, Math.round(raw)));
       }
     }
     normalizedPct[p] = pct;
@@ -840,7 +861,7 @@ function buildReportDataFromAssessment(input) {
 
   const topInterestScore = maxPct(riasecList);
 
-  const triProfile = {
+  const triProfile = input.triProfile || {
     skillProficiency: maxPct(skillsList) || avgPct(skillsList),
     passionExploration: topInterestScore > 0 ? topInterestScore : avgPct(riasecList),
     individualityProfile: maxPct(traitsList) || avgPct(traitsList)
@@ -1049,8 +1070,8 @@ function buildReportDataFromAssessment(input) {
 
   rankedCareers.sort((a, b) => b.score - a.score);
 
-  const top5Careers = rankedCareers.slice(0, 5);
-  const goodFitCareers = rankedCareers.slice(5, 10).map(c => ({
+  const top5Careers = input.top5Careers && input.top5Careers.length > 0 ? input.top5Careers : rankedCareers.slice(0, 5);
+  const goodFitCareers = input.goodFitCareers && input.goodFitCareers.length > 0 ? input.goodFitCareers : rankedCareers.slice(5, 10).map(c => ({
     title: c.title,
     cluster: c.cluster,
     score: c.score
@@ -1074,7 +1095,7 @@ function buildReportDataFromAssessment(input) {
     archetype = "Systems Specialist & Engineering Innovator";
   }
 
-  const executiveSummary = {
+  const executiveSummary = input.executiveSummary || {
     archetype,
     keyStrengths: top3Params.map(p => `High ${p} (${normalized1to5[p]}/5)`),
     primaryCluster: top5Careers[0]?.cluster || "Engineering & Technology",
@@ -1100,23 +1121,23 @@ function buildReportDataFromAssessment(input) {
     Extraversion: { skill: "Networking & Active Dynamics", subjectMapping: "Public Forums & Debates", description: "Strengthens confidence in group settings and active verbal engagement." }
   };
 
-  const developmentPriorities = lowest4Params.map(p => devMeta[p] || devMeta.Conventional);
+  const developmentPriorities = input.developmentPriorities || lowest4Params.map(p => devMeta[p] || devMeta.Conventional);
 
-  const actionPlan = {
+  const actionPlan = input.actionPlan || {
     certifications: [
-      "Python / Data Analysis Fundamentals (NPTEL / Coursera)",
-      "Financial Modeling & Analytical Tools",
-      "Foundations of Machine Learning & Problem Solving"
+      `Certifications in ${top5Careers[0]?.title || "Data Analytics"}`,
+      `Foundations in ${top5Careers[1]?.title || "Management"}`,
+      "Domain Skill Building & Practical Tools"
     ],
     competitions: [
-      "Mathematics & Science Olympiads",
-      "National School Hackathons & Innovation Contests",
-      "Kaggle / Case Study Competitions"
+      "School & National Olympiads",
+      "Hackathons & Innovation Challenges",
+      "Case Study & Project Competitions"
     ],
     parentGuidance: [
-      `Encourage focus on subjects aligned with ${top5Careers[0]?.title} during Grade 11 stream selection.`,
-      "Support structured preparation for relevant national entrance examinations early in Grade 11.",
-      "Facilitate exposure to real-world analytical workshops and practical skill-building programs."
+      `Encourage focus on subjects aligned with ${top5Careers[0]?.title || "chosen pathway"} during Grade 11 stream selection.`,
+      "Support structured preparation for relevant national entrance examinations.",
+      "Facilitate exposure to real-world skill-building programs and practical projects."
     ]
   };
 

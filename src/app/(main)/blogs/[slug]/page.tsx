@@ -108,24 +108,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 text-xs text-slate-500">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-brand-blue/10 text-brand-blue font-medium">
-                  {post.category}
-                </span>
-                <span>{new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 leading-tight">
-                {post.title}
-              </h2>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                {post.excerpt}
-              </p>
-              <Link href="/blogs">
-                <Button className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-lg px-8 py-5 rounded-full text-base font-bold">
-                  <ArrowLeft className="mr-2" /> Back to Blogs
-                </Button>
-              </Link>
+            <div className="hidden lg:block">
             </div>
             <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200">
               <Image

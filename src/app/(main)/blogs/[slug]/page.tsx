@@ -138,7 +138,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                 </Button>
               </Link>
             </div>
-            <div className="relative">
+            <div className="relative w-full overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/20 to-brand-orange/20 rounded-3xl blur-3xl transform scale-105"></div>
               <Image
                 src={post.image}

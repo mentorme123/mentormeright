@@ -77,14 +77,16 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <section className="relative w-full h-[50vh] min-h-[420px] bg-slate-900">
-        <Image
-          src={post.image}
-          alt={post.title}
-          fill
-          className="object-contain"
-          priority
-        />
+      <section className="relative w-full h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover brightness-50"
+            priority
+          />
+        </div>
 
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
           <svg className="relative block w-[calc(133%+1.3px)] h-[40px] md:h-[80px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">

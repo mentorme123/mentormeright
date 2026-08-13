@@ -138,14 +138,13 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                 </Button>
               </Link>
             </div>
-            <div className="relative w-full overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/20 to-brand-orange/20 rounded-3xl blur-3xl transform scale-105"></div>
+            <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200">
               <Image
                 src={post.image}
                 alt={post.title}
                 width={600}
                 height={500}
-                className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[400px] lg:h-[500px]"
+                className="relative w-full h-[400px] lg:h-[500px] object-contain"
                 priority
               />
             </div>

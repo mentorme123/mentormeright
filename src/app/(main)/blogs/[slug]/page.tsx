@@ -83,7 +83,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             src={post.image}
             alt={post.title}
             fill
-            className="object-cover object-position-center brightness-50"
+            className="object-cover object-center brightness-50"
             priority
           />
         </div>

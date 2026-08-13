@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { blogPosts } from "@/data/blogs";
 import { Button } from "@/components/ui/button";
 import type { ReactElement } from "react";
+import { motion } from "framer-motion";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({
@@ -77,7 +78,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <section className="relative w-full h-[60vh] min-h-[520px]">
+      <section className="relative w-full h-[70vh] min-h-[600px]">
         <div className="absolute inset-0 z-0">
           <Image
             src={post.image}
@@ -86,6 +87,35 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             className="object-cover"
             priority
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+        </div>
+
+        <div className="relative z-30 h-full flex items-end">
+          <div className="w-full container mx-auto px-4 pb-16 md:pb-24 max-w-5xl text-white">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="space-y-4"
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase">
+                {post.category}
+              </div>
+              <h1 className="text-4xl md:text-6xl font-black tracking-tight drop-shadow-2xl leading-tight">
+                {post.title}
+              </h1>
+              <p className="text-lg md:text-xl font-medium text-slate-200 drop-shadow-lg max-w-3xl">
+                {post.excerpt}
+              </p>
+              <div className="pt-4">
+                <Link href="/blogs">
+                  <Button size="lg" className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-2xl px-6 py-5 rounded-full text-base">
+                    <ArrowLeft className="mr-2" /> Back to Blogs
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          </div>
         </div>
 
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">

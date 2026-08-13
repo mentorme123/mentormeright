@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { blogPosts } from "@/data/blogs";
@@ -76,7 +77,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
-      <section className="bg-brand-blue/5 py-12 px-4">
+      <section className="bg-white py-12 px-4">
         <div className="max-w-6xl">
           <div className="flex gap-2 text-sm text-muted-foreground mb-6">
             <Link href="/" className="hover:text-brand-blue">Home</Link>
@@ -90,6 +91,10 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             {post.title}
           </h1>
         </div>
+      </section>
+
+      <section className="relative h-[300px] md:h-[400px] w-full bg-slate-200">
+        <Image src={post.image} alt={post.title} fill className="object-cover" />
       </section>
 
       <section className="py-12 px-4 bg-white">

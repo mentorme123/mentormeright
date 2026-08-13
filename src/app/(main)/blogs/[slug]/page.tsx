@@ -78,12 +78,12 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <section className="relative w-full h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-slate-900">
           <Image
             src={post.image}
             alt={post.title}
             fill
-            className="object-cover brightness-50"
+            className="object-contain brightness-50"
             priority
           />
         </div>

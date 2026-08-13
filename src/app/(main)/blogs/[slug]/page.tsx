@@ -77,38 +77,15 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <section className="relative w-full bg-slate-900">
-        <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            className="object-contain"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
-        </div>
-
-        <div className="relative z-30 -mt-24 container mx-auto px-4 pb-16 md:pb-24 max-w-5xl text-white">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase">
-              {post.category}
-            </div>
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight drop-shadow-2xl leading-tight">
-              {post.title}
-            </h1>
-            <p className="text-lg md:text-xl font-medium text-slate-200 drop-shadow-lg max-w-3xl">
-              {post.excerpt}
-            </p>
-            <div className="pt-4">
-              <Link href="/blogs">
-                <Button size="lg" className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-2xl px-6 py-5 rounded-full text-base">
-                  <ArrowLeft className="mr-2" /> Back to Blogs
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
+      <section className="relative w-full h-[400px] md:h-[500px]">
+        <Image
+          src={post.image}
+          alt={post.title}
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
 
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
           <svg className="relative block w-[calc(133%+1.3px)] h-[40px] md:h-[80px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">

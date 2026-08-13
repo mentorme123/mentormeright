@@ -5,7 +5,6 @@ import { ArrowLeft } from "lucide-react";
 import { blogPosts } from "@/data/blogs";
 import { Button } from "@/components/ui/button";
 import type { ReactElement } from "react";
-import { motion } from "framer-motion";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({
@@ -91,12 +90,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </div>
 
         <div className="relative z-30 -mt-24 container mx-auto px-4 pb-16 md:pb-24 max-w-5xl text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="space-y-4"
-          >
+          <div className="space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase">
               {post.category}
             </div>
@@ -113,7 +107,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                 </Button>
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">

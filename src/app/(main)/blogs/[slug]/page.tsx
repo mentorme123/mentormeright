@@ -107,20 +107,14 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-brand-blue/5 rounded-full blur-3xl -mr-48 -mt-48 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
         <div className="max-w-6xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="hidden lg:block">
-            </div>
-            <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200">
-              <Image
-                src={post.image}
-                alt={post.title}
-                width={600}
-                height={500}
-                className="relative w-full h-[400px] lg:h-[500px] object-contain"
-                priority
-              />
-            </div>
-          </div>
+          <Image
+            src={post.image}
+            alt={post.title}
+            width={1200}
+            height={500}
+            className="w-full h-[400px] lg:h-[500px] object-cover rounded-3xl shadow-2xl"
+            priority
+          />
         </div>
       </section>
 

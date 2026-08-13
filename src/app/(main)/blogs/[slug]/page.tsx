@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -22,7 +24,7 @@ function renderContent(content: string): ReactElement[] {
 
     if (line.startsWith("## ")) {
       elements.push(
-        <h2 key={i} className="text-2xl font-bold text-slate-900 mt-8 mb-4">
+        <h2 key={i} className="text-3xl font-bold text-slate-900 mt-12 mb-6">
           {line.replace("## ", "")}
         </h2>
       );
@@ -34,7 +36,7 @@ function renderContent(content: string): ReactElement[] {
         i++;
       }
       elements.push(
-        <ul key={i} className="list-disc pl-6 mb-6 text-slate-700 space-y-2">
+        <ul key={i} className="list-disc pl-6 mb-8 text-slate-700 space-y-3 text-lg">
           {listItems.map((item, idx) => (
             <li key={idx}>{item}</li>
           ))}
@@ -47,7 +49,7 @@ function renderContent(content: string): ReactElement[] {
         i++;
       }
       elements.push(
-        <ol key={i} className="list-decimal pl-6 mb-6 text-slate-700 space-y-2">
+        <ol key={i} className="list-decimal pl-6 mb-8 text-slate-700 space-y-3 text-lg">
           {listItems.map((item, idx) => (
             <li key={idx}>{item}</li>
           ))}
@@ -57,7 +59,7 @@ function renderContent(content: string): ReactElement[] {
       i++;
     } else {
       elements.push(
-        <p key={i} className="text-slate-700 leading-relaxed mb-6 text-base">
+        <p key={i} className="text-slate-700 leading-relaxed mb-8 text-lg">
           {line}
         </p>
       );
@@ -76,38 +78,60 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
-      <section className="bg-white py-12 px-4">
-        <div className="max-w-6xl">
-          <div className="flex gap-2 text-sm text-muted-foreground mb-6">
-            <Link href="/" className="hover:text-brand-blue">Home</Link>
-            <span>|</span>
-            <Link href="/blogs" className="hover:text-brand-blue">Blogs</Link>
-            <span>|</span>
-            <span>{post.title}</span>
-          </div>
+    <div className="flex flex-col min-h-screen bg-white">
+      <section className="relative w-full h-[50vh] min-h-[420px] flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover brightness-50"
+            priority
+          />
+        </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+        <div className="relative z-30 container mx-auto px-4 text-center max-w-4xl text-white space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase mb-2">
+            <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+            {post.category}
+          </div>
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight drop-shadow-xl leading-tight">
             {post.title}
           </h1>
+          <p className="text-lg md:text-xl font-medium text-slate-200 drop-shadow-lg max-w-2xl mx-auto">
+            {post.excerpt}
+          </p>
+          <div className="pt-6 flex flex-wrap gap-3 justify-center">
+            <Link href="/blogs">
+              <Button size="lg" className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-2xl scale-100 hover:scale-105 transition-all duration-300 text-base px-6 py-5 rounded-full">
+                <ArrowLeft className="mr-2" /> Back to Blogs
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
+          <svg className="relative block w-[calc(133%+1.3px)] h-[40px] md:h-[80px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.22,199.53,108.14Z" className="fill-white"></path>
+          </svg>
         </div>
       </section>
 
-      <section className="relative h-[300px] md:h-[400px] w-full bg-slate-200">
-        <Image src={post.image} alt={post.title} fill className="object-cover" />
+      <section className="container mx-auto px-4 py-12 md:py-16 max-w-4xl">
+        <div className="prose prose-lg max-w-none">
+          {renderContent(post.content)}
+        </div>
       </section>
 
-      <section className="py-12 px-4 bg-white">
-        <div className="max-w-3xl mx-auto">
+      <section className="container mx-auto px-4 pb-16 max-w-4xl">
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 rounded-3xl shadow-xl text-center">
+          <h3 className="text-2xl font-bold mb-4">Ready to explore more?</h3>
+          <p className="text-slate-300 mb-6">Check out our other blogs and resources for career guidance.</p>
           <Link href="/blogs">
-            <Button variant="outline" className="mb-8">
-              <ArrowLeft size={16} className="mr-2" /> Back to Blogs
+            <Button className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-lg px-8 py-5 rounded-full text-base font-bold">
+              Back to Blogs <ArrowLeft className="ml-2" />
             </Button>
           </Link>
-
-          <div className="prose prose-lg max-w-none">
-            {renderContent(post.content)}
-          </div>
         </div>
       </section>
     </div>

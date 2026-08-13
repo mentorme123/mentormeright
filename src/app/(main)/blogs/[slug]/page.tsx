@@ -77,36 +77,15 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <section className="relative w-full h-[60vh] min-h-[520px] flex items-center justify-center">
+      <section className="relative w-full h-[60vh] min-h-[520px]">
         <div className="absolute inset-0 z-0">
           <Image
             src={post.image}
             alt={post.title}
             fill
-            className="object-cover brightness-50"
+            className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/40"></div>
-        </div>
-
-        <div className="relative z-30 w-full container mx-auto px-4 text-center max-w-4xl text-white space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase mb-2">
-            <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-            {post.category}
-          </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight drop-shadow-xl leading-tight">
-            {post.title}
-          </h1>
-          <p className="text-lg md:text-xl font-medium text-slate-200 drop-shadow-lg max-w-2xl mx-auto">
-            {post.excerpt}
-          </p>
-          <div className="pt-6 flex flex-wrap gap-3 justify-center">
-            <Link href="/blogs">
-              <Button size="lg" className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-2xl scale-100 hover:scale-105 transition-all duration-300 text-base px-6 py-5 rounded-full">
-                <ArrowLeft className="mr-2" /> Back to Blogs
-              </Button>
-            </Link>
-          </div>
         </div>
 
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">

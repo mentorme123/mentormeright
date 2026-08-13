@@ -841,9 +841,9 @@ function buildReportDataFromAssessment(input) {
   const topInterestScore = maxPct(riasecList);
 
   const triProfile = {
-    skillProficiency: avgPct(skillsList),
+    skillProficiency: maxPct(skillsList) || avgPct(skillsList),
     passionExploration: topInterestScore > 0 ? topInterestScore : avgPct(riasecList),
-    individualityProfile: avgPct(traitsList)
+    individualityProfile: maxPct(traitsList) || avgPct(traitsList)
   };
 
   const careerMaster = [

@@ -5,6 +5,7 @@ export const blogPosts = [
     excerpt:
       "Discover how career assessment tools can guide you toward a fulfilling and successful career path.",
     date: "2026-08-12",
+    category: "Career Guidance",
     image: "/blogs-images/The Advantages of Using Career Assessment Tools.png",
     content: `
 In the contemporary job market, where the right career path can significantly impact one's overall happiness and productivity, career assessment tools have become invaluable. These tools offer a structured way to evaluate an individual's skills, interests, personality, and values to guide them toward suitable career choices. Whether for students uncertain about their future or professionals considering a career change, career assessment tools provide clarity and direction. This article delves into the advantages of using career assessment tools, highlighting how they can be a game-changer in career planning and development.
@@ -73,6 +74,7 @@ Career assessment tools are powerful resources for anyone looking to make inform
     excerpt:
       "Explore unconventional and rewarding career options in India that go beyond traditional paths.",
     date: "2026-08-11",
+    category: "Career Options",
     image: "/blogs-images/Breaking the Mold Top 10 Offbeat Careers to Pursue in India.png",
     content: `
 In a country as diverse and dynamic as India, the traditional career paths of engineering, medicine, and law have long dominated the professional landscape. However, as the job market evolves and individual aspirations change, a new wave of unconventional careers is emerging. These offbeat career options are not only unique but also offer the potential for personal fulfillment, creative expression, and financial stability. In this article, we'll explore the top 10 offbeat careers in India that are redefining success and challenging the conventional wisdom of what it means to have a rewarding professional life.
@@ -128,6 +130,7 @@ These offbeat careers in India demonstrate that success and satisfaction can be 
     excerpt:
       "Explore the diverse engineering streams in India and learn the pathways to pursue a successful engineering career.",
     date: "2026-08-10",
+    category: "Engineering",
     image: "/blogs-images/Engineering Streams in India and How to Pursue Them.png",
     content: `
 "Education is the most powerful weapon which you can use to change the world." - Nelson Mandela
@@ -197,6 +200,7 @@ Our career guidance platform is a reliable resource for students starting their 
     excerpt:
       "Explore the wide range of career options available to PCM/MPC students after 12th and find the right path for your future.",
     date: "2026-08-12",
+    category: "Career Options",
     image: "/blogs-images/What Are The Career Options in PCMMPC Stream.png",
     content: `
 Choosing a career path and securing a bright and prosperous future has never been more difficult than it is now, with 240+ career options available. Among this vast array of careers, there are a wide range of employment choices available to students who are majoring in Physics, Chemistry, and Mathematics (PCM). While this results in a whole world of opportunities, it is important to understand your options and identify the steps to guide your career in the right direction.

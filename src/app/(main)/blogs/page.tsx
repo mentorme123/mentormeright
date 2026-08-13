@@ -2,45 +2,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { blogPosts } from "@/data/blogs";
-import { ArrowRight, BookOpen, Lightbulb, Settings, GraduationCap } from "lucide-react";
-
-const blogConfig = [
-  {
-    slug: "advantages-of-career-assessment-tools",
-    icon: BookOpen,
-    color: "from-brand-blue to-brand-blue/80",
-  },
-  {
-    slug: "offbeat-careers-in-india",
-    icon: Lightbulb,
-    color: "from-brand-orange to-brand-orange/80",
-  },
-  {
-    slug: "engineering-streams-in-india",
-    icon: Settings,
-    color: "from-emerald-500 to-emerald-600",
-  },
-  {
-    slug: "career-options-pcm-mpc-stream",
-    icon: GraduationCap,
-    color: "from-violet-500 to-violet-600",
-  },
-];
-
-function BlogCardImage({ slug }: { slug: string }) {
-  const config = blogConfig.find((c) => c.slug === slug);
-  const Icon = config?.icon || BookOpen;
-  const colorClass = config?.color || "from-brand-blue to-brand-blue/80";
-
-  return (
-    <div className="p-6 pb-0">
-      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorClass} flex items-center justify-center shadow-lg`}>
-        <Icon size={28} className="text-white" />
-      </div>
-    </div>
-  );
-}
+import { ArrowRight, Calendar } from "lucide-react";
 
 export default function BlogsPage() {
   return (
@@ -68,21 +32,47 @@ export default function BlogsPage() {
 
       <section className="py-16 px-4 bg-slate-50">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {blogPosts.map((post, i) => (
               <motion.div
                 key={post.slug}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all"
+                className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all group"
               >
-                <BlogCardImage slug={post.slug} />
-                <div className="p-6 space-y-4">
-                  <h2 className="text-xl font-bold text-slate-800 leading-snug">{post.title}</h2>
-                  <p className="text-slate-600 text-sm leading-relaxed">{post.excerpt}</p>
-                  <Link href={`/blogs/${post.slug}`} className="inline-flex items-center gap-2 text-brand-blue font-semibold text-sm group">
-                    Read More <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                <Link href={`/blogs/${post.slug}`} className="block">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-200">
+                    <Image
+                      src={post.image}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                </Link>
+                <div className="p-6 space-y-3">
+                  <div className="flex items-center gap-3 text-xs text-slate-500">
+                    <span className="inline-flex items-center gap-1 bg-brand-blue/10 text-brand-blue px-2.5 py-1 rounded-full font-medium">
+                      {post.category}
+                    </span>
+                    <span className="inline-flex items-center gap-1">
+                      <Calendar size={12} />
+                      {post.date}
+                    </span>
+                  </div>
+                  <Link href={`/blogs/${post.slug}`}>
+                    <h2 className="text-lg font-bold text-slate-900 leading-snug group-hover:text-brand-blue transition-colors line-clamp-2">
+                      {post.title}
+                    </h2>
+                  </Link>
+                  <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">{post.excerpt}</p>
+                  <Link
+                    href={`/blogs/${post.slug}`}
+                    className="inline-flex items-center gap-2 text-brand-blue font-semibold text-sm group/link"
+                  >
+                    Read More{" "}
+                    <ArrowRight size={16} className="group-hover/link:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </motion.div>

@@ -77,7 +77,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <section className="relative w-full h-[400px] md:h-[500px]">
+      <section className="relative w-full h-[400px] md:h-[500px] overflow-hidden">
         <Image
           src={post.image}
           alt={post.title}

@@ -103,16 +103,16 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
-      <section className="py-24 px-4 bg-background relative overflow-hidden">
+      <section className="py-24 px-0 bg-background relative overflow-hidden">
         <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-brand-blue/5 rounded-full blur-3xl -mr-48 -mt-48 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
-        <div className="max-w-6xl mx-auto relative z-10">
+        <div className="relative z-10">
           <Image
             src={post.image}
             alt={post.title}
             width={1200}
             height={500}
-            className="w-full h-[400px] lg:h-[500px] object-cover rounded-3xl shadow-2xl"
+            className="w-full h-[400px] lg:h-[500px] object-cover"
             priority
           />
         </div>

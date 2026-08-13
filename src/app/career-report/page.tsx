@@ -63,7 +63,7 @@ export default function CareerReportPage({
   useEffect(() => {
     if (!data || !iframeRef.current) return;
 
-    const handleLoad = () => {
+    const sendData = () => {
       try {
         iframeRef.current?.contentWindow?.postMessage(
           { type: "generateReport", payload: data },
@@ -74,11 +74,13 @@ export default function CareerReportPage({
       }
     };
 
+    sendData();
+
     const iframe = iframeRef.current;
-    iframe.addEventListener("load", handleLoad);
+    iframe.addEventListener("load", sendData);
 
     return () => {
-      iframe.removeEventListener("load", handleLoad);
+      iframe.removeEventListener("load", sendData);
     };
   }, [data]);
 

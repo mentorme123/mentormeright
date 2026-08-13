@@ -49,13 +49,6 @@
 </style>
 </head>
 <body>
-<div class="toolbar no-print">
-<button onclick="loadDemo()">Load Comprehensive Demo</button>
-<button onclick="generateFromBox()">Generate Report</button>
-<button onclick="window.print()">Print / Save PDF</button>
-<button class="secondary" onclick="toggleJSON()">Show / Hide JSON</button>
-</div>
-<textarea id="jsonBox" class="no-print" spellcheck="false"></textarea>
 <div class="app"><div id="report" class="report"></div></div>
 
 <script>
@@ -307,10 +300,10 @@ function renderReport(data) {
   const ip = data.triProfile ? data.triProfile.individualityProfile : 75;
   const pe = data.triProfile ? data.triProfile.passionExploration : 82;
 
-  const cx = 220, cy = 135;
-  const topX = 220, topY = 25;
-  const brX = 325, brY = 195;
-  const blX = 115, blY = 195;
+  const cx = 290, cy = 135;
+  const topX = 290, topY = 28;
+  const brX = 390, brY = 190;
+  const blX = 190, blY = 190;
 
   const spF = sp / 100;
   const ipF = ip / 100;
@@ -336,20 +329,20 @@ function renderReport(data) {
       
       <div class="radar-box">
         <div class="radar-title">Three-Dimension Profile</div>
-        <svg width="440" height="220" viewBox="0 0 440 220" style="max-width:100%;height:auto;">
-          <polygon points="220,25 325,195 115,195" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
-          <polygon points="220,62 295,175 145,175" fill="none" stroke="#e2e8f0" stroke-width="1.2"/>
-          <polygon points="220,98 262,150 178,150" fill="none" stroke="#e2e8f0" stroke-width="1.2"/>
+        <svg width="580" height="230" viewBox="0 0 580 230" style="max-width:100%;height:auto;">
+          <polygon points="290,28 390,190 190,190" fill="none" stroke="#cbd5e1" stroke-width="1.5"/>
+          <polygon points="290,64 356,171 224,171" fill="none" stroke="#e2e8f0" stroke-width="1.2"/>
+          <polygon points="290,99 323,153 257,153" fill="none" stroke="#e2e8f0" stroke-width="1.2"/>
           
-          <line x1="220" y1="135" x2="220" y2="25" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
-          <line x1="220" y1="135" x2="325" y2="195" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
-          <line x1="220" y1="135" x2="115" y2="195" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="290" y1="135" x2="290" y2="28" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="290" y1="135" x2="390" y2="190" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+          <line x1="290" y1="135" x2="190" y2="190" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
 
           <polygon points="${p1x},${p1y} ${p2x},${p2y} ${p3x},${p3y}" fill="rgba(0,166,166,0.25)" stroke="#00a6a6" stroke-width="3"/>
 
-          <text x="220" y="14" font-size="12" font-weight="800" fill="#0d2545" text-anchor="middle">Skill Proficiency (${sp}%)</text>
-          <text x="335" y="202" font-size="12" font-weight="800" fill="#0d2545" text-anchor="start">Passion Exploration (${pe}%)</text>
-          <text x="105" y="202" font-size="12" font-weight="800" fill="#0d2545" text-anchor="end">Individuality Profile (${ip}%)</text>
+          <text x="290" y="16" font-size="12" font-weight="800" fill="#0d2545" text-anchor="middle">Skill Proficiency (${sp}%)</text>
+          <text x="425" y="212" font-size="12" font-weight="800" fill="#0d2545" text-anchor="middle">Passion Exploration (${pe}%)</text>
+          <text x="155" y="212" font-size="12" font-weight="800" fill="#0d2545" text-anchor="middle">Individuality Profile (${ip}%)</text>
         </svg>
       </div>
 
@@ -827,10 +820,12 @@ function buildReportDataFromAssessment(input) {
     if (val === undefined) val = 0;
 
     let pct = 0;
-    if (val <= 5 && val > 0) {
-      pct = Math.round((val / 5) * 100);
-    } else {
-      pct = Math.min(100, Math.max(0, Math.round(val)));
+    if (typeof val === 'number') {
+      if (val <= 5 && val > 0 && Math.round(val) === val) {
+        pct = Math.round((val / 5) * 100);
+      } else {
+        pct = Math.min(100, Math.max(0, Math.round(val)));
+      }
     }
     normalizedPct[p] = pct;
     normalized1to5[p] = Math.max(1, Math.min(5, Math.round((pct / 100) * 5)));
@@ -841,11 +836,14 @@ function buildReportDataFromAssessment(input) {
   const traitsList = ["Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Extraversion"];
 
   const avgPct = (arr) => Math.round(arr.reduce((sum, k) => sum + (normalizedPct[k] || 0), 0) / arr.length);
+  const maxPct = (arr) => Math.max(...arr.map(k => normalizedPct[k] || 0));
+
+  const topInterestScore = maxPct(riasecList);
 
   const triProfile = {
-    skillProficiency: Math.max(50, avgPct(skillsList)),
-    passionExploration: Math.max(50, avgPct(riasecList)),
-    individualityProfile: Math.max(50, avgPct(traitsList))
+    skillProficiency: avgPct(skillsList),
+    passionExploration: topInterestScore > 0 ? topInterestScore : avgPct(riasecList),
+    individualityProfile: avgPct(traitsList)
   };
 
   const careerMaster = [
@@ -1163,7 +1161,8 @@ window.addEventListener("message", function(event) {
   const payload = event.data.payload || event.data;
   if (payload && (payload.scores || payload.student || payload.studentName || payload.top5Careers)) {
     const formattedData = buildReportDataFromAssessment(payload);
-    document.getElementById('jsonBox').value = JSON.stringify(formattedData, null, 2);
+    const box = document.getElementById('jsonBox');
+    if (box) box.value = JSON.stringify(formattedData, null, 2);
     renderReport(formattedData);
   }
 });
@@ -1176,12 +1175,9 @@ window.MentorMeCareerReport = {
 
 window.generateReport = function(data) {
   const formattedData = buildReportDataFromAssessment(data);
-  document.getElementById('jsonBox').value = JSON.stringify(formattedData, null, 2);
+  const box = document.getElementById('jsonBox');
+  if (box) box.value = JSON.stringify(formattedData, null, 2);
   renderReport(formattedData);
-};
-
-window.onload = () => {
-  loadDemo();
 };
 </script>
 </body>

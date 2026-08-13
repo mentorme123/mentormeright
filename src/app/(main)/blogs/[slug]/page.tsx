@@ -77,79 +77,23 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <section className="relative w-full h-[70vh] min-h-[600px] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            className="object-cover object-center brightness-50"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-blue/80 via-brand-blue/60 to-brand-blue/40"></div>
-        </div>
-
-        <div className="relative z-30 container mx-auto px-4 text-center max-w-4xl text-white space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase mb-2">
-            {post.category}
+      <section className="relative w-full bg-brand-blue py-20 px-4 text-white">
+        <div className="max-w-6xl mx-auto">
+          <Link href="/blogs" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm mb-6">
+            <ArrowLeft className="mr-2" /> Back to Blogs
+          </Link>
+          <div className="flex items-center gap-3 text-xs text-white/80 mb-4">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-white/20 text-white font-medium">
+              {post.category}
+            </span>
+            <span>{new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-black tracking-tight drop-shadow-xl leading-tight">
+          <h1 className="text-4xl md:text-5xl font-black leading-tight mb-4">
             {post.title}
           </h1>
-          <p className="text-lg md:text-xl font-medium text-slate-100 drop-shadow-lg max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-3xl">
             {post.excerpt}
           </p>
-          <div className="pt-6 flex flex-wrap gap-3 justify-center">
-            <Link href="/blogs">
-              <Button size="lg" className="bg-white text-brand-blue hover:bg-white/90 border-0 shadow-2xl px-6 py-5 rounded-full text-base font-bold">
-                <ArrowLeft className="mr-2" /> Back to Blogs
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
-          <svg className="relative block w-[calc(133%+1.3px)] h-[40px] md:h-[80px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.22,199.53,108.14Z" className="fill-white"></path>
-          </svg>
-        </div>
-      </section>
-
-      <section className="py-24 px-4 bg-background relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-brand-blue/5 rounded-full blur-3xl -mr-48 -mt-48 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-brand-orange/5 rounded-full blur-3xl -ml-32 -mb-32 pointer-events-none" />
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-6">
-              <div className="flex items-center gap-3 text-xs text-slate-500">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-brand-blue/10 text-brand-blue font-medium">
-                  {post.category}
-                </span>
-                <span>{new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
-                {post.title}
-              </h1>
-              <p className="text-lg text-slate-600 leading-relaxed">
-                {post.excerpt}
-              </p>
-              <Link href="/blogs">
-                <Button className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-lg px-8 py-5 rounded-full text-base font-bold">
-                  <ArrowLeft className="mr-2" /> Back to Blogs
-                </Button>
-              </Link>
-            </div>
-            <div className="relative w-full overflow-hidden rounded-3xl bg-gradient-to-br from-slate-100 to-slate-200">
-              <Image
-                src={post.image}
-                alt={post.title}
-                width={600}
-                height={500}
-                className="relative w-full h-[400px] lg:h-[500px] object-contain"
-                priority
-              />
-            </div>
-          </div>
         </div>
       </section>
 

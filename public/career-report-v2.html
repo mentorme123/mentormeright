@@ -1045,10 +1045,11 @@ function buildReportDataFromAssessment(input) {
     let weightedScoreSum = 0;
     Object.entries(c.weights).forEach(([param, weight]) => {
       sumWeight += weight;
-      weightedScoreSum += (normalizedPct[param] || 70) * weight;
+      const paramScore = normalizedPct[param] !== undefined ? normalizedPct[param] : 50;
+      weightedScoreSum += paramScore * weight;
     });
-    const rawScore = sumWeight > 0 ? weightedScoreSum / sumWeight : 75;
-    const finalScore = Math.min(96, Math.max(75, Math.round(rawScore)));
+    const rawScore = sumWeight > 0 ? weightedScoreSum / sumWeight : 65;
+    const finalScore = Math.min(96, Math.max(60, Math.round(rawScore)));
     
     const sortedParams = Object.keys(c.weights).sort((a, b) => (normalizedPct[b] || 0) - (normalizedPct[a] || 0));
     const topP1 = sortedParams[0] || "Logical";
@@ -1071,11 +1072,30 @@ function buildReportDataFromAssessment(input) {
   rankedCareers.sort((a, b) => b.score - a.score);
 
   const top5Careers = input.top5Careers && input.top5Careers.length > 0 ? input.top5Careers : rankedCareers.slice(0, 5);
-  const goodFitCareers = input.goodFitCareers && input.goodFitCareers.length > 0 ? input.goodFitCareers : rankedCareers.slice(5, 10).map(c => ({
-    title: c.title,
-    cluster: c.cluster,
-    score: c.score
-  }));
+  
+  let goodFitCareers;
+  if (input.goodFitCareers && input.goodFitCareers.length > 0) {
+    goodFitCareers = input.goodFitCareers;
+  } else {
+    const rawGoodFit = rankedCareers.slice(5, 10);
+    const lastTop5Score = top5Careers[4]?.score || 80;
+    goodFitCareers = rawGoodFit.map((c, idx) => {
+      let score = c.score;
+      if (score >= lastTop5Score) {
+        score = Math.max(65, lastTop5Score - (idx + 1) * 2);
+      }
+      return {
+        title: c.title,
+        cluster: c.cluster,
+        score: score
+      };
+    });
+    for (let i = 0; i < goodFitCareers.length; i++) {
+      if (i > 0 && goodFitCareers[i].score >= goodFitCareers[i - 1].score) {
+        goodFitCareers[i].score = Math.max(60, goodFitCareers[i - 1].score - 2);
+      }
+    }
+  }
 
   const sortedAllParams = [...allParams].sort((a, b) => normalizedPct[b] - normalizedPct[a]);
   const top3Params = sortedAllParams.slice(0, 3);
@@ -1123,23 +1143,31 @@ function buildReportDataFromAssessment(input) {
 
   const developmentPriorities = input.developmentPriorities || lowest4Params.map(p => devMeta[p] || devMeta.Conventional);
 
-  const actionPlan = input.actionPlan || {
-    certifications: [
-      `Certifications in ${top5Careers[0]?.title || "Data Analytics"}`,
-      `Foundations in ${top5Careers[1]?.title || "Management"}`,
-      "Domain Skill Building & Practical Tools"
-    ],
-    competitions: [
-      "School & National Olympiads",
-      "Hackathons & Innovation Challenges",
-      "Case Study & Project Competitions"
-    ],
-    parentGuidance: [
-      `Encourage focus on subjects aligned with ${top5Careers[0]?.title || "chosen pathway"} during Grade 11 stream selection.`,
-      "Support structured preparation for relevant national entrance examinations.",
-      "Facilitate exposure to real-world skill-building programs and practical projects."
-    ]
-  };
+  let actionPlan = input.actionPlan;
+  if (!actionPlan) {
+    actionPlan = {
+      certifications: [
+        `Certifications in ${top5Careers[0]?.title || "Data Analytics"}`,
+        `Foundations in ${top5Careers[1]?.title || "Management"}`,
+        "Domain Skill Building & Practical Tools"
+      ],
+      competitions: [
+        "School & National Olympiads",
+        "Hackathons & Innovation Challenges",
+        "Case Study & Project Competitions"
+      ],
+      parentGuidance: [
+        `Encourage focus on subjects aligned with ${top5Careers[0]?.title || "chosen pathway"} during Grade 11 stream selection.`,
+        "Support structured preparation for relevant national entrance examinations.",
+        "Facilitate exposure to real-world skill-building programs and practical projects."
+      ]
+    };
+  } else if (actionPlan.parentGuidance) {
+    actionPlan = {
+      ...actionPlan,
+      parentGuidance: actionPlan.parentGuidance.map(g => g.replace("Data Scientist", top5Careers[0]?.title || "chosen pathway"))
+    };
+  }
 
   return {
     studentName,

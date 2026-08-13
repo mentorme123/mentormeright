@@ -77,41 +77,41 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <section className="relative w-full bg-brand-blue py-20 px-4 text-white">
-        <div className="max-w-6xl mx-auto">
-          <Link href="/blogs" className="inline-flex items-center gap-2 text-white/80 hover:text-white text-sm mb-6">
-            <ArrowLeft className="mr-2" /> Back to Blogs
-          </Link>
-          <div className="flex items-center gap-3 text-xs text-white/80 mb-4">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full bg-white/20 text-white font-medium">
-              {post.category}
-            </span>
-            <span>{new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</span>
+      <section className="relative w-full flex items-center justify-center overflow-hidden">
+        <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover object-center"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
+        </div>
+
+        <div className="relative z-30 container mx-auto px-4 text-center max-w-4xl text-white space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-sm font-semibold tracking-wide uppercase mb-2">
+            {post.category}
           </div>
-          <h1 className="text-4xl md:text-5xl font-black leading-tight mb-4">
+          <h1 className="text-4xl md:text-6xl font-black tracking-tight drop-shadow-xl leading-tight">
             {post.title}
           </h1>
-          <p className="text-lg md:text-xl text-white/90 leading-relaxed max-w-3xl">
+          <p className="text-lg md:text-xl font-medium text-slate-200 drop-shadow-lg max-w-2xl mx-auto">
             {post.excerpt}
           </p>
+          <div className="pt-6 flex flex-wrap gap-3 justify-center">
+            <Link href="/blogs">
+              <Button size="lg" className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-2xl scale-100 hover:scale-105 transition-all duration-300 text-base px-6 py-5 rounded-full">
+                <ArrowLeft className="mr-2" /> Back to Blogs
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
           <svg className="relative block w-[calc(133%+1.3px)] h-[40px] md:h-[80px]" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
             <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,119.22,199.53,108.14Z" className="fill-white"></path>
           </svg>
-        </div>
-      </section>
-
-      <section className="relative w-full bg-slate-900">
-        <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
-          <Image
-            src={post.image}
-            alt={post.title}
-            fill
-            className="object-contain"
-            priority
-          />
         </div>
       </section>
 

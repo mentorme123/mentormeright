@@ -316,6 +316,14 @@ function renderReport(data) {
   const p3x = cx + (blX - cx) * ipF;
   const p3y = cy + (blY - cy) * ipF;
 
+  const getScorePct = (p) => {
+    if (data.pctScores && data.pctScores[p] !== undefined) return data.pctScores[p];
+    const alias = p === "Extraversion" ? "Efficiency" : (p === "Efficiency" ? "Extraversion" : null);
+    if (alias && data.pctScores && data.pctScores[alias] !== undefined) return data.pctScores[alias];
+    if (data.scores && data.scores[p] !== undefined) return Math.round(((data.scores[p] || 0) / 5) * 100);
+    return 0;
+  };
+
   html += `
   <div class="page">
     <div class="page-head">
@@ -351,9 +359,9 @@ function renderReport(data) {
           <h3 style="margin:0 0 6px; font-size:13px; color:var(--navy);">Aptitude & Skills</h3>
           ${['Administrative', 'Numerical', 'Logical', 'Mechanical', 'Verbal'].map(p => `
             <div class="profile-row">
-              <div class="head"><span>${p}</span><span>${data.scores[p] || 0}/5</span></div>
+              <div class="head"><span>${p}</span><span>${getScorePct(p)}%</span></div>
               <div class="param-desc">${parameterDefinitions[p]}</div>
-              <div class="bar"><i style="width:${((data.scores[p]||0)/5)*100}%"></i></div>
+              <div class="bar"><i style="width:${getScorePct(p)}%"></i></div>
             </div>
           `).join('')}
         </div>
@@ -362,9 +370,9 @@ function renderReport(data) {
           <h3 style="margin:0 0 6px; font-size:13px; color:var(--navy);">Career Interests (RIASEC)</h3>
           ${['Realistic', 'Investigative', 'Artistic', 'Social', 'Enterprising', 'Conventional'].map(p => `
             <div class="profile-row">
-              <div class="head"><span>${p}</span><span>${data.scores[p] || 0}/5</span></div>
+              <div class="head"><span>${p}</span><span>${getScorePct(p)}%</span></div>
               <div class="param-desc">${parameterDefinitions[p]}</div>
-              <div class="bar"><i style="width:${((data.scores[p]||0)/5)*100}%"></i></div>
+              <div class="bar"><i style="width:${getScorePct(p)}%"></i></div>
             </div>
           `).join('')}
         </div>
@@ -373,9 +381,9 @@ function renderReport(data) {
           <h3 style="margin:0 0 6px; font-size:13px; color:var(--navy);">Work-Style & Traits</h3>
           ${['Empathy', 'Emotional Intelligence', 'Engagement', 'Exploration', 'Extraversion'].map(p => `
             <div class="profile-row">
-              <div class="head"><span>${p}</span><span>${data.scores[p] || 0}/5</span></div>
+              <div class="head"><span>${p}</span><span>${getScorePct(p)}%</span></div>
               <div class="param-desc">${parameterDefinitions[p]}</div>
-              <div class="bar"><i style="width:${((data.scores[p]||0)/5)*100}%"></i></div>
+              <div class="bar"><i style="width:${getScorePct(p)}%"></i></div>
             </div>
           `).join('')}
         </div>
@@ -1199,6 +1207,7 @@ function buildReportDataFromAssessment(input) {
     schoolName,
     testDate,
     scores: normalized1to5,
+    pctScores: normalizedPct,
     triProfile,
     executiveSummary,
     developmentPriorities,

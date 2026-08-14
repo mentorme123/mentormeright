@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
 interface V4Data {
   student: {
@@ -14,12 +15,9 @@ interface V4Data {
   scores: Record<string, number>;
 }
 
-export default function CareerReportPage({
-  searchParams,
-}: {
-  searchParams: { userId?: string };
-}) {
-  const userId = searchParams?.userId;
+function CareerReportContent() {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
   const [data, setData] = useState<V4Data | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -119,6 +117,23 @@ export default function CareerReportPage({
         style={{ height: "100vh" }}
       />
     </div>
+  );
+}
+
+export default function CareerReportPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center min-h-screen bg-slate-50">
+          <div className="text-center">
+            <div className="w-12 h-12 border-4 border-brand-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-slate-600 font-medium">Loading career report...</p>
+          </div>
+        </div>
+      }
+    >
+      <CareerReportContent />
+    </Suspense>
   );
 }
 

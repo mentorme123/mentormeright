@@ -1,18 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Printer } from "lucide-react";
 
 import ReportClient from "./client";
 import { createClient } from "@/lib/supabase";
 
-export default function AssessmentReportPage({
-  searchParams,
-}: {
-  searchParams: { userId?: string };
-}) {
-  const userId = searchParams?.userId;
+function AssessmentReportContent() {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
   const [loading, setLoading] = useState(true);
   const [authUserId, setAuthUserId] = useState<string | null>(null);
 
@@ -81,3 +79,21 @@ export default function AssessmentReportPage({
     </div>
   );
 }
+
+export default function AssessmentReportPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#f0f7ff] flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-12 h-12 border-4 border-brand-blue border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-slate-600 font-medium">Loading assessment report...</p>
+          </div>
+        </div>
+      }
+    >
+      <AssessmentReportContent />
+    </Suspense>
+  );
+}
+

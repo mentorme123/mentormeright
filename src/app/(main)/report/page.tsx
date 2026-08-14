@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Printer, Home, Crown, IndianRupee } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -10,8 +11,9 @@ import CareerDashboard from "@/app/dashboard/student/career-dashboard";
 import { createClient } from "@/lib/supabase";
 import { B2CPaymentModal } from "@/components/b2c-payment-modal";
 
-export default function ReportPage({ searchParams }: { searchParams: { userId?: string } }) {
-  const userId = searchParams?.userId;
+function ReportContent() {
+  const searchParams = useSearchParams();
+  const userId = searchParams.get("userId");
   const [loading, setLoading] = useState(true);
   const [authUserId, setAuthUserId] = useState<string | null>(null);
   const [hasPaid, setHasPaid] = useState(false);
@@ -190,3 +192,21 @@ export default function ReportPage({ searchParams }: { searchParams: { userId?: 
     </div>
   );
 }
+
+export default function ReportPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex-1 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] p-4 text-center bg-background">
+          <div className="relative w-48 h-16 mb-6 animate-pulse">
+            <Image src="/logo.png" alt="MentorMe" fill className="object-contain" />
+          </div>
+          <h2 className="text-2xl font-bold text-foreground">Loading Career Dashboard...</h2>
+        </div>
+      }
+    >
+      <ReportContent />
+    </Suspense>
+  );
+}
+

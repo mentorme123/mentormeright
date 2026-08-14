@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ParameterScores } from "@/lib/scoring";
@@ -384,24 +383,8 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     <div className="min-h-screen bg-white py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="bg-[#0f2460] text-white rounded-2xl p-3 sm:p-5 mb-6 shadow-xl">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+          <div className="flex justify-between items-center">
             <div className="font-bold text-xs sm:text-sm">MentorMe | Career Intelligence Partner for Schools</div>
-            {userId && (
-              <div className="flex items-center gap-2">
-                <Link 
-                  href={`/assessment-report?userId=${encodeURIComponent(userId)}`}
-                  className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all border border-white/20"
-                >
-                  Assessment Report
-                </Link>
-                <Link 
-                  href={`/career-report?userId=${encodeURIComponent(userId)}`}
-                  className="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all shadow-sm"
-                >
-                  Full Career Report
-                </Link>
-              </div>
-            )}
           </div>
           <div className="text-center mt-3">
             <h1 className="text-2xl sm:text-3xl font-black mb-1">

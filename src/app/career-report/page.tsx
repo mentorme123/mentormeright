@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -109,23 +108,7 @@ function CareerReportContent() {
   }
 
   return (
-    <div className="relative min-h-screen bg-[#eef2f6]">
-      {userId && (
-        <div className="fixed top-3 right-4 z-[999] flex items-center gap-2 print:hidden">
-          <Link
-            href={`/report?userId=${encodeURIComponent(userId)}`}
-            className="bg-[#0f2460] hover:bg-blue-900 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg transition-all border border-blue-300/30"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href={`/assessment-report?userId=${encodeURIComponent(userId)}`}
-            className="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg transition-all border border-slate-700"
-          >
-            Assessment Report
-          </Link>
-        </div>
-      )}
+    <div className="min-h-screen bg-[#eef2f6]">
       <iframe
         ref={iframeRef}
         src="/career-report-v2.html"

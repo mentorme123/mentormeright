@@ -197,12 +197,6 @@ const PARAM_MAX_MAP: Record<string, number> = {
               <LayoutDashboard size={14} />
               <span>Student Dashboard</span>
             </Link>
-            <Link 
-              href={`/career-report?userId=${encodeURIComponent(userId)}`}
-              className="inline-flex items-center gap-1.5 bg-amber-600 border border-amber-200 text-white hover:bg-amber-700 font-bold px-3 py-2.5 rounded-xl transition-all text-xs whitespace-nowrap shadow-sm"
-            >
-              <span>Full Career Report</span>
-            </Link>
             <div className="bg-[#0f2460] rounded-xl px-3 py-2.5 min-w-[70px] border border-blue-200 text-center text-white">
               <div className="text-xl font-black">{overall}%</div>
               <div className="text-[9px] text-blue-200 mt-0.5 font-semibold uppercase tracking-wider">Overall</div>

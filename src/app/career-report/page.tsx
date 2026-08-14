@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -108,7 +109,23 @@ function CareerReportContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#eef2f6]">
+    <div className="relative min-h-screen bg-[#eef2f6]">
+      {userId && (
+        <div className="fixed top-3 right-4 z-[999] flex items-center gap-2 print:hidden">
+          <Link
+            href={`/report?userId=${encodeURIComponent(userId)}`}
+            className="bg-[#0f2460] hover:bg-blue-900 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg transition-all border border-blue-300/30"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href={`/assessment-report?userId=${encodeURIComponent(userId)}`}
+            className="bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-lg transition-all border border-slate-700"
+          >
+            Assessment Report
+          </Link>
+        </div>
+      )}
       <iframe
         ref={iframeRef}
         src="/career-report-v2.html"
@@ -225,6 +242,7 @@ function normalizeScoresForV4(
     Enterprising: 5,
     Conventional: 5,
     "Emotional Intelligence": 6,
+    EmotionalIntelligence: 6,
     Efficiency: 6,
     Empathy: 6,
     Engagement: 6,
@@ -237,16 +255,19 @@ function normalizeScoresForV4(
   };
 
   Object.entries(flatScores).forEach(([key, value]) => {
+    const fallbackMax = hardcodedMaxMap[key] || hardcodedMaxMap[key.replace(/ /g, "_")] || hardcodedMaxMap[key.replace(/_/g, " ")] || 100;
     const dbMax = flatMax[key];
-    const fallbackMax = hardcodedMaxMap[key] || hardcodedMaxMap[key.replace(/ /g, "_")] || 100;
-    const max = dbMax || fallbackMax;
+    const max = (dbMax && dbMax !== 100) ? dbMax : fallbackMax;
     const pct = Math.round((value / max) * 100);
     console.log(`[CareerReport] ${key}: raw=${value}, max=${max}, pct=${pct}%`);
     result[key] = pct;
   });
 
-  if (result.Efficiency !== undefined) {
+  if (result.Efficiency !== undefined && result.Extraversion === undefined) {
     result.Extraversion = result.Efficiency;
+  }
+  if (result.EmotionalIntelligence !== undefined && result["Emotional Intelligence"] === undefined) {
+    result["Emotional Intelligence"] = result.EmotionalIntelligence;
   }
 
   const v4Params = [

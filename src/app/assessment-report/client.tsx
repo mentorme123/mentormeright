@@ -92,18 +92,30 @@ export default function ReportClient({ userId }: { userId: string }) {
     fetchData();
   }, [userId]);
 
+const PARAM_MAX_MAP: Record<string, number> = {
+  Realistic: 5, Investigative: 5, Artistic: 5, Social: 5, Enterprising: 5, Conventional: 5,
+  "Emotional Intelligence": 6, EmotionalIntelligence: 6, Efficiency: 6, Empathy: 6, Engagement: 6, Exploration: 6,
+  Logical: 24, Numerical: 24, Mechanical: 24, Verbal: 24, Administrative: 24,
+};
+
   const getPct = (sec: keyof Scores, param: string) => {
     if (!scores) return 0;
     const d = scores[sec]?.[param];
     if (!d) return 0;
-    return Math.round((d.score / Math.max(d.max, 0.01)) * 100);
+    const fallbackMax = PARAM_MAX_MAP[param] || 100;
+    const max = (d.max && d.max !== 100) ? d.max : fallbackMax;
+    return Math.round((d.score / Math.max(max, 0.01)) * 100);
   };
 
   const calcOverall = () => {
     if (!scores) return 0;
     let tot = 0, mx = 0;
-    (Object.values(scores) as Record<string, ScoreParam>[]).forEach(sec => {
-      Object.values(sec).forEach((p: ScoreParam) => { tot += p.score; mx += p.max; });
+    (Object.entries(scores) as [string, Record<string, ScoreParam>][]).forEach(([secName, sec]) => {
+      Object.entries(sec).forEach(([pName, p]: [string, ScoreParam]) => {
+        tot += p.score;
+        const fallbackMax = PARAM_MAX_MAP[pName] || 100;
+        mx += (p.max && p.max !== 100) ? p.max : fallbackMax;
+      });
     });
     return Math.round((tot / Math.max(mx, 0.01)) * 100);
   };
@@ -113,7 +125,9 @@ export default function ReportClient({ userId }: { userId: string }) {
     const ps = scores.passion || {};
     let top = "Social", topV = -1;
     Object.entries(ps).forEach(([p, d]: [string, ScoreParam]) => {
-      const v = (d.score / Math.max(d.max, 0.01)) * 100;
+      const fallbackMax = PARAM_MAX_MAP[p] || 5;
+      const max = (d.max && d.max !== 100) ? d.max : fallbackMax;
+      const v = (d.score / Math.max(max, 0.01)) * 100;
       if (v > topV) { topV = v; top = p; }
     });
     return top;
@@ -181,7 +195,13 @@ export default function ReportClient({ userId }: { userId: string }) {
               className="inline-flex items-center gap-1.5 bg-[#0f2460] border border-blue-200 text-white hover:bg-blue-800 font-bold px-3 py-2.5 rounded-xl transition-all text-xs whitespace-nowrap shadow-sm"
             >
               <LayoutDashboard size={14} />
-              <span>Student Career Dashboard</span>
+              <span>Student Dashboard</span>
+            </Link>
+            <Link 
+              href={`/career-report?userId=${encodeURIComponent(userId)}`}
+              className="inline-flex items-center gap-1.5 bg-amber-600 border border-amber-200 text-white hover:bg-amber-700 font-bold px-3 py-2.5 rounded-xl transition-all text-xs whitespace-nowrap shadow-sm"
+            >
+              <span>Full Career Report</span>
             </Link>
             <div className="bg-[#0f2460] rounded-xl px-3 py-2.5 min-w-[70px] border border-blue-200 text-center text-white">
               <div className="text-xl font-black">{overall}%</div>

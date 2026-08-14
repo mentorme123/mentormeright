@@ -815,19 +815,42 @@ function buildReportDataFromAssessment(input) {
     "Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Extraversion"
   ];
 
+  const paramMaxMap = {
+    Administrative: 24, Numerical: 24, Logical: 24, Mechanical: 24, Verbal: 24,
+    Realistic: 5, Investigative: 5, Artistic: 5, Social: 5, Enterprising: 5, Conventional: 5,
+    Empathy: 6, "Emotional Intelligence": 6, EmotionalIntelligence: 6, Engagement: 6, Exploration: 6, Extraversion: 6, Efficiency: 6
+  };
+
   const getRawVal = (p) => {
     const kUnderscore = p.replace(/ /g, "_");
+    const kNoSpace = p.replace(/ /g, "");
+    const alias = p === "Extraversion" ? "Efficiency" : (p === "Efficiency" ? "Extraversion" : null);
+    const aliasUnderscore = alias ? alias.replace(/ /g, "_") : null;
+    const aliasNoSpace = alias ? alias.replace(/ /g, "") : null;
+
     const sources = [
       rawScores[p],
       rawScores[kUnderscore],
+      rawScores[kNoSpace],
       rawScores.skills?.[p],
       rawScores.skills?.[kUnderscore],
+      rawScores.skills?.[kNoSpace],
       rawScores.passion?.[p],
       rawScores.passion?.[kUnderscore],
+      rawScores.passion?.[kNoSpace],
       rawScores.individuality?.[p],
       rawScores.individuality?.[kUnderscore],
+      rawScores.individuality?.[kNoSpace],
       input[p],
-      input[kUnderscore]
+      input[kUnderscore],
+      input[kNoSpace],
+      alias ? rawScores[alias] : undefined,
+      aliasUnderscore ? rawScores[aliasUnderscore] : undefined,
+      aliasNoSpace ? rawScores[aliasNoSpace] : undefined,
+      alias ? rawScores.individuality?.[alias] : undefined,
+      aliasUnderscore ? rawScores.individuality?.[aliasUnderscore] : undefined,
+      aliasNoSpace ? rawScores.individuality?.[aliasNoSpace] : undefined,
+      alias ? input[alias] : undefined
     ];
     for (const src of sources) {
       if (src !== undefined && src !== null) return src;
@@ -838,12 +861,13 @@ function buildReportDataFromAssessment(input) {
   allParams.forEach(p => {
     let raw = getRawVal(p);
     let pct = 0;
+    const maxVal = paramMaxMap[p] || 5;
     if (typeof raw === 'object' && raw !== null && raw.score !== undefined) {
-      const maxVal = raw.max || 5;
-      pct = Math.round((raw.score / maxVal) * 100);
+      const actualMax = raw.max || maxVal;
+      pct = Math.round((raw.score / actualMax) * 100);
     } else if (typeof raw === 'number') {
-      if (raw <= 5 && raw > 0) {
-        pct = Math.round((raw / 5) * 100);
+      if (raw <= maxVal && raw > 0 && maxVal !== 100) {
+        pct = Math.round((raw / maxVal) * 100);
       } else {
         pct = Math.min(100, Math.max(0, Math.round(raw)));
       }

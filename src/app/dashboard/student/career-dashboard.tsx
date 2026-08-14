@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { ParameterScores } from "@/lib/scoring";
@@ -22,6 +23,14 @@ interface DashboardScores extends ParameterScores {
 const MAX_RIASEC = 5;
 const MAX_INDIVIDUALITY = 6;
 const MAX_SKILL = 24;
+
+const PARAM_MAX_MAP: Record<string, number> = {
+  Realistic: 5, Investigative: 5, Artistic: 5, Social: 5, Enterprising: 5, Conventional: 5,
+  EmotionalIntelligence: 6, Efficiency: 6, Empathy: 6, Engagement: 6, Exploration: 6,
+  Logical: 24, Numerical: 24, Mechanical: 24, Verbal: 24, Administrative: 24,
+};
+
+const getParamMax = (key: string): number => PARAM_MAX_MAP[key] || 24;
 
 const pct = (score: number, max: number) => Math.round((score / Math.max(max, 0.01)) * 100);
 
@@ -60,7 +69,7 @@ const getCareerMatches = (scores: DashboardScores) => {
   return careers
     .map(career => {
       const score = career.keys.reduce((sum, key) => sum + (scores[key] || 0), 0);
-      const maxScore = career.keys.length * MAX_RIASEC;
+      const maxScore = career.keys.reduce((sum, key) => sum + getParamMax(key), 0);
       return { name: career.name, color: career.color, pct: pct(score, maxScore) };
     })
     .sort((a, b) => b.pct - a.pct);
@@ -76,7 +85,7 @@ const getSubjectReadiness = (scores: DashboardScores) => {
 
   return subjects.map(subject => {
     const score = subject.keys.reduce((sum, key, i) => sum + (scores[key] || 0) * subject.weights[i], 0);
-    const maxPossible = subject.keys.reduce((sum, _, i) => sum + MAX_SKILL * subject.weights[i], 0);
+    const maxPossible = subject.keys.reduce((sum, key, i) => sum + getParamMax(key) * subject.weights[i], 0);
     return { name: subject.name, color: subject.color, pct: pct(score, maxPossible) };
   });
 };
@@ -108,7 +117,7 @@ const getAcademicFitness = (scores: DashboardScores, selectedSubjects: string[] 
 
   return subjects.map(subject => {
     const score = subject.keys.reduce((sum, key) => sum + (scores[key] || 0), 0);
-    const maxPossible = subject.keys.length * MAX_SKILL;
+    const maxPossible = subject.keys.reduce((sum, key) => sum + getParamMax(key), 0);
     return { name: subject.name, color: "#1B3A6B", pct: pct(score, maxPossible) };
   });
 };
@@ -125,7 +134,7 @@ const getCareerPathReadiness = (scores: DashboardScores) => {
   return paths
     .map(path => {
       const score = path.keys.reduce((sum, key) => sum + (scores[key] || 0), 0);
-      const maxPossible = path.keys.length * MAX_RIASEC;
+      const maxPossible = path.keys.reduce((sum, key) => sum + getParamMax(key), 0);
       return { name: path.name, color: path.color, pct: pct(score, maxPossible) };
     })
     .sort((a, b) => b.pct - a.pct);
@@ -166,9 +175,15 @@ const getTopSkills = (scores: DashboardScores) => {
 };
 
 const getOverallScore = (scores: DashboardScores) => {
-  const allScores = Object.values(scores);
-  const totalScore = allScores.reduce((sum, s) => sum + s, 0);
-  const maxTotal = 6 * MAX_RIASEC + 5 * MAX_SKILL + 5 * MAX_INDIVIDUALITY;
+  let totalScore = 0;
+  let maxTotal = 0;
+  Object.entries(PARAM_MAX_MAP).forEach(([key, max]) => {
+    if (scores[key] !== undefined) {
+      totalScore += scores[key];
+      maxTotal += max;
+    }
+  });
+  if (maxTotal === 0) return 0;
   return pct(totalScore, maxTotal);
 };
 
@@ -176,7 +191,8 @@ const getCareerReadinessScore = (scores: DashboardScores) => {
   const topRIASEC = getTopRIASEC(scores);
   const topSkill = getTopSkills(scores)[0];
   const combined = (scores[topRIASEC.key] || 0) + (topSkill?.score || 0);
-  return pct(combined, MAX_RIASEC + MAX_SKILL);
+  const maxCombined = getParamMax(topRIASEC.key) + (topSkill ? getParamMax(topSkill.key) : 24);
+  return pct(combined, maxCombined);
 };
 
 export default function CareerDashboard({ userId }: { userId: string }) {
@@ -368,8 +384,24 @@ export default function CareerDashboard({ userId }: { userId: string }) {
     <div className="min-h-screen bg-white py-8 px-4">
       <div className="max-w-6xl mx-auto">
         <div className="bg-[#0f2460] text-white rounded-2xl p-3 sm:p-5 mb-6 shadow-xl">
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
             <div className="font-bold text-xs sm:text-sm">MentorMe | Career Intelligence Partner for Schools</div>
+            {userId && (
+              <div className="flex items-center gap-2">
+                <Link 
+                  href={`/assessment-report?userId=${encodeURIComponent(userId)}`}
+                  className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all border border-white/20"
+                >
+                  Assessment Report
+                </Link>
+                <Link 
+                  href={`/career-report?userId=${encodeURIComponent(userId)}`}
+                  className="bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition-all shadow-sm"
+                >
+                  Full Career Report
+                </Link>
+              </div>
+            )}
           </div>
           <div className="text-center mt-3">
             <h1 className="text-2xl sm:text-3xl font-black mb-1">

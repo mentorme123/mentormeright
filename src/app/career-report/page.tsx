@@ -176,28 +176,63 @@ function normalizeScoresForV4(
   let flatScores: Record<string, number> = {};
   let flatMax: Record<string, number> = {};
 
+  const canonicalKeyMap: Record<string, string> = {
+    administrative: "Administrative",
+    numerical: "Numerical",
+    logical: "Logical",
+    mechanical: "Mechanical",
+    verbal: "Verbal",
+    realistic: "Realistic",
+    investigative: "Investigative",
+    artistic: "Artistic",
+    social: "Social",
+    enterprising: "Enterprising",
+    conventional: "Conventional",
+    empathy: "Empathy",
+    emotionalintelligence: "Emotional Intelligence",
+    emotional_intelligence: "Emotional Intelligence",
+    "emotional intelligence": "Emotional Intelligence",
+    ei: "Emotional Intelligence",
+    engagement: "Engagement",
+    exploration: "Exploration",
+    extraversion: "Efficiency",
+    efficiency: "Efficiency",
+  };
+
+  const getCanonicalKey = (k: string): string => {
+    const clean = k.toLowerCase().replace(/[\s_]+/g, "");
+    return canonicalKeyMap[clean] || canonicalKeyMap[k.toLowerCase()] || k;
+  };
+
   if (
     typeof scores.passion === "object" ||
+    typeof scores.riasec === "object" ||
     typeof scores.skills === "object" ||
     typeof scores.individuality === "object"
   ) {
-    ["passion", "skills", "individuality"].forEach((cat) => {
+    ["passion", "riasec", "skills", "individuality"].forEach((cat) => {
       const category = scores[cat];
       if (category && typeof category === "object") {
         Object.entries(category).forEach(([key, val]: [string, any]) => {
+          const canonical = getCanonicalKey(key);
           if (typeof val === "object" && val !== null) {
-            flatScores[key] = typeof val.score === "number" ? val.score : 0;
-            flatMax[key] = typeof val.max === "number" ? val.max : 100;
+            flatScores[canonical] = typeof val.score === "number" ? val.score : 0;
+            flatMax[canonical] = typeof val.max === "number" ? val.max : 100;
           } else if (typeof val === "number") {
-            flatScores[key] = val;
-            flatMax[key] = 100;
+            flatScores[canonical] = val;
+            flatMax[canonical] = 100;
           }
         });
       }
     });
-  } else if (typeof scores.Realistic === "number") {
-    flatScores = { ...scores };
-    Object.keys(flatScores).forEach(k => { flatMax[k] = 100; });
+  } else if (typeof scores.Realistic === "number" || typeof scores.conventional === "number") {
+    Object.entries(scores).forEach(([k, v]) => {
+      const canonical = getCanonicalKey(k);
+      if (typeof v === "number") {
+        flatScores[canonical] = v;
+        flatMax[canonical] = 100;
+      }
+    });
   } else {
     const walk = (obj: any) => {
       if (!obj || typeof obj !== "object") return;
@@ -209,8 +244,9 @@ function normalizeScoresForV4(
         ) {
           walk(v);
         } else if (typeof v === "number") {
-          flatScores[k] = v;
-          flatMax[k] = flatMax[k] || 100;
+          const canonical = getCanonicalKey(k);
+          flatScores[canonical] = v;
+          flatMax[canonical] = flatMax[canonical] || 100;
         }
       });
     };
@@ -227,6 +263,7 @@ function normalizeScoresForV4(
     "Emotional Intelligence": 6,
     EmotionalIntelligence: 6,
     Efficiency: 6,
+    Extraversion: 6,
     Empathy: 6,
     Engagement: 6,
     Exploration: 6,
@@ -241,7 +278,14 @@ function normalizeScoresForV4(
     const fallbackMax = hardcodedMaxMap[key] || hardcodedMaxMap[key.replace(/ /g, "_")] || hardcodedMaxMap[key.replace(/_/g, " ")] || 100;
     const dbMax = flatMax[key];
     const max = (dbMax && dbMax !== 100) ? dbMax : fallbackMax;
-    const pct = Math.round((value / max) * 100);
+
+    let pct: number;
+    if (value > max && max !== 100) {
+      pct = Math.min(100, Math.max(0, Math.round(value)));
+    } else {
+      pct = Math.min(100, Math.max(0, Math.round((value / Math.max(max, 0.01)) * 100)));
+    }
+
     console.log(`[CareerReport] ${key}: raw=${value}, max=${max}, pct=${pct}%`);
     result[key] = pct;
   });
@@ -249,8 +293,14 @@ function normalizeScoresForV4(
   if (result.Efficiency !== undefined && result.Extraversion === undefined) {
     result.Extraversion = result.Efficiency;
   }
+  if (result.Extraversion !== undefined && result.Efficiency === undefined) {
+    result.Efficiency = result.Extraversion;
+  }
   if (result.EmotionalIntelligence !== undefined && result["Emotional Intelligence"] === undefined) {
     result["Emotional Intelligence"] = result.EmotionalIntelligence;
+  }
+  if (result["Emotional Intelligence"] !== undefined && result.EmotionalIntelligence === undefined) {
+    result.EmotionalIntelligence = result["Emotional Intelligence"];
   }
 
   const v4Params = [
@@ -269,7 +319,7 @@ function normalizeScoresForV4(
     "Emotional Intelligence",
     "Engagement",
     "Exploration",
-    "Extraversion",
+    "Efficiency",
   ];
 
   v4Params.forEach((p) => {

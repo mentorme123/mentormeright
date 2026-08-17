@@ -68,7 +68,8 @@ const parameterDefinitions = {
   "Emotional Intelligence": "Ability to recognize, regulate, and navigate interpersonal dynamics and personal emotions.",
   Engagement: "Level of active dedication, persistence, focus, and drive brought to tasks and goals.",
   Exploration: "Inquisitiveness, intellectual openness, and active eagerness to discover new domains.",
-  Extraversion: "Inclination toward social interaction, collaborative settings, and communicative environments."
+  Efficiency: "Capacity for productivity, time management, active execution, and operational effectiveness.",
+  Extraversion: "Capacity for productivity, time management, active execution, and operational effectiveness."
 };
 
 const sampleData = {
@@ -79,7 +80,7 @@ const sampleData = {
   scores: {
     Administrative: 4, Numerical: 5, Logical: 5, Mechanical: 2, Verbal: 4,
     Realistic: 3, Investigative: 5, Artistic: 2, Social: 3, Enterprising: 4, Conventional: 4,
-    Empathy: 3, "Emotional Intelligence": 4, Engagement: 5, Exploration: 4, Extraversion: 3
+    Empathy: 3, "Emotional Intelligence": 4, Engagement: 5, Exploration: 4, Efficiency: 3
   },
   triProfile: {
     skillProficiency: 88,
@@ -320,7 +321,14 @@ function renderReport(data) {
     if (data.pctScores && data.pctScores[p] !== undefined) return data.pctScores[p];
     const alias = p === "Extraversion" ? "Efficiency" : (p === "Efficiency" ? "Extraversion" : null);
     if (alias && data.pctScores && data.pctScores[alias] !== undefined) return data.pctScores[alias];
-    if (data.scores && data.scores[p] !== undefined) return Math.round(((data.scores[p] || 0) / 5) * 100);
+    if (data.scores && data.scores[p] !== undefined) {
+      const val = data.scores[p];
+      return val > 5 ? Math.min(100, Math.round(val)) : Math.round((val / 5) * 100);
+    }
+    if (alias && data.scores && data.scores[alias] !== undefined) {
+      const val = data.scores[alias];
+      return val > 5 ? Math.min(100, Math.round(val)) : Math.round((val / 5) * 100);
+    }
     return 0;
   };
 
@@ -379,7 +387,7 @@ function renderReport(data) {
 
         <div class="card">
           <h3 style="margin:0 0 6px; font-size:13px; color:var(--navy);">Work-Style & Traits</h3>
-          ${['Empathy', 'Emotional Intelligence', 'Engagement', 'Exploration', 'Extraversion'].map(p => `
+          ${['Empathy', 'Emotional Intelligence', 'Engagement', 'Exploration', 'Efficiency'].map(p => `
             <div class="profile-row">
               <div class="head"><span>${p}</span><span>${getScorePct(p)}%</span></div>
               <div class="param-desc">${parameterDefinitions[p]}</div>
@@ -820,7 +828,7 @@ function buildReportDataFromAssessment(input) {
   const allParams = [
     "Administrative", "Numerical", "Logical", "Mechanical", "Verbal",
     "Realistic", "Investigative", "Artistic", "Social", "Enterprising", "Conventional",
-    "Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Extraversion"
+    "Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Efficiency"
   ];
 
   const paramMaxMap = {
@@ -832,34 +840,42 @@ function buildReportDataFromAssessment(input) {
   const getRawVal = (p) => {
     const kUnderscore = p.replace(/ /g, "_");
     const kNoSpace = p.replace(/ /g, "");
+    const kLowerNoSpace = p.toLowerCase().replace(/[\s_]+/g, "");
+
     const alias = p === "Extraversion" ? "Efficiency" : (p === "Efficiency" ? "Extraversion" : null);
-    const aliasUnderscore = alias ? alias.replace(/ /g, "_") : null;
-    const aliasNoSpace = alias ? alias.replace(/ /g, "") : null;
+    const aliasLowerNoSpace = alias ? alias.toLowerCase().replace(/[\s_]+/g, "") : null;
+
+    const lookInObj = (obj) => {
+      if (!obj || typeof obj !== "object") return undefined;
+      for (const [key, val] of Object.entries(obj)) {
+        const cleanKey = key.toLowerCase().replace(/[\s_]+/g, "");
+        if (cleanKey === kLowerNoSpace || (aliasLowerNoSpace && cleanKey === aliasLowerNoSpace)) {
+          return val;
+        }
+      }
+      return undefined;
+    };
 
     const sources = [
+      lookInObj(rawScores),
+      lookInObj(rawScores.skills),
+      lookInObj(rawScores.passion),
+      lookInObj(rawScores.riasec),
+      lookInObj(rawScores.individuality),
+      lookInObj(input),
+      lookInObj(input.scores),
       rawScores[p],
       rawScores[kUnderscore],
       rawScores[kNoSpace],
       rawScores.skills?.[p],
-      rawScores.skills?.[kUnderscore],
-      rawScores.skills?.[kNoSpace],
       rawScores.passion?.[p],
-      rawScores.passion?.[kUnderscore],
-      rawScores.passion?.[kNoSpace],
+      rawScores.riasec?.[p],
       rawScores.individuality?.[p],
-      rawScores.individuality?.[kUnderscore],
-      rawScores.individuality?.[kNoSpace],
       input[p],
-      input[kUnderscore],
-      input[kNoSpace],
       alias ? rawScores[alias] : undefined,
-      aliasUnderscore ? rawScores[aliasUnderscore] : undefined,
-      aliasNoSpace ? rawScores[aliasNoSpace] : undefined,
-      alias ? rawScores.individuality?.[alias] : undefined,
-      aliasUnderscore ? rawScores.individuality?.[aliasUnderscore] : undefined,
-      aliasNoSpace ? rawScores.individuality?.[aliasNoSpace] : undefined,
       alias ? input[alias] : undefined
     ];
+
     for (const src of sources) {
       if (src !== undefined && src !== null) return src;
     }
@@ -886,7 +902,7 @@ function buildReportDataFromAssessment(input) {
 
   const skillsList = ["Administrative", "Numerical", "Logical", "Mechanical", "Verbal"];
   const riasecList = ["Realistic", "Investigative", "Artistic", "Social", "Enterprising", "Conventional"];
-  const traitsList = ["Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Extraversion"];
+  const traitsList = ["Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Efficiency"];
 
   const avgPct = (arr) => Math.round(arr.reduce((sum, k) => sum + (normalizedPct[k] || 0), 0) / arr.length);
   const maxPct = (arr) => Math.max(...arr.map(k => normalizedPct[k] || 0));
@@ -1170,6 +1186,7 @@ function buildReportDataFromAssessment(input) {
     "Emotional Intelligence": { skill: "Self-Regulation & Composure", subjectMapping: "Co-Curricular & Personal Growth", description: "Enhances self-awareness and composure in high-pressure situations." },
     Engagement: { skill: "Goal Focus & Task Persistence", subjectMapping: "Project Work & Exam Prep", description: "Drives sustained focus, dedication, and completion of long-term targets." },
     Exploration: { skill: "Curiosity & Domain Expansion", subjectMapping: "General Knowledge & Electives", description: "Encourages exploring emerging technologies, fields, and interdisciplinary topics." },
+    Efficiency: { skill: "Time Management & Workflow Optimization", subjectMapping: "Operational Execution & Debates", description: "Strengthens productivity, task execution, time management, and active engagement." },
     Extraversion: { skill: "Networking & Active Dynamics", subjectMapping: "Public Forums & Debates", description: "Strengthens confidence in group settings and active verbal engagement." }
   };
 

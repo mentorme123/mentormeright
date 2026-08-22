@@ -6,7 +6,7 @@ export const blogPosts = [
       "Discover how career assessment tools can guide you toward a fulfilling and successful career path.",
     date: "2026-08-12",
     category: "Career Guidance",
-    image: "/blogs-images/The Advantages of Using Career Assessment Tools.jpeg",
+    image: "/blogs-images/The Advantages of Using Career Assessment Tools.png",
     content: `
 In the contemporary job market, where the right career path can significantly impact one's overall happiness and productivity, career assessment tools have become invaluable. These tools offer a structured way to evaluate an individual's skills, interests, personality, and values to guide them toward suitable career choices. Whether for students uncertain about their future or professionals considering a career change, career assessment tools provide clarity and direction. This article delves into the advantages of using career assessment tools, highlighting how they can be a game-changer in career planning and development.
 
@@ -75,7 +75,7 @@ Career assessment tools are powerful resources for anyone looking to make inform
       "Explore unconventional and rewarding career options in India that go beyond traditional paths.",
     date: "2026-08-11",
     category: "Career Options",
-    image: "/blogs-images/Breaking the Mold Top 10 Offbeat Careers to Pursue in India.jpeg",
+    image: "/blogs-images/Breaking the Mold Top 10 Offbeat Careers to Pursue in India.png",
     content: `
 In a country as diverse and dynamic as India, the traditional career paths of engineering, medicine, and law have long dominated the professional landscape. However, as the job market evolves and individual aspirations change, a new wave of unconventional careers is emerging. These offbeat career options are not only unique but also offer the potential for personal fulfillment, creative expression, and financial stability. In this article, we'll explore the top 10 offbeat careers in India that are redefining success and challenging the conventional wisdom of what it means to have a rewarding professional life.
 

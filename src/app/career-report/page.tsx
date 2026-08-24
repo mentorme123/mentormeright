@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { Download, ArrowLeft, Printer } from "lucide-react";
 
 interface V4Data {
   student: {
@@ -82,6 +83,15 @@ function CareerReportContent() {
     };
   }, [data]);
 
+  const handleDownloadPDF = () => {
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.focus();
+      iframeRef.current.contentWindow.print();
+    } else {
+      window.print();
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-slate-50">
@@ -108,14 +118,52 @@ function CareerReportContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#eef2f6]">
-      <iframe
-        ref={iframeRef}
-        src="/career-report-v2.html"
-        title="Career Report"
-        className="w-full border-0"
-        style={{ height: "100vh" }}
-      />
+    <div className="min-h-screen bg-[#eef2f6] flex flex-col">
+      {/* Fixed top toolbar for report actions */}
+      <header className="sticky top-0 z-50 bg-[#0d2545] text-white px-4 py-3 shadow-md flex items-center justify-between print:hidden">
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => window.history.back()}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition-colors"
+          >
+            <ArrowLeft size={15} />
+            <span className="hidden sm:inline">Back</span>
+          </button>
+          <div className="h-4 w-px bg-white/20 hidden sm:block"></div>
+          <div className="flex items-center gap-2">
+            <h1 className="text-sm font-bold tracking-tight text-white">
+              Mentor<span className="text-[#00a6a6]">Me</span> Career Intelligence Report
+            </h1>
+            {data?.student?.name && (
+              <span className="hidden md:inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#00a6a6]/20 text-[#00a6a6] border border-[#00a6a6]/30">
+                {data.student.name}
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDownloadPDF}
+            className="flex items-center gap-2 bg-[#00a6a6] hover:bg-[#008e8e] active:scale-95 text-white px-4 py-2 rounded-lg font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer"
+            title="Download report as PDF or Print"
+          >
+            <Download size={16} />
+            <span>Download PDF</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Main Report Document Container */}
+      <div className="flex-1 w-full">
+        <iframe
+          ref={iframeRef}
+          src="/career-report-v2.html"
+          title="Career Report"
+          className="w-full border-0"
+          style={{ height: "calc(100vh - 57px)", minHeight: "600px" }}
+        />
+      </div>
     </div>
   );
 }

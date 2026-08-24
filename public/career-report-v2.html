@@ -226,6 +226,11 @@ const sampleData = {
 };
 
 function renderReport(data) {
+  if (data && data.studentName) {
+    const cleanName = data.studentName.replace(/[^a-zA-Z0-9\s_-]/g, "").trim().replace(/\s+/g, "_");
+    document.title = `MentorMe_Career_Report_${cleanName}`;
+  }
+
   const container = document.getElementById('report');
   let html = '';
 

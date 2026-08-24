@@ -340,7 +340,13 @@ const PARAM_MAX_MAP: Record<string, number> = {
             Chat with a MentorMe counsellor →
           </a>
           <Button
-            onClick={() => window.print()}
+            onClick={() => {
+              if (userName) {
+                const cleanName = userName.replace(/[^a-zA-Z0-9\s_-]/g, "").trim().replace(/\s+/g, "_");
+                document.title = `MentorMe_Assessment_Report_${cleanName}`;
+              }
+              window.print();
+            }}
             variant="ghost"
             className="w-full py-3.5 text-[13px] font-bold border border-slate-200 text-blue-700 hover:bg-blue-50"
           >

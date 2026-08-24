@@ -62,6 +62,11 @@ function CareerReportContent() {
   useEffect(() => {
     if (!data || !iframeRef.current) return;
 
+    if (data.student?.name) {
+      const cleanName = data.student.name.replace(/[^a-zA-Z0-9\s_-]/g, "").trim().replace(/\s+/g, "_");
+      document.title = `MentorMe_Career_Report_${cleanName}`;
+    }
+
     const sendData = () => {
       try {
         iframeRef.current?.contentWindow?.postMessage(
@@ -84,7 +89,19 @@ function CareerReportContent() {
   }, [data]);
 
   const handleDownloadPDF = () => {
+    const studentName = data?.student?.name
+      ? data.student.name.replace(/[^a-zA-Z0-9\s_-]/g, "").trim().replace(/\s+/g, "_")
+      : "";
+    const pdfTitle = studentName ? `MentorMe_Career_Report_${studentName}` : "MentorMe_Career_Report";
+
+    document.title = pdfTitle;
+
     if (iframeRef.current?.contentWindow) {
+      try {
+        iframeRef.current.contentWindow.document.title = pdfTitle;
+      } catch (e) {
+        console.error("Failed to set iframe title", e);
+      }
       iframeRef.current.contentWindow.focus();
       iframeRef.current.contentWindow.print();
     } else {

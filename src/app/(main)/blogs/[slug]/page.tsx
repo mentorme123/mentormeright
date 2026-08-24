@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import { blogPosts } from "@/data/blogs";
 import { Button } from "@/components/ui/button";
 import type { ReactElement } from "react";
@@ -116,14 +116,23 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       </section>
 
       <section className="container mx-auto px-4 pb-16 max-w-4xl">
-        <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 rounded-3xl shadow-xl text-center">
-          <h3 className="text-2xl font-bold mb-4">Ready to explore more?</h3>
-          <p className="text-slate-300 mb-6">Check out our other blogs and resources for career guidance.</p>
-          <Link href="/blogs">
-            <Button className="bg-brand-blue hover:opacity-90 text-white border-0 shadow-lg px-8 py-5 rounded-full text-base font-bold">
-              Back to Blogs <ArrowLeft className="ml-2" />
-            </Button>
-          </Link>
+        <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 md:p-10 rounded-3xl shadow-xl text-center">
+          <h3 className="text-2xl md:text-3xl font-bold mb-3">Ready to explore more?</h3>
+          <p className="text-slate-300 mb-6 text-base md:text-lg max-w-2xl mx-auto">
+            If you are interested, take our Career Assessment test to discover your ideal career path.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a href="/career-assessment.html">
+              <Button className="bg-brand-orange hover:bg-brand-orange/90 text-white border-0 shadow-lg px-8 py-5 rounded-full text-base font-bold transition-all">
+                Take Career Assessment <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </a>
+            <Link href="/blogs">
+              <Button variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/20 shadow-lg px-8 py-5 rounded-full text-base font-bold transition-all">
+                <ArrowLeft className="mr-2 h-5 w-5" /> Back to Blogs
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

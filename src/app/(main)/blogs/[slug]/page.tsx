@@ -122,11 +122,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             If you are interested, take our Career Assessment test to discover your ideal career path.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <a href="/career-assessment.html">
+            <Link href="/payment">
               <Button className="bg-brand-orange hover:bg-brand-orange/90 text-white border-0 shadow-lg px-8 py-5 rounded-full text-base font-bold transition-all">
                 Take Career Assessment <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </a>
+            </Link>
             <Link href="/blogs">
               <Button variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/20 shadow-lg px-8 py-5 rounded-full text-base font-bold transition-all">
                 <ArrowLeft className="mr-2 h-5 w-5" /> Back to Blogs

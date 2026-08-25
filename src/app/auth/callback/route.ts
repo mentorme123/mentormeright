@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
+  const productionBase = 'https://mentormeright.com';
   try {
     const { searchParams, origin } = new URL(request.url);
     const code = searchParams.get('code');
@@ -12,9 +13,6 @@ export async function GET(request: Request) {
     const forwardedHost = request.headers.get('x-forwarded-host');
     const isLocal = process.env.NODE_ENV === 'development';
     const base = isLocal ? origin : (forwardedHost ? `https://${forwardedHost}` : origin);
-    
-    // Always use production domain for redirects
-    const productionBase = 'https://mentormeright.com';
 
     if (!code) {
       console.log('[auth/callback] No code found, redirecting to login');
@@ -31,22 +29,13 @@ export async function GET(request: Request) {
 
     console.log('[auth/callback] Session created for user:', session.user.id);
 
-    let userProfile = null;
-    let profileError = null;
-    
-    try {
-      const result = await supabase
-        .from('users')
-        .select('id, role')
-        .eq('id', session.user.id)
-        .single();
-      userProfile = result.data;
-      profileError = result.error;
-    } catch (e) {
-      profileError = e instanceof Error ? e : new Error(String(e));
-    }
+    const { data: userProfile } = await supabase
+      .from('users')
+      .select('id, role')
+      .eq('id', session.user.id)
+      .maybeSingle();
 
-    if (profileError && profileError.code === 'PGRST116') {
+    if (!userProfile) {
       console.log('[auth/callback] Profile not found, creating one for:', session.user.id);
       const email = session.user.email;
       const name = session.user.user_metadata?.full_name || email?.split('@')[0] || 'User';

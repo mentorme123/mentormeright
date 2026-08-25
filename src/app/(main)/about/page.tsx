@@ -107,12 +107,12 @@ export default function AboutPage() {
 
   const renderInstitutionModal = (institution: Institution, index: number) => {
     const overlay = (
-      <div className="fixed inset-0 z-50">
+      <div className="fixed inset-0 z-50 overflow-y-auto">
         <div
-          className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
           onClick={() => setInstitutionIndex(null)}
         />
-        <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <div className="relative z-10 flex items-center justify-center min-h-full p-3 sm:p-4 my-auto">
           <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-8 md:p-10">
               <div className="flex items-start justify-between mb-6">
@@ -329,12 +329,12 @@ export default function AboutPage() {
 
   const renderModal = (leader: Leader, index: number) => {
     const overlay = (
-      <div className="fixed inset-0 z-50">
+      <div className="fixed inset-0 z-50 overflow-y-auto">
         <div
-          className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+          className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"
           onClick={() => setOpenIndex(null)}
         />
-        <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <div className="relative z-10 flex items-center justify-center min-h-full p-3 sm:p-4 my-auto">
           <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="p-8 md:p-10">
               <div className="flex items-start justify-between mb-6">

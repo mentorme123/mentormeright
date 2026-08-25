@@ -139,7 +139,7 @@ export default function StudyAbroadHub() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="group relative h-[450px] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-2xl"
+                className="group relative h-[340px] sm:h-[450px] rounded-[2.5rem] overflow-hidden cursor-pointer shadow-2xl"
               >
                 <img 
                   src={dest.image} 

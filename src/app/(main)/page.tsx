@@ -1082,7 +1082,7 @@ export default function Home() {
               alt="MentorMe Session with students"
               width={600}
               height={500}
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[400px] lg:h-[500px]"
+              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[260px] sm:h-[400px] lg:h-[500px]"
               priority
             />
           </motion.div>
@@ -1109,7 +1109,7 @@ export default function Home() {
               alt="Career Guidance & Psychometric Assessment Session"
               width={600}
               height={800}
-              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[450px] lg:h-[560px]"
+              className="relative rounded-3xl shadow-2xl border border-white/10 object-cover w-full h-[260px] sm:h-[450px] lg:h-[560px]"
             />
           </motion.div>
           <motion.div
@@ -1666,7 +1666,7 @@ export default function Home() {
                             <img
                               src={src}
                               alt={`${institutions[selectedInstitution].name} - Photo ${i + 1}`}
-                              className="w-full h-60 object-cover"
+                              className="w-full h-36 sm:h-60 object-cover"
                               style={{ objectPosition: cropPos }}
                             />
                           </div>
@@ -1786,8 +1786,8 @@ export default function Home() {
       )}
 
       {showVideo && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-sm rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 bg-slate-900/80 backdrop-blur-sm">
+          <div className="bg-white w-full max-w-[320px] sm:max-w-sm rounded-3xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-end p-3">
               <button
                 onClick={() => setShowVideo(false)}
@@ -1797,7 +1797,7 @@ export default function Home() {
               </button>
             </div>
             <div className="px-4 pb-4">
-              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black">
+              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black max-h-[70vh] flex items-center justify-center">
                 <iframe
                   src="https://www.youtube.com/embed/qBzR5_cUHqM?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0"
                   title="Enquiry video"

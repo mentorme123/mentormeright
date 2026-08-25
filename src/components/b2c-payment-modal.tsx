@@ -88,6 +88,21 @@ export function B2CPaymentModal({
             }
 
             setSuccess(true);
+            if (typeof window !== "undefined" && (window as any).gtag) {
+              (window as any).gtag("event", "purchase", {
+                transaction_id: response.razorpay_payment_id || response.razorpay_order_id,
+                value: amountInRupees,
+                currency: "INR",
+                items: [
+                  {
+                    item_id: itemType,
+                    item_name: itemName,
+                    price: amountInRupees,
+                    quantity: 1,
+                  },
+                ],
+              });
+            }
             setTimeout(() => {
               onSuccess();
               onClose();

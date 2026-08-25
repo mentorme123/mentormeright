@@ -137,6 +137,21 @@ export default function CounsellorMarketplace() {
             }
 
             setBookingSuccess(true);
+            if (typeof window !== "undefined" && (window as any).gtag) {
+              (window as any).gtag("event", "purchase", {
+                transaction_id: response.razorpay_payment_id || order.orderId,
+                value: selectedCounsellor.price_per_session || 4999,
+                currency: "INR",
+                items: [
+                  {
+                    item_id: selectedCounsellor.id,
+                    item_name: `Counseling Session with ${selectedCounsellor.name}`,
+                    price: selectedCounsellor.price_per_session || 4999,
+                    quantity: 1,
+                  },
+                ],
+              });
+            }
           } catch (err) {
             console.error(err);
             setBookingError(err instanceof Error ? err.message : "Payment succeeded but verification failed. Contact support.");

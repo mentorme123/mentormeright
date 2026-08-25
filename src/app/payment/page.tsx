@@ -52,6 +52,19 @@ export default function GooglePaymentPage() {
   const handlePaymentSuccess = async () => {
     setPaymentSuccess(true);
     setShowPaymentModal(false);
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'purchase', {
+        transaction_id: `payment_${Date.now()}`,
+        value: 1999,
+        currency: 'INR',
+        items: [{
+          item_id: 'career_report',
+          item_name: 'Career Assessment And Detailed Career Report',
+          price: 1999,
+          quantity: 1
+        }]
+      });
+    }
     setTimeout(async () => {
       if (user) {
         await supabase

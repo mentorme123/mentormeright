@@ -39,17 +39,7 @@ export default function LoginPage() {
 
       const role = profile?.role || (data.user.user_metadata as Record<string, string | undefined>)?.role || 'individual';
 
-      const { data: userProfile } = await supabase
-        .from('users')
-        .select('name, education_level, institution_name')
-        .eq('id', data.user.id)
-        .maybeSingle();
-
-      const profileName = userProfile?.name || (data.user.user_metadata as Record<string, string | undefined>)?.full_name || '';
-      const profileClass = userProfile?.education_level || '';
-      const profileSchool = userProfile?.institution_name || '';
-
-      let target = `/career-assessment.html?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
+      let target = '/';
       if (role === 'institutional') target = '/dashboard/institution';
       else if (role === 'admin') target = '/dashboard/admin';
       else if (role === 'counselor') target = '/dashboard/counselor';
@@ -97,11 +87,11 @@ export default function LoginPage() {
           >
             <X size={18} />
           </button>
-            <div className="flex flex-col items-center justify-center gap-2">
-              <img src="/logo.png?v=7" alt="MentorMe Logo" className="h-10 w-auto" />
-              <span className="text-xl font-black tracking-tight">MentorMe</span>
-              <span className="text-xs font-semibold text-white/90">Sign In</span>
-            </div>
+          <div className="flex flex-col items-center justify-center gap-2">
+            <img src="/logo.png?v=7" alt="MentorMe Logo" className="h-10 w-auto" />
+            <span className="text-xl font-black tracking-tight">MentorMe</span>
+            <span className="text-xs font-semibold text-white/90">Sign In</span>
+          </div>
         </div>
         <div className="p-8">
           <form onSubmit={handleSubmit} className="space-y-6">

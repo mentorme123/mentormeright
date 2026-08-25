@@ -68,21 +68,13 @@ export async function GET(request: Request) {
         console.log('[auth/callback] Profile created successfully');
       }
       
-      const isGoogleUser = session.user.user_metadata?.provider === 'google' || session.user.user_metadata?.iss === 'https://accounts.google.com';
-      if (isGoogleUser) {
-        return NextResponse.redirect(new URL('/payment', productionBase));
-      }
-      return NextResponse.redirect(new URL(`/career-assessment.html?email=${encodeURIComponent(session.user.email || '')}`, productionBase));
+      return NextResponse.redirect(new URL(next, productionBase));
     }
 
     if (userProfile) {
       console.log('[auth/callback] Existing profile role:', userProfile.role);
       if (userProfile.role === 'individual') {
-        const isGoogleUser = session.user.user_metadata?.provider === 'google' || session.user.user_metadata?.iss === 'https://accounts.google.com';
-        if (isGoogleUser) {
-          return NextResponse.redirect(new URL('/payment', productionBase));
-        }
-        return NextResponse.redirect(new URL(`/career-assessment.html?email=${encodeURIComponent(session.user.email || '')}`, productionBase));
+        return NextResponse.redirect(new URL(next, productionBase));
       } else if (userProfile.role === 'institutional') {
         return NextResponse.redirect(new URL('/dashboard/institution', productionBase));
       } else if (userProfile.role === 'admin') {

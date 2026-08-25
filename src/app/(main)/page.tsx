@@ -1786,24 +1786,29 @@ export default function Home() {
       )}
 
       {showVideo && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-3 sm:p-4 bg-slate-900/80 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-[320px] sm:max-w-sm rounded-3xl shadow-2xl border border-slate-200 overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-end p-3">
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-2 sm:p-4 bg-slate-950/85 backdrop-blur-md">
+          <div className="bg-slate-900 w-full max-w-[340px] sm:max-w-[380px] rounded-3xl shadow-2xl border border-slate-800 overflow-hidden flex flex-col max-h-[94vh] sm:max-h-[90vh]">
+            <div className="flex items-center justify-between p-3 px-4 border-b border-slate-800 bg-slate-950 shrink-0">
+              <div className="flex items-center gap-2">
+                <img src="/logo.png?v=7" alt="MentorMe Logo" className="h-6 w-auto" />
+                <span className="text-xs font-bold text-slate-200">MentorMe Overview</span>
+              </div>
               <button
                 onClick={() => setShowVideo(false)}
-                className="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center transition-all"
+                className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all shrink-0"
+                aria-label="Close"
               >
                 <X size={18} />
               </button>
             </div>
-            <div className="px-4 pb-4">
-              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-black max-h-[70vh] flex items-center justify-center">
+            <div className="p-2 sm:p-3 flex-1 flex items-center justify-center bg-black overflow-hidden">
+              <div className="w-full aspect-[9/16] max-h-[78vh] sm:max-h-[82vh] mx-auto flex items-center justify-center">
                 <iframe
                   src="https://www.youtube.com/embed/qBzR5_cUHqM?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0"
                   title="Enquiry video"
                   allow="autoplay; encrypted-media"
                   allowFullScreen
-                  className="w-full"
+                  className="w-full h-full rounded-2xl border-0"
                   style={{ aspectRatio: '9/16' }}
                 />
               </div>

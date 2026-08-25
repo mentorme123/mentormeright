@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        "7xl": "90rem",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",

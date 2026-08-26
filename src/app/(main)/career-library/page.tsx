@@ -121,7 +121,7 @@ export default function CareerLibrary() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight"
           >
-            Explore <span className="text-brand-blue">1,000+</span> Careers
+            Explore <span className="text-brand-blue">250+</span> Career Roadmaps
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}

@@ -69,6 +69,7 @@ export function Navbar() {
     { href: "/about", label: "About" },
     { href: "/ai-learning-hub", label: "AI Learning Hub" },
     { href: "/k12-programs", label: "21st Century Skills Hub" },
+    { href: "/career-library", label: "Career Roadmaps" },
     { href: "/blogs", label: "Blogs" },
     { href: "/contact", label: "Contact Us" },
   ];
@@ -242,6 +243,11 @@ export function Navbar() {
                  </div>
                </div>
              </div>
+
+            <Link href="/career-library" className="relative group py-2">
+              <span className="group-hover:text-brand-blue transition-colors duration-300">Career Roadmaps</span>
+              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            </Link>
 
             <Link href="/blogs" className="relative group py-2">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>

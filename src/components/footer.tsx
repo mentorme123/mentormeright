@@ -31,6 +31,7 @@ export function Footer() {
               <h4 className="text-sm font-bold text-gray-900 mb-3">Company</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li><Link href="/about" className="hover:text-brand-blue transition-colors">About Us</Link></li>
+                <li><Link href="/career-library" className="hover:text-brand-blue transition-colors">Career Roadmaps</Link></li>
                 <li><Link href="/payment" className="hover:text-brand-blue transition-colors">MentorMe Career Intelligence Report</Link></li>
               </ul>
             </div>

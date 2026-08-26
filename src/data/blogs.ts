@@ -449,7 +449,7 @@ Start building these skills early, explore the field through projects and unders
 
 ## Thinking About a Career in Data Science?
 
-MentorMe's Career Guidance & Career Assessment can help students understand their interests, skills and personality and explore suitable career pathways before making important education decisions.
+MentorMe's Career Guidance & MentorMe Career Intelligence Report can help students understand their interests, skills and personality and explore suitable career pathways before making important education decisions.
 
 MentorMe – Turning Passions into Professions.
 `,

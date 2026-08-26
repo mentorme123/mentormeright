@@ -294,4 +294,164 @@ Certified Career Coach By NCDA.
 Educational Research and Writer.
 `,
   },
+  {
+    slug: "data-scientist-career-in-india",
+    title: "Data Scientist Career in India",
+    excerpt:
+      "A comprehensive guide to becoming a Data Scientist in India — covering subject choices after 10th, degrees, entrance exams, top colleges, skills, salary, and future scope.",
+    date: "2026-08-26",
+    category: "Engineering & Technology",
+    image: "/blogs-images/Engineering Streams in India and How to Pursue Them.png",
+    content: `
+Data Science is one of the most promising technology careers in India, combining mathematics, statistics, programming and business problem-solving to turn data into useful insights and decisions.
+
+## What Does a Data Scientist Do?
+
+A Data Scientist collects, analyses and interprets large amounts of data to identify patterns, solve business problems and predict future outcomes.
+
+A Data Scientist may work on data analysis, machine learning, artificial intelligence, predictive modelling, data visualisation and statistical analysis.
+
+Typical employers include technology companies, banks, consulting firms, healthcare companies, e-commerce companies, manufacturing organisations and Global Capability Centres (GCCs).
+
+## What Subjects Should I Take After 10th?
+
+If you want to become a Data Scientist, Science with Mathematics is generally the strongest choice after Class 10.
+
+Recommended subjects include:
+- Mathematics
+- Physics
+- Computer Science / Informatics Practices
+- Statistics, where available
+- Chemistry, depending on your chosen degree and college
+
+However, there is no single compulsory school stream for every Data Science degree. Some programmes have different eligibility requirements.
+
+For example, IIT Madras' BS Degree in Data Science and Applications accepts students from different academic backgrounds, provided they meet its eligibility requirements.
+
+## Is Maths Compulsory for Data Science?
+
+Mathematics is strongly recommended for a career in Data Science.
+
+It is important because Data Science uses concepts from statistics, probability, algebra, calculus and optimisation.
+
+For example, the IIT Madras Data Science programme includes Mathematics for Data Science and Statistics as foundational subjects, followed by more advanced mathematics including linear algebra, calculus and optimisation.
+
+If you are choosing subjects after Class 10 and are serious about becoming a Data Scientist, keeping Mathematics is the safer option.
+
+## Which Degree Should I Choose for Data Science?
+
+There is no single mandatory degree. Popular options include:
+- B.Tech / B.E. in Computer Science, AI, Data Science or related fields
+- B.Sc. in Data Science
+- B.Sc. in Statistics / Mathematics / Computer Science
+- BCA with Data Science / AI specialisation
+- Other quantitative degrees followed by a Master's in Data Science, AI or Analytics
+
+When choosing a degree, look beyond the title. A strong Data Science programme should provide exposure to Python, statistics, databases, machine learning, data visualisation, algorithms and real-world projects.
+
+IIT Madras, for example, offers a BS Degree in Data Science and Applications covering areas including Python, machine learning, deep learning, computer vision, big data and LLMs.
+
+## Which Entrance Exams Should I Take?
+
+Depending on the degree and college, important entrance routes can include:
+- JEE Main – for many engineering programmes
+- JEE Advanced – for IIT undergraduate engineering programmes
+- CUET-UG – for participating universities
+- State-level engineering entrance examinations
+- University-specific entrance examinations
+
+Admission requirements vary by institution, so students should always check the latest eligibility criteria before applying.
+
+## Best Colleges for Data Science in India
+
+Some well-known institutions and universities offering programmes relevant to Data Science, Computer Science, Statistics or AI include:
+- IIT Madras
+- IIT Hyderabad
+- IIT Delhi
+- IIT Bombay
+- IIT Kharagpur
+- IIT Kanpur
+- IIIT Hyderabad
+- IIIT Delhi
+- IISc Bengaluru
+- ISI Kolkata
+- University of Hyderabad
+- Other leading universities offering specialised Data Science and AI programmes
+
+Do not choose a college only because the course has “Data Science” in its name. Curriculum quality, mathematics and statistics foundation, programming exposure, internships, projects, faculty and placements are equally important.
+
+## Data Scientist Salary in India
+
+The Data Scientist salary in India can vary widely depending on skills, experience, location, industry and employer.
+
+Fresh graduates may start in roles such as:
+Data Analyst → Junior Data Scientist → Data Scientist → Senior Data Scientist → Lead / Principal Data Scientist
+
+With experience, professionals can move into higher-paying areas such as Machine Learning, Artificial Intelligence, Generative AI, Data Engineering and AI leadership.
+
+For students, the important point is this: skills and practical experience can have a major impact on earning potential.
+
+## Future Scope of Data Science
+
+The future scope of Data Science in India is strong, particularly as organisations increasingly adopt Artificial Intelligence, Machine Learning and Generative AI.
+
+India's AI/ML hiring increased by 25% year-on-year in June 2026, according to IBEF's summary of employment data. India also has more than 2,117 Global Capability Centres, with over 2.5 lakh professionals working in AI/ML roles.
+
+Emerging career areas include:
+- Data Science
+- Machine Learning
+- Artificial Intelligence
+- Generative AI
+- Data Engineering
+- Business Analytics
+- Predictive Analytics
+- Computer Vision
+- Natural Language Processing
+- AI Product Management
+
+## Skills Required to Become a Data Scientist
+
+A successful Data Scientist needs a combination of technical, analytical and communication skills.
+
+Technical Skills:
+- Python
+- SQL
+- Statistics
+- Probability
+- Machine Learning
+- Data Visualisation
+- Databases
+- Excel
+- Power BI / Tableau
+- Generative AI tools
+
+Analytical Skills:
+- Problem-solving
+- Logical thinking
+- Critical thinking
+- Ability to identify patterns
+- Data interpretation
+
+Professional Skills:
+- Communication
+- Business understanding
+- Presentation skills
+- Curiosity
+- Continuous learning
+
+## Is Data Science a Good Career for You?
+
+Data Science can be an excellent career if you enjoy Mathematics, Technology, Problem-Solving and working with data.
+
+But remember: becoming a Data Scientist is not simply about learning Python. It requires a strong foundation in Mathematics + Statistics + Programming + Analytical Thinking + Domain Knowledge.
+
+Start building these skills early, explore the field through projects and understand your own interests and strengths before choosing your degree.
+
+## Thinking About a Career in Data Science?
+
+MentorMe's Career Guidance & Career Assessment can help students understand their interests, skills and personality and explore suitable career pathways before making important education decisions.
+
+MentorMe – Turning Passions into Professions.
+`,
+  },
 ];

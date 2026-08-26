@@ -268,11 +268,11 @@ export function Navbar() {
                   </Link>
                   <div className="pl-3 space-y-1">
                     <Link 
-                      href="/career-library?stream=Science&search=Engineering" 
+                      href="/career-library/engineering-technology" 
                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                       onClick={() => setCareerRoadmapsOpen(false)}
                     >
-                      a] Engineering &amp; Technics
+                      a] Engineering &amp; Technology
                     </Link>
                     <Link 
                       href="/career-library?stream=Science&search=Medical" 

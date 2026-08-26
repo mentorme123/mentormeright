@@ -13,6 +13,9 @@ export default function EngineeringTechnologyCareerPage() {
       {/* Header Banner */}
       <section className="bg-brand-blue text-white py-16 px-4">
         <div className="max-w-4xl mx-auto space-y-4">
+          <div className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-2">
+            Engineering &amp; Technology
+          </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
             Data Scientist Career in India
           </h1>
@@ -261,11 +264,6 @@ export default function EngineeringTechnologyCareerPage() {
                   Take MentorMe Career Intelligence Report
                 </Button>
               </a>
-              <Link href="/counsellors">
-                <Button variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-brand-blue font-black px-8 py-6 text-lg rounded-2xl transition-all shadow-md">
-                  Talk to a Counselor
-                </Button>
-              </Link>
             </div>
             <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">
               MentorMe – Turning Passions into Professions.

@@ -25,6 +25,13 @@ export default function CareerLibrary() {
   const supabase = createClient();
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const streamParam = params.get("stream");
+      const searchParam = params.get("search");
+      if (streamParam) setSelectedStream(streamParam);
+      if (searchParam) setSearchTerm(searchParam);
+    }
     async function fetchResults() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
@@ -121,7 +128,7 @@ export default function CareerLibrary() {
             animate={{ opacity: 1, y: 0 }}
             className="text-5xl md:text-6xl font-black text-slate-900 tracking-tight"
           >
-            Explore <span className="text-brand-blue">250+</span> Career Roadmaps
+            Explore <span className="text-brand-blue">1,000+</span> Careers
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}

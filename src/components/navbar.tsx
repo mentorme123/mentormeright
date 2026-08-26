@@ -13,6 +13,7 @@ export function Navbar() {
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
   const [aiHubOpen, setAiHubOpen] = useState(false);
   const [skillsHubOpen, setSkillsHubOpen] = useState(false);
+  const [careerRoadmapsOpen, setCareerRoadmapsOpen] = useState(false);
   const [aiHubAccordion, setAiHubAccordion] = useState<string | null>("k12");
   const [skillsHubAccordion, setSkillsHubAccordion] = useState<string | null>("k12");
 
@@ -59,17 +60,20 @@ export function Navbar() {
       if (skillsHubOpen && !(event.target as Element).closest(".skills-hub-dropdown")) {
         setSkillsHubOpen(false);
       }
+      if (careerRoadmapsOpen && !(event.target as Element).closest(".career-roadmaps-dropdown")) {
+        setCareerRoadmapsOpen(false);
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [profileOpen, aiHubOpen, skillsHubOpen]);
+  }, [profileOpen, aiHubOpen, skillsHubOpen, careerRoadmapsOpen]);
 
   const mobileLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/ai-learning-hub", label: "AI Learning Hub" },
     { href: "/k12-programs", label: "21st Century Skills Hub" },
-    { href: "/career-library", label: "Career Roadmaps" },
+    { href: "/career-library", label: "Career Roadmaps (250)" },
     { href: "/blogs", label: "Blogs" },
     { href: "/contact", label: "Contact Us" },
   ];
@@ -244,10 +248,51 @@ export function Navbar() {
                </div>
              </div>
 
-            <Link href="/career-library" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">Career Roadmaps</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
-            </Link>
+            <div className="relative group career-roadmaps-dropdown">
+              <button
+                onClick={() => setCareerRoadmapsOpen((prev) => !prev)}
+                className="relative flex items-center gap-1 py-2 group-hover:text-brand-blue transition-colors duration-300"
+              >
+                <span>Career Roadmaps (250)</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+                <ChevronDown size={14} className={`text-slate-500 transition-transform ${careerRoadmapsOpen ? "rotate-180" : ""}`} />
+              </button>
+              <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+                <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
+                  <div className="px-3 py-1 text-xs font-bold text-slate-400 uppercase tracking-wider">Categories</div>
+                  <Link 
+                    href="/career-library?stream=Science&search=Engineering" 
+                    className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                    onClick={() => setCareerRoadmapsOpen(false)}
+                  >
+                    a] Engineering &amp; Technics
+                  </Link>
+                  <Link 
+                    href="/career-library?stream=Science&search=Medical" 
+                    className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                    onClick={() => setCareerRoadmapsOpen(false)}
+                  >
+                    b] Medicine &amp; Healthcare
+                  </Link>
+                  <Link 
+                    href="/career-library?stream=Commerce" 
+                    className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                    onClick={() => setCareerRoadmapsOpen(false)}
+                  >
+                    c] Commerce, Finance &amp; Account
+                  </Link>
+                  <div className="pt-2 mt-2 border-t border-slate-100">
+                    <Link 
+                      href="/career-library" 
+                      className="block px-3 py-2.5 rounded-xl text-sm font-bold text-brand-blue hover:bg-brand-blue/5 transition-all text-center"
+                      onClick={() => setCareerRoadmapsOpen(false)}
+                    >
+                      View All 250+ Career Roadmaps &rarr;
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <Link href="/blogs" className="relative group py-2">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>

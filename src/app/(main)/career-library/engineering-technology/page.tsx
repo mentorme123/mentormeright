@@ -13,9 +13,6 @@ export default function EngineeringTechnologyCareerPage() {
       {/* Header Banner */}
       <section className="bg-brand-blue text-white py-16 px-4">
         <div className="max-w-4xl mx-auto space-y-4">
-          <div className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-2">
-            Engineering &amp; Technology
-          </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
             Data Scientist Career in India
           </h1>

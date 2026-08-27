@@ -87,11 +87,11 @@ export default function LoginPage() {
       const callbackParams = new URLSearchParams();
       callbackParams.set('next', redirect);
       
-      for (const [key, value] of urlParams.entries()) {
-        if (key !== 'redirect') {
+      Array.from(urlParams.entries()).forEach(([key, value]) => {
+        if (key !== 'next') {
           callbackParams.set(key, value);
         }
-      }
+      });
       
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',

@@ -966,20 +966,73 @@ function goTo(id){
   window.scrollTo(0,0);
 }
 
+function showAlreadyCompletedScreen(userId, email) {
+  const reportUrl = userId ? `/assessment-report?userId=${encodeURIComponent(userId)}` : '/report';
+  const html = `
+    <div style="max-width: 600px; margin: 40px auto; padding: 20px;">
+      <div style="background: #ffffff; border-radius: 24px; padding: 40px 28px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+        <div style="width: 72px; height: 72px; background: #ecfdf5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        </div>
+        <span style="background: #e0e7ff; color: #3730a3; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 99px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 12px;">Assessment Already Completed</span>
+        <h2 style="font-family: var(--fp, sans-serif); font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 12px; line-height: 1.3;">
+          You Have Already Completed Your Career Assessment!
+        </h2>
+        <p style="font-size: 14px; color: #64748b; margin-bottom: 24px; line-height: 1.6;">
+          Our records show that an assessment test has already been completed for <strong>${email || 'your account'}</strong>. Each user is allowed to take the career assessment <strong>only once</strong> to ensure guidance accuracy.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 12px; max-width: 320px; margin: 0 auto;">
+          <a href="${reportUrl}" style="background: #f59e0b; color: #ffffff; text-decoration: none; padding: 14px 24px; border-radius: 14px; font-size: 14px; font-weight: 700; display: inline-block; transition: all 0.2s; box-shadow: 0 4px 12px rgba(245,158,11,0.3);">
+            View Your Assessment Report →
+          </a>
+          <a href="/dashboard/student" style="background: #0f2460; color: #ffffff; text-decoration: none; padding: 14px 24px; border-radius: 14px; font-size: 14px; font-weight: 700; display: inline-block; transition: all 0.2s;">
+            Go to Student Dashboard
+          </a>
+        </div>
+      </div>
+    </div>
+  `;
+  const resBody = document.getElementById('res-body');
+  if (resBody) {
+    resBody.innerHTML = html;
+    goTo('pg-results');
+  } else {
+    document.body.innerHTML = html;
+  }
+}
+
 // ════════════════════════════════════════════════════════════
 // PAYMENT
 // ════════════════════════════════════════════════════════════
-function initPay(){
+async function initPay(){
   const name=document.getElementById('r-name').value.trim();
   const cls=document.getElementById('r-class').value;
   const school=document.getElementById('r-school').value.trim();
   const phone=document.getElementById('r-phone').value.trim();
+  const email=document.getElementById('r-email').value.trim();
   const err=document.getElementById('reg-err');
   if(!name||!cls||!school){err.style.display='block';return;}
   err.style.display='none';
+
+  if (email) {
+    try {
+      const chkRes = await fetch('/api/assessment/check-status?email=' + encodeURIComponent(email));
+      const chkData = await chkRes.json();
+      if (chkData && chkData.completed) {
+        showAlreadyCompletedScreen(chkData.userId, email);
+        return;
+      }
+    } catch (e) {
+      console.warn('Status check error:', e);
+    }
+  }
+
   const subjects=[...document.querySelectorAll('#pg-register input[type=checkbox]:checked')].map(cb=>cb.value);
   student={name,cls:parseInt(cls),school,phone,
-    email:document.getElementById('r-email').value.trim(),
+    email:email,
     city:document.getElementById('r-city').value.trim(),
     subjects};
   goTo('pg-paying');
@@ -1251,6 +1304,11 @@ async function buildResults(){
      }
    }
     console.log('Assessment: dashboard sync complete', { saveOk, submittedUserId, saveErrMsg });
+
+    if (!saveOk && (saveErrMsg.toLowerCase().includes('already completed') || saveErrMsg.toLowerCase().includes('already'))) {
+      showAlreadyCompletedScreen(submittedUserId, student.email);
+      return;
+    }
 
     if (submittedUserId) {
       window.location.href = `/assessment-report?userId=${encodeURIComponent(submittedUserId)}`;
@@ -1688,6 +1746,18 @@ window.addEventListener('DOMContentLoaded',()=>{
   if(nameField && nameParam) nameField.value=nameParam;
   if(classField && classParam) classField.value=classParam;
   if(schoolField && schoolParam) schoolField.value=schoolParam;
+
+  const checkEmail = emailParam || (emailField ? emailField.value : '');
+  if (checkEmail) {
+    fetch('/api/assessment/check-status?email=' + encodeURIComponent(checkEmail))
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.completed) {
+          showAlreadyCompletedScreen(data.userId, checkEmail);
+        }
+      })
+      .catch(e => console.warn('Auto check status error:', e));
+  }
 });
 </script>
 </body>

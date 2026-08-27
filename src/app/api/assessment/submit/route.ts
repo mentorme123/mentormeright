@@ -39,6 +39,21 @@ export async function POST(req: NextRequest) {
     console.log('Assessment submit: resolved userId', { incomingEmail, normalizedEmail, generatedUserId, existingId: existingUser?.id, existingEmail: existingUser?.email });
 
     if (existingUser?.id) {
+      const { data: existingAssessment } = await getSupabaseAdmin()
+        .from('assessment_results')
+        .select('id, completed_at')
+        .eq('user_id', existingUser.id)
+        .maybeSingle();
+
+      if (existingAssessment) {
+        console.log('Assessment submit blocked: user already completed assessment', { userId: existingUser.id, email: normalizedEmail });
+        return NextResponse.json({
+          error: 'You have already completed your career assessment!',
+          alreadyCompleted: true,
+          userId: existingUser.id
+        }, { status: 400 });
+      }
+
       const { error: profileUpdateError } = await getSupabaseAdmin()
         .from('users')
         .update({

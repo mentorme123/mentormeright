@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { registerUser } from "./actions";
@@ -15,6 +15,20 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [nextUrl, setNextUrl] = useState("/career-assessment.html");
+  const [classParam, setClassParam] = useState("");
+  const [schoolParam, setSchoolParam] = useState("");
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      setNextUrl(url.searchParams.get('next') || '/career-assessment.html');
+      setEmail(url.searchParams.get('email') || '');
+      setName(url.searchParams.get('name') || '');
+      setClassParam(url.searchParams.get('class') || '');
+      setSchoolParam(url.searchParams.get('school') || '');
+    }
+  }, []);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,15 +37,11 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      console.log("Starting registration for:", email);
-
       const result = await registerUser({ email, password, fullName: name, role, institutionName });
 
       if (!result.success || !result.user) {
         throw new Error(result.error || "Registration failed.");
       }
-
-      console.log("Registration complete for:", result.user.id);
 
       if (role === "individual") {
         localStorage.setItem("mentorme_audience", audienceType);
@@ -40,7 +50,7 @@ export default function RegisterPage() {
       if (result.alreadyExists) {
         setError("An account with this email already exists. Redirecting to login...");
         setTimeout(() => {
-          window.location.href = "/login";
+          window.location.href = `/login?redirect=${encodeURIComponent(nextUrl)}`;
         }, 2000);
         return;
       }
@@ -53,13 +63,12 @@ export default function RegisterPage() {
         } else if (role === 'counselor') {
           window.location.href = '/dashboard/counselor';
         } else {
-          window.location.href = `/career-assessment.html?email=${encodeURIComponent(email || '')}&name=${encodeURIComponent(name || '')}`;
+          window.location.href = `${nextUrl}?email=${encodeURIComponent(email || '')}&name=${encodeURIComponent(name || '')}&class=${encodeURIComponent(classParam)}&school=${encodeURIComponent(schoolParam)}`;
         }
       } else {
         setSuccess(true);
       }
     } catch (err: unknown) {
-      console.error("Registration Error:", err);
       const message = err instanceof Error ? err.message : "Registration failed. Try again.";
       setError(message);
     } finally {
@@ -73,10 +82,22 @@ export default function RegisterPage() {
     try {
       const supabase = createClient();
       const siteUrl = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || '');
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('next') || '/assessment';
+      
+      const callbackParams = new URLSearchParams();
+      callbackParams.set('next', redirect);
+      
+      for (const [key, value] of urlParams.entries()) {
+        if (key !== 'next') {
+          callbackParams.set(key, value);
+        }
+      }
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${siteUrl}/auth/callback?next=/assessment`,
+          redirectTo: `${siteUrl}/auth/callback?${callbackParams.toString()}`,
         },
       });
       if (error) throw error;

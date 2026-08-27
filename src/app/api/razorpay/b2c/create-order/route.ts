@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Razorpay from 'razorpay';
 import { createClient } from '@/lib/supabase/server';
+import { createClient as createAdminClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,11 +29,7 @@ export async function POST(req: NextRequest) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const { itemType, itemId, itemName, amount, metadata } = await req.json();
+    const { itemType, itemId, itemName, amount, metadata, email, name } = await req.json();
 
     if (!itemType || !amount) {
       return NextResponse.json({ error: 'Missing required fields: itemType, amount' }, { status: 400 });
@@ -43,11 +40,63 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid amount. Must be a positive number between 1 and 100,000.' }, { status: 400 });
     }
 
+    let userId = user?.id;
+
+    if (!userId && email) {
+      const supabaseAdmin = createAdminClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        { auth: { autoRefreshToken: false, persistSession: false } }
+      );
+
+      const { data: existingUser } = await supabaseAdmin
+        .from('users')
+        .select('id')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (existingUser) {
+        userId = existingUser.id;
+      } else {
+        const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+          email,
+          email_confirm: true,
+          user_metadata: {
+            full_name: name || email?.split('@')[0] || 'User',
+          },
+        });
+
+        if (createError || !newUser.user) {
+          console.error('[razorpay/b2c/create-order] Guest user creation failed:', createError);
+          return NextResponse.json({ error: 'Failed to create user account for payment' }, { status: 500 });
+        }
+
+        const { error: profileError } = await supabaseAdmin
+          .from('users')
+          .insert({
+            id: newUser.user.id,
+            email,
+            name: name || email?.split('@')[0] || 'User',
+            role: 'individual',
+          });
+
+        if (profileError) {
+          console.error('[razorpay/b2c/create-order] Profile creation failed:', profileError);
+        }
+
+        userId = newUser.user.id;
+      }
+    }
+
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized. Please login or provide email for guest payment.' }, { status: 401 });
+    }
+
     console.log('[razorpay/b2c/create-order] Creating order:', { 
       itemType, 
       amountNum, 
       amountInPaise: amountNum * 100,
-      userId: user.id 
+      userId 
     });
 
     const receipt = `mentorme_b2c_${itemType}_${Date.now()}`;
@@ -59,7 +108,7 @@ export async function POST(req: NextRequest) {
         currency: 'INR',
         receipt: receipt,
         notes: {
-          user_id: user.id,
+          user_id: userId,
           item_type: itemType,
           item_id: itemId || '',
           item_name: itemName || '',
@@ -83,7 +132,7 @@ export async function POST(req: NextRequest) {
     const { data: payment, error: paymentError } = await supabase
       .from('payments')
       .insert({
-        user_id: user.id,
+        user_id: userId,
         razorpay_order_id: order.id,
         amount: amountNum,
         currency: 'INR',

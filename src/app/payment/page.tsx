@@ -75,27 +75,22 @@ export default function PaymentPage() {
         }]
       });
     }
-    setTimeout(async () => {
-      if (user) {
-        await supabase
-          .from('users')
-          .update({ has_paid_report: true, payment_status: 'completed' })
-          .eq('id', user.id);
-      }
-      const email = user?.email || emailParam;
-      const name = profile?.name || user?.user_metadata?.full_name || nameParam;
-      const cls = profile?.education_level || classParam;
-      const school = profile?.institution_name || schoolParam;
+    if (user) {
+      await supabase
+        .from('users')
+        .update({ has_paid_report: true, payment_status: 'completed' })
+        .eq('id', user.id);
+    }
+    const email = user?.email || emailParam;
+    const name = profile?.name || user?.user_metadata?.full_name || nameParam;
+    const cls = profile?.education_level || classParam;
+    const school = profile?.institution_name || schoolParam;
+    setTimeout(() => {
       window.location.href = `${nextUrl}?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&class=${encodeURIComponent(cls)}&school=${encodeURIComponent(school)}`;
     }, 1500);
   };
 
   const handlePayClick = () => {
-    if (!user) {
-      const current = new URL(window.location.href);
-      window.location.href = `/login?redirect=/payment&${current.searchParams.toString()}`;
-      return;
-    }
     setShowPaymentModal(true);
   };
 
@@ -163,6 +158,8 @@ export default function PaymentPage() {
         itemName="Career Assessment And Detailed Career Report"
         amount={1999}
         description="AI-generated comprehensive career report with personalized recommendations and skill development plans."
+        email={user?.email || emailParam}
+        name={profile?.name || user?.user_metadata?.full_name || nameParam}
       />
     </div>
   );

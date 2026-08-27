@@ -57,7 +57,7 @@ export default function LoginPage() {
         return;
       }
 
-      let target = `/career-assessment.html?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
+      let target = `${redirect || '/career-assessment.html'}?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
       if (role === 'institutional') target = '/dashboard/institution';
       else if (role === 'admin') target = '/dashboard/admin';
       else if (role === 'counselor') target = '/dashboard/counselor';

@@ -13,6 +13,8 @@ interface B2CPaymentModalProps {
   itemName: string;
   amount: number;
   description?: string;
+  email?: string;
+  name?: string;
 }
 
 export function B2CPaymentModal({
@@ -23,6 +25,8 @@ export function B2CPaymentModal({
   itemName,
   amount,
   description,
+  email,
+  name,
 }: B2CPaymentModalProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -42,6 +46,8 @@ export function B2CPaymentModal({
           itemName,
           amount: amountInRupees,
           metadata: { description: description || itemName },
+          email,
+          name,
         }),
       });
 
@@ -59,8 +65,8 @@ export function B2CPaymentModal({
         description: description || itemName,
         order_id: orderData.orderId,
         prefill: {
-          name: "",
-          email: "",
+          name: name || "",
+          email: email || "",
           contact: "",
         },
         theme: {

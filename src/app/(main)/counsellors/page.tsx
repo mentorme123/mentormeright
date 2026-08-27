@@ -38,7 +38,7 @@ export default function CounsellorsLanding() {
         const profileName = userProfile?.name || user.user_metadata?.full_name || '';
         const profileClass = userProfile?.education_level || '';
         const profileSchool = userProfile?.institution_name || '';
-        router.push(`/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`);
+        router.push(`/assessment?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`);
       }, 3000);
       return;
     }

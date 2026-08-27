@@ -493,9 +493,9 @@ export default function CareerLibrary() {
                         {!userResults ? (
                           <div className="text-center p-4 bg-white/10 rounded-2xl border border-white/20">
                             <p className="font-bold text-indigo-100 mb-4">Take the assessment to unlock your compatibility score!</p>
-                            <a href="/career-assessment.html">
-                              <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black">Take Assessment</Button>
-                            </a>
+                             <a href="/assessment">
+                               <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black">Take Assessment</Button>
+                             </a>
                           </div>
                         ) : (
                           <div className="space-y-4">

@@ -449,7 +449,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
           <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
             <h3 className="text-lg font-black text-slate-800">App Resources</h3>
             <p className="text-sm text-slate-500 mt-2">Complete the assessment to unlock AI Simulator, Exam War Room, NEP Certificates, and Career ROI.</p>
-            <a href={`/career-assessment.html?email=${encodeURIComponent(authUser?.email || '')}&name=${encodeURIComponent(profile?.name || authUser?.user_metadata?.full_name || '')}&class=${encodeURIComponent(profile?.education_level || '')}&school=${encodeURIComponent(profile?.institution_name || '')}`} className="inline-block mt-4">
+             <a href={`/assessment?email=${encodeURIComponent(authUser?.email || '')}&name=${encodeURIComponent(profile?.name || authUser?.user_metadata?.full_name || '')}&class=${encodeURIComponent(profile?.education_level || '')}&school=${encodeURIComponent(profile?.institution_name || '')}`} className="inline-block mt-4">
               <button className="bg-brand-orange text-white font-bold px-6 py-3 rounded-xl shadow-lg text-sm">
                 Complete Assessment
               </button>
@@ -540,7 +540,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
           <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm text-center">
             <h3 className="text-lg font-black text-slate-800 mb-2">Complete Your Career Assessment</h3>
             <p className="text-sm text-slate-500 mb-6">Take the assessment to unlock your personalized career dashboard.</p>
-            <a href={`/career-assessment.html?email=${encodeURIComponent(authUser?.email || '')}&name=${encodeURIComponent(profile?.name || authUser?.user_metadata?.full_name || '')}&class=${encodeURIComponent(profile?.education_level || '')}&school=${encodeURIComponent(profile?.institution_name || '')}`}>
+             <a href={`/assessment?email=${encodeURIComponent(authUser?.email || '')}&name=${encodeURIComponent(profile?.name || authUser?.user_metadata?.full_name || '')}&class=${encodeURIComponent(profile?.education_level || '')}&school=${encodeURIComponent(profile?.institution_name || '')}`}>
               <button className="bg-brand-orange text-white font-bold px-6 py-3 rounded-xl shadow-lg text-sm">
                 Take Assessment
               </button>

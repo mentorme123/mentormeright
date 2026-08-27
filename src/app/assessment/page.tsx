@@ -2,16 +2,30 @@
 
 import { useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 export default function AssessmentPage() {
+  const searchParams = useSearchParams();
+
   useEffect(() => {
     async function checkAuthAndRedirect() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
 
+      const next = searchParams.get('next') || '/career-assessment.html';
+      const email = searchParams.get('email') || '';
+      const name = searchParams.get('name') || '';
+      const cls = searchParams.get('class') || '';
+      const school = searchParams.get('school') || '';
+
       if (!user) {
-        window.location.href = "/career-assessment.html";
+        const params = new URLSearchParams();
+        params.set('next', next);
+        if (email) params.set('email', email);
+        if (name) params.set('name', name);
+        if (cls) params.set('class', cls);
+        if (school) params.set('school', school);
+        window.location.href = `/payment?${params.toString()}`;
         return;
       }
 
@@ -21,20 +35,27 @@ export default function AssessmentPage() {
         .eq('id', user.id)
         .maybeSingle();
 
-      const email = user.email || '';
-      const name = userProfile?.name || user?.user_metadata?.full_name || '';
-      const cls = userProfile?.education_level || '';
-      const school = userProfile?.institution_name || '';
+      const isGoogleUser = user.user_metadata?.provider === 'google' || user.user_metadata?.iss === 'https://accounts.google.com';
 
-      window.location.href = `/career-assessment.html?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&class=${encodeURIComponent(cls)}&school=${encodeURIComponent(school)}`;
+      if (isGoogleUser) {
+        const params = new URLSearchParams();
+        params.set('next', next);
+        params.set('email', user.email || '');
+        params.set('name', userProfile?.name || user.user_metadata?.full_name || '');
+        params.set('class', userProfile?.education_level || '');
+        params.set('school', userProfile?.institution_name || '');
+        window.location.href = `/payment?${params.toString()}`;
+        return;
+      }
+
+      window.location.href = `${next}?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;
     }
 
     checkAuthAndRedirect();
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
-      <Loader2 className="w-10 h-10 animate-spin text-brand-blue" />
       <p className="text-sm font-semibold text-slate-600">Loading MentorMe Career Intelligence Assessment...</p>
     </div>
   );

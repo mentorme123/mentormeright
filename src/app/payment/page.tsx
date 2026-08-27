@@ -7,52 +7,51 @@ import { Crown, Loader2, IndianRupee } from "lucide-react";
 import { B2CPaymentModal } from "@/components/b2c-payment-modal";
 import { RazorpayScript } from "@/components/razorpay-script";
 
-export default function GooglePaymentPage() {
+export default function PaymentPage() {
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<{ id: string; email?: string; user_metadata?: { full_name?: string; provider?: string; iss?: string } } | null>(null);
   const [profile, setProfile] = useState<any>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [nextUrl, setNextUrl] = useState("/career-assessment.html");
+  const [emailParam, setEmailParam] = useState("");
+  const [nameParam, setNameParam] = useState("");
+  const [classParam, setClassParam] = useState("");
+  const [schoolParam, setSchoolParam] = useState("");
 
   useEffect(() => {
     async function load() {
+      const url = new URL(window.location.href);
+      setNextUrl(url.searchParams.get('next') || '/career-assessment.html');
+      setEmailParam(url.searchParams.get('email') || '');
+      setNameParam(url.searchParams.get('name') || '');
+      setClassParam(url.searchParams.get('class') || '');
+      setSchoolParam(url.searchParams.get('school') || '');
+
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        window.location.href = "/login";
-        return;
-      }
-
-      const { data: userProfile } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      setProfile(userProfile);
-
-      const { data: existingAssessment } = await supabase
-        .from('assessment_results')
-        .select('id')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (existingAssessment) {
-        window.location.href = "/dashboard/student";
-        return;
-      }
-
-      const isGoogleUser = user.user_metadata?.provider === 'google' || user.user_metadata?.iss === 'https://accounts.google.com';
-      if (!isGoogleUser) {
-        window.location.href = `/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user?.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;
-        return;
-      }
-
       setUser(user);
 
-      if (userProfile && userProfile.has_paid_report) {
-        window.location.href = `/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user?.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;
-        return;
+      if (user) {
+        const { data: userProfile } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        setProfile(userProfile);
+
+        const isGoogleUser = user.user_metadata?.provider === 'google' || user.user_metadata?.iss === 'https://accounts.google.com';
+
+        if (!isGoogleUser) {
+          window.location.href = `/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;
+          return;
+        }
+
+        if (userProfile && userProfile.has_paid_report) {
+          window.location.href = `/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;
+          return;
+        }
       }
 
       setLoading(false);
@@ -83,7 +82,11 @@ export default function GooglePaymentPage() {
           .update({ has_paid_report: true, payment_status: 'completed' })
           .eq('id', user.id);
       }
-      window.location.href = `/career-assessment.html?email=${encodeURIComponent(user?.email || '')}&name=${encodeURIComponent(profile?.name || user?.user_metadata?.full_name || '')}&class=${encodeURIComponent(profile?.education_level || '')}&school=${encodeURIComponent(profile?.institution_name || '')}`;
+      const email = user?.email || emailParam;
+      const name = profile?.name || user?.user_metadata?.full_name || nameParam;
+      const cls = profile?.education_level || classParam;
+      const school = profile?.institution_name || schoolParam;
+      window.location.href = `${nextUrl}?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&class=${encodeURIComponent(cls)}&school=${encodeURIComponent(school)}`;
     }, 1500);
   };
 
@@ -104,7 +107,7 @@ export default function GooglePaymentPage() {
         <div className="space-y-2">
           <h2 className="text-2xl font-black text-slate-800">Complete Your Payment</h2>
           <p className="text-sm text-slate-500">
-            You signed in with Google. Please complete the payment to access the career assessment and unlock your personalized report.
+            Please complete the payment to access the career assessment and unlock your personalized report.
           </p>
         </div>
         <div className="bg-slate-50 rounded-2xl p-6 space-y-3">

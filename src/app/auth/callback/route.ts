@@ -65,9 +65,6 @@ export async function GET(request: Request) {
     if (userProfile) {
       console.log('[auth/callback] Existing profile role:', userProfile.role);
       if (userProfile.role === 'individual') {
-        if (isGoogleUser) {
-          return NextResponse.redirect(new URL('/assessment', productionBase));
-        }
         return NextResponse.redirect(new URL(next, productionBase));
       } else if (userProfile.role === 'institutional') {
         return NextResponse.redirect(new URL('/dashboard/institution', productionBase));
@@ -76,10 +73,6 @@ export async function GET(request: Request) {
       } else if (userProfile.role === 'counselor') {
         return NextResponse.redirect(new URL('/dashboard/counselor', productionBase));
       }
-    }
-
-    if (isGoogleUser) {
-      return NextResponse.redirect(new URL('/assessment', productionBase));
     }
 
     const redirectUrl = new URL(next, productionBase);

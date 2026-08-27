@@ -137,12 +137,12 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-8 md:p-10 rounded-3xl shadow-xl text-center">
           <h3 className="text-2xl md:text-3xl font-bold mb-3">Ready to explore more?</h3>
           <p className="text-slate-300 mb-6 text-base md:text-lg max-w-2xl mx-auto">
-            If you are interested, take our MentorMe Career Intelligence Report test to discover your ideal career path.
+            If you are interested, take our MentorMe Career Intelligence Assessment test to discover your ideal career path.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link href="/payment">
+            <Link href="/assessment">
               <Button className="bg-brand-orange hover:bg-brand-orange/90 text-white border-0 shadow-lg px-8 py-5 rounded-full text-base font-bold transition-all">
-                Take MentorMe Career Intelligence Report <ArrowRight className="ml-2 h-5 w-5" />
+                Take MentorMe Career Intelligence Assessment <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link href="/blogs">

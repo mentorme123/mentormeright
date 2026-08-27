@@ -256,14 +256,14 @@ export default function EngineeringTechnologyCareerPage() {
           <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
             <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Data Science?</h2>
             <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">
-              MentorMe&apos;s Career Guidance &amp; MentorMe Career Intelligence Report can help students understand their interests, skills and personality and explore suitable career pathways before making important education decisions.
+              MentorMe&apos;s Career Guidance &amp; MentorMe Career Intelligence Assessment can help students understand their interests, skills and personality and explore suitable career pathways before making important education decisions.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <a href="/career-assessment.html">
+              <Link href="/assessment">
                 <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">
-                  Take MentorMe Career Intelligence Report
+                  Take MentorMe Career Intelligence Assessment
                 </Button>
-              </a>
+              </Link>
             </div>
             <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">
               MentorMe – Turning Passions into Professions.

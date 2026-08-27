@@ -261,11 +261,11 @@ export default function MedicineHealthcareCareerPage() {
               MentorMe’s Career Guidance and Psychometric Assessments empower students to discover their ideal career path early.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <a href="/career-assessment.html">
+              <Link href="/assessment">
                 <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">
-                  Take MentorMe Career Intelligence Report
+                  Take MentorMe Career Intelligence Assessment
                 </Button>
-              </a>
+              </Link>
             </div>
             <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">
               MentorMe – Turning Passions into Professions.

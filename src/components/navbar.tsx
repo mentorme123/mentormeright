@@ -259,36 +259,36 @@ export function Navbar() {
               </button>
               <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
                 <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
-                  <Link 
-                    href="/career-library" 
-                    className="block px-3 py-2 rounded-xl text-sm font-bold text-slate-900 hover:text-brand-blue hover:bg-brand-blue/5 transition-all"
-                    onClick={() => setCareerRoadmapsOpen(false)}
-                  >
-                    1] Career Roadmaps (250)
-                  </Link>
-                  <div className="pl-3 space-y-1">
-                    <Link 
-                      href="/career-library/engineering-technology" 
-                      className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                      onClick={() => setCareerRoadmapsOpen(false)}
-                    >
-                      a] Engineering &amp; Technology
-                    </Link>
-                    <Link 
-                      href="/career-library/medicine-healthcare" 
-                      className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                      onClick={() => setCareerRoadmapsOpen(false)}
-                    >
-                      b] Medicine &amp; Healthcare
-                    </Link>
-                    <Link 
-                      href="/career-library/commerce-finance-accounting" 
-                      className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                      onClick={() => setCareerRoadmapsOpen(false)}
-                    >
-                      c] Commerce, Finance &amp; Accounting
-                    </Link>
-                  </div>
+                   <Link 
+                     href="/career-library" 
+                     className="block px-3 py-2 rounded-xl text-sm font-bold text-slate-900 hover:text-brand-blue hover:bg-brand-blue/5 transition-all"
+                     onClick={() => setCareerRoadmapsOpen(false)}
+                   >
+                     Career Roadmaps (250+)
+                   </Link>
+                   <div className="pl-3 space-y-1">
+                     <Link 
+                       href="/career-library/engineering-technology" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       1] Engineering &amp; Technology
+                     </Link>
+                     <Link 
+                       href="/career-library/medicine-healthcare" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       2] Medicine &amp; Healthcare
+                     </Link>
+                     <Link 
+                       href="/career-library/commerce-finance-accounting" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       3] Commerce, Finance &amp; Accounting
+                     </Link>
+                   </div>
                 </div>
               </div>
             </div>

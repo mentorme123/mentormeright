@@ -32,6 +32,11 @@ export default function PaymentPage() {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
 
+      if (!user) {
+        window.location.href = `/login?redirect=/assessment`;
+        return;
+      }
+
       if (user) {
         const { data: userProfile } = await supabase
           .from('users')

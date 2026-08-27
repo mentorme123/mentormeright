@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { blogPosts } from "@/data/blogs";
-import { ArrowRight, BookOpen, Lightbulb, Settings, GraduationCap, Database, HeartPulse, TrendingUp } from "lucide-react";
+import { ArrowRight, BookOpen, Lightbulb, Settings, GraduationCap } from "lucide-react";
 
 const blogConfig = [
   {
@@ -25,21 +25,6 @@ const blogConfig = [
     slug: "career-options-pcm-mpc-stream",
     icon: GraduationCap,
     color: "from-violet-500 to-violet-600",
-  },
-  {
-    slug: "data-scientist-career-in-india",
-    icon: Database,
-    color: "from-cyan-500 to-blue-600",
-  },
-  {
-    slug: "occupational-therapist-career-in-india",
-    icon: HeartPulse,
-    color: "from-rose-500 to-pink-600",
-  },
-  {
-    slug: "investment-banker-career-in-india",
-    icon: TrendingUp,
-    color: "from-amber-500 to-amber-700",
   },
 ];
 

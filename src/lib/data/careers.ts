@@ -14,6 +14,45 @@ export type Career = {
 
 export const careersData: Career[] = [
   {
+    id: "car_data_scientist",
+    title: "Data Scientist",
+    category: "Engineering & Technology",
+    stream: "Science",
+    description: "Data Science is one of the most promising technology careers in India, combining mathematics, statistics, programming and business problem-solving to turn data into useful insights and decisions.",
+    salary_range: "₹6L - ₹25L per year",
+    education_path: "B.Tech/B.E., B.Sc in Data Science/Statistics, BCA, or quantitative degree followed by M.Sc/M.Tech.",
+    skills_required: ["Python", "SQL", "Statistics", "Machine Learning", "Data Visualization", "Problem Solving"],
+    growth_outlook: "Rapidly Growing",
+    is_trending: true,
+    riasec_codes: ["I", "C", "R"]
+  },
+  {
+    id: "car_occupational_therapist",
+    title: "Occupational Therapist",
+    category: "Medicine & Healthcare",
+    stream: "Science",
+    description: "Occupational Therapy is a healthcare career that helps people of all ages become more independent in daily activities through rehabilitation, therapeutic activities, and adaptive techniques.",
+    salary_range: "₹3.5L - ₹18L per year",
+    education_path: "Bachelor of Occupational Therapy (BOT) - 4.5 years, followed optionally by Master of Occupational Therapy (MOT).",
+    skills_required: ["Patience & Empathy", "Anatomy & Physiology", "Problem-Solving", "Communication", "Rehabilitation Planning"],
+    growth_outlook: "High",
+    is_trending: true,
+    riasec_codes: ["S", "I", "R"]
+  },
+  {
+    id: "car_investment_banker",
+    title: "Investment Banker",
+    category: "Commerce, Finance & Accounting",
+    stream: "Commerce",
+    description: "Investment Banking involves advising corporations and institutions on mergers and acquisitions, capital raising, IPOs, corporate valuation, and strategic financial management.",
+    salary_range: "₹8L - ₹50L+ per year",
+    education_path: "B.Com / BBA / B.Tech followed by MBA in Finance (from top IIMs/B-schools) or CFA / CA certifications.",
+    skills_required: ["Financial Modelling", "Valuation (DCF/LBO)", "Accounting", "Quantitative Analysis", "Negotiation & Pitching"],
+    growth_outlook: "Rapidly Growing",
+    is_trending: true,
+    riasec_codes: ["E", "C", "I"]
+  },
+  {
     "id": "car_1",
     "title": "Systems Architect I",
     "category": "Engineering",

@@ -275,18 +275,18 @@ export function Navbar() {
                       a] Engineering &amp; Technology
                     </Link>
                     <Link 
-                      href="/career-library?stream=Science&search=Medical" 
+                      href="/career-library/medicine-healthcare" 
                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                       onClick={() => setCareerRoadmapsOpen(false)}
                     >
                       b] Medicine &amp; Healthcare
                     </Link>
                     <Link 
-                      href="/career-library?stream=Commerce" 
+                      href="/career-library/commerce-finance-accounting" 
                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                       onClick={() => setCareerRoadmapsOpen(false)}
                     >
-                      c] Commerce, Finance &amp; Account
+                      c] Commerce, Finance &amp; Accounting
                     </Link>
                   </div>
                 </div>

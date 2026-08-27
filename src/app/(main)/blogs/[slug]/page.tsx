@@ -17,26 +17,44 @@ function renderContent(content: string): ReactElement[] {
   const elements: ReactElement[] = [];
   let i = 0;
 
+  const parseFormattedText = (text: string): (string | ReactElement)[] => {
+    if (!text.includes("**")) return [text];
+    const parts = text.split(/(\*\*.*?\*\*)/g);
+    return parts.map((part, idx) => {
+      if (part.startsWith("**") && part.endsWith("**")) {
+        return <strong key={idx} className="font-bold text-slate-900">{part.slice(2, -2)}</strong>;
+      }
+      return part;
+    });
+  };
+
   while (i < lines.length) {
     const line = lines[i].trim();
 
-    if (line.startsWith("## ")) {
+    if (line.startsWith("### ")) {
+      elements.push(
+        <h3 key={i} className="text-xl font-bold text-slate-800 mt-8 mb-4">
+          {parseFormattedText(line.replace("### ", ""))}
+        </h3>
+      );
+      i++;
+    } else if (line.startsWith("## ")) {
       elements.push(
         <h2 key={i} className="text-3xl font-bold text-slate-900 mt-12 mb-6">
-          {line.replace("## ", "")}
+          {parseFormattedText(line.replace("## ", ""))}
         </h2>
       );
       i++;
-    } else if (line.startsWith("- ")) {
+    } else if (line.startsWith("- ") || line.startsWith("• ")) {
       const listItems: string[] = [];
-      while (i < lines.length && lines[i].trim().startsWith("- ")) {
-        listItems.push(lines[i].trim().replace("- ", ""));
+      while (i < lines.length && (lines[i].trim().startsWith("- ") || lines[i].trim().startsWith("• "))) {
+        listItems.push(lines[i].trim().replace(/^[-•]\s*/, ""));
         i++;
       }
       elements.push(
         <ul key={i} className="list-disc pl-6 mb-8 text-slate-700 space-y-3 text-lg">
           {listItems.map((item, idx) => (
-            <li key={idx}>{item}</li>
+            <li key={idx}>{parseFormattedText(item)}</li>
           ))}
         </ul>
       );
@@ -49,7 +67,7 @@ function renderContent(content: string): ReactElement[] {
       elements.push(
         <ol key={i} className="list-decimal pl-6 mb-8 text-slate-700 space-y-3 text-lg">
           {listItems.map((item, idx) => (
-            <li key={idx}>{item}</li>
+            <li key={idx}>{parseFormattedText(item)}</li>
           ))}
         </ol>
       );
@@ -58,7 +76,7 @@ function renderContent(content: string): ReactElement[] {
     } else {
       elements.push(
         <p key={i} className="text-slate-700 leading-relaxed mb-8 text-lg">
-          {line}
+          {parseFormattedText(line)}
         </p>
       );
       i++;

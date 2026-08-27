@@ -32,11 +32,6 @@ export default function PaymentPage() {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
 
-      if (!user) {
-        window.location.href = `/login?redirect=/assessment`;
-        return;
-      }
-
       if (user) {
         const { data: userProfile } = await supabase
           .from('users')
@@ -95,6 +90,15 @@ export default function PaymentPage() {
     }, 1500);
   };
 
+  const handlePayClick = () => {
+    if (!user) {
+      const current = new URL(window.location.href);
+      window.location.href = `/login?redirect=/payment&${current.searchParams.toString()}`;
+      return;
+    }
+    setShowPaymentModal(true);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
@@ -139,7 +143,7 @@ export default function PaymentPage() {
           </ul>
         </div>
         <Button
-          onClick={() => setShowPaymentModal(true)}
+          onClick={handlePayClick}
           className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg transition-all"
         >
           <Crown className="mr-2" size={18} />

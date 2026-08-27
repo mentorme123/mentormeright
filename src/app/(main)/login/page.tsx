@@ -49,6 +49,14 @@ export default function LoginPage() {
       const profileClass = userProfile?.education_level || '';
       const profileSchool = userProfile?.institution_name || '';
 
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect');
+
+      if (redirect === '/payment') {
+        window.location.href = `/payment?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
+        return;
+      }
+
       let target = `/career-assessment.html?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
       if (role === 'institutional') target = '/dashboard/institution';
       else if (role === 'admin') target = '/dashboard/admin';
@@ -73,10 +81,22 @@ export default function LoginPage() {
     try {
       const supabase = createClient();
       const siteUrl = typeof window !== 'undefined' ? window.location.origin : (process.env.NEXT_PUBLIC_SITE_URL || '');
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect') || '/assessment';
+      
+      const callbackParams = new URLSearchParams();
+      callbackParams.set('next', redirect);
+      
+      for (const [key, value] of urlParams.entries()) {
+        if (key !== 'redirect') {
+          callbackParams.set(key, value);
+        }
+      }
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${siteUrl}/auth/callback?next=/assessment`,
+          redirectTo: `${siteUrl}/auth/callback?${callbackParams.toString()}`,
         },
       });
       if (error) throw error;

@@ -87,8 +87,8 @@ export default function LoginPage() {
       const callbackParams = new URLSearchParams();
       callbackParams.set('next', redirect);
       
-      Array.from(urlParams.entries()).forEach(([key, value]) => {
-        if (key !== 'next') {
+      urlParams.forEach((value, key) => {
+        if (key !== 'next' && key !== 'redirect') {
           callbackParams.set(key, value);
         }
       });

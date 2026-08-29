@@ -3,8 +3,8 @@ import { CheckCircle2, TrendingUp, DollarSign, Building2, GraduationCap, Award, 
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Digital Marketing Specialist Career in India | MentorMe Career Library",
-  description: "Digital Marketing is one of the most accessible and rapidly evolving careers in India. Learn about stream choices, degrees, certifications, skills, salary, and future scope.",
+  title: "Management & Business | MentorMe Career Library",
+  description: "Explore Management & Business careers in India including Digital Marketing, HR, Finance, and Entrepreneurship. Learn about degrees, colleges, skills, salary and future scope.",
 };
 
 export default function ManagementBusinessCareerPage() {
@@ -16,7 +16,7 @@ export default function ManagementBusinessCareerPage() {
             Management &amp; Business
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Digital Marketing Specialist Career in India
+            Management &amp; Business
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
             Digital Marketing is one of the most accessible and rapidly evolving career options in India. A Digital Marketing Specialist helps businesses attract customers, build their brands and generate leads or sales using online channels such as search engines, social media, websites, email and digital advertising.

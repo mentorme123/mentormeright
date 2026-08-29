@@ -3,8 +3,8 @@ import { CheckCircle2, TrendingUp, DollarSign, Building2, GraduationCap, Award, 
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Investment Banker Career in India | MentorMe Career Library",
-  description: "Investment Banking is one of the most competitive and high-impact careers in finance. Learn about 10th/12th stream choices, degrees, entrance exams, top colleges, skills, salary, and future scope.",
+  title: "Commerce, Finance & Accounting | MentorMe Career Library",
+  description: "Explore Commerce, Finance & Accounting careers in India including Investment Banking, CA, CS, and Financial Analysis. Learn about degrees, colleges, skills, salary and future scope.",
 };
 
 export default function CommerceFinanceAccountingCareerPage() {
@@ -16,7 +16,7 @@ export default function CommerceFinanceAccountingCareerPage() {
             Commerce, Finance &amp; Accounting
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Investment Banker Career in India
+            Commerce, Finance &amp; Accounting
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
             Investment Banking is one of the most competitive and high-impact careers in finance. Investment Bankers help companies raise capital, complete mergers and acquisitions, prepare for IPOs, evaluate businesses and make major financial decisions.

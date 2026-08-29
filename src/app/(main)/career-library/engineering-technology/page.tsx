@@ -3,8 +3,8 @@ import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Data Scientist Career in India | MentorMe",
-  description: "Data Science is one of the most promising technology careers in India, combining mathematics, statistics, programming and business problem-solving to turn data into useful insights and decisions.",
+  title: "Engineering & Technology | MentorMe Career Library",
+  description: "Explore Engineering & Technology careers in India including Data Science, Software Engineering, AI/ML, and Cybersecurity. Learn about degrees, colleges, skills, salary and future scope.",
 };
 
 export default function EngineeringTechnologyCareerPage() {
@@ -16,7 +16,7 @@ export default function EngineeringTechnologyCareerPage() {
             Engineering &amp; Technology
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Data Scientist Career in India
+            Engineering &amp; Technology
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
             Data Science is one of the most promising technology careers in India, combining mathematics, statistics, programming and business problem-solving to turn data into useful insights and decisions.

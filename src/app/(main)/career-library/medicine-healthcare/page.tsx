@@ -3,8 +3,8 @@ import { CheckCircle2, HeartPulse, Stethoscope, Award, GraduationCap, DollarSign
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Occupational Therapist Career in India | MentorMe Career Library",
-  description: "Occupational Therapy is a healthcare career that helps people become more independent in their everyday lives. Learn about subjects after 10th, degrees, NEET requirements, top colleges, skills, salary, and future scope.",
+  title: "Medicine & Healthcare | MentorMe Career Library",
+  description: "Explore Medicine & Healthcare careers in India including MBBS, Nursing, Physiotherapy, and Occupational Therapy. Learn about degrees, colleges, skills, salary and future scope.",
 };
 
 export default function MedicineHealthcareCareerPage() {
@@ -16,7 +16,7 @@ export default function MedicineHealthcareCareerPage() {
             Medicine &amp; Healthcare
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Occupational Therapist Career in India
+            Medicine &amp; Healthcare
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
             Occupational Therapy is a healthcare career that helps people become more independent in their everyday lives. Occupational Therapists work with children, adults and older people who have physical, developmental, neurological, psychological or other challenges that affect their ability to perform daily activities.

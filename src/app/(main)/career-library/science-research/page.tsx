@@ -3,8 +3,8 @@ import { CheckCircle2, Brain, HelpCircle, Award, GraduationCap, UserCheck, Trend
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Astrophysicist Career in India | MentorMe Career Library",
-  description: "Astrophysics is the branch of science that uses Physics and Mathematics to understand stars, planets, galaxies, black holes, the universe and the fundamental processes that shape the cosmos.",
+  title: "Science & Research | MentorMe Career Library",
+  description: "Explore Science & Research careers in India including Astrophysics, Biotechnology, Research Science, and Laboratory Technology. Learn about degrees, colleges, skills, salary and future scope.",
 };
 
 export default function ScienceResearchCareerPage() {
@@ -16,7 +16,7 @@ export default function ScienceResearchCareerPage() {
             Science &amp; Research
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Astrophysicist Career in India
+            Science &amp; Research
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
             Astrophysics is the branch of science that uses Physics and Mathematics to understand stars, planets, galaxies, black holes, the universe and the fundamental processes that shape the cosmos.

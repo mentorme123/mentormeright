@@ -9,7 +9,7 @@ export const metadata = {
 
 export default function DigitalMarketingCareerPage() {
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
+    <div className="space-y-0">
       <section className="bg-brand-blue text-white py-16 px-4">
         <div className="max-w-4xl mx-auto space-y-4">
           <div className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-2">

@@ -3,11 +3,11 @@ import { CheckCircle2, TrendingUp, DollarSign, Building2, GraduationCap, Award, 
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Investment Banker Career in India | MentorMe Career Library",
-  description: "Investment Banking is one of the most competitive and high-impact careers in finance. Learn about 10th/12th stream choices, degrees, entrance exams, top colleges, skills, salary, and future scope.",
+  title: "Digital Marketing Specialist Career in India | MentorMe Career Library",
+  description: "Digital Marketing is one of the most accessible and rapidly evolving careers in India. Learn about stream choices, degrees, certifications, skills, salary, and future scope.",
 };
 
-export default function CommerceFinanceAccountingCareerPage() {
+export default function DigitalMarketingCareerPage() {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
       <section className="bg-brand-blue text-white py-16 px-4">
@@ -16,13 +16,13 @@ export default function CommerceFinanceAccountingCareerPage() {
             Commerce, Finance &amp; Accounting
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Investment Banker Career in India
+            Digital Marketing Specialist Career in India
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
-            Investment Banking is one of the most competitive and high-impact careers in finance. Investment Bankers help companies raise capital, complete mergers and acquisitions, prepare for IPOs, evaluate businesses and make major financial decisions.
+            Digital Marketing is one of the most accessible and rapidly evolving career options in India. A Digital Marketing Specialist helps businesses attract customers, build their brands and generate leads or sales using online channels such as search engines, social media, websites, email and digital advertising.
           </p>
           <p className="text-white/80 font-medium italic pt-1">
-            It is a career suited to students who enjoy Finance, Mathematics, Economics, Business, Analysis and Problem-Solving.
+            This career can be particularly suitable for students who enjoy creativity, communication, technology, business and understanding consumer behaviour.
           </p>
         </div>
       </section>
@@ -32,27 +32,30 @@ export default function CommerceFinanceAccountingCareerPage() {
 
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
             <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-              <Building2 className="text-brand-blue shrink-0" />
-              What Does an Investment Banker Do?
+              <Briefcase className="text-brand-blue shrink-0" />
+              What Does a Digital Marketing Specialist Do?
             </h2>
             <p className="text-slate-700 leading-relaxed text-base">
-              An Investment Banker advises companies and institutions on major financial transactions.
+              A Digital Marketing Specialist plans, executes and analyses online marketing campaigns to help a business achieve its goals.
             </p>
-            <p className="font-bold text-slate-800 text-base">Typical responsibilities include:</p>
+            <p className="font-bold text-slate-800 text-base">Depending on the organisation, the role may involve:</p>
             <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Mergers &amp; Acquisitions (M&amp;A)</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Initial Public Offerings (IPOs)</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Raising equity capital</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Raising debt</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Company valuation</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial modelling</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Due diligence</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Preparing financial presentations</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Market and industry research</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Strategic financial advisory</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Search Engine Optimisation (SEO)</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Search Engine Marketing (SEM)</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Social Media Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Content Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Google Ads</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Meta Ads</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Email Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Website Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Influencer Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Marketing Analytics</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Lead Generation</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> E-commerce Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Conversion Rate Optimisation</div>
             </div>
             <p className="text-slate-700 leading-relaxed text-base pt-2">
-              Investment banking therefore combines financial analysis, valuation, strategy, communication and negotiation. India&apos;s securities-market framework and regulatory oversight are established under SEBI (Securities and Exchange Board of India).
+              The National Qualification Register identifies digital marketing roles involving activities such as developing digital marketing strategies, attracting and engaging customers, measuring marketing analytics and managing digital campaigns.
             </p>
           </div>
 
@@ -62,51 +65,59 @@ export default function CommerceFinanceAccountingCareerPage() {
               What Subjects Should I Take After 10th?
             </h2>
             <p className="text-slate-700 leading-relaxed text-base">
-              There is no single compulsory stream for becoming an Investment Banker.
+              There is no compulsory stream for a career in Digital Marketing.
+            </p>
+            <p className="font-bold text-slate-800 text-base">Students can choose:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Commerce</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Science</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Arts / Humanities</div>
+            </div>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              However, Commerce can be particularly useful because it introduces students to Business Studies, Economics, Marketing and basic business concepts.
             </p>
             <p className="text-slate-700 leading-relaxed text-base">
-              For students interested in finance, the most natural choice is:
+              Students interested in content, media and communication may also find Arts/Humanities a good fit.
             </p>
-            <p className="font-bold text-slate-800 text-base">Commerce with Mathematics</p>
-            <p className="font-bold text-slate-800 text-base">Recommended subjects include:</p>
+            <p className="text-slate-700 leading-relaxed text-base">
+              Science students can also enter Digital Marketing without changing their career pathway.
+            </p>
+            <p className="font-bold text-slate-800 text-base pt-2">Useful subjects include:</p>
             <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Accountancy</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> English</div>
               <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Business Studies</div>
               <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Economics</div>
               <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Mathematics</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> English</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Computer Science / Informatics Practices</div>
             </div>
             <p className="text-slate-700 leading-relaxed text-base pt-2">
-              However, Science students can also become Investment Bankers. Engineering graduates are also recruited into investment banking and finance roles, particularly when they develop strong financial skills.
-            </p>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              If you are confident about a finance career, Commerce + Mathematics provides a particularly relevant foundation.
+              The most important advantage is not the stream itself but developing communication, creativity, analytical thinking and digital skills.
             </p>
           </div>
 
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
             <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
               <HelpCircle className="text-brand-blue shrink-0" />
-              Is Maths Compulsory for Investment Banking?
+              Is Maths Compulsory for Digital Marketing?
             </h2>
             <p className="text-slate-700 leading-relaxed text-base">
-              Mathematics is not compulsory for every Investment Banking degree or career pathway, but it is strongly recommended.
+              No. Mathematics is not compulsory for a career in Digital Marketing.
             </p>
             <p className="text-slate-700 leading-relaxed text-base">
-              Investment Banking involves:
+              However, basic numerical and analytical ability is useful because Digital Marketers regularly work with:
             </p>
             <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial calculations</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Ratios</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Valuation</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Statistics</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial modelling</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Data analysis</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Forecasting</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Discounted Cash Flow (DCF) analysis</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Website traffic</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Conversion rates</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Click-through rates</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Advertising budgets</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Cost per lead</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Return on Ad Spend (ROAS)</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Customer acquisition costs</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Campaign performance</div>
             </div>
             <p className="text-slate-700 leading-relaxed text-base pt-2">
-              You do not need to be an advanced mathematician, but you should be comfortable with numbers, logical reasoning and quantitative analysis.
+              You do not need advanced mathematics, but being comfortable with numbers, percentages and data interpretation is an advantage.
             </p>
           </div>
 
@@ -116,237 +127,291 @@ export default function CommerceFinanceAccountingCareerPage() {
               Which Degree Should I Choose?
             </h2>
             <p className="text-slate-700 leading-relaxed text-base">
-              There is no single mandatory degree for an Investment Banker.
+              Unlike professions such as Medicine or Law, there is no single mandatory degree to become a Digital Marketing Specialist.
             </p>
-            <p className="font-bold text-slate-800 text-base">Good undergraduate options include:</p>
+            <p className="font-bold text-slate-800 text-base">Relevant undergraduate degrees include:</p>
             <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> B.Com / B.Com (Hons.)</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> BBA / BBA Finance</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> BA Economics</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> B.Sc. Economics</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> B.Sc. Finance</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> B.Tech / B.E., followed by finance specialisation</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Other quantitative or business-related degrees</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> BBA / BBA Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> B.Com / B.Com Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> BA in Mass Communication</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> BA Advertising / Brand Management</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> BA / B.Sc. in related communication or marketing fields</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Other bachelor&apos;s degrees followed by specialised Digital Marketing training</div>
             </div>
             <p className="text-slate-700 leading-relaxed text-base pt-2">
-              For students targeting the most competitive investment-banking roles, a strong undergraduate degree followed by a top MBA in Finance or related specialisation can be an excellent pathway.
+              A degree can provide a strong foundation, but practical Digital Marketing skills and a demonstrable portfolio are extremely important.
             </p>
             <p className="text-slate-700 leading-relaxed text-base pt-2">
-              For example, IIM Ahmedabad&apos;s flagship MBA accepts graduates from diverse disciplines, including commerce, science, engineering and professional streams, with admission based on CAT and subsequent selection stages.
-            </p>
-            <p className="font-bold text-slate-800 text-base pt-2">Popular Career Pathways</p>
-            <div className="space-y-2 text-slate-700 text-base pl-2">
-              <p><span className="text-brand-blue font-bold">Path 1:</span> Class 10 → Commerce + Maths → B.Com → MBA Finance → Investment Banking</p>
-              <p><span className="text-brand-blue font-bold">Path 2:</span> Class 10 → Commerce + Maths → BBA Finance → MBA → Investment Banking</p>
-              <p><span className="text-brand-blue font-bold">Path 3:</span> Class 10 → Science + Maths → B.Tech → MBA Finance → Investment Banking</p>
-              <p><span className="text-brand-blue font-bold">Path 4:</span> Class 10 → Commerce/Science → Economics/Finance degree → Investment Banking</p>
-            </div>
-          </div>
-
-          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-              <HelpCircle className="text-brand-blue shrink-0" />
-              Which Entrance Exams Should I Take?
-            </h2>
-            <p className="text-slate-700 leading-relaxed text-base">
-              The entrance exam depends on the degree you choose.
-            </p>
-            <p className="font-bold text-slate-800 text-base">After Class 12</p>
-            <p className="text-slate-700 leading-relaxed text-base">
-              Depending on the institution, students may encounter:
-            </p>
-            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> CUET-UG</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> University-specific entrance examinations</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Institution-specific aptitude tests</div>
-            </div>
-            <p className="font-bold text-slate-800 text-base pt-2">For MBA</p>
-            <p className="text-slate-700 leading-relaxed text-base">
-              The most important Indian MBA entrance examination is:
-            </p>
-            <p className="font-bold text-slate-800 text-base">CAT – Common Admission Test</p>
-            <p className="text-slate-700 leading-relaxed text-base">Other exams can include:</p>
-            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> XAT</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> GMAT</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> NMAT</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> SNAP</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Other institute-specific examinations</div>
-            </div>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              For example, IIM Ahmedabad&apos;s flagship MBA uses CAT for domestic applicants, followed by analytical writing and personal interviews for shortlisted candidates.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-              <Building2 className="text-brand-blue shrink-0" />
-              Best Colleges for Investment Banking in India
-            </h2>
-            <p className="text-slate-700 leading-relaxed text-base">
-              There is no single list of “Investment Banking colleges.” Students should instead target institutions with strong Finance, Economics, Commerce, Management and placement ecosystems.
-            </p>
-            <p className="font-bold text-slate-800 text-base">Well-known institutions include:</p>
-            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIM Ahmedabad</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIM Bangalore</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIM Calcutta</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIM Lucknow</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIM Kozhikode</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIM Indore</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIT Bombay</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIT Delhi</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IIT Madras</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Shri Ram College of Commerce (SRCC)</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> St. Stephen&apos;s College</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> NMIMS</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Christ University</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Delhi University colleges offering Commerce/Economics</div>
-            </div>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              For MBA aspirants, the leading IIMs and other top business schools can provide access to investment banking, corporate finance, consulting and related financial-services roles.
-            </p>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              Do not select a college simply because it offers “Finance” in the course name. Look at curriculum, internships, finance clubs, industry exposure, alumni network and placement outcomes.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-              <DollarSign className="text-brand-blue shrink-0" />
-              Investment Banker Salary in India
-            </h2>
-            <p className="text-slate-700 leading-relaxed text-base">
-              The Investment Banker salary in India can vary significantly depending on the employer, qualification, role, experience and location.
-            </p>
-            <p className="font-bold text-slate-800 text-base">Typical career progression is:</p>
-            <p className="text-slate-700 leading-relaxed text-base">Analyst → Associate → Vice President → Director → Managing Director</p>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              Investment banking is generally considered a high-paying finance career, particularly at leading investment banks and financial institutions.
-            </p>
-            <p className="text-slate-700 leading-relaxed text-base">
-              However, compensation can include a combination of fixed salary and performance-linked bonuses, so students should not judge the profession only by advertised salary figures.
-            </p>
-            <p className="font-bold text-slate-800 text-base pt-2">The more important factors for long-term earning potential are:</p>
-            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Institution</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial skills</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Deal experience</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Employer</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Performance</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Networking</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Specialisation</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Experience</div>
-            </div>
-          </div>
-
-          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-              <TrendingUp className="text-brand-blue shrink-0" />
-              Future Scope of Investment Banking in India
-            </h2>
-            <p className="text-slate-700 leading-relaxed text-base">
-              The future scope of Investment Banking in India is closely connected with the country&apos;s growing capital markets, corporate activity, IPO ecosystem, mergers and acquisitions and financing requirements.
-            </p>
-            <p className="text-slate-700 leading-relaxed text-base">
-              Investment Bankers will continue to play an important role in:
-            </p>
-            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> IPOs</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Mergers &amp; Acquisitions</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Private Equity</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Venture Capital</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Debt Markets</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Equity Markets</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Corporate Restructuring</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial Advisory</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Capital Raising</div>
-            </div>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              The National Institute of Securities Markets (NISM) describes investment banking as covering areas such as M&amp;A, equity and debt financing, IPOs and financial structuring.
-            </p>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              India&apos;s growing financial ecosystem therefore creates opportunities for professionals with strong finance, valuation and analytical skills.
-            </p>
-          </div>
-
-          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
-              <Brain className="text-brand-blue shrink-0" />
-              Skills Required to Become an Investment Banker
-            </h2>
-            <p className="text-slate-700 leading-relaxed text-base">
-              Investment Banking requires a combination of technical finance skills and strong interpersonal abilities.
-            </p>
-            <p className="font-bold text-slate-800 text-base">Technical Skills</p>
-            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial Accounting</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial Analysis</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial Modelling</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Company Valuation</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Excel</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> PowerPoint</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Corporate Finance</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Investment Analysis</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial Markets</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> M&amp;A</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> DCF Valuation</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Comparable Company Analysis</div>
-            </div>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              NISM specifically highlights areas such as financial modelling, Excel, PowerPoint, financial markets and valuation-related capabilities for investment-banking careers.
-            </p>
-            <p className="font-bold text-slate-800 text-base pt-2">Soft Skills</p>
-            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Communication</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Presentation</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Negotiation</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Attention to detail</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Analytical thinking</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Problem-solving</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Time management</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Teamwork</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Commercial awareness</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Ability to work under pressure</div>
-            </div>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">
-              Investment Bankers also need strong financial storytelling — the ability to turn complex financial information into a clear business recommendation.
+              There are also recognised skill-based pathways. India&apos;s National Qualification Register includes qualifications covering areas such as SEO, SEM, content marketing, social media marketing and data analytics.
             </p>
           </div>
 
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
             <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
               <UserCheck className="text-brand-blue shrink-0" />
-              Is Investment Banking a Good Career for You?
+              Can I Become a Digital Marketer Without a Degree?
             </h2>
             <p className="text-slate-700 leading-relaxed text-base">
-              Investment Banking could be a good career choice if you:
+              Yes.
             </p>
+            <p className="text-slate-700 leading-relaxed text-base">
+              Digital Marketing is one of the careers where students can build skills through:
+            </p>
+            <p className="text-slate-700 leading-relaxed text-base">
+              Class 12 → Digital Marketing certification → Projects → Internship → Digital Marketing job
+            </p>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              However, students should not assume that completing a short certificate automatically leads to a job.
+            </p>
+            <p className="text-slate-700 leading-relaxed text-base">
+              Employers increasingly value evidence that you can actually execute campaigns, create content, analyse data and generate results.
+            </p>
+            <p className="font-bold text-slate-800 text-base pt-2">A portfolio can include:</p>
             <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Enjoy Finance and Business</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Like working with numbers</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Have strong analytical skills</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Enjoy solving complex problems</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Are interested in companies and financial markets</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Have strong communication skills</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Can work under pressure</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Are willing to put in long hours during important transactions</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> A personal website</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> SEO projects</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Social media campaigns</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Google Ads campaigns</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Content calendars</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Email campaigns</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Analytics reports</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> E-commerce projects</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Case studies</div>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+              <GraduationCap className="text-brand-blue shrink-0" />
+              Which Entrance Exams Should I Take?
+            </h2>
+            <p className="text-slate-700 leading-relaxed text-base">
+              There is no single entrance examination required to become a Digital Marketing Specialist.
+            </p>
+            <p className="text-slate-700 leading-relaxed text-base">
+              If you choose a degree such as BBA, B.Com or a communication programme, admission requirements will depend on the institution.
+            </p>
+            <p className="font-bold text-slate-800 text-base">Possible admission routes may include:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> CUET-UG</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> University-specific entrance examinations</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Merit-based admission</div>
+            </div>
+            <p className="font-bold text-slate-800 text-base pt-2">If you later choose an MBA in Marketing, entrance examinations can include:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> CAT</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> XAT</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> CMAT</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> MAT</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> NMAT</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> University-specific examinations</div>
             </div>
             <p className="text-slate-700 leading-relaxed text-base pt-2">
-              It may not be ideal if you strongly dislike numbers, spreadsheets, financial analysis or high-pressure work environments.
+              Therefore, the entrance exam depends more on the degree you choose than on Digital Marketing itself.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+              <Building2 className="text-brand-blue shrink-0" />
+              Best Colleges for Digital Marketing in India
+            </h2>
+            <p className="text-slate-700 leading-relaxed text-base">
+              There is no universally accepted list of “best Digital Marketing colleges” in India.
+            </p>
+            <p className="text-slate-700 leading-relaxed text-base">
+              A good pathway could be a strong undergraduate programme in:
+            </p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Business Administration</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Commerce</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Economics</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Mass Communication</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Advertising</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Brand Management</div>
+            </div>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              followed by practical Digital Marketing training.
+            </p>
+            <p className="font-bold text-slate-800 text-base pt-2">When evaluating a college or training institute, look for:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Strong marketing fundamentals</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Digital marketing curriculum</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Live projects</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Internships</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Industry interaction</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> SEO and paid advertising exposure</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Analytics</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Social media</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Content creation</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> AI tools</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Portfolio development</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Placement support</div>
+            </div>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              Google itself recommends learning areas including Google Ads, Google Analytics and digital advertising through its Skillshop ecosystem.
+            </p>
+            <p className="text-slate-700 leading-relaxed text-base">
+              Meta also provides a Digital Marketing Associate learning pathway covering areas such as Facebook, Instagram, WhatsApp, Meta Business Suite and advertising fundamentals.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+              <Award className="text-brand-blue shrink-0" />
+              What Certifications Can Help?
+            </h2>
+            <p className="text-slate-700 leading-relaxed text-base">
+              Certifications can strengthen a beginner&apos;s profile, particularly when combined with actual projects.
+            </p>
+            <p className="font-bold text-slate-800 text-base">Useful learning pathways include:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Google Ads certifications</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Google Analytics learning/certification</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Meta Digital Marketing certifications</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> HubSpot certifications</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> SEO certifications</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Other recognised industry certifications</div>
+            </div>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              Google currently provides training covering Google Ads, Google Analytics and Google Marketing Platform through Skillshop.
+            </p>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              But remember: certification proves that you studied something; a portfolio demonstrates that you can do it.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+              <TrendingUp className="text-brand-blue shrink-0" />
+              What Is the Future Scope of Digital Marketing?
+            </h2>
+            <p className="text-slate-700 leading-relaxed text-base">
+              The future scope of Digital Marketing in India is strong because businesses increasingly depend on digital channels to acquire, engage and retain customers.
+            </p>
+            <p className="font-bold text-slate-800 text-base">Career opportunities exist across:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Technology companies</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Start-ups</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> E-commerce</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Banking and financial services</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Healthcare</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Education</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Retail</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Media</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Hospitality</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Advertising agencies</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Consulting</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> D2C brands</div>
+            </div>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              Digital Marketing is also evolving rapidly because of Artificial Intelligence and automation.
+            </p>
+            <p className="font-bold text-slate-800 text-base">Emerging areas include:</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> AI-powered marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Generative AI for content</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Search Engine Optimisation</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Generative Engine Optimisation (GEO)</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Performance Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Marketing Analytics</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Marketing Automation</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> E-commerce Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Influencer Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Video Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Customer Relationship Management (CRM)</div>
+            </div>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              The National Qualification Register&apos;s current digital-marketing qualifications include areas such as SEO, SEM, content marketing, social media marketing, analytics and e-commerce.
+            </p>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+              <Brain className="text-brand-blue shrink-0" />
+              Skills Required to Become a Digital Marketing Specialist
+            </h2>
+            <p className="text-slate-700 leading-relaxed text-base">
+              A successful Digital Marketing Specialist needs a combination of creative, technical and analytical skills.
+            </p>
+            <p className="font-bold text-slate-800 text-base">Digital Skills</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> SEO</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Google Ads</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Meta Ads</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Social Media Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Content Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Email Marketing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Google Analytics</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Marketing Analytics</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Website optimisation</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Basic HTML/CSS</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> AI marketing tools</div>
+            </div>
+            <p className="font-bold text-slate-800 text-base pt-2">Creative Skills</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Copywriting</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Storytelling</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Graphic design basics</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Video content</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Creative thinking</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Understanding consumer behaviour</div>
+            </div>
+            <p className="font-bold text-slate-800 text-base pt-2">Analytical Skills</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Data interpretation</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Campaign analysis</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> A/B testing</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Conversion analysis</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Budget management</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Performance measurement</div>
+            </div>
+            <p className="font-bold text-slate-800 text-base pt-2">Professional Skills</p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Communication</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Presentation</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Curiosity</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Adaptability</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Problem-solving</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Time management</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Business understanding</div>
+            </div>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+              <UserCheck className="text-brand-blue shrink-0" />
+              Is Digital Marketing a Good Career for You?
+            </h2>
+            <p className="text-slate-700 leading-relaxed text-base">
+              Digital Marketing could be a good career choice if you:
+            </p>
+            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Enjoy social media and digital platforms</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Like creating content</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Are curious about how people make buying decisions</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Enjoy technology but don&apos;t necessarily want to become a programmer</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Like analysing data</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Enjoy experimenting and testing ideas</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Have strong communication skills</div>
+              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Are comfortable continuously learning</div>
+            </div>
+            <p className="text-slate-700 leading-relaxed text-base pt-2">
+              It may not be suitable if you dislike constant change, experimentation, deadlines, data analysis or performance-driven work.
             </p>
           </div>
 
           <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Investment Banking?</h2>
+            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Digital Marketing?</h2>
             <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">
-              Choosing Investment Banking should not be based only on its salary or reputation.
+              Choosing a career should not be based simply on the popularity of a profession.
             </p>
             <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
-              Students should first understand their interests, strengths, personality and aptitude, and then evaluate whether Finance and Investment Banking are a good fit.
+              Your interests, personality, strengths and skills can help determine whether Digital Marketing is actually a good fit for you.
             </p>
             <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
-              MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree and specialisation.
+              MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree or specialisation.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
               <Link href="/assessment">

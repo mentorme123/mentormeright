@@ -410,13 +410,18 @@ export function Navbar() {
                       <span>{link.label}</span>
                       <ChevronDown size={16} className={`text-slate-500 transition-transform ${mobileCareerRoadmapsOpen ? "rotate-180" : ""}`} />
                     </button>
-                    <div className={`overflow-hidden transition-all duration-300 ${mobileCareerRoadmapsOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                      <div className="pl-4 space-y-1">
-                        <Link href="/career-library/engineering-technology" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">1] Engineering &amp; Technology</Link>
-                        <Link href="/career-library/medicine-healthcare" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">2] Medicine &amp; Healthcare</Link>
-                        <Link href="/career-library/commerce-finance-accounting" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">3] Commerce, Finance &amp; Accounting</Link>
-                      </div>
-                    </div>
+                     <div className={`overflow-hidden transition-all duration-300 ${mobileCareerRoadmapsOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+                       <div className="pl-4 space-y-1">
+                         <Link href="/career-library/engineering-technology" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">1] Engineering &amp; Technology</Link>
+                         <Link href="/career-library/medicine-healthcare" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">2] Medicine &amp; Healthcare</Link>
+                         <Link href="/career-library/commerce-finance-accounting" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">3] Commerce, Finance &amp; Accounting</Link>
+                         <Link href="/career-library/management-business" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">4] Management &amp; Business</Link>
+                         <Link href="/career-library/design-creative" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">5] Design &amp; Creative Careers</Link>
+                         <Link href="/career-library/architecture-construction" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">6] Architecture, Construction &amp; Infrastructure</Link>
+                         <Link href="/career-library/science-research" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">7] Science &amp; Research</Link>
+                         <Link href="/career-library/law-governance" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">8] Law, Governance &amp; Public Services</Link>
+                       </div>
+                     </div>
                   </div>
                 ) : (
                   <Link

@@ -297,28 +297,28 @@ export function Navbar() {
                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                        onClick={() => setCareerRoadmapsOpen(false)}
                      >
-                       5] Design &amp; Creative
-                     </Link>
-                     <Link 
-                       href="/career-library/law-governance" 
-                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                       onClick={() => setCareerRoadmapsOpen(false)}
-                     >
-                       6] Law &amp; Governance
+                       5] Design &amp; Creative Careers
                      </Link>
                      <Link 
                        href="/career-library/architecture-construction" 
                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                        onClick={() => setCareerRoadmapsOpen(false)}
                      >
-                       7] Architecture &amp; Construction
+                       6] Architecture, Construction &amp; Infrastructure
                      </Link>
                      <Link 
                        href="/career-library/science-research" 
                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                        onClick={() => setCareerRoadmapsOpen(false)}
                      >
-                       8] Science &amp; Research
+                       7] Science &amp; Research
+                     </Link>
+                     <Link 
+                       href="/career-library/law-governance" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       8] Law, Governance &amp; Public Services
                      </Link>
                    </div>
                 </div>

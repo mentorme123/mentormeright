@@ -3,7 +3,7 @@ import { CheckCircle2, Brain, HelpCircle, Award, GraduationCap, UserCheck, Trend
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Law & Governance | MentorMe Career Library",
+  title: "Law, Governance & Public Services | MentorMe Career Library",
   description: "Explore Law & Governance careers in India including Cyber Law, Corporate Law, Civil Services, and Public Policy. Learn about degrees, colleges, skills, salary and future scope.",
 };
 
@@ -13,10 +13,10 @@ export default function LawGovernanceCareerPage() {
       <section className="bg-brand-blue text-white py-16 px-4">
         <div className="max-w-4xl mx-auto space-y-4">
           <div className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-2">
-            Law &amp; Governance
+            Law, Governance &amp; Public Services
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Law &amp; Governance
+            Law, Governance &amp; Public Services
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
             Cyber Law is an emerging legal specialisation that combines Law and Technology. A Cyber Lawyer helps individuals, businesses and organisations deal with legal issues involving computers, the internet, digital transactions, data, privacy, cybercrime and emerging technologies.

@@ -3,7 +3,7 @@ import { CheckCircle2, Brain, HelpCircle, Award, GraduationCap, UserCheck, Trend
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Design & Creative | MentorMe Career Library",
+  title: "Design & Creative Careers | MentorMe Career Library",
   description: "Explore Design & Creative careers in India including Game Design, UI/UX, Graphic Design, and Animation. Learn about degrees, colleges, skills, salary and future scope.",
 };
 
@@ -13,10 +13,10 @@ export default function DesignCreativeCareerPage() {
       <section className="bg-brand-blue text-white py-16 px-4">
         <div className="max-w-4xl mx-auto space-y-4">
           <div className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-2">
-            Design &amp; Creative
+            Design &amp; Creative Careers
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Design &amp; Creative
+            Design &amp; Creative Careers
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
             Game Design is an exciting career for students who love games, storytelling, creativity, technology and problem-solving. A Game Designer is responsible for designing how a game works — its rules, challenges, gameplay, characters, levels, objectives and overall player experience.

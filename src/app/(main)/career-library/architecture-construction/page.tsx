@@ -3,7 +3,7 @@ import { CheckCircle2, Brain, HelpCircle, Award, GraduationCap, UserCheck, Trend
 import { Button } from "@/components/ui/button";
 
 export const metadata = {
-  title: "Architecture & Construction | MentorMe Career Library",
+  title: "Architecture, Construction & Infrastructure | MentorMe Career Library",
   description: "Explore Architecture & Construction careers in India including Interior Design, Civil Engineering, Urban Planning, and Architecture. Learn about degrees, colleges, skills, salary and future scope.",
 };
 
@@ -16,7 +16,7 @@ export default function ArchitectureConstructionCareerPage() {
             Architecture, Construction &amp; Infrastructure
           </div>
           <h1 className="text-4xl md:text-5xl font-black leading-tight">
-            Architecture &amp; Construction
+            Architecture, Construction &amp; Infrastructure
           </h1>
           <p className="text-lg md:text-xl text-white/90 leading-relaxed pt-2">
             Interior Architecture is a creative and technical career focused on designing functional, safe and visually appealing interior spaces. Interior Architects combine elements of architecture, design, materials, technology and human behaviour to transform residential, commercial and public spaces.

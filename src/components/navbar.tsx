@@ -78,6 +78,12 @@ export function Navbar() {
     { href: "/contact", label: "Contact Us" },
   ];
 
+  const careerRoadmapLinks = [
+    { href: "/career-library/engineering-technology", label: "Engineering & Technology" },
+    { href: "/career-library/medicine-healthcare", label: "Medicine & Healthcare" },
+    { href: "/career-library/commerce-finance-accounting", label: "Commerce, Finance & Accounting" },
+  ];
+
   return (
     <>
       <SiteSearch isOpen={isSearchOpen} onClose={closeSearch} />
@@ -364,7 +370,6 @@ export function Navbar() {
         {isMobileMenuOpen && (
           <div className="xl:hidden border-t border-border bg-background">
             <div className="container mx-auto px-4 py-4 space-y-1">
-
               {mobileLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -375,6 +380,20 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
+
+              <div className="pt-2 space-y-1">
+                <p className="px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider">Career Roadmaps</p>
+                {careerRoadmapLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all pl-8"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
                 <button onClick={() => { openSearch(); setIsMobileMenuOpen(false); }} className="w-full flex items-center justify-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold py-3 rounded-xl transition-all">

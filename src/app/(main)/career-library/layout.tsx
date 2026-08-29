@@ -3,22 +3,42 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const commerceCareers = [
+const careers = [
   {
-    href: "/career-library/commerce-finance-accounting/investment-banker",
-    label: "Investment Banker Career in India",
+    href: "/career-library/engineering-technology",
+    label: "1] Engineering & Technology",
   },
   {
-    href: "/career-library/commerce-finance-accounting/digital-marketing-specialist",
-    label: "Digital Marketing Specialist Career in India",
+    href: "/career-library/medicine-healthcare",
+    label: "2] Medicine & Healthcare",
   },
   {
-    href: "/career-library/commerce-finance-accounting/cyber-lawyer",
-    label: "Cyber Lawyer Career in India",
+    href: "/career-library/commerce-finance-accounting",
+    label: "3] Commerce, Finance & Accounting",
+  },
+  {
+    href: "/career-library/management-business",
+    label: "4] Management & Business",
+  },
+  {
+    href: "/career-library/design-creative",
+    label: "5] Design & Creative Careers",
+  },
+  {
+    href: "/career-library/architecture-construction",
+    label: "6] Architecture, Construction & Infrastructure",
+  },
+  {
+    href: "/career-library/science-research",
+    label: "7] Science & Research",
+  },
+  {
+    href: "/career-library/law-governance",
+    label: "8] Law, Governance & Public Services",
   },
 ];
 
-export default function CommerceFinanceAccountingLayout({
+export default function CareerLibraryLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -32,11 +52,11 @@ export default function CommerceFinanceAccountingLayout({
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sticky top-24">
               <h3 className="font-black text-slate-800 uppercase tracking-wider text-sm mb-3 px-2">
-                Commerce, Finance &amp; Accounting
+                Career Roadmaps (250+)
               </h3>
               <nav className="space-y-1">
-                {commerceCareers.map((career) => {
-                  const isActive = pathname === career.href;
+                {careers.map((career) => {
+                  const isActive = pathname === career.href || pathname.startsWith(career.href + "/");
                   return (
                     <Link
                       key={career.href}

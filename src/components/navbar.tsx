@@ -278,14 +278,49 @@ export function Navbar() {
                     >
                       2] Medicine &amp; Healthcare
                     </Link>
-                    <Link 
-                      href="/career-library/commerce-finance-accounting" 
-                      className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                      onClick={() => setCareerRoadmapsOpen(false)}
-                    >
-                      3] Commerce, Finance &amp; Accounting
-                    </Link>
-                  </div>
+                     <Link 
+                       href="/career-library/commerce-finance-accounting" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       3] Commerce, Finance &amp; Accounting
+                     </Link>
+                     <Link 
+                       href="/career-library/management-business" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       4] Management &amp; Business
+                     </Link>
+                     <Link 
+                       href="/career-library/design-creative" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       5] Design &amp; Creative
+                     </Link>
+                     <Link 
+                       href="/career-library/law-governance" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       6] Law &amp; Governance
+                     </Link>
+                     <Link 
+                       href="/career-library/architecture-construction" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       7] Architecture &amp; Construction
+                     </Link>
+                     <Link 
+                       href="/career-library/science-research" 
+                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       onClick={() => setCareerRoadmapsOpen(false)}
+                     >
+                       8] Science &amp; Research
+                     </Link>
+                   </div>
                 </div>
               </div>
             </div>

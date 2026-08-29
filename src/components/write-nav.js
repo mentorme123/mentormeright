@@ -70,7 +70,7 @@ export function Navbar() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/ai-learning-hub", label: "AI Learning Hub" },
-    { href: "/k12-programs", label: "21st Century Skills Hub" },
+    { href: "/skills-hub", label: "21st Century Skills Hub" },
     { href: "/blogs", label: "Blogs" },
     { href: "/contact", label: "Contact Us" },
   ];

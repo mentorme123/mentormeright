@@ -1257,23 +1257,23 @@ export default function Home() {
             >
               {(() => {
                 const partners = [
-                  { name: "DG Vaishnav College, Chennai", logo: "/images/partners/ddgd-vaishnav.jpg", link: "/college-programs" },
-                  { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.jpg", link: "/k12-programs" },
-                  { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/k12-programs" },
-                  { name: "Pragati Mahavidyalaya Junior College, Hyderabad", logo: "/images/partners/pragati-maha.jpg", link: "/college-programs" },
-                  { name: "Janani Public School, Bengaluru", logo: "/images/partners/Janani%20Public.jpg", link: "/k12-programs" },
-                  { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/k12-programs" },
-                  { name: "St. Joseph's Degree & PG College, Hyderabad", logo: "/images/partners/st-josephs.jpg", link: "/college-programs" },
+                  { name: "DG Vaishnav College, Chennai", logo: "/images/partners/ddgd-vaishnav.jpg", link: "/skills-hub" },
+                  { name: "Bhavan's Group", logo: "/images/partners/bhavans-group.jpg", link: "/skills-hub" },
+                  { name: "TSWRDC Nalgonda", logo: "/images/partners/tswrdc.jpg", link: "/skills-hub" },
+                  { name: "Pragati Mahavidyalaya Junior College, Hyderabad", logo: "/images/partners/pragati-maha.jpg", link: "/skills-hub" },
+                  { name: "Janani Public School, Bengaluru", logo: "/images/partners/Janani%20Public.jpg", link: "/skills-hub" },
+                  { name: "ELGI Matriculation Higher Secondary School, Coimbatore", logo: "/images/partners/elgi-school.png", link: "/skills-hub" },
+                  { name: "St. Joseph's Degree & PG College, Hyderabad", logo: "/images/partners/st-josephs.jpg", link: "/skills-hub" },
                    { name: "Howard Park International School", logo: "/images/partners/howard-park.jpg", link: "/programs/ai-robotics-k12" },
-                  { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/k12-programs" },
+                  { name: "Geetam School", logo: "/images/partners/geetam.jpg", link: "/skills-hub" },
 
-                  { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/k12-programs" },
-                  { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/college-programs" },
-                  { name: "St. Pious X Degree & PG College for Women", logo: "/images/partners/st-pious.jpg", link: "/k12-programs" },
-                  { name: "Edify School Tirupati", logo: "/images/partners/edify-school.png", link: "/k12-programs" },
-                  { name: "Shree Daksha Academy, Bengaluru", logo: "/images/partners/shree-daksha.png", link: "/k12-programs" },
-                  { name: "Iqra International School", logo: "/images/partners/Iqra%20International.jpg", link: "/k12-programs" },
-                  { name: "Sri Aurobindo International School (SAIS), Hyderabad", logo: "/images/partners/sri aurobindo.webp", link: "/k12-programs" },
+                  { name: "HPS Nizamabad", logo: "/images/partners/hps-nizamabad.jpg", link: "/skills-hub" },
+                  { name: "IIMC Hyderabad", logo: "/images/partners/iimc-hyderabad.jpg", link: "/skills-hub" },
+                  { name: "St. Pious X Degree & PG College for Women", logo: "/images/partners/st-pious.jpg", link: "/skills-hub" },
+                  { name: "Edify School Tirupati", logo: "/images/partners/edify-school.png", link: "/skills-hub" },
+                  { name: "Shree Daksha Academy, Bengaluru", logo: "/images/partners/shree-daksha.png", link: "/skills-hub" },
+                  { name: "Iqra International School", logo: "/images/partners/Iqra%20International.jpg", link: "/skills-hub" },
+                  { name: "Sri Aurobindo International School (SAIS), Hyderabad", logo: "/images/partners/sri aurobindo.webp", link: "/skills-hub" },
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => {

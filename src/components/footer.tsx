@@ -42,7 +42,7 @@ export function Footer() {
                 <li><Link href="/contact" className="hover:text-brand-blue transition-colors">Contact Us</Link></li>
                 <li><Link href="/terms" className="hover:text-brand-blue transition-colors">Terms &amp; Conditions</Link></li>
                 <li><Link href="/privacy" className="hover:text-brand-blue transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/refund-policy" className="hover:text-brand-blue transition-colors">Refund Policy</Link></li>
+                <li><Link href="/refund" className="hover:text-brand-blue transition-colors">Refund Policy</Link></li>
               </ul>
             </div>
           </div>

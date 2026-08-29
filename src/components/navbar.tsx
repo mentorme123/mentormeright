@@ -16,6 +16,7 @@ export function Navbar() {
   const [careerRoadmapsOpen, setCareerRoadmapsOpen] = useState(false);
   const [aiHubAccordion, setAiHubAccordion] = useState<string | null>("k12");
   const [skillsHubAccordion, setSkillsHubAccordion] = useState<string | null>("k12");
+  const [mobileCareerRoadmapsOpen, setMobileCareerRoadmapsOpen] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -73,9 +74,7 @@ export function Navbar() {
     { href: "/about", label: "About" },
     { href: "/ai-learning-hub", label: "AI Learning Hub" },
     { href: "/skills-hub", label: "21st Century Skills Hub" },
-    { href: "/career-library/engineering-technology", label: "Engineering & Technology" },
-    { href: "/career-library/medicine-healthcare", label: "Medicine & Healthcare" },
-    { href: "/career-library/commerce-finance-accounting", label: "Commerce, Finance & Accounting" },
+    { href: "/career-library", label: "Career Roadmaps", isAccordion: true },
     { href: "/blogs", label: "Blogs" },
     { href: "/contact", label: "Contact Us" },
   ];
@@ -366,16 +365,35 @@ export function Navbar() {
         {isMobileMenuOpen && (
           <div className="xl:hidden border-t border-border bg-background">
             <div className="container mx-auto px-4 py-4 space-y-1">
-              {mobileLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-xl text-sm font-semibold text-foreground hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {mobileLinks.map((link) =>
+                link.isAccordion ? (
+                  <div key={link.href} className="space-y-1">
+                    <button
+                      onClick={() => setMobileCareerRoadmapsOpen((prev) => !prev)}
+                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-foreground hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                    >
+                      <span>{link.label}</span>
+                      <ChevronDown size={16} className={`text-slate-500 transition-transform ${mobileCareerRoadmapsOpen ? "rotate-180" : ""}`} />
+                    </button>
+                    <div className={`overflow-hidden transition-all duration-300 ${mobileCareerRoadmapsOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
+                      <div className="pl-4 space-y-1">
+                        <Link href="/career-library/engineering-technology" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">1] Engineering &amp; Technology</Link>
+                        <Link href="/career-library/medicine-healthcare" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">2] Medicine &amp; Healthcare</Link>
+                        <Link href="/career-library/commerce-finance-accounting" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">3] Commerce, Finance &amp; Accounting</Link>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="block px-4 py-3 rounded-xl text-sm font-semibold text-foreground hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                  >
+                    {link.label}
+                  </Link>
+                )
+              )}
 
               <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
                 <button onClick={() => { openSearch(); setIsMobileMenuOpen(false); }} className="w-full flex items-center justify-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold py-3 rounded-xl transition-all">

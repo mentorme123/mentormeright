@@ -60,6 +60,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=6" />
         <link rel="apple-touch-icon" href="/favicon.svg?v=6" />
+        <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
       </head>
       <body className="antialiased min-h-screen flex flex-col font-sans">
         <PathTracker />

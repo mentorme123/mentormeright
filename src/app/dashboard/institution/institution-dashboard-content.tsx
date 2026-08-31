@@ -120,7 +120,7 @@ export default function InstitutionDashboardContent() {
         .eq('id', user.id)
         .single();
 
-      const currentInstitutionName = userProfile?.institution_name || "Global School System";
+      const currentInstitutionName = String(userProfile?.institution_name || "Global School System").trim();
       setInstitutionName(currentInstitutionName);
 
       await refreshStudents(currentInstitutionName);

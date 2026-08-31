@@ -59,10 +59,9 @@ export async function GET(req: NextRequest) {
     }).join('\n');
     const csvContent = csvHeader + csvRows;
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const filename = `credentials_${institutionName.replace(/[^a-z0-9]/gi, '_')}_${new Date().toISOString().split('T')[0]}.csv`;
 
-    return new NextResponse(blob, {
+    return new NextResponse(csvContent, {
       status: 200,
       headers: {
         'Content-Type': 'text/csv;charset=utf-8;',

@@ -158,23 +158,28 @@ export default function InstitutionDashboardContent() {
 
   const handleDownloadCredentials = async () => {
     try {
-      const response = await fetch(`/api/institution/credentials?institution=${encodeURIComponent(institutionName)}`);
+      const url = `/api/institution/credentials?institution=${encodeURIComponent(institutionName)}`;
+      console.log('Downloading credentials from:', url, 'institutionName:', institutionName);
+      const response = await fetch(url);
+      console.log('Credentials response status:', response.status, 'content-type:', response.headers.get('content-type'));
+      const text = await response.text();
+      console.log('Credentials response text length:', text.length, 'preview:', text.slice(0, 200));
       if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || 'Failed to download credentials');
+        throw new Error(text || 'Failed to download credentials');
       }
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      const blob = new Blob([text], { type: 'text/csv;charset=utf-8;' });
+      const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = url;
+      link.href = downloadUrl;
       const disposition = response.headers.get('Content-Disposition');
       const filenameMatch = disposition?.match(/filename="?([^"]+)"?/);
       link.setAttribute('download', filenameMatch?.[1] || 'credentials.csv');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(downloadUrl);
     } catch (err: unknown) {
+      console.error('Download credentials error:', err);
       setErrorMessage(err instanceof Error ? err.message : 'Failed to download credentials');
       setUploadStatus('error');
     }

@@ -43,6 +43,14 @@ export default function StudentProfileContent() {
   const [formTargetCareer, setFormTargetCareer] = useState("");
   const [saving, setSaving] = useState(false);
 
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [changingPassword, setChangingPassword] = useState(false);
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     window.location.href = "/login";
@@ -106,6 +114,63 @@ export default function StudentProfileContent() {
       setShowEditModal(false);
     }
     setSaving(false);
+  };
+
+  const handleChangePassword = async () => {
+    setPasswordMessage(null);
+    setPasswordError(null);
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setPasswordError('All fields are required.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('New passwords do not match.');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordError('New password must be at least 6 characters.');
+      return;
+    }
+
+    setChangingPassword(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        setPasswordError('Session expired. Please log in again.');
+        setChangingPassword(false);
+        return;
+      }
+
+      const response = await fetch('/api/student/password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({ currentPassword, newPassword })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update password');
+      }
+
+      setPasswordMessage('Password updated successfully.');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setTimeout(() => {
+        setShowPasswordModal(false);
+        setPasswordMessage(null);
+      }, 1500);
+    } catch (err: unknown) {
+      setPasswordError(err instanceof Error ? err.message : 'Failed to update password');
+    } finally {
+      setChangingPassword(false);
+    }
   };
 
   const isWorkingProfessional = profile?.audience_type === 'WP' || formEducation === 'Working Professional';
@@ -250,6 +315,88 @@ export default function StudentProfileContent() {
         )}
       </AnimatePresence>
 
+      <AnimatePresence>
+        {showPasswordModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/70 backdrop-blur-md p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl"
+            >
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-black text-slate-800">Change Password</h2>
+                  <p className="text-slate-500 text-sm mt-1">Update your account password.</p>
+                </div>
+                <button onClick={() => { setShowPasswordModal(false); setPasswordMessage(null); setPasswordError(null); }} className="p-2 hover:bg-slate-100 rounded-xl transition-colors">
+                  <X size={20} className="text-slate-400" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-bold text-slate-700 mb-1 block">Current Password</label>
+                  <input
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="Enter current password"
+                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-bold text-slate-700 mb-1 block">New Password</label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    placeholder="Enter new password"
+                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-bold text-slate-700 mb-1 block">Confirm New Password</label>
+                  <input
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="Re-enter new password"
+                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all outline-none text-sm"
+                  />
+                </div>
+
+                {passwordError && (
+                  <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl text-sm font-bold">
+                    {passwordError}
+                  </div>
+                )}
+                {passwordMessage && (
+                  <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm font-bold">
+                    {passwordMessage}
+                  </div>
+                )}
+
+                <Button
+                  onClick={handleChangePassword}
+                  disabled={changingPassword}
+                  className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg"
+                >
+                  {changingPassword ? <><Loader2 className="animate-spin mr-2" size={16} /> Updating...</> : "Update Password"}
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <div>
@@ -297,6 +444,22 @@ export default function StudentProfileContent() {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-black text-slate-800 flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="text-brand-blue"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Password & Security
+            </h3>
+            <button
+              onClick={() => setShowPasswordModal(true)}
+              className="text-xs font-bold text-brand-blue hover:underline"
+            >
+              Change Password
+            </button>
+          </div>
+          <p className="text-sm text-slate-500">Keep your account secure by using a strong, unique password.</p>
         </div>
       </div>
     </div>

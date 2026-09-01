@@ -135,6 +135,30 @@ export default function InstitutionDashboardContent() {
     window.location.href = "/login";
   };
 
+  const [migratingEmails, setMigratingEmails] = useState(false);
+  const [migrateResult, setMigrateResult] = useState<{ updated: number; skipped: number; errors: number } | null>(null);
+
+  const handleMigrateEmails = async () => {
+    if (!confirm('This will update all student emails and auth accounts to the new format (E{numbers}@mentormeright.com). Continue?')) return;
+    setMigratingEmails(true);
+    setMigrateResult(null);
+    try {
+      const response = await fetch(`/api/institution/students?institution=${encodeURIComponent(institutionName)}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Migration failed');
+      setMigrateResult({ updated: data.updated, skipped: data.skipped, errors: data.errors });
+      await refreshStudents(institutionName);
+    } catch (err: unknown) {
+      setErrorMessage(err instanceof Error ? err.message : 'Migration failed');
+      setUploadStatus('error');
+    } finally {
+      setMigratingEmails(false);
+    }
+  };
+
   const handleDownloadTemplate = async () => {
     try {
       const response = await fetch('/api/institution/template');
@@ -439,12 +463,20 @@ export default function InstitutionDashboardContent() {
                   <h2 className="text-xl font-black text-slate-800">{sanitizeText(institutionName)}</h2>
                   <p className="text-sm text-slate-500 font-medium">Student roster and management</p>
                 </div>
-                <div className="flex gap-2 w-full sm:w-auto">
+                 <div className="flex gap-2 w-full sm:w-auto">
                   <Button
                     onClick={() => setShowCreateStudent(true)}
                     className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold px-4 py-2 rounded-xl shadow-sm"
                   >
                     <UserPlus size={16} className="mr-2" /> Create Student
+                  </Button>
+                  <Button
+                    onClick={handleMigrateEmails}
+                    disabled={migratingEmails}
+                    variant="outline"
+                    className="bg-white border border-slate-200 hover:border-brand-blue text-slate-700 font-bold px-4 py-2 rounded-xl"
+                  >
+                    {migratingEmails ? 'Migrating...' : 'Migrate Emails'}
                   </Button>
                   <Button
                     onClick={handleDownloadCredentials}
@@ -595,6 +627,11 @@ export default function InstitutionDashboardContent() {
               {uploadStatus === 'error' && (
                 <div className="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
                   <AlertCircle size={18} /> {errorMessage}
+                </div>
+              )}
+              {migrateResult && (
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                  <CheckCircle2 size={18} /> Email migration complete: {migrateResult.updated} updated, {migrateResult.skipped} skipped, {migrateResult.errors} errors.
                 </div>
               )}
             </div>

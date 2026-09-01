@@ -35,9 +35,9 @@ export async function POST(req: NextRequest) {
       const classKey = studentKeys.find(k => k.toLowerCase() === 'class' || k.toLowerCase() === 'grade' || k.toLowerCase() === 'education_level');
       const rawClass = String(student[classKey || ''] || '').trim();
 
-      const namePart = rawName.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/_+/g, '_').replace(/^_|_$/g, '');
-      const email = namePart ? `${namePart}@mentormeright.in` : `student${Date.now()}@mentormeright.in`;
-      const password = `MM${namePart.replace(/_/g, '')}@123`;
+      const digits = rawName.replace(/[^0-9]/g, '').slice(0, 20);
+      const email = digits ? `E${digits}@mentormeright.com` : `student${Date.now()}@mentormeright.com`;
+      const password = digits ? `E@${digits}` : `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123`;
       const sanitizedName = rawName.slice(0, 100);
       const sanitizedGrade = rawClass.slice(0, 50);
 

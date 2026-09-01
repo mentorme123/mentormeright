@@ -69,23 +69,33 @@ export async function POST(req: NextRequest) {
     const sanitizedGrade = String(grade || '').trim().slice(0, 50);
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
+    const emailDigits = String(name).replace(/[^0-9]/g, '').slice(0, 20);
+    const generatedEmail = emailDigits ? `E${emailDigits}@mentormeright.com` : '';
+    const finalEmail = generatedEmail || email;
+    const generatedPassword = emailDigits ? `E@${emailDigits}` : 'MentorMe@123';
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(finalEmail)) {
+      return NextResponse.json({ error: 'Invalid email format.' }, { status: 400 });
+    }
+
     const { data: existingUser } = await supabaseAdmin
       .from('users')
       .select('id')
-      .eq('email', email)
+      .eq('email', finalEmail)
       .maybeSingle();
 
     if (existingUser) {
       await supabaseAdmin
         .from('users')
-        .update({ institution_name: sanitizedInstitution })
+        .update({ institution_name: sanitizedInstitution, education_level: sanitizedGrade || null })
         .eq('id', existingUser.id);
-      return NextResponse.json({ success: true, student: { id: existingUser.id, email, name: sanitizedName } });
+      return NextResponse.json({ success: true, student: { id: existingUser.id, email: finalEmail, name: sanitizedName, password: generatedPassword } });
     }
 
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
-      email,
-      password: 'MentorMe@123',
+      email: finalEmail,
+      password: generatedPassword,
       email_confirm: true,
       user_metadata: { full_name: sanitizedName }
     });
@@ -98,7 +108,7 @@ export async function POST(req: NextRequest) {
       .from('users')
       .insert({
         id: authData.user.id,
-        email,
+        email: finalEmail,
         name: sanitizedName,
         role: 'individual',
         education_level: sanitizedGrade || null,
@@ -110,7 +120,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: profileError.message }, { status: 400 });
     }
 
-    return NextResponse.json({ success: true, student: { id: authData.user.id, email, name: sanitizedName } });
+    return NextResponse.json({ success: true, student: { id: authData.user.id, email: finalEmail, name: sanitizedName, password: generatedPassword } });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Create student error:', err);

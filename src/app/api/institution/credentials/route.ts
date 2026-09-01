@@ -34,23 +34,33 @@ export async function GET(req: NextRequest) {
     console.log(`Credentials API: institution="${institutionName}", studentsFound=${studentList.length}`);
     const results: Array<{ name: string; username: string; password: string; education_level?: string | null; error?: string }> = [];
 
+    const generateCredentials = (name: string, email: string) => {
+      const digits = String(name).replace(/[^0-9]/g, '').slice(0, 20);
+      if (!digits) {
+        return { username: email, password: `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123` };
+      }
+      const username = `E${digits}@mentormeright.com`;
+      const password = `E@${digits}`;
+      return { username, password };
+    };
+
     const CONCURRENT_LIMIT = 20;
     for (let i = 0; i < studentList.length; i += CONCURRENT_LIMIT) {
       const batch = studentList.slice(i, i + CONCURRENT_LIMIT);
       const batchPromises = batch.map(async (student) => {
         const sanitizedName = String(student.name || '').trim().slice(0, 100);
         const email = String(student.email || '').trim();
-        const password = `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123`;
+        const { username, password } = generateCredentials(sanitizedName, email);
 
         try {
           await supabaseAdmin.auth.admin.updateUserById(student.id, {
             password: password,
           });
-          return { name: sanitizedName, username: email, password, education_level: student.education_level };
+          return { name: sanitizedName, username, password, education_level: student.education_level };
         } catch (authError: unknown) {
           const err = authError as Error;
-          console.error(`Failed to update password for ${student.email}:`, err);
-          return { name: sanitizedName, username: email, password, education_level: student.education_level, error: err.message || 'Failed to update password' };
+          console.error(`Failed to update password for ${email}:`, err);
+          return { name: sanitizedName, username, password, education_level: student.education_level, error: err.message || 'Failed to update password' };
         }
       });
 

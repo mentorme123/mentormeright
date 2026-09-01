@@ -60,11 +60,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Name and email are required.' }, { status: 400 });
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json({ error: 'Invalid email format.' }, { status: 400 });
-    }
-
     const sanitizedName = String(name).trim().slice(0, 100);
     const sanitizedGrade = String(grade || '').trim().slice(0, 50);
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);

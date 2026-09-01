@@ -262,7 +262,7 @@ export default function InstitutionDashboardContent() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to create student');
-      setCreateSuccess(`Student ${data.student.name} created successfully. Username: ${data.student.email}, Password: ${data.student.password}`);
+      setCreateSuccess(`Student ${data.student.name} created. Username: ${data.student.email}, Password: ${data.student.password}`);
       setCreateName("");
       setCreateEmail("");
       setCreateGrade("");

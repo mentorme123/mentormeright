@@ -80,7 +80,7 @@ export function Navbar() {
   ];
 
   return (
-    <>
+    <React.Fragment>
       <SiteSearch isOpen={isSearchOpen} onClose={closeSearch} />
       <nav className="w-full border-b border-brand-blue/10 bg-brand-blue/5 sticky top-0 z-50">
         <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-12 gap-2">
@@ -473,7 +473,7 @@ export function Navbar() {
           </div>
         )}
       </nav>
-    </>
+    </React.Fragment>
   );
 }
 

@@ -258,67 +258,79 @@ export function Navbar() {
                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
                  <ChevronDown size={14} className={`text-slate-500 transition-transform ${careerRoadmapsOpen ? "rotate-180" : ""}`} />
                </button>
-                 <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                   <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
-                     <div className="px-3 py-2 rounded-xl text-sm font-bold text-slate-900">
-                       Career Roadmaps (250+)
+                 <div className={`absolute top-full left-0 mt-2 w-[480px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+                   <div className="flex">
+                     <div className="w-28 bg-slate-900 text-white p-2 space-y-1 shrink-0">
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">1]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">2]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">3]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">4]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">5]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">6]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">7]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">8]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">9]</div>
                      </div>
-                     <div className="space-y-1">
+                     <div className="flex-1 p-3 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
+                       <div className="px-3 py-2 rounded-xl text-sm font-bold text-slate-900">
+                         Career Roadmaps (250+)
+                       </div>
+                       <div className="space-y-1">
                       <Link 
                         href="/career-library/engineering-technology" 
                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                         onClick={() => setCareerRoadmapsOpen(false)}
                       >
-                        1] Engineering &amp; Technology
+                        1] Engineering & Technology
                       </Link>
                       <Link 
                         href="/career-library/medicine-healthcare" 
                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                         onClick={() => setCareerRoadmapsOpen(false)}
                       >
-                        2] Medicine &amp; Healthcare
+                        2] Medicine & Healthcare
                       </Link>
                        <Link 
                          href="/career-library/commerce-finance-accounting" 
                          className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
-                        3] Commerce, Finance &amp; Accounting
+                        3] Commerce, Finance & Accounting
                        </Link>
                        <Link 
                          href="/career-library/management-business" 
                          className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
-                        4] Management &amp; Business
+                        4] Management & Business
                        </Link>
                        <Link 
                          href="/career-library/design-creative" 
                          className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
-                        5] Design &amp; Creative Careers
+                        5] Design & Creative Careers
                        </Link>
                        <Link 
                          href="/career-library/architecture-construction" 
                          className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
-                        6] Architecture, Construction &amp; Infrastructure
+                        6] Architecture, Construction & Infrastructure
                        </Link>
                        <Link 
                          href="/career-library/science-research" 
                          className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
-                        7] Science &amp; Research
+                        7] Science & Research
                        </Link>
                        <Link 
                          href="/career-library/law-governance" 
                          className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
-                        8] Law, Governance &amp; Public Services
+                        8] Law, Governance & Public Services
                        </Link>
                        <Link 
                          href="/career-library/emerging-careers" 
@@ -419,14 +431,14 @@ export function Navbar() {
                     </button>
                       <div className={`overflow-hidden transition-all duration-300 ${mobileCareerRoadmapsOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
                         <div className="pl-4 space-y-1">
-                          <Link href="/career-library/engineering-technology" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">1] Engineering &amp; Technology</Link>
-                          <Link href="/career-library/medicine-healthcare" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">2] Medicine &amp; Healthcare</Link>
-                          <Link href="/career-library/commerce-finance-accounting" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">3] Commerce, Finance &amp; Accounting</Link>
-                          <Link href="/career-library/management-business" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">4] Management &amp; Business</Link>
-                          <Link href="/career-library/design-creative" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">5] Design &amp; Creative Careers</Link>
-                          <Link href="/career-library/architecture-construction" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">6] Architecture, Construction &amp; Infrastructure</Link>
-                          <Link href="/career-library/science-research" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">7] Science &amp; Research</Link>
-                          <Link href="/career-library/law-governance" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">8] Law, Governance &amp; Public Services</Link>
+                          <Link href="/career-library/engineering-technology" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">1] Engineering & Technology</Link>
+                          <Link href="/career-library/medicine-healthcare" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">2] Medicine & Healthcare</Link>
+                          <Link href="/career-library/commerce-finance-accounting" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">3] Commerce, Finance & Accounting</Link>
+                          <Link href="/career-library/management-business" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">4] Management & Business</Link>
+                          <Link href="/career-library/design-creative" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">5] Design & Creative Careers</Link>
+                          <Link href="/career-library/architecture-construction" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">6] Architecture, Construction & Infrastructure</Link>
+                          <Link href="/career-library/science-research" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">7] Science & Research</Link>
+                          <Link href="/career-library/law-governance" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">8] Law, Governance & Public Services</Link>
                            <Link href="/career-library/emerging-careers" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">9] Emerging Careers</Link>
                        </div>
                      </div>

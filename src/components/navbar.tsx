@@ -260,24 +260,8 @@ export function Navbar() {
                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
                  <ChevronDown size={14} className={`text-slate-500 transition-transform ${careerRoadmapsOpen ? "rotate-180" : ""}`} />
                </button>
-                <div className={`absolute top-full left-0 mt-2 flex bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                   <div className={`w-64 border-r border-slate-100 bg-slate-50/50 overflow-hidden transition-all ${emergingCareersOpen ? "opacity-100 visible" : "opacity-0 invisible w-0"}`}>
-                    <div className="p-3 space-y-1">
-                      <div className="px-3 py-2 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-wider">
-                        Emerging Careers
-                      </div>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_prompt_engineer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>1] Prompt Engineer</Link>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_generative_ai_specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>2] Generative AI Specialist</Link>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_ai_product_manager" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>3] AI Product Manager</Link>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_ai_ethics_specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>4] AI Ethics Specialist</Link>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_ai_trainer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>5] AI Trainer</Link>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_robotics_technician" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>6] Robotics Technician</Link>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_drone_technology_specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>7] Drone Technology Specialist</Link>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_renewable_energy_specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>8] Renewable Energy Specialist</Link>
-                      <Link href="/career-library/emerging-careers?career=car_emerging_sustainability_consultant" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>9] Sustainability Consultant</Link>
-                    </div>
-                  </div>
-                  <div className="p-3 w-72 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
+                <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+                  <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
                     <div className="px-3 py-2 rounded-xl text-sm font-bold text-slate-900">
                       Career Roadmaps (250+)
                     </div>
@@ -338,17 +322,16 @@ export function Navbar() {
                        >
                         8] Law, Governance &amp; Public Services
                        </Link>
-                       <button
-                         onClick={() => setEmergingCareersOpen((prev) => !prev)}
-                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       <Link 
+                         href="/career-library/emerging-careers" 
+                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                         onClick={() => setCareerRoadmapsOpen(false)}
                        >
-                         <span>9] Emerging Careers</span>
-                         <ChevronDown size={14} className={`text-slate-500 transition-transform ${emergingCareersOpen ? "rotate-180" : ""}`} />
-                       </button>
+                        9] Emerging Careers
+                       </Link>
                      </div>
-                   </div>
-                 </div>
-              </div>
+                  </div>
+                </div>
 
             <Link href="/blogs" className="relative group py-2">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>

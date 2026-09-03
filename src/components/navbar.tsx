@@ -127,11 +127,11 @@ export function Navbar() {
                           <Link href="/programs/ai-foundations-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI Foundations for School Students</Link>
                           <Link href="/programs/generative-ai-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>Generative AI & Prompt Engineering for Students</Link>
                           <Link href="/programs/robotics-fundamentals-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI + Robotics Explorer Program</Link>
-                        </div>
-                      </div>
-                   </div>
+                  </div>
+                </div>
+              </div>
 
-                   <div className="mb-2">
+              <div className="mb-2">
                      <button 
                        onClick={(e) => { e.preventDefault(); setAiHubAccordion(aiHubAccordion === "college" ? null : "college"); }}
                        className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
@@ -260,12 +260,24 @@ export function Navbar() {
                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
                  <ChevronDown size={14} className={`text-slate-500 transition-transform ${careerRoadmapsOpen ? "rotate-180" : ""}`} />
                </button>
-                <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                  <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
-                    <div className="px-3 py-2 rounded-xl text-sm font-bold text-slate-900">
-                      Career Roadmaps (250+)
-                    </div>
-                    <div className="pl-3 space-y-1">
+                 <div className={`absolute top-full left-0 mt-2 w-[480px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+                   <div className="flex">
+                     <div className="w-28 bg-slate-900 text-white p-2 space-y-1 shrink-0">
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">1]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">2]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">3]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">4]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">5]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">6]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">7]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">8]</div>
+                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">9]</div>
+                     </div>
+                     <div className="flex-1 p-3 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
+                       <div className="px-3 py-2 rounded-xl text-sm font-bold text-slate-900">
+                         Career Roadmaps (250+)
+                       </div>
+                       <div className="space-y-1">
                       <Link 
                         href="/career-library/engineering-technology" 
                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
@@ -329,9 +341,11 @@ export function Navbar() {
                        >
                         9] Emerging Careers
                        </Link>
-                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
 
             <Link href="/blogs" className="relative group py-2">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>

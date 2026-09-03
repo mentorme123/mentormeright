@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { ChevronDown, Menu, X, Search, User, LogOut } from "lucide-react";
 import { SiteSearch, useSiteSearch } from "@/components/site-search";
@@ -80,7 +80,7 @@ export function Navbar() {
   ];
 
   return (
-    <Fragment>
+    <div>
       <SiteSearch isOpen={isSearchOpen} onClose={closeSearch} />
       <nav className="w-full border-b border-brand-blue/10 bg-brand-blue/5 sticky top-0 z-50">
         <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-12 gap-2">
@@ -473,7 +473,7 @@ export function Navbar() {
           </div>
         )}
       </nav>
-    </Fragment>
+    </div>
   );
 }
 

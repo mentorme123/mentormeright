@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase";
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [profileName, setProfileName] = useState("");
   const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useSiteSearch();
@@ -80,85 +80,85 @@ export function Navbar() {
   ];
 
   return (
-    <div>
+    <section>
       <SiteSearch isOpen={isSearchOpen} onClose={closeSearch} />
-      <nav className="w-full border-b border-brand-blue/10 bg-brand-blue/5 sticky top-0 z-50">
-        <div className="w-full max-w-[1700px] mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-12 gap-2">
-          <Link href="/" className="flex items-center gap-2 shrink-0">
-            <div className="relative h-12 w-36 lg:h-14 lg:w-44 shrink-0 flex items-center justify-center">
-              <img src="/logo.png?v=7" alt="MentorMe Logo" className="max-w-full max-h-full object-contain" />
+      <nav>
+        <div>
+          <Link href="/">
+            <div>
+              <img src="/logo.png?v=7" alt="MentorMe Logo" />
             </div>
           </Link>
 
-          <div className="hidden xl:flex items-center gap-3 xl:gap-5 text-[14px] font-bold text-slate-800 whitespace-nowrap shrink">
-            <Link href="/" className="relative group py-2">
-              <span className="text-foreground group-hover:text-brand-blue transition-colors duration-300">Home</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+          <div>
+            <Link href="/">
+              <span>Home</span>
+              <span />
             </Link>
 
-            <Link href="/about" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">About</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            <Link href="/about">
+              <span>About</span>
+              <span />
             </Link>
 
-            <div className="relative group ai-hub-dropdown">
+            <div>
               <button
                 onClick={() => setAiHubOpen((prev) => !prev)}
-                className="relative flex items-center gap-1 py-2 group-hover:text-brand-blue transition-colors duration-300"
+               
               >
                 <span>AI Learning Hub</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+                <span />
                 <ChevronDown size={14} className={`text-slate-500 transition-transform ${aiHubOpen ? "rotate-180" : ""}`} />
               </button>
               <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${aiHubOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white">
-                   <div className="mb-2">
+                <div>
+                   <div>
                      <button 
                        onClick={(e) => { e.preventDefault(); setAiHubAccordion(aiHubAccordion === "k12" ? null : "k12"); }}
-                       className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                      
                      >
                        <span>1. K-12 Students</span>
                        <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${aiHubAccordion === "k12" ? "rotate-180" : ""}`} />
                      </button>
                       <div className={`overflow-hidden transition-all duration-300 ${aiHubAccordion === "k12" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                        <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
-                          <Link href="/programs/ai-foundations-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI Foundations for School Students</Link>
-                          <Link href="/programs/generative-ai-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>Generative AI & Prompt Engineering for Students</Link>
-                          <Link href="/programs/robotics-fundamentals-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI + Robotics Explorer Program</Link>
+                        <div>
+                          <Link href="/programs/ai-foundations-k12" onClick={() => setAiHubOpen(false)}>AI Foundations for School Students</Link>
+                          <Link href="/programs/generative-ai-k12" onClick={() => setAiHubOpen(false)}>Generative AI & Prompt Engineering for Students</Link>
+                          <Link href="/programs/robotics-fundamentals-k12" onClick={() => setAiHubOpen(false)}>AI + Robotics Explorer Program</Link>
                   </div>
                 </div>
               </div>
 
-              <div className="mb-2">
+              <div>
                      <button 
                        onClick={(e) => { e.preventDefault(); setAiHubAccordion(aiHubAccordion === "college" ? null : "college"); }}
-                       className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                      
                      >
                        <span>2. College Students</span>
                        <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${aiHubAccordion === "college" ? "rotate-180" : ""}`} />
                      </button>
                      <div className={`overflow-hidden transition-all duration-300 ${aiHubAccordion === "college" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                       <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
-                         <Link href="/programs/ai-career-accelerator" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI Career Accelerator Program</Link>
-                         <Link href="/programs/ai-data-analytics" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI & Data Analytics Professional Program</Link>
-                         <Link href="/programs/ai-business-management" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI for Business, Finance & Management</Link>
+                       <div>
+                         <Link href="/programs/ai-career-accelerator" onClick={() => setAiHubOpen(false)}>AI Career Accelerator Program</Link>
+                         <Link href="/programs/ai-data-analytics" onClick={() => setAiHubOpen(false)}>AI & Data Analytics Professional Program</Link>
+                         <Link href="/programs/ai-business-management" onClick={() => setAiHubOpen(false)}>AI for Business, Finance & Management</Link>
                        </div>
                      </div>
                    </div>
 
-                   <div className="mb-2">
+                   <div>
                      <button 
                        onClick={(e) => { e.preventDefault(); setAiHubAccordion(aiHubAccordion === "corporate" ? null : "corporate"); }}
-                       className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                      
                      >
                        <span>3. Corporate Professionals</span>
                        <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${aiHubAccordion === "corporate" ? "rotate-180" : ""}`} />
                      </button>
                      <div className={`overflow-hidden transition-all duration-300 ${aiHubAccordion === "corporate" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                       <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
-                         <Link href="/programs/generative-ai-workplace" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>Generative AI for Workplace Productivity</Link>
-                         <Link href="/programs/ai-finance-accounting" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI for Finance & Accounting Professionals</Link>
-                         <Link href="/programs/ai-leadership" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setAiHubOpen(false)}>AI Leadership & Digital Transformation</Link>
+                       <div>
+                         <Link href="/programs/generative-ai-workplace" onClick={() => setAiHubOpen(false)}>Generative AI for Workplace Productivity</Link>
+                         <Link href="/programs/ai-finance-accounting" onClick={() => setAiHubOpen(false)}>AI for Finance & Accounting Professionals</Link>
+                         <Link href="/programs/ai-leadership" onClick={() => setAiHubOpen(false)}>AI Leadership & Digital Transformation</Link>
                        </div>
                      </div>
                    </div>
@@ -166,82 +166,82 @@ export function Navbar() {
                </div>
              </div>
 
-            <div className="relative group skills-hub-dropdown">
+            <div>
               <button
                 onClick={() => setSkillsHubOpen((prev) => !prev)}
-                className="relative flex items-center gap-1 py-2 group-hover:text-brand-blue transition-colors duration-300"
+               
               >
                 <span>21st Century Skills Hub</span>
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+                <span />
                 <ChevronDown size={14} className={`text-slate-500 transition-transform ${skillsHubOpen ? "rotate-180" : ""}`} />
               </button>
                <div className={`absolute top-full left-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${skillsHubOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                 <div className="p-3 w-80 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white">
-                   <div className="mb-2">
+                 <div>
+                   <div>
                      <button 
                        onClick={(e) => { e.preventDefault(); setSkillsHubAccordion(skillsHubAccordion === "k12" ? null : "k12"); }}
-                       className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                      
                      >
                        <span>1. K-12 Students</span>
                        <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${skillsHubAccordion === "k12" ? "rotate-180" : ""}`} />
                      </button>
                      <div className={`overflow-hidden transition-all duration-300 ${skillsHubAccordion === "k12" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                       <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
-                         <Link href="/programs/critical-thinking-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Critical Thinking & Problem Solving</Link>
-                         <Link href="/programs/public-speaking-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Public Speaking</Link>
-                         <Link href="/programs/robotics-fundamentals-k12" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Robotics Fundamentals</Link>
+                       <div>
+                         <Link href="/programs/critical-thinking-k12" onClick={() => setSkillsHubOpen(false)}>Critical Thinking & Problem Solving</Link>
+                         <Link href="/programs/public-speaking-k12" onClick={() => setSkillsHubOpen(false)}>Public Speaking</Link>
+                         <Link href="/programs/robotics-fundamentals-k12" onClick={() => setSkillsHubOpen(false)}>Robotics Fundamentals</Link>
                        </div>
                      </div>
                    </div>
 
-                   <div className="mb-2">
+                   <div>
                      <button 
                        onClick={(e) => { e.preventDefault(); setSkillsHubAccordion(skillsHubAccordion === "college" ? null : "college"); }}
-                       className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                      
                      >
                        <span>2. College Students</span>
                        <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${skillsHubAccordion === "college" ? "rotate-180" : ""}`} />
                      </button>
                      <div className={`overflow-hidden transition-all duration-300 ${skillsHubAccordion === "college" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                       <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
-                         <Link href="/programs/data-analytics-college" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Data Analytics</Link>
-                         <Link href="/programs/digital-marketing-college" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Digital Marketing</Link>
-                         <Link href="/programs/financial-modelling-college" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Financial Modelling</Link>
+                       <div>
+                         <Link href="/programs/data-analytics-college" onClick={() => setSkillsHubOpen(false)}>Data Analytics</Link>
+                         <Link href="/programs/digital-marketing-college" onClick={() => setSkillsHubOpen(false)}>Digital Marketing</Link>
+                         <Link href="/programs/financial-modelling-college" onClick={() => setSkillsHubOpen(false)}>Financial Modelling</Link>
                        </div>
                      </div>
                    </div>
 
-                   <div className="mb-2">
+                   <div>
                      <button 
                        onClick={(e) => { e.preventDefault(); setSkillsHubAccordion(skillsHubAccordion === "corporate" ? null : "corporate"); }}
-                       className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                      
                      >
                        <span>3. Corporate Professionals</span>
                        <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${skillsHubAccordion === "corporate" ? "rotate-180" : ""}`} />
                      </button>
                      <div className={`overflow-hidden transition-all duration-300 ${skillsHubAccordion === "corporate" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                       <div className="bg-slate-50 rounded-xl p-2 space-y-1 mt-1">
-                         <Link href="/programs/leadership-development-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Leadership Development</Link>
-                         <Link href="/programs/project-management-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Project Management</Link>
-                         <Link href="/programs/financial-analysis-corporate" className="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-white hover:text-brand-blue hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Financial Analysis</Link>
+                       <div>
+                         <Link href="/programs/leadership-development-corporate" onClick={() => setSkillsHubOpen(false)}>Leadership Development</Link>
+                         <Link href="/programs/project-management-corporate" onClick={() => setSkillsHubOpen(false)}>Project Management</Link>
+                         <Link href="/programs/financial-analysis-corporate" onClick={() => setSkillsHubOpen(false)}>Financial Analysis</Link>
                        </div>
                      </div>
                    </div>
 
-                    <div className="mb-2">
+                    <div>
                        <button 
                          onClick={(e) => { 
                            e.preventDefault(); 
                            setSkillsHubAccordion(skillsHubAccordion === "entrepreneurship" ? null : "entrepreneurship");
                          }}
-                         className="w-full flex justify-between items-center px-3 py-2 text-sm font-bold text-slate-900 hover:text-brand-blue transition-colors"
+                        
                        >
                          <span>4. Entrepreneurship</span>
                          <ChevronDown size={14} className={`transition-transform duration-300 text-slate-400 ${skillsHubAccordion === "entrepreneurship" ? "rotate-180" : ""}`} />
                        </button>
                            <div className={`overflow-hidden transition-all duration-300 ${skillsHubAccordion === "entrepreneurship" ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                             <div className="bg-slate-50 rounded-xl p-2 mt-1">
-                               <Link href="/programs/entrepreneurship" className="block px-3 py-2 text-sm font-semibold text-brand-blue hover:bg-white hover:shadow-sm transition-all" onClick={() => setSkillsHubOpen(false)}>Free Entrepreneurship Material</Link>
+                             <div>
+                               <Link href="/programs/entrepreneurship" onClick={() => setSkillsHubOpen(false)}>Free Entrepreneurship Material</Link>
                              </div>
                            </div>
                     </div>
@@ -249,92 +249,92 @@ export function Navbar() {
                </div>
              </div>
 
-             <div className="relative group career-roadmaps-dropdown">
+             <div>
                <button
                  onClick={() => setCareerRoadmapsOpen((prev) => !prev)}
-                 className="relative flex items-center gap-1 py-2 group-hover:text-brand-blue transition-colors duration-300"
+                
                >
                  <span>Career Roadmaps</span>
-                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+                 <span />
                  <ChevronDown size={14} className={`text-slate-500 transition-transform ${careerRoadmapsOpen ? "rotate-180" : ""}`} />
                </button>
                  <div className={`absolute top-full left-0 mt-2 w-[480px] bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                   <div className="flex">
-                     <div className="w-28 bg-slate-900 text-white p-2 space-y-1 shrink-0">
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">1]</div>
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">2]</div>
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">3]</div>
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">4]</div>
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">5]</div>
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">6]</div>
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">7]</div>
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">8]</div>
-                       <div className="px-2 py-1.5 rounded-lg text-xs font-bold text-white">9]</div>
+                   <div>
+                     <div>
+                       <div>1]</div>
+                       <div>2]</div>
+                       <div>3]</div>
+                       <div>4]</div>
+                       <div>5]</div>
+                       <div>6]</div>
+                       <div>7]</div>
+                       <div>8]</div>
+                       <div>9]</div>
                      </div>
-                     <div className="flex-1 p-3 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
-                       <div className="px-3 py-2 rounded-xl text-sm font-bold text-slate-900">
+                     <div>
+                       <div>
                          Career Roadmaps (250+)
                        </div>
-                       <div className="space-y-1">
+                       <div>
                       <Link 
                         href="/career-library/engineering-technology" 
-                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       
                         onClick={() => setCareerRoadmapsOpen(false)}
                       >
                         1] Engineering & Technology
                       </Link>
                       <Link 
                         href="/career-library/medicine-healthcare" 
-                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       
                         onClick={() => setCareerRoadmapsOpen(false)}
                       >
                         2] Medicine & Healthcare
                       </Link>
                        <Link 
                          href="/career-library/commerce-finance-accounting" 
-                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
                         3] Commerce, Finance & Accounting
                        </Link>
                        <Link 
                          href="/career-library/management-business" 
-                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
                         4] Management & Business
                        </Link>
                        <Link 
                          href="/career-library/design-creative" 
-                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
                         5] Design & Creative Careers
                        </Link>
                        <Link 
                          href="/career-library/architecture-construction" 
-                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
                         6] Architecture, Construction & Infrastructure
                        </Link>
                        <Link 
                          href="/career-library/science-research" 
-                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
                         7] Science & Research
                        </Link>
                        <Link 
                          href="/career-library/law-governance" 
-                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
                         8] Law, Governance & Public Services
                        </Link>
                        <Link 
                          href="/career-library/emerging-careers" 
-                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        
                          onClick={() => setCareerRoadmapsOpen(false)}
                        >
                         9] Emerging Careers
@@ -345,57 +345,57 @@ export function Navbar() {
             </div>
           </div>
 
-            <Link href="/blogs" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            <Link href="/blogs">
+              <span>Blogs</span>
+              <span />
             </Link>
 
-            <Link href="/contact" className="relative group py-2">
-              <span className="group-hover:text-brand-blue transition-colors duration-300">Contact Us</span>
-              <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
+            <Link href="/contact">
+              <span>Contact Us</span>
+              <span />
             </Link>
 
-            <button onClick={openSearch} className="relative group py-2 flex items-center gap-1">
-              <Search size={18} className="text-slate-600 group-hover:text-brand-blue transition-colors duration-300" />
+            <button onClick={openSearch}>
+              <Search size={18} />
             </button>
 
-           <div className="flex items-center gap-2 xl:gap-3 shrink-0">
-            <a href="/free-mini-assessment.html" className="hidden lg:block">
-              <button className="bg-brand-orange text-white hover:bg-brand-orange/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl shadow-lg shadow-brand-orange/20 transition-all duration-300 text-sm whitespace-nowrap">
+           <div>
+            <a href="/free-mini-assessment.html">
+              <button>
                 Free Mini Psychometric Assessment
               </button>
             </a>
 
              {user && (
-               <div className="relative profile-dropdown">
+               <div>
                  <button
                    type="button"
                    onClick={() => setProfileOpen((prev) => !prev)}
-                   className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-1 pr-3 py-1 hover:border-brand-blue/40 transition-all"
+                  
                  >
-                   <div className="w-8 h-8 rounded-lg bg-brand-blue text-white flex items-center justify-center font-bold text-sm">
+                   <div>
                      {profileName.charAt(0)?.toUpperCase()}
                    </div>
-                   <span className="hidden md:inline text-sm font-bold text-slate-700">Hi, {profileName.split(" ")[0]}</span>
+                   <span>Hi, {profileName.split(" ")[0]}</span>
                    <ChevronDown size={14} className={`text-slate-500 transition-transform ${profileOpen ? "rotate-180" : ""}`} />
                  </button>
 
                  <div className={`absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${profileOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                  <div className="p-4 border-b border-slate-100 bg-slate-50">
-                    <p className="font-bold text-slate-800 text-sm truncate">{profileName}</p>
-                    <p className="text-xs text-slate-500 truncate">{user?.email || ""}</p>
+                  <div>
+                    <p>{profileName}</p>
+                    <p>{user?.email || ""}</p>
                   </div>
-                  <div className="p-2">
-                    <Link href="/dashboard/student/profile" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left">
-                      <User size={18} className="text-brand-blue" />
+                  <div>
+                    <Link href="/dashboard/student/profile">
+                      <User size={18} />
                       <div>
-                        <p className="text-sm font-bold text-slate-700">My Profile</p>
-                        <p className="text-xs text-slate-500">Account settings and more</p>
+                        <p>My Profile</p>
+                        <p>Account settings and more</p>
                       </div>
                     </Link>
-                    <button type="button" onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 transition-colors text-left border border-red-200">
-                      <LogOut size={18} className="text-red-600" />
-                      <span className="text-sm font-bold text-red-600">SIGN OUT</span>
+                    <button type="button" onClick={handleLogout}>
+                      <LogOut size={18} />
+                      <span>SIGN OUT</span>
                     </button>
                   </div>
                 </div>
@@ -403,43 +403,43 @@ export function Navbar() {
             )}
 
             {!user && (
-              <Link href="/login" className="hidden sm:block">
-                <button className="bg-brand-blue text-white hover:bg-brand-blue/90 hover:scale-105 active:scale-95 font-bold px-6 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-brand-blue/20 text-sm whitespace-nowrap">
+              <Link href="/login">
+                <button>
                   Login / Register
                 </button>
               </Link>
             )}
 
-            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="xl:hidden p-2 rounded-xl hover:bg-muted transition-colors" aria-label="Toggle mobile menu">
+            <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle mobile menu">
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             </div>
         </div>
 
         {isMobileMenuOpen && (
-          <div className="xl:hidden border-t border-border bg-background">
-            <div className="container mx-auto px-4 py-4 space-y-1">
+          <div>
+            <div>
               {mobileLinks.map((link) =>
                 link.isAccordion ? (
-                  <div key={link.href} className="space-y-1">
+                  <div key={link.href}>
                     <button
                       onClick={() => setMobileCareerRoadmapsOpen((prev) => !prev)}
-                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-foreground hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                     
                     >
                       <span>{link.label}</span>
                       <ChevronDown size={16} className={`text-slate-500 transition-transform ${mobileCareerRoadmapsOpen ? "rotate-180" : ""}`} />
                     </button>
                       <div className={`overflow-hidden transition-all duration-300 ${mobileCareerRoadmapsOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                        <div className="pl-4 space-y-1">
-                          <Link href="/career-library/engineering-technology" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">1] Engineering & Technology</Link>
-                          <Link href="/career-library/medicine-healthcare" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">2] Medicine & Healthcare</Link>
-                          <Link href="/career-library/commerce-finance-accounting" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">3] Commerce, Finance & Accounting</Link>
-                          <Link href="/career-library/management-business" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">4] Management & Business</Link>
-                          <Link href="/career-library/design-creative" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">5] Design & Creative Careers</Link>
-                          <Link href="/career-library/architecture-construction" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">6] Architecture, Construction & Infrastructure</Link>
-                          <Link href="/career-library/science-research" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">7] Science & Research</Link>
-                          <Link href="/career-library/law-governance" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">8] Law, Governance & Public Services</Link>
-                           <Link href="/career-library/emerging-careers" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">9] Emerging Careers</Link>
+                        <div>
+                          <Link href="/career-library/engineering-technology" onClick={() => setIsMobileMenuOpen(false)}>1] Engineering & Technology</Link>
+                          <Link href="/career-library/medicine-healthcare" onClick={() => setIsMobileMenuOpen(false)}>2] Medicine & Healthcare</Link>
+                          <Link href="/career-library/commerce-finance-accounting" onClick={() => setIsMobileMenuOpen(false)}>3] Commerce, Finance & Accounting</Link>
+                          <Link href="/career-library/management-business" onClick={() => setIsMobileMenuOpen(false)}>4] Management & Business</Link>
+                          <Link href="/career-library/design-creative" onClick={() => setIsMobileMenuOpen(false)}>5] Design & Creative Careers</Link>
+                          <Link href="/career-library/architecture-construction" onClick={() => setIsMobileMenuOpen(false)}>6] Architecture, Construction & Infrastructure</Link>
+                          <Link href="/career-library/science-research" onClick={() => setIsMobileMenuOpen(false)}>7] Science & Research</Link>
+                          <Link href="/career-library/law-governance" onClick={() => setIsMobileMenuOpen(false)}>8] Law, Governance & Public Services</Link>
+                           <Link href="/career-library/emerging-careers" onClick={() => setIsMobileMenuOpen(false)}>9] Emerging Careers</Link>
                        </div>
                      </div>
                    </div>
@@ -448,24 +448,24 @@ export function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    className="block px-4 py-3 rounded-xl text-sm font-semibold text-foreground hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                   
                   >
                     {link.label}
                   </Link>
                 )
               )}
 
-              <div className="border-t border-border mt-3 pt-4 space-y-3 px-4">
-                <button onClick={() => { openSearch(); setIsMobileMenuOpen(false); }} className="w-full flex items-center justify-center gap-2 bg-slate-100 text-slate-700 hover:bg-slate-200 font-bold py-3 rounded-xl transition-all">
+              <div>
+                <button onClick={() => { openSearch(); setIsMobileMenuOpen(false); }}>
                   <Search size={18} />
                   Search
                 </button>
                 <a href="/free-mini-assessment.html" onClick={() => setIsMobileMenuOpen(false)}>
-                  <button className="w-full bg-brand-orange text-white hover:bg-brand-orange/90 font-bold py-3 rounded-xl shadow-md">Free Mini Psychometric Assessment</button>
+                  <button>Free Mini Psychometric Assessment</button>
                 </a>
                 {!user && (
-                  <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="w-full">
-                    <button className="w-full font-bold py-3 bg-brand-blue text-white hover:bg-brand-blue/90 rounded-xl transition-all shadow-md">Login / Register</button>
+                  <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                    <button>Login / Register</button>
                   </Link>
                 )}
               </div>
@@ -473,7 +473,7 @@ export function Navbar() {
           </div>
         )}
       </nav>
-    </div>
+    </section>
   );
 }
 

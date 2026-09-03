@@ -10,6 +10,18 @@ import { careersData, Career } from "@/lib/data/careers";
 
 const EMERGING_CAREERS: Career[] = careersData.filter((c) => c.category === "Emerging Careers");
 
+const EMERGING_CAREER_NUMBERS: Record<string, string> = {
+  "car_emerging_prompt_engineer": "1] Prompt Engineer",
+  "car_emerging_generative_ai_specialist": "2] Generative AI Specialist",
+  "car_emerging_ai_product_manager": "3] AI Product Manager",
+  "car_emerging_ai_ethics_specialist": "4] AI Ethics Specialist",
+  "car_emerging_ai_trainer": "5] AI Trainer",
+  "car_emerging_robotics_technician": "6] Robotics Technician",
+  "car_emerging_drone_technology_specialist": "7] Drone Technology Specialist",
+  "car_emerging_renewable_energy_specialist": "8] Renewable Energy Specialist",
+  "car_emerging_sustainability_consultant": "9] Sustainability Consultant",
+};
+
 function CareerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -68,7 +80,7 @@ function CareerContent() {
                 <BookOpen size={20} className={active === idx ? "text-white" : "text-slate-600"} />
               </div>
               <div>
-                <p className="text-sm font-bold leading-tight">{item.title}</p>
+                <p className="text-sm font-bold leading-tight">{EMERGING_CAREER_NUMBERS[item.id] || item.title}</p>
                 <p className={`text-xs ${active === idx ? "text-blue-100" : "text-slate-500"} leading-tight`}>
                   {item.category}
                 </p>

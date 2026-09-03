@@ -49,15 +49,15 @@ export default function EmergingCareerPage({ params }: Props) {
 
   const formatTitle = (title: string) => {
     const map: Record<string, string> = {
-      "Prompt Engineer": "242_Prompt Engineer",
-      "Generative AI Specialist": "243_Generative AI Specialist",
-      "AI Product Manager": "244_AI Product Manager",
-      "AI Ethics Specialist": "245_AI Ethics Specialist",
-      "AI Trainer": "246_AI Trainer",
-      "Robotics Technician": "247_Robotics Technician",
-      "Drone Technology Specialist": "248_Drone Technology Specialist",
-      "Renewable Energy Specialist": "249_Renewable Energy Specialist",
-      "Sustainability Consultant": "250_Sustainability Consultant",
+      "Prompt Engineer": "Prompt Engineer",
+      "Generative AI Specialist": "Generative AI Specialist",
+      "AI Product Manager": "AI Product Manager",
+      "AI Ethics Specialist": "AI Ethics Specialist",
+      "AI Trainer": "AI Trainer",
+      "Robotics Technician": "Robotics Technician",
+      "Drone Technology Specialist": "Drone Technology Specialist",
+      "Renewable Energy Specialist": "Renewable Energy Specialist",
+      "Sustainability Consultant": "Sustainability Consultant",
     };
     return map[title] || title;
   };

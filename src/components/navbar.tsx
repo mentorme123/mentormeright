@@ -260,95 +260,95 @@ export function Navbar() {
                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-blue transition-all duration-300 group-hover:w-full" />
                  <ChevronDown size={14} className={`text-slate-500 transition-transform ${careerRoadmapsOpen ? "rotate-180" : ""}`} />
                </button>
-               <div className={`absolute top-full left-0 mt-2 flex bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
-                 <div className="p-3 w-72 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
-                   <div className="px-3 py-2 rounded-xl text-sm font-bold text-slate-900">
-                     Career Roadmaps (250+)
-                   </div>
-                   <div className="pl-3 space-y-1">
-                     <Link 
-                       href="/career-library/engineering-technology" 
-                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                       onClick={() => setCareerRoadmapsOpen(false)}
-                     >
-                       1] Engineering &amp; Technology
-                     </Link>
-                     <Link 
-                       href="/career-library/medicine-healthcare" 
-                       className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                       onClick={() => setCareerRoadmapsOpen(false)}
-                     >
-                       2] Medicine &amp; Healthcare
-                     </Link>
-                      <Link 
-                        href="/career-library/commerce-finance-accounting" 
-                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                        onClick={() => setCareerRoadmapsOpen(false)}
-                      >
-                        3] Commerce, Finance &amp; Accounting
-                      </Link>
-                      <Link 
-                        href="/career-library/management-business" 
-                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                        onClick={() => setCareerRoadmapsOpen(false)}
-                      >
-                        4] Management &amp; Business
-                      </Link>
-                      <Link 
-                        href="/career-library/design-creative" 
-                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                        onClick={() => setCareerRoadmapsOpen(false)}
-                      >
-                        5] Design &amp; Creative Careers
-                      </Link>
-                      <Link 
-                        href="/career-library/architecture-construction" 
-                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                        onClick={() => setCareerRoadmapsOpen(false)}
-                      >
-                        6] Architecture, Construction &amp; Infrastructure
-                      </Link>
-                      <Link 
-                        href="/career-library/science-research" 
-                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                        onClick={() => setCareerRoadmapsOpen(false)}
-                      >
-                        7] Science &amp; Research
-                      </Link>
-                      <Link 
-                        href="/career-library/law-governance" 
-                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                        onClick={() => setCareerRoadmapsOpen(false)}
-                      >
-                        8] Law, Governance &amp; Public Services
-                      </Link>
-                      <button
-                        onClick={() => setEmergingCareersOpen((prev) => !prev)}
-                        className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                      >
-                        <span>9] Emerging Careers</span>
-                        <ChevronDown size={14} className={`text-slate-500 transition-transform ${emergingCareersOpen ? "rotate-180" : ""}`} />
-                      </button>
+                <div className={`absolute top-full left-0 mt-2 flex bg-white border border-slate-200 rounded-2xl shadow-2xl z-50 overflow-hidden transition-all ${careerRoadmapsOpen ? "opacity-100 visible" : "opacity-0 invisible"}`}>
+                  <div className={`w-64 border-r border-slate-100 bg-slate-50/50 overflow-hidden transition-all ${emergingCareersOpen ? "opacity-100 visible" : "opacity-0 invisible w-0"}`}>
+                    <div className="p-3 space-y-1">
+                      <div className="px-3 py-2 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Emerging Careers
+                      </div>
+                      <Link href="/career-library/emerging-careers/prompt-engineer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Prompt Engineer</Link>
+                      <Link href="/career-library/emerging-careers/generative-ai-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Generative AI Specialist</Link>
+                      <Link href="/career-library/emerging-careers/ai-product-manager" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Product Manager</Link>
+                      <Link href="/career-library/emerging-careers/ai-ethics-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Ethics Specialist</Link>
+                      <Link href="/career-library/emerging-careers/ai-trainer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Trainer</Link>
+                      <Link href="/career-library/emerging-careers/robotics-technician" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Robotics Technician</Link>
+                      <Link href="/career-library/emerging-careers/drone-technology-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Drone Technology Specialist</Link>
+                      <Link href="/career-library/emerging-careers/renewable-energy-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Renewable Energy Specialist</Link>
+                      <Link href="/career-library/emerging-careers/sustainability-consultant" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Sustainability Consultant</Link>
                     </div>
-                 </div>
-                 <div className={`w-64 border-l border-slate-100 bg-slate-50/50 overflow-hidden transition-all ${emergingCareersOpen ? "opacity-100 visible" : "opacity-0 invisible w-0"}`}>
-                   <div className="p-3 space-y-1">
-                     <div className="px-3 py-2 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-wider">
-                       Emerging Careers
+                  </div>
+                  <div className="p-3 w-72 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
+                    <div className="px-3 py-2 rounded-xl text-sm font-bold text-slate-900">
+                      Career Roadmaps (250+)
+                    </div>
+                    <div className="pl-3 space-y-1">
+                      <Link 
+                        href="/career-library/engineering-technology" 
+                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        onClick={() => setCareerRoadmapsOpen(false)}
+                      >
+                        Engineering &amp; Technology
+                      </Link>
+                      <Link 
+                        href="/career-library/medicine-healthcare" 
+                        className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                        onClick={() => setCareerRoadmapsOpen(false)}
+                      >
+                        Medicine &amp; Healthcare
+                      </Link>
+                       <Link 
+                         href="/career-library/commerce-finance-accounting" 
+                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                         onClick={() => setCareerRoadmapsOpen(false)}
+                       >
+                         Commerce, Finance &amp; Accounting
+                       </Link>
+                       <Link 
+                         href="/career-library/management-business" 
+                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                         onClick={() => setCareerRoadmapsOpen(false)}
+                       >
+                         Management &amp; Business
+                       </Link>
+                       <Link 
+                         href="/career-library/design-creative" 
+                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                         onClick={() => setCareerRoadmapsOpen(false)}
+                       >
+                         Design &amp; Creative Careers
+                       </Link>
+                       <Link 
+                         href="/career-library/architecture-construction" 
+                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                         onClick={() => setCareerRoadmapsOpen(false)}
+                       >
+                         Architecture, Construction &amp; Infrastructure
+                       </Link>
+                       <Link 
+                         href="/career-library/science-research" 
+                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                         onClick={() => setCareerRoadmapsOpen(false)}
+                       >
+                         Science &amp; Research
+                       </Link>
+                       <Link 
+                         href="/career-library/law-governance" 
+                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                         onClick={() => setCareerRoadmapsOpen(false)}
+                       >
+                         Law, Governance &amp; Public Services
+                       </Link>
+                       <button
+                         onClick={() => setEmergingCareersOpen((prev) => !prev)}
+                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       >
+                         <span>Emerging Careers</span>
+                         <ChevronDown size={14} className={`text-slate-500 transition-transform ${emergingCareersOpen ? "rotate-180" : ""}`} />
+                       </button>
                      </div>
-                     <Link href="/career-library/emerging-careers/prompt-engineer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>242_Prompt Engineer</Link>
-                     <Link href="/career-library/emerging-careers/generative-ai-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>243_Generative AI Specialist</Link>
-                     <Link href="/career-library/emerging-careers/ai-product-manager" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>244_AI Product Manager</Link>
-                     <Link href="/career-library/emerging-careers/ai-ethics-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>245_AI Ethics Specialist</Link>
-                     <Link href="/career-library/emerging-careers/ai-trainer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>246_AI Trainer</Link>
-                     <Link href="/career-library/emerging-careers/robotics-technician" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>247_Robotics Technician</Link>
-                     <Link href="/career-library/emerging-careers/drone-technology-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>248_Drone Technology Specialist</Link>
-                     <Link href="/career-library/emerging-careers/renewable-energy-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>249_Renewable Energy Specialist</Link>
-                     <Link href="/career-library/emerging-careers/sustainability-consultant" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>250_Sustainability Consultant</Link>
-                   </div>
-                 </div>
-               </div>
-             </div>
+                  </div>
+                </div>
+              </div>
 
             <Link href="/blogs" className="relative group py-2">
               <span className="group-hover:text-brand-blue transition-colors duration-300">Blogs</span>

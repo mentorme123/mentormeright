@@ -17,7 +17,6 @@ export function Navbar() {
   const [aiHubAccordion, setAiHubAccordion] = useState<string | null>("k12");
   const [skillsHubAccordion, setSkillsHubAccordion] = useState<string | null>("k12");
   const [mobileCareerRoadmapsOpen, setMobileCareerRoadmapsOpen] = useState(false);
-  const [emergingCareersOpen, setEmergingCareersOpen] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -64,12 +63,11 @@ export function Navbar() {
       }
       if (careerRoadmapsOpen && !(event.target as Element).closest(".career-roadmaps-dropdown")) {
         setCareerRoadmapsOpen(false);
-        setEmergingCareersOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [profileOpen, aiHubOpen, skillsHubOpen, careerRoadmapsOpen, emergingCareersOpen]);
+  }, [profileOpen, aiHubOpen, skillsHubOpen, careerRoadmapsOpen]);
 
   const mobileLinks = [
     { href: "/", label: "Home" },
@@ -429,29 +427,10 @@ export function Navbar() {
                           <Link href="/career-library/architecture-construction" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">6] Architecture, Construction &amp; Infrastructure</Link>
                           <Link href="/career-library/science-research" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">7] Science &amp; Research</Link>
                           <Link href="/career-library/law-governance" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">8] Law, Governance &amp; Public Services</Link>
-                          <button
-                            onClick={() => setEmergingCareersOpen((prev) => !prev)}
-                            className="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
-                          >
-                            <span>9] Emerging Careers</span>
-                            <ChevronDown size={14} className={`text-slate-500 transition-transform ${emergingCareersOpen ? "rotate-180" : ""}`} />
-                          </button>
-                          <div className={`overflow-hidden transition-all duration-300 ${emergingCareersOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`}>
-                            <div className="pl-4 space-y-1">
-                              <Link href="/career-library/emerging-careers/prompt-engineer" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">242_Prompt Engineer</Link>
-                              <Link href="/career-library/emerging-careers/generative-ai-specialist" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">243_Generative AI Specialist</Link>
-                              <Link href="/career-library/emerging-careers/ai-product-manager" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">244_AI Product Manager</Link>
-                              <Link href="/career-library/emerging-careers/ai-ethics-specialist" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">245_AI Ethics Specialist</Link>
-                              <Link href="/career-library/emerging-careers/ai-trainer" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">246_AI Trainer</Link>
-                              <Link href="/career-library/emerging-careers/robotics-technician" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">247_Robotics Technician</Link>
-                              <Link href="/career-library/emerging-careers/drone-technology-specialist" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">248_Drone Technology Specialist</Link>
-                              <Link href="/career-library/emerging-careers/renewable-energy-specialist" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">249_Renewable Energy Specialist</Link>
-                              <Link href="/career-library/emerging-careers/sustainability-consultant" onClick={() => { setIsMobileMenuOpen(false); setEmergingCareersOpen(false); }} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">250_Sustainability Consultant</Link>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
+                           <Link href="/career-library/emerging-careers" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">9] Emerging Careers</Link>
+                       </div>
+                     </div>
+                   </div>
                 ) : (
                   <Link
                     key={link.href}

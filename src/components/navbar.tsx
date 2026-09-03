@@ -266,15 +266,15 @@ export function Navbar() {
                       <div className="px-3 py-2 rounded-xl text-xs font-bold text-slate-500 uppercase tracking-wider">
                         Emerging Careers
                       </div>
-                      <Link href="/career-library/emerging-careers/prompt-engineer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Prompt Engineer</Link>
-                      <Link href="/career-library/emerging-careers/generative-ai-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Generative AI Specialist</Link>
-                      <Link href="/career-library/emerging-careers/ai-product-manager" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Product Manager</Link>
-                      <Link href="/career-library/emerging-careers/ai-ethics-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Ethics Specialist</Link>
-                      <Link href="/career-library/emerging-careers/ai-trainer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Trainer</Link>
-                      <Link href="/career-library/emerging-careers/robotics-technician" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Robotics Technician</Link>
-                      <Link href="/career-library/emerging-careers/drone-technology-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Drone Technology Specialist</Link>
-                      <Link href="/career-library/emerging-careers/renewable-energy-specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Renewable Energy Specialist</Link>
-                      <Link href="/career-library/emerging-careers/sustainability-consultant" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Sustainability Consultant</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_prompt_engineer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Prompt Engineer</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_generative_ai_specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Generative AI Specialist</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_ai_product_manager" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Product Manager</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_ai_ethics_specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Ethics Specialist</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_ai_trainer" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>AI Trainer</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_robotics_technician" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Robotics Technician</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_drone_technology_specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Drone Technology Specialist</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_renewable_energy_specialist" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Renewable Energy Specialist</Link>
+                      <Link href="/career-library/emerging-careers?career=car_emerging_sustainability_consultant" className="block px-3 py-2 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all" onClick={() => { setCareerRoadmapsOpen(false); setEmergingCareersOpen(false); }}>Sustainability Consultant</Link>
                     </div>
                   </div>
                   <div className="p-3 w-72 max-h-[80vh] overflow-y-auto custom-scrollbar bg-white space-y-1">
@@ -338,13 +338,13 @@ export function Navbar() {
                        >
                          Law, Governance &amp; Public Services
                        </Link>
-                       <button
-                         onClick={() => setEmergingCareersOpen((prev) => !prev)}
-                         className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                       <Link 
+                         href="/career-library/emerging-careers" 
+                         className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                         onClick={() => setCareerRoadmapsOpen(false)}
                        >
-                         <span>Emerging Careers</span>
-                         <ChevronDown size={14} className={`text-slate-500 transition-transform ${emergingCareersOpen ? "rotate-180" : ""}`} />
-                       </button>
+                         Emerging Careers
+                       </Link>
                      </div>
                   </div>
                 </div>

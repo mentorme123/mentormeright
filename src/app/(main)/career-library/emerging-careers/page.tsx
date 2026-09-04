@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { BookOpen, ChevronLeft, ChevronRight, Home, Search, ZoomIn, ZoomOut, Shield, ArrowLeft, MessageCircle, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Navbar } from "@/components/navbar";
 import { careersData, Career } from "@/lib/data/careers";
 
 const EMERGING_CAREERS: Career[] = careersData.filter((c) => c.category === "Emerging Careers");
@@ -127,7 +126,7 @@ function CareerContent() {
 
         {/* Career Content */}
         <div className="flex-1 relative w-full bg-[#e5e7eb] overflow-y-auto">
-          <div className="max-w-4xl mx-auto p-6 sm:p-10 space-y-8">
+          <div className="p-6 sm:p-10 space-y-8">
             <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
               <h2 className="text-2xl font-black text-slate-900">What does a {career.title} do?</h2>
               <p className="text-slate-700 leading-relaxed text-base">{career.description}</p>

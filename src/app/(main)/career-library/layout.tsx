@@ -44,10 +44,11 @@ export default function CareerLibraryLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const isEmergingCareers = pathname?.includes("/emerging-careers");
 
   return (
-    <div className="min-h-screen bg-slate-50 pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className={`min-h-screen bg-slate-50 ${isEmergingCareers ? "" : "pt-24 pb-12"}`}>
+      <div className={`${isEmergingCareers ? "" : "max-w-7xl mx-auto px-4"}`}>
         {children}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { careersData, Career } from "@/lib/data/careers";
 import { notFound } from "next/navigation";
@@ -62,6 +62,18 @@ export default function EmergingCareerPage({ params }: Props) {
     return map[title] || title;
   };
 
+  const downloadMap: Record<string, string> = {
+    "car_emerging_prompt_engineer": "242_Prompt Engineer.docx",
+    "car_emerging_generative_ai_specialist": "243_Generative AI Specialist.docx",
+    "car_emerging_ai_product_manager": "244_AI Product Manager.docx",
+    "car_emerging_ai_ethics_specialist": "245_AI Ethics Specialist.docx",
+    "car_emerging_ai_trainer": "246_AI Trainer.docx",
+    "car_emerging_robotics_technician": "247_Robotics Technician.docx",
+    "car_emerging_drone_technology_specialist": "248_Drone Technology Specialist.docx",
+    "car_emerging_renewable_energy_specialist": "249_Renewable Energy Specialist.docx",
+    "car_emerging_sustainability_consultant": "250_Sustainability Consultant.docx",
+  };
+
   return (
     <>
       <section className="bg-brand-blue text-white py-16 px-4">
@@ -110,6 +122,16 @@ export default function EmergingCareerPage({ params }: Props) {
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
             <h2 className="text-2xl font-black text-slate-900">Future Scope</h2>
             <p className="text-slate-700 leading-relaxed text-base font-semibold text-emerald-700">{career.growth_outlook}</p>
+          </div>
+
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-2xl font-black text-slate-900">Download Material</h2>
+            <p className="text-slate-700 leading-relaxed text-base">Download the complete course material for this career.</p>
+                    <Button asChild className="bg-brand-blue hover:bg-brand-blue/90 text-white font-bold">
+                      <a href={`/downloads/emerging-careers/${downloadMap[career.id] || `${career.id}.docx`}`} download>
+                        <Download size={16} className="mr-2" /> Download Course Material
+                      </a>
+                    </Button>
           </div>
 
           <div className="flex items-center gap-4">

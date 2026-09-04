@@ -132,10 +132,94 @@ function CareerContent() {
               <p className="text-slate-700 leading-relaxed text-base">{career.description}</p>
             </div>
 
+            {career.is_real_career && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">Is {career.title} a Real Career?</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.is_real_career}</p>
+              </div>
+            )}
+
+            {career.subjects_after_10th && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">What Subjects Should I Take After 10th?</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.subjects_after_10th}</p>
+              </div>
+            )}
+
+            {career.maths_compulsory && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">Is Maths Compulsory for {career.title}?</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.maths_compulsory}</p>
+              </div>
+            )}
+
+            {career.degree_choices && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">Which Degree Should I Choose?</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.degree_choices}</p>
+              </div>
+            )}
+
+            {career.entrance_exams && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">Which Entrance Exams Should I Take?</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.entrance_exams}</p>
+              </div>
+            )}
+
+            {career.best_colleges && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">Best Colleges for {career.title} in India</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.best_colleges}</p>
+              </div>
+            )}
+
+            {career.courses_to_learn && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">What Courses Can I Take to Learn {career.title}?</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.courses_to_learn}</p>
+              </div>
+            )}
+
             <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
               <h2 className="text-2xl font-black text-slate-900">Salary Range</h2>
               <p className="text-slate-700 leading-relaxed text-base font-semibold text-brand-blue">{career.salary_range}</p>
             </div>
+
+            {career.future_scope && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">What is the Future Scope of {career.title}?</h2>
+                <p className="text-slate-700 leading-relaxed text-base font-semibold text-emerald-700">{career.future_scope}</p>
+              </div>
+            )}
+
+            {career.skills_detailed && career.skills_detailed.length > 0 && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">What Skills Are Required to Become a {career.title}?</h2>
+                <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
+                  {career.skills_detailed.map((skill, idx) => (
+                    <div key={idx} className="flex items-center gap-2.5">
+                      <span className="text-brand-blue font-bold">•</span>
+                      <span>{skill}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {career.is_good_career && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">Is {career.title} a Good Career for You?</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.is_good_career}</p>
+              </div>
+            )}
+
+            {career.career_tip && (
+              <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <h2 className="text-2xl font-black text-slate-900">MentorMe Career Tip</h2>
+                <p className="text-slate-700 leading-relaxed text-base">{career.career_tip}</p>
+              </div>
+            )}
 
             <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
               <h2 className="text-2xl font-black text-slate-900">Education Path</h2>

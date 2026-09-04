@@ -181,11 +181,6 @@ function CareerContent() {
               </div>
             )}
 
-            <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-              <h2 className="text-2xl font-black text-slate-900">Salary Range</h2>
-              <p className="text-slate-700 leading-relaxed text-base font-semibold text-brand-blue">{career.salary_range}</p>
-            </div>
-
             {career.future_scope && (
               <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
                 <h2 className="text-2xl font-black text-slate-900">What is the Future Scope of {career.title}?</h2>

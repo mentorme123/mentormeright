@@ -237,8 +237,21 @@ function CareerContent() {
               <h2 className="text-2xl font-black text-slate-900">Future Scope</h2>
               <p className="text-slate-700 leading-relaxed text-base font-semibold text-emerald-700">{career.growth_outlook}</p>
             </div>
+            </div>
+
+            <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
+              <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Emerging Careers?</h2>
+              <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">Choosing a career should not be based only on popularity.</p>
+              <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">Your interests, strengths, personality and skills can help determine whether an emerging career is actually a good fit for you.</p>
+              <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree or specialisation.</p>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+                <Link href="/assessment">
+                  <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">Take MentorMe Career Intelligence Assessment</Button>
+                </Link>
+              </div>
+              <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MentorMe – Turning Passions into Professions.</p>
+            </div>
           </div>
-        </div>
 
         {/* Comment Toggle */}
         <div className="shrink-0 border-t border-slate-200 bg-white px-4 sm:px-6 py-3 flex items-center justify-between">

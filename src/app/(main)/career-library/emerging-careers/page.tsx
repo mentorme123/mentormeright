@@ -30,6 +30,7 @@ function CareerContent() {
     : 0;
   const [active, setActive] = useState(initialIndex);
   const [showComments, setShowComments] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (careerParam) {
@@ -40,6 +41,7 @@ function CareerContent() {
 
   const updateCareer = (idx: number) => {
     setActive(idx);
+    setSidebarOpen(false);
     const url = new URL(window.location.href);
     url.searchParams.set("career", EMERGING_CAREERS[idx].id);
     router.replace(url.pathname + url.search, { scroll: false });
@@ -53,8 +55,26 @@ function CareerContent() {
 
   return (
     <div className="flex flex-col lg:flex-row gap-0 h-[calc(100vh-80px)] overflow-hidden">
+      {/* Mobile Header */}
+      <div className="lg:hidden flex items-center justify-between bg-[#0a1628] px-4 py-3 shrink-0">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="p-2 -ml-2 text-white hover:bg-white/10 rounded-lg transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+          </button>
+          <span className="text-white font-bold text-sm">Emerging Careers</span>
+        </div>
+        <Link href="/career-library">
+          <Button variant="ghost" size="sm" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-full px-3 h-7 text-xs flex items-center gap-1.5">
+            <ArrowLeft size={12} /> Back
+          </Button>
+        </Link>
+      </div>
+
       {/* Left Sidebar */}
-      <div className="w-full lg:w-80 shrink-0 bg-slate-900 p-6 text-white overflow-y-auto">
+      <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 w-80 shrink-0 bg-slate-900 p-6 text-white overflow-y-auto transition-transform duration-300 lg:duration-0`}>
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
             <BookOpen size={24} className="text-white" />
@@ -88,6 +108,14 @@ function CareerContent() {
           ))}
         </div>
       </div>
+
+      {/* Overlay for mobile sidebar */}
+      {sidebarOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-30"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       {/* Right Content */}
       <div className="flex-1 flex flex-col bg-white overflow-hidden relative">

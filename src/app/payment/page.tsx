@@ -100,8 +100,9 @@ export default function PaymentPage() {
       <>
         <NoIndex />
         <div className="min-h-screen flex items-center justify-center bg-white">
-        <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
-      </div>
+          <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
+        </div>
+      </>
     );
   }
 
@@ -109,63 +110,64 @@ export default function PaymentPage() {
     <>
       <NoIndex />
       <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-      <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl border border-slate-200 text-center space-y-6">
-        <div className="w-20 h-20 bg-brand-blue/10 rounded-full flex items-center justify-center mx-auto">
-          <Crown className="w-10 h-10 text-brand-orange" />
-        </div>
-        <div className="space-y-2">
-          <h2 className="text-2xl font-black text-slate-800">Complete Your Payment</h2>
-          <p className="text-sm text-slate-500">
-            Please complete the payment to access the career assessment and unlock your personalized report.
+        <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl border border-slate-200 text-center space-y-6">
+          <div className="w-20 h-20 bg-brand-blue/10 rounded-full flex items-center justify-center mx-auto">
+            <Crown className="w-10 h-10 text-brand-orange" />
+          </div>
+          <div className="space-y-2">
+            <h2 className="text-2xl font-black text-slate-800">Complete Your Payment</h2>
+            <p className="text-sm text-slate-500">
+              Please complete the payment to access the career assessment and unlock your personalized report.
+            </p>
+          </div>
+          <div className="bg-slate-50 rounded-2xl p-6 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-bold text-slate-600">Career Assessment + Report</span>
+              <div className="flex items-center gap-1 text-xl font-black text-slate-800">
+                <IndianRupee size={20} />
+                1999
+              </div>
+            </div>
+            <ul className="text-left text-sm text-slate-600 space-y-2">
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                Comprehensive career assessment
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                AI-generated detailed report
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                Career roadmap & skill plan
+              </li>
+            </ul>
+          </div>
+          <Button
+            onClick={handlePayClick}
+            className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg transition-all"
+          >
+            <Crown className="mr-2" size={18} />
+            Pay ₹1999 to Continue
+          </Button>
+          <p className="text-[10px] text-slate-400">
+            Secure payment powered by Razorpay
           </p>
         </div>
-        <div className="bg-slate-50 rounded-2xl p-6 space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-bold text-slate-600">Career Assessment + Report</span>
-            <div className="flex items-center gap-1 text-xl font-black text-slate-800">
-              <IndianRupee size={20} />
-              1999
-            </div>
-          </div>
-          <ul className="text-left text-sm text-slate-600 space-y-2">
-            <li className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
-              Comprehensive career assessment
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
-              AI-generated detailed report
-            </li>
-            <li className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
-              Career roadmap & skill plan
-            </li>
-          </ul>
-        </div>
-        <Button
-          onClick={handlePayClick}
-          className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg transition-all"
-        >
-          <Crown className="mr-2" size={18} />
-          Pay ₹1999 to Continue
-        </Button>
-        <p className="text-[10px] text-slate-400">
-          Secure payment powered by Razorpay
-        </p>
-      </div>
 
-      <RazorpayScript />
-      <B2CPaymentModal
-        isOpen={showPaymentModal}
-        onClose={() => setShowPaymentModal(false)}
-        onSuccess={handlePaymentSuccess}
-        itemType="career_report"
-        itemName="Career Assessment And Detailed Career Report"
-        amount={1999}
-        description="AI-generated comprehensive career report with personalized recommendations and skill development plans."
-        email={user?.email || emailParam}
-        name={profile?.name || user?.user_metadata?.full_name || nameParam}
-      />
-    </div>
+        <RazorpayScript />
+        <B2CPaymentModal
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          onSuccess={handlePaymentSuccess}
+          itemType="career_report"
+          itemName="Career Assessment And Detailed Career Report"
+          amount={1999}
+          description="AI-generated comprehensive career report with personalized recommendations and skill development plans."
+          email={user?.email || emailParam}
+          name={profile?.name || user?.user_metadata?.full_name || nameParam}
+        />
+      </div>
+    </>
   );
 }

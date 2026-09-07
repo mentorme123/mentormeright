@@ -29,8 +29,9 @@ function AssessmentRedirect() {
     <>
       <NoIndex />
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
-      <p className="text-sm font-semibold text-slate-600">Redirecting to payment...</p>
-    </div>
+        <p className="text-sm font-semibold text-slate-600">Redirecting to payment...</p>
+      </div>
+    </>
   );
 }
 

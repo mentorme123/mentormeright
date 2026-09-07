@@ -54,7 +54,7 @@ function CareerContent() {
   const career = EMERGING_CAREERS[active];
 
   return (
-    <div className="flex flex-col lg:flex-row gap-0 h-[calc(100vh-80px)] overflow-hidden">
+    <div className="flex flex-col lg:flex-row gap-0 h-[calc(100vh-80px)] lg:overflow-hidden">
       {/* Mobile Header */}
       <div className="lg:hidden flex items-center justify-between bg-[#0a1628] px-4 py-3 shrink-0">
         <div className="flex items-center gap-2">
@@ -74,7 +74,7 @@ function CareerContent() {
       </div>
 
       {/* Left Sidebar */}
-      <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 w-80 shrink-0 bg-slate-900 p-6 text-white overflow-y-auto transition-transform duration-300 lg:duration-0`}>
+      <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 w-full sm:w-80 shrink-0 bg-slate-900 p-6 text-white overflow-y-auto transition-transform duration-300 lg:duration-0`}>
         <div className="flex items-center gap-3 mb-6">
           <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
             <BookOpen size={24} className="text-white" />

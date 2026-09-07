@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: "Science & Research | MentorMe Career Library",
   description: "Explore Science & Research careers in India including Astrophysics, Biotechnology, Research Science, and Laboratory Technology. Learn about degrees, colleges, skills, salary and future scope.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/career-library/science-research',
+  },
 };
 
 export default function ScienceResearchCareerPage() {

@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: "Commerce, Finance & Accounting | MentorMe Career Library",
   description: "Explore Commerce, Finance & Accounting careers in India including Investment Banking, CA, CS, and Financial Analysis. Learn about degrees, colleges, skills, salary and future scope.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/career-library/commerce-finance-accounting',
+  },
 };
 
 export default function CommerceFinanceAccountingCareerPage() {

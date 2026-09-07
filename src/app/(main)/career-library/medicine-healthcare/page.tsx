@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: "Medicine & Healthcare | MentorMe Career Library",
   description: "Explore Medicine & Healthcare careers in India including MBBS, Nursing, Physiotherapy, and Occupational Therapy. Learn about degrees, colleges, skills, salary and future scope.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/career-library/medicine-healthcare',
+  },
 };
 
 export default function MedicineHealthcareCareerPage() {

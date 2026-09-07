@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Crown, Loader2, IndianRupee } from "lucide-react";
 import { B2CPaymentModal } from "@/components/b2c-payment-modal";
 import { RazorpayScript } from "@/components/razorpay-script";
+import { NoIndex } from "@/components/no-index";
 
 export default function PaymentPage() {
   const supabase = createClient();
@@ -96,14 +97,18 @@ export default function PaymentPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
+      <>
+        <NoIndex />
+        <div className="min-h-screen flex items-center justify-center bg-white">
         <Loader2 className="w-8 h-8 animate-spin text-brand-blue" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
+    <>
+      <NoIndex />
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
       <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl border border-slate-200 text-center space-y-6">
         <div className="w-20 h-20 bg-brand-blue/10 rounded-full flex items-center justify-center mx-auto">
           <Crown className="w-10 h-10 text-brand-orange" />

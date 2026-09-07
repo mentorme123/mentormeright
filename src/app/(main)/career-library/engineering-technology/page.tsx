@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: "Engineering & Technology | MentorMe Career Library",
   description: "Explore Engineering & Technology careers in India including Data Science, Software Engineering, AI/ML, and Cybersecurity. Learn about degrees, colleges, skills, salary and future scope.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/career-library/engineering-technology',
+  },
 };
 
 export default function EngineeringTechnologyCareerPage() {

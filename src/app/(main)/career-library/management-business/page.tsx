@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: "Management & Business | MentorMe Career Library",
   description: "Explore Management & Business careers in India including Digital Marketing, HR, Finance, and Entrepreneurship. Learn about degrees, colleges, skills, salary and future scope.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/career-library/management-business',
+  },
 };
 
 export default function ManagementBusinessCareerPage() {

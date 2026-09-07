@@ -3,6 +3,7 @@
 import { useEffect, Suspense } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useSearchParams } from "next/navigation";
+import { NoIndex } from "@/components/no-index";
 
 function AssessmentRedirect() {
   const searchParams = useSearchParams();
@@ -25,7 +26,9 @@ function AssessmentRedirect() {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
+    <>
+      <NoIndex />
+      <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
       <p className="text-sm font-semibold text-slate-600">Redirecting to payment...</p>
     </div>
   );

@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: "Architecture, Construction & Infrastructure | MentorMe Career Library",
   description: "Explore Architecture & Construction careers in India including Interior Design, Civil Engineering, Urban Planning, and Architecture. Learn about degrees, colleges, skills, salary and future scope.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/career-library/architecture-construction',
+  },
 };
 
 export default function ArchitectureConstructionCareerPage() {

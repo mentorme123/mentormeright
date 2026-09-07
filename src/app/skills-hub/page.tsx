@@ -47,6 +47,9 @@ const uspIcons: Record<string, React.ReactNode> = {
 export const metadata = {
   title: "21st Century Skills Hub | MentorMe",
   description: "Explore our 21st Century Skills Hub programs for K-12, College, and Corporate learners.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/skills-hub',
+  },
 };
 
 export default function SkillsHubPage() {

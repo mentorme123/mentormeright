@@ -8,6 +8,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { GoogleAnalytics } from "@/components/analytics";
 import { RazorpayScript } from "@/components/razorpay-script";
+import { CanonicalUrl } from "@/components/canonical-url";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -63,6 +64,7 @@ export default function RootLayout({
         <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
       </head>
       <body className="antialiased min-h-screen flex flex-col font-sans">
+        <CanonicalUrl />
         <PathTracker />
         <GoogleAnalytics />
         <RazorpayScript />

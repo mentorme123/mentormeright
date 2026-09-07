@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: "Design & Creative Careers | MentorMe Career Library",
   description: "Explore Design & Creative careers in India including Game Design, UI/UX, Graphic Design, and Animation. Learn about degrees, colleges, skills, salary and future scope.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/career-library/design-creative',
+  },
 };
 
 export default function DesignCreativeCareerPage() {

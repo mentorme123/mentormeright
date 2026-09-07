@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 export const metadata = {
   title: "Law, Governance & Public Services | MentorMe Career Library",
   description: "Explore Law & Governance careers in India including Cyber Law, Corporate Law, Civil Services, and Public Policy. Learn about degrees, colleges, skills, salary and future scope.",
+  alternates: {
+    canonical: 'https://www.mentormeright.com/career-library/law-governance',
+  },
 };
 
 export default function LawGovernanceCareerPage() {

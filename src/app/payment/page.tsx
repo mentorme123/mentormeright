@@ -143,6 +143,14 @@ export default function PaymentPage() {
               </li>
             </ul>
           </div>
+          <a
+            href="/view/Sample Career Report.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block text-center text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-4 py-3 rounded-xl transition-all"
+          >
+            Review a Sample Report Before You Buy
+          </a>
           <Button
             onClick={handlePayClick}
             className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg transition-all"
@@ -150,14 +158,6 @@ export default function PaymentPage() {
             <Crown className="mr-2" size={18} />
             Pay ₹1999 to Continue
           </Button>
-            <a
-            href="/view/Sample Career Report.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-brand-blue hover:text-brand-blue/80 font-semibold underline underline-offset-4"
-          >
-            Review a Sample Report Before You Buy
-          </a>
           <p className="text-[10px] text-slate-400">
             Secure payment powered by Razorpay
           </p>

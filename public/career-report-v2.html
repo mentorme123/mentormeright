@@ -14,7 +14,7 @@
 .page{min-height:280mm;padding:18mm 15mm 15mm;position:relative;page-break-after:always;overflow:hidden}.page:last-child{page-break-after:auto}
 .page-head{position:absolute;top:6mm;left:15mm;right:15mm;height:12mm;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e7ebef;padding-bottom:3mm}.page-head img{width:38mm;height:auto;max-height:12mm;object-fit:contain;object-position:left center}.page-head .head-title{font-size:9.5px;color:#808ca1;font-weight:700;letter-spacing:.5px}
 .cover{min-height:280mm;background:linear-gradient(145deg,var(--navy),#0a5670);color:#fff;display:flex;flex-direction:column;justify-content:space-between}
-.brand{font-weight:900;letter-spacing:.4px;font-size:24px}.brand span{color:#63e6e2}.cover .eyebrow{text-transform:uppercase;letter-spacing:3px;font-size:13px;opacity:.85}.cover h1{font-size:48px;line-height:1.05;margin:18px 0}.cover h2{font-size:22px;line-height:1.35;font-weight:700;margin:0;max-width:760px;color:var(--orange)}.student{border-left:5px solid var(--orange);padding-left:18px;margin-top:42px}.student strong{font-size:30px}.meta{opacity:.9;margin-top:6px;font-size:13px}
+.brand{font-weight:900;letter-spacing:.4px;font-size:24px}.brand img{height:38px;width:auto;object-fit:contain}.cover .brand img{height:44px}.page-head .brand img{height:32px;width:auto}.brand span{color:#63e6e2}.cover .eyebrow{text-transform:uppercase;letter-spacing:3px;font-size:13px;opacity:.85}.cover h1{font-size:48px;line-height:1.05;margin:18px 0}.cover h2{font-size:22px;line-height:1.35;font-weight:700;margin:0;max-width:760px;color:var(--orange)}.student{border-left:5px solid var(--orange);padding-left:18px;margin-top:42px}.student strong{font-size:30px}.meta{opacity:.9;margin-top:6px;font-size:13px}
 .footer{position:absolute;bottom:7mm;left:15mm;right:15mm;display:flex;justify-content:space-between;font-size:10px;color:var(--muted);border-top:1px solid var(--line);padding-top:6px}.cover .footer{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.2)}
 .section-kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:900}h2{font-size:24px;color:var(--navy);margin:4px 0 6px}h3{font-size:16px;color:var(--navy);margin:12px 0 6px}.lead{font-size:14px;color:#2c3a4e;max-width:880px;line-height:1.45}.page p.small{font-size:11px;line-height:1.4}.page p.tiny,.page .tiny{font-size:9.5px;line-height:1.35}.page .card{padding:12px;border-radius:8px}
 .salary-table td,.salary-table th{font-size:10px}.salary-table td{padding:6px 8px}.salary-table th{padding:7px 8px}.economics-note{font-size:9px;color:#667085;margin-top:4px}.investment-total{font-size:12px;font-weight:900;color:var(--navy)}.institution-career{margin:8px 0 10px}.institution-career h4{font-size:13px;color:var(--navy);margin:0 0 4px}.institution-career .table{margin:0}.institution-career .table td,.institution-career .table th{padding:5px 8px;font-size:10px}.dev-summary{background:#f7fafc;border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:12px}.dev-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}.dev-item{background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--navy)}
@@ -252,7 +252,7 @@ function renderReport(data) {
   <div class="page cover">
     <div>
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <div class="brand">Mentor<span>Me</span></div>
+        <img src="/logos/MentorMe logo_White.png" alt="MentorMe" class="brand">
         <div class="eyebrow">Career Intelligence Framework</div>
       </div>
       <div style="margin-top:60px;">
@@ -277,7 +277,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 01 - EXECUTIVE SUMMARY</div>
     </div>
     <div style="margin-top:20px;">
@@ -353,7 +353,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 02 - 16-PARAMETER PROFILE & 3D CHART</div>
     </div>
     <div style="margin-top:15px;">
@@ -425,7 +425,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 03 - DEVELOPMENT PRIORITIES</div>
     </div>
     <div style="margin-top:20px;">
@@ -463,7 +463,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 04 - CAREER DIRECTION AT A GLANCE</div>
     </div>
     <div style="margin-top:16px;">
@@ -518,7 +518,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 05 - CAREER FINANCIALS & INVESTMENT</div>
     </div>
     <div style="margin-top:16px;">
@@ -585,7 +585,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 06 - ROADMAP & CO-CURRICULAR STRATEGY</div>
     </div>
     <div style="margin-top:16px;">
@@ -648,7 +648,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 07 - RECOMMENDED INSTITUTIONS</div>
     </div>
     <div style="margin-top:20px;">
@@ -688,7 +688,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 08 - GLOBAL PATHWAYS & IMMEDIATE ACTION PLAN</div>
     </div>
     <div style="margin-top:16px;">
@@ -762,7 +762,7 @@ function renderReport(data) {
   html += `
   <div class="page">
     <div class="page-head">
-      <div class="brand">Mentor<span>Me</span></div>
+      <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
       <div class="head-title">SECTION 09 - METHODOLOGY & CONTACT</div>
     </div>
     <div style="margin-top:20px;">

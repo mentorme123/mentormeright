@@ -387,6 +387,29 @@ export default function EmergingCareersPage() {
         </div>
       }>
         <CareerContent />
+
+        <section className="bg-brand-blue text-white py-16 px-4">
+          <div className="max-w-4xl mx-auto text-center space-y-6">
+            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Emerging Careers?</h2>
+            <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">
+              Choosing a career should not be based only on popularity.
+            </p>
+            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
+              Your interests, strengths, personality and skills can help determine whether an emerging career is actually a good fit for you.
+            </p>
+            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
+              MentorMe's Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree or specialisation.
+            </p>
+            <div className="pt-4">
+              <Link href="/assessment">
+                <button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">
+                  Take MentorMe Career Intelligence Assessment
+                </button>
+              </Link>
+            </div>
+            <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
+          </div>
+        </section>
       </Suspense>
     </div>
   );

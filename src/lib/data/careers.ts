@@ -27,7 +27,7 @@ export const careersData: Career[] = [
   {
     id: "car_data_scientist",
     title: "Data Scientist",
-    category: "Engineering & Technology",
+    category: "Engineering",
     stream: "Science",
     description: "Data Science is one of the most promising technology careers in India, combining mathematics, statistics, programming and business problem-solving to turn data into useful insights and decisions.",
     salary_range: "₹6L - ₹25L per year",

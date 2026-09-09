@@ -181,7 +181,7 @@ function CareerContent() {
 
         {/* Career Content */}
         <div className="flex-1 relative w-full bg-[#e5e7eb] overflow-y-auto">
-          <div className="p-6 sm:p-10 space-y-8">
+          <div className="p-4 sm:p-6 space-y-6">
             <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
               <h2 className="text-2xl font-black text-slate-900">What does a {career.title} do?</h2>
               <p className="text-slate-700 leading-relaxed text-base">{career.description}</p>

@@ -27999,7 +27999,7 @@ export const careersData: Career[] = [
   {
     "id": "car_emerging_machine_learning_engineer",
     "title": "Machine Learning Engineer",
-    "category": "Engineering & Technology",
+    "category": "Emerging Careers",
     "stream": "Any",
     "description": "Machine Learning Engineers design, develop and deploy systems that enable computers to learn from data and make predictions or decisions. They work at the intersection of Artificial Intelligence, Computer Science, Mathematics, Statistics and Data.",
     "salary_range": "₹8L - ₹30L per year",
@@ -28046,7 +28046,7 @@ export const careersData: Career[] = [
   {
     "id": "car_emerging_data_scientist",
     "title": "Data Scientist",
-    "category": "Engineering & Technology",
+    "category": "Emerging Careers",
     "stream": "Any",
     "description": "Data Scientists collect, analyse and interpret large amounts of data to identify patterns, solve business problems and predict future outcomes. They work at the intersection of Mathematics, Statistics, Programming and Business.",
     "salary_range": "₹6L - ₹25L per year",
@@ -28088,7 +28088,7 @@ export const careersData: Career[] = [
   {
     "id": "car_emerging_blockchain_developer",
     "title": "Blockchain Developer",
-    "category": "Engineering & Technology",
+    "category": "Emerging Careers",
     "stream": "Any",
     "description": "Blockchain Developers design, develop and maintain applications and systems that use blockchain technology. They work on decentralised applications, smart contracts, and secure digital transaction systems.",
     "salary_range": "₹6L - ₹28L per year",
@@ -28132,7 +28132,7 @@ export const careersData: Career[] = [
   {
     "id": "car_emerging_iot_engineer",
     "title": "IoT Engineer",
-    "category": "Engineering & Technology",
+    "category": "Emerging Careers",
     "stream": "Any",
     "description": "IoT Engineers design and develop systems in which physical devices, sensors and machines can collect data, communicate over networks and perform intelligent actions. IoT connects the physical world with software, cloud computing, data and artificial intelligence.",
     "salary_range": "₹5L - ₹22L per year",

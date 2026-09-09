@@ -19,6 +19,10 @@ const EMERGING_CAREER_NUMBERS: Record<string, string> = {
   "car_emerging_drone_technology_specialist": "7] Drone Technology Specialist",
   "car_emerging_renewable_energy_specialist": "8] Renewable Energy Specialist",
   "car_emerging_sustainability_consultant": "9] Sustainability Consultant",
+  "car_emerging_machine_learning_engineer": "10] Machine Learning Engineer",
+  "car_emerging_data_scientist": "11] Data Scientist",
+  "car_emerging_blockchain_developer": "12] Blockchain Developer",
+  "car_emerging_iot_engineer": "13] IoT Engineer",
 };
 
 function CareerContent() {

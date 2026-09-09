@@ -66,7 +66,7 @@ export const careersData: Career[] = [
   {
     "id": "car_1",
     "title": "Systems Architect I",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Systems Architect I, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in deep learning and a commitment to professional growth.",
     "salary_range": "₹10L - ₹26L per year",
@@ -88,7 +88,7 @@ export const careersData: Career[] = [
   {
     "id": "car_2",
     "title": "Specialist Hardware Engineer",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Specialist Hardware Engineer, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in data visualization and a commitment to professional growth.",
     "salary_range": "₹10L - ₹36L per year",
@@ -109,7 +109,7 @@ export const careersData: Career[] = [
   {
     "id": "car_3",
     "title": "Chief Software Engineer",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Chief Software Engineer, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in strategic communication and a commitment to professional growth.",
     "salary_range": "₹7L - ₹24L per year",
@@ -129,7 +129,7 @@ export const careersData: Career[] = [
   {
     "id": "car_4",
     "title": "Cloud Architect Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Cloud Architect Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in negotiation and a commitment to professional growth.",
     "salary_range": "₹14L - ₹29L per year",
@@ -150,7 +150,7 @@ export const careersData: Career[] = [
   {
     "id": "car_5",
     "title": "DevOps Engineer Expert",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a DevOps Engineer Expert, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in financial reporting and a commitment to professional growth.",
     "salary_range": "₹15L - ₹36L per year",
@@ -170,7 +170,7 @@ export const careersData: Career[] = [
   {
     "id": "car_6",
     "title": "Security Analyst II",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Security Analyst II, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in negotiation and a commitment to professional growth.",
     "salary_range": "₹6L - ₹21L per year",
@@ -192,7 +192,7 @@ export const careersData: Career[] = [
   {
     "id": "car_7",
     "title": "Associate Cloud Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Associate Cloud Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in technical design and a commitment to professional growth.",
     "salary_range": "₹7L - ₹17L per year",
@@ -213,7 +213,7 @@ export const careersData: Career[] = [
   {
     "id": "car_8",
     "title": "Cloud Architect I",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Cloud Architect I, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in cloud computing and a commitment to professional growth.",
     "salary_range": "₹8L - ₹20L per year",
@@ -234,7 +234,7 @@ export const careersData: Career[] = [
   {
     "id": "car_9",
     "title": "Junior Software Engineer",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Junior Software Engineer, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in cloud computing and a commitment to professional growth.",
     "salary_range": "₹14L - ₹33L per year",
@@ -256,7 +256,7 @@ export const careersData: Career[] = [
   {
     "id": "car_10",
     "title": "Security Analyst Specialist",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Security Analyst Specialist, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in financial reporting and a commitment to professional growth.",
     "salary_range": "₹8L - ₹33L per year",
@@ -278,7 +278,7 @@ export const careersData: Career[] = [
   {
     "id": "car_11",
     "title": "Junior QA Tester",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Junior QA Tester, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in regulatory compliance and a commitment to professional growth.",
     "salary_range": "₹4L - ₹29L per year",
@@ -299,7 +299,7 @@ export const careersData: Career[] = [
   {
     "id": "car_12",
     "title": "Cloud Architect Strategist",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Cloud Architect Strategist, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in regulatory compliance and a commitment to professional growth.",
     "salary_range": "₹15L - ₹23L per year",
@@ -320,7 +320,7 @@ export const careersData: Career[] = [
   {
     "id": "car_13",
     "title": "Senior Software Engineer",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Senior Software Engineer, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in regulatory compliance and a commitment to professional growth.",
     "salary_range": "₹11L - ₹21L per year",
@@ -340,7 +340,7 @@ export const careersData: Career[] = [
   {
     "id": "car_14",
     "title": "Executive Hardware Engineer",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Executive Hardware Engineer, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in emotional intelligence and a commitment to professional growth.",
     "salary_range": "₹13L - ₹34L per year",
@@ -360,7 +360,7 @@ export const careersData: Career[] = [
   {
     "id": "car_15",
     "title": "Hardware Engineer Specialist",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Hardware Engineer Specialist, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in risk assessment and a commitment to professional growth.",
     "salary_range": "₹5L - ₹25L per year",
@@ -380,7 +380,7 @@ export const careersData: Career[] = [
   {
     "id": "car_16",
     "title": "Lead DevOps Engineer",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Lead DevOps Engineer, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in technical design and a commitment to professional growth.",
     "salary_range": "₹15L - ₹28L per year",
@@ -401,7 +401,7 @@ export const careersData: Career[] = [
   {
     "id": "car_17",
     "title": "Security Analyst Specialist",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Security Analyst Specialist, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in financial reporting and a commitment to professional growth.",
     "salary_range": "₹11L - ₹35L per year",
@@ -423,7 +423,7 @@ export const careersData: Career[] = [
   {
     "id": "car_18",
     "title": "Chief Systems Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Chief Systems Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in stakeholder management and a commitment to professional growth.",
     "salary_range": "₹11L - ₹35L per year",
@@ -443,7 +443,7 @@ export const careersData: Career[] = [
   {
     "id": "car_19",
     "title": "Junior Systems Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Junior Systems Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in negotiation and a commitment to professional growth.",
     "salary_range": "₹7L - ₹26L per year",
@@ -464,7 +464,7 @@ export const careersData: Career[] = [
   {
     "id": "car_20",
     "title": "Hardware Engineer Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Hardware Engineer Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in strategic communication and a commitment to professional growth.",
     "salary_range": "₹11L - ₹31L per year",
@@ -486,7 +486,7 @@ export const careersData: Career[] = [
   {
     "id": "car_21",
     "title": "Assistant DevOps Engineer",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Assistant DevOps Engineer, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in cloud computing and a commitment to professional growth.",
     "salary_range": "₹15L - ₹34L per year",
@@ -508,7 +508,7 @@ export const careersData: Career[] = [
   {
     "id": "car_22",
     "title": "Network Administrator Coordinator",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Network Administrator Coordinator, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in analytical thinking and a commitment to professional growth.",
     "salary_range": "₹7L - ₹33L per year",
@@ -529,7 +529,7 @@ export const careersData: Career[] = [
   {
     "id": "car_23",
     "title": "QA Tester Expert",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a QA Tester Expert, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in cloud computing and a commitment to professional growth.",
     "salary_range": "₹13L - ₹36L per year",
@@ -551,7 +551,7 @@ export const careersData: Career[] = [
   {
     "id": "car_24",
     "title": "Systems Architect II",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Systems Architect II, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in risk assessment and a commitment to professional growth.",
     "salary_range": "₹11L - ₹32L per year",
@@ -573,7 +573,7 @@ export const careersData: Career[] = [
   {
     "id": "car_25",
     "title": "Specialist Cloud Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Specialist Cloud Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in data visualization and a commitment to professional growth.",
     "salary_range": "₹5L - ₹16L per year",
@@ -595,7 +595,7 @@ export const careersData: Career[] = [
   {
     "id": "car_26",
     "title": "Assistant Network Administrator",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Assistant Network Administrator, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in risk assessment and a commitment to professional growth.",
     "salary_range": "₹4L - ₹16L per year",
@@ -616,7 +616,7 @@ export const careersData: Career[] = [
   {
     "id": "car_27",
     "title": "Chief Security Analyst",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Chief Security Analyst, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in regulatory compliance and a commitment to professional growth.",
     "salary_range": "₹9L - ₹34L per year",
@@ -638,7 +638,7 @@ export const careersData: Career[] = [
   {
     "id": "car_28",
     "title": "Network Administrator Expert",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Network Administrator Expert, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in creative problem solving and a commitment to professional growth.",
     "salary_range": "₹6L - ₹17L per year",
@@ -658,7 +658,7 @@ export const careersData: Career[] = [
   {
     "id": "car_29",
     "title": "DevOps Engineer Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a DevOps Engineer Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in financial reporting and a commitment to professional growth.",
     "salary_range": "₹14L - ₹39L per year",
@@ -680,7 +680,7 @@ export const careersData: Career[] = [
   {
     "id": "car_30",
     "title": "Junior Cloud Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Junior Cloud Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in stakeholder management and a commitment to professional growth.",
     "salary_range": "₹14L - ₹29L per year",
@@ -700,7 +700,7 @@ export const careersData: Career[] = [
   {
     "id": "car_31",
     "title": "Security Analyst Strategist",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Security Analyst Strategist, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in risk assessment and a commitment to professional growth.",
     "salary_range": "₹12L - ₹31L per year",
@@ -722,7 +722,7 @@ export const careersData: Career[] = [
   {
     "id": "car_32",
     "title": "Network Administrator Architect",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Network Administrator Architect, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in regulatory compliance and a commitment to professional growth.",
     "salary_range": "₹15L - ₹29L per year",
@@ -744,7 +744,7 @@ export const careersData: Career[] = [
   {
     "id": "car_33",
     "title": "Consultant DevOps Engineer",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Consultant DevOps Engineer, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in technical design and a commitment to professional growth.",
     "salary_range": "₹10L - ₹24L per year",
@@ -766,7 +766,7 @@ export const careersData: Career[] = [
   {
     "id": "car_34",
     "title": "Principal Security Analyst",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Principal Security Analyst, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in technical design and a commitment to professional growth.",
     "salary_range": "₹13L - ₹36L per year",
@@ -787,7 +787,7 @@ export const careersData: Career[] = [
   {
     "id": "car_35",
     "title": "Network Administrator Strategist",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Network Administrator Strategist, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in analytical thinking and a commitment to professional growth.",
     "salary_range": "₹9L - ₹17L per year",
@@ -809,7 +809,7 @@ export const careersData: Career[] = [
   {
     "id": "car_36",
     "title": "Lead QA Tester",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Lead QA Tester, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in data visualization and a commitment to professional growth.",
     "salary_range": "₹8L - ₹28L per year",
@@ -829,7 +829,7 @@ export const careersData: Career[] = [
   {
     "id": "car_37",
     "title": "Consultant Network Administrator",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Consultant Network Administrator, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in negotiation and a commitment to professional growth.",
     "salary_range": "₹15L - ₹23L per year",
@@ -851,7 +851,7 @@ export const careersData: Career[] = [
   {
     "id": "car_38",
     "title": "Junior Network Administrator",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Junior Network Administrator, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in financial reporting and a commitment to professional growth.",
     "salary_range": "₹9L - ₹27L per year",
@@ -871,7 +871,7 @@ export const careersData: Career[] = [
   {
     "id": "car_39",
     "title": "Associate QA Tester",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Associate QA Tester, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in deep learning and a commitment to professional growth.",
     "salary_range": "₹14L - ₹25L per year",
@@ -891,7 +891,7 @@ export const careersData: Career[] = [
   {
     "id": "car_40",
     "title": "Assistant Security Analyst",
-    "category": "Engineering & Technology",
+    "category": "Engineering",
     "stream": "Science",
     "description": "As a Assistant Security Analyst, you will be at the forefront of the Engineering industry. Designing and building the physical and digital infrastructure of tomorrow. Focuses on structural integrity, efficiency, and innovative hardware solutions. This role demands high proficiency in negotiation and a commitment to professional growth.",
     "salary_range": "₹12L - ₹23L per year",

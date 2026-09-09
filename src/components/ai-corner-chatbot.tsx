@@ -351,7 +351,7 @@ To chat with AI Corner, please log in to your MentorMe account.`,
                 <Link href="/counsellors" className="px-3 py-1.5 bg-brand-blue/10 text-brand-blue text-xs font-black rounded-lg whitespace-nowrap hover:bg-brand-blue/20 transition-colors">
                   Book ₹4,999 Session
                 </Link>
-                <Link href="/career-library" className="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-black rounded-lg whitespace-nowrap hover:bg-emerald-100 transition-colors">
+                <Link href="/career-library/engineering-technology" className="px-3 py-1.5 bg-emerald-50 text-emerald-700 text-xs font-black rounded-lg whitespace-nowrap hover:bg-emerald-100 transition-colors">
                   Career Library 📚
                 </Link>
                 <Link href="/study-abroad" className="px-3 py-1.5 bg-purple-50 text-purple-700 text-xs font-black rounded-lg whitespace-nowrap hover:bg-purple-100 transition-colors">

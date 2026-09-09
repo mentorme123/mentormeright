@@ -140,7 +140,7 @@ function CareerContent() {
               <span className="text-xs">{active + 1} / {EMERGING_CAREERS.length}</span>
             </div>
 
-            <Link href="/career-library">
+            <Link href="/">
               <Button
                 variant="ghost"
                 size="sm"

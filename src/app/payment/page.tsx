@@ -192,7 +192,7 @@ export default function PaymentPage() {
               </h1>
             </div>
             <div className="hidden sm:flex items-center gap-4">
-              <Link href="/career-library">
+              <Link href="/career-library/engineering-technology">
                 <Button variant="ghost" size="sm" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-full px-4 h-8 text-xs flex items-center gap-1.5">
                   <ArrowLeft size={14} /> Back to Library
                 </Button>

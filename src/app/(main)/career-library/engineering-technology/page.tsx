@@ -10,41 +10,10 @@ import { careersData, Career } from "@/lib/data/careers";
 const ENGINEERING_CAREERS: Career[] = careersData.filter((c) => c.category === "Engineering & Technology");
 
 const ENGINEERING_CAREER_NUMBERS: Record<string, string> = {
-  "car_data_scientist": "1] Data Scientist",
-  "car_1": "2] Systems Architect I",
-  "car_2": "3] Specialist Hardware Engineer",
-  "car_3": "4] Chief Software Engineer",
-  "car_4": "5] Cloud Architect",
-  "car_5": "6] DevOps Engineer",
-  "car_6": "7] Security Analyst",
-  "car_7": "8] Associate Cloud Architect",
-  "car_8": "9] Cloud Architect I",
-  "car_9": "10] Junior Software Engineer",
-  "car_10": "11] Security Analyst Specialist",
-  "car_11": "12] Junior QA Tester",
-  "car_12": "13] Cloud Architect Strategist",
-  "car_13": "14] Senior Software Engineer",
-  "car_14": "15] Executive Hardware Engineer",
-  "car_15": "16] Hardware Engineer Specialist",
-  "car_16": "17] Lead DevOps Engineer",
-  "car_17": "18] Security Analyst Specialist",
-  "car_18": "19] Chief Systems Architect",
-  "car_19": "20] Junior Systems Architect",
-  "car_20": "21] Hardware Engineer Architect",
-  "car_21": "22] Assistant DevOps Engineer",
-  "car_22": "23] Network Administrator Coordinator",
-  "car_23": "24] QA Tester Expert",
-  "car_24": "25] Systems Architect II",
-  "car_25": "26] Specialist Cloud Architect",
-  "car_26": "27] Assistant Network Administrator",
-  "car_27": "28] Chief Security Analyst",
-  "car_28": "29] Network Administrator Expert",
-  "car_29": "30] DevOps Engineer Architect",
-  "car_30": "31] Junior Cloud Architect",
-  "car_emerging_machine_learning_engineer": "32] Machine Learning Engineer",
-  "car_emerging_data_scientist": "33] Data Scientist",
-  "car_emerging_blockchain_developer": "34] Blockchain Developer",
-  "car_emerging_iot_engineer": "35] IoT Engineer",
+  "car_emerging_machine_learning_engineer": "1] Machine Learning Engineer",
+  "car_emerging_data_scientist": "2] Data Scientist",
+  "car_emerging_blockchain_developer": "3] Blockchain Developer",
+  "car_emerging_iot_engineer": "4] IoT Engineer",
 };
 
 function CareerContent() {
@@ -270,6 +239,27 @@ function CareerContent() {
                 <p className="text-slate-700 leading-relaxed text-base">{career.career_tip}</p>
               </div>
             )}
+          </div>
+
+          <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
+            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Engineering & Technology?</h2>
+            <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">
+              Choosing a career should not be based only on popularity.
+            </p>
+            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
+              Your interests, strengths, personality and skills can help determine whether an engineering or technology career is actually a good fit for you.
+            </p>
+            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
+              MentorMe's Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree or specialisation.
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+              <Link href="/assessment">
+                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">
+                  Take MentorMe Career Intelligence Assessment
+                </Button>
+              </Link>
+            </div>
+            <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
           </div>
         </div>
       </div>

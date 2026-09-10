@@ -46,10 +46,11 @@ export default function CareerLibraryLayout({
   const pathname = usePathname();
   const isEmergingCareers = pathname?.includes("/emerging-careers");
   const isEngineeringTechnology = pathname?.includes("/engineering-technology");
+  const isMedicineHealthcare = pathname?.includes("/medicine-healthcare");
 
   return (
-    <div className={`min-h-screen bg-slate-50 ${(isEmergingCareers || isEngineeringTechnology) ? "" : "pt-24 pb-12"}`}>
-      <div className={`${(isEmergingCareers || isEngineeringTechnology) ? "" : "max-w-7xl mx-auto px-4"}`}>
+    <div className={`min-h-screen bg-slate-50 ${(isEmergingCareers || isEngineeringTechnology || isMedicineHealthcare) ? "" : "pt-24 pb-12"}`}>
+      <div className={`${(isEmergingCareers || isEngineeringTechnology || isMedicineHealthcare) ? "" : "max-w-7xl mx-auto px-4"}`}>
         {children}
       </div>
     </div>

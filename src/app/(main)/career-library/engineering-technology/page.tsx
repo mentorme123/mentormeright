@@ -9,13 +9,6 @@ import { careersData, Career } from "@/lib/data/careers";
 
 const ENGINEERING_CAREERS: Career[] = careersData.filter((c) => c.category === "Engineering & Technology");
 
-const ENGINEERING_CAREER_NUMBERS: Record<string, string> = {
-  "car_emerging_machine_learning_engineer": "1] Machine Learning Engineer",
-  "car_emerging_data_scientist": "2] Data Scientist",
-  "car_emerging_blockchain_developer": "3] Blockchain Developer",
-  "car_emerging_iot_engineer": "4] IoT Engineer",
-};
-
 function CareerContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -95,7 +88,7 @@ function CareerContent() {
                 </span>
               </div>
               <div>
-                <p className="text-sm font-bold leading-tight">{ENGINEERING_CAREER_NUMBERS[item.id] || item.title}</p>
+                <p className="text-sm font-bold leading-tight">{item.title}</p>
                 <p className={`text-xs ${active === idx ? "text-blue-100" : "text-slate-500"} leading-tight`}>
                   {item.category}
                 </p>

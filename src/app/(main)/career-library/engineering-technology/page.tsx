@@ -83,9 +83,7 @@ function CareerContent() {
             >
               <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${active === idx ? "bg-white/20" : "bg-slate-100"
                 }`}>
-                <span className={`text-sm font-bold ${active === idx ? "text-white" : "text-slate-600"}`}>
-                  {idx + 1}
-                </span>
+                <BookOpen size={20} className={active === idx ? "text-white" : "text-slate-600"} />
               </div>
               <div>
                 <p className="text-sm font-bold leading-tight">{item.title}</p>

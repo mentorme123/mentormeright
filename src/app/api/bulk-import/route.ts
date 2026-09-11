@@ -43,15 +43,44 @@ export async function POST(req: NextRequest) {
 
       const { data: existingUser } = await supabaseAdmin
         .from('users')
-        .select('id')
+        .select('id, email')
         .eq('email', email)
         .maybeSingle();
 
       if (existingUser) {
         await supabaseAdmin
           .from('users')
-          .update({ institution_name: sanitizedInstitution, education_level: sanitizedGrade || null })
-          .eq('id', existingUser.id);
+          .upsert({
+            id: existingUser.id,
+            email,
+            name: sanitizedName,
+            role: 'individual',
+            education_level: sanitizedGrade || null,
+            institution_name: sanitizedInstitution,
+            audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
+          });
+        results.push({ name: sanitizedName, email, password, status: 'success' });
+        continue;
+      }
+
+      const { data: existingAuthUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({
+        email,
+      });
+
+      const existingAuthUser = existingAuthUsers?.users?.find((u) => u.email?.toLowerCase() === email.toLowerCase());
+
+      if (existingAuthUser) {
+        await supabaseAdmin
+          .from('users')
+          .upsert({
+            id: existingAuthUser.id,
+            email,
+            name: sanitizedName,
+            role: 'individual',
+            education_level: sanitizedGrade || null,
+            institution_name: sanitizedInstitution,
+            audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
+          });
         results.push({ name: sanitizedName, email, password, status: 'success' });
         continue;
       }

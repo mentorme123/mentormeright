@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
 
         const { error: profileError } = await supabaseAdmin
           .from('users')
-          .insert({
+          .upsert({
             id: newUser.user.id,
             email,
             name: name || email?.split('@')[0] || 'User',

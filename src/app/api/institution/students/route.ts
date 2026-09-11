@@ -175,14 +175,14 @@ export async function POST(req: NextRequest) {
 
     const { error: profileError } = await supabaseAdmin
       .from('users')
-      .insert({
+      .upsert({
         id: authData.user.id,
         email: finalEmail,
         name: sanitizedName,
         role: 'individual',
         education_level: sanitizedGrade || null,
         institution_name: sanitizedInstitution,
-        audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
+        audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanizedGrade === 'Graduate' ? 'GR' : 'ST')
       });
 
     if (profileError) {

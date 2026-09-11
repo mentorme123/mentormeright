@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
 
     const { data: students, error: studentError } = await supabaseAdmin
       .from('users')
-      .select('id, name, email, education_level')
+      .select('id, name, email, education_level, institution_name')
       .eq('role', 'individual')
       .ilike('institution_name', institutionName)
       .order('name', { ascending: true });
@@ -32,6 +32,10 @@ export async function GET(req: NextRequest) {
 
     const studentList = students || [];
     console.log(`Credentials API: institution="${institutionName}", studentsFound=${studentList.length}`);
+    if (studentList.length === 0) {
+      const allIndividual = await supabaseAdmin.from('users').select('id, name, email, education_level, institution_name').eq('role', 'individual').limit(10);
+      console.log('Credentials API: sample individual users=', JSON.stringify(allIndividual.data?.slice(0, 5)));
+    }
     const results: Array<{ name: string; username: string; password: string; education_level?: string | null; error?: string }> = [];
 
     const generateCredentials = (name: string, email: string) => {

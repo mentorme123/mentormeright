@@ -942,16 +942,16 @@ export default function Home() {
       btn2Text: "Contact Us",
       btn2Link: "/contact"
     },
-    {
-      image: "/images/home-hero-2.png",
-      heading: "AI-Powered Career ",
-      highlight: "Intelligence",
-      subtitle: "Discover strengths, ideal career pathways, and growth opportunities through AI-based psychometric assessments, AI-driven career insights, and expert mentoring.",
-      btn1Text: "MentorMe Career Intelligence Assessment",
-      btn1Link: "/assessment",
-      btn2Text: "Our Programs",
-      btn2Link: "/services"
-    },
+      {
+        image: "/images/home-hero-2.png",
+        heading: "AI-Powered Career ",
+        highlight: "Intelligence",
+        subtitle: "Discover their strengths, interests and career possibilities through psychometric assessment, AI-assisted insights and expert mentoring.",
+        btn1Text: "MentorMe Career Intelligence Assessment",
+        btn1Link: "/assessment",
+        btn2Text: "Our Programs",
+        btn2Link: "/services"
+      },
     {
       image: "/images/home-hero-3.png",
       heading: "Future Skills & ",
@@ -1014,6 +1014,9 @@ export default function Home() {
             </h1>
             <p className="mt-6 text-lg text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               {slides[currentSlide].subtitle}
+            </p>
+            <p className="mt-3 text-sm text-white/80 font-medium tracking-wide">
+              Powered by Psychometrics + Career Intelligence + AI
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
               <Link href={slides[currentSlide].btn1Link} className="w-full sm:w-auto">
@@ -1127,7 +1130,7 @@ export default function Home() {
             </h2>
 
             <p className="text-lg text-muted-foreground leading-relaxed">
-              MentorMe&apos;s AI-powered Career Guidance Platform helps students and professionals make informed academic and career decisions through scientifically validated <strong className="text-foreground">Psychometric Assessments</strong>, Career Counselling, Admission Guidance, and Personalized Career Roadmaps.
+              MentorMe&apos;s AI-powered Career Guidance Platform helps students and professionals make informed academic and career decisions through science-informed <strong className="text-foreground">Psychometric Assessments</strong>, Career Counselling, Admission Guidance, and Personalized Career Roadmaps.
             </p>
 
             <p className="text-base text-muted-foreground leading-relaxed">
@@ -1155,8 +1158,16 @@ export default function Home() {
             <div className="mt-2 p-5 bg-gradient-to-r from-brand-blue/5 to-brand-orange/5 rounded-2xl border border-brand-blue/15">
               <p className="text-sm font-semibold text-brand-blue mb-1">📄 After Your Assessment</p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Every client receives a detailed <strong className="text-foreground">AI-generated Career Report</strong> with actionable recommendations, ideal career matches, higher education pathways, admission guidance, and personalized skill development plans.
+                Every client receives a detailed <strong className="text-foreground">personalised Career Report, combining AI-powered insights with expert guidance</strong>—covering career recommendations, higher education pathways, admission guidance, and actionable skill development plans.
               </p>
+              <a
+                href="/view/Sample Career Report.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-3 text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-4 py-2 rounded-xl transition-all"
+              >
+                Review a Sample Report
+              </a>
             </div>
           </motion.div>
           </div>{/* end top grid */}

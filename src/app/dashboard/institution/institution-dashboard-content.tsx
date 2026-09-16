@@ -182,6 +182,35 @@ export default function InstitutionDashboardContent() {
 
   const handleDownloadCredentials = async () => {
     try {
+      if (uploadResults.length > 0) {
+        const successResults = uploadResults.filter((r: any) => r.status === 'success' || r.status === 'partial_success');
+        if (successResults.length === 0) {
+          setErrorMessage('No successful uploads to download credentials for.');
+          setUploadStatus('error');
+          return;
+        }
+        const csvHeader = 'Name,Username,Password,Class,Status\n';
+        const csvRows = successResults.map((r: any) => {
+          const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
+          const escapedUsername = `"${(r.username || r.email || '').replace(/"/g, '""')}"`;
+          const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
+          const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
+          const status = r.status === 'partial_success' ? 'Partial Success' : 'Success';
+          return `${escapedName},${escapedUsername},${escapedPassword},"${cls}",${status}`;
+        }).join('\n');
+        const csvContent = csvHeader + csvRows;
+        const filename = `credentials_newly_uploaded_${new Date().toISOString().split('T')[0]}.csv`;
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(downloadUrl);
+        return;
+      }
       const url = `/api/institution/credentials?institution=${encodeURIComponent(institutionName)}`;
       console.log('Downloading credentials from:', url, 'institutionName:', institutionName);
       const response = await fetch(url);
@@ -610,9 +639,9 @@ export default function InstitutionDashboardContent() {
                       <thead>
                         <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-100">
                           <th className="px-4 py-3 font-bold">Name</th>
-                          <th className="px-4 py-3 font-bold">Email</th>
-                          <th className="px-4 py-3 font-bold">Class</th>
+                          <th className="px-4 py-3 font-bold">Username</th>
                           <th className="px-4 py-3 font-bold">Password</th>
+                          <th className="px-4 py-3 font-bold">Class</th>
                           <th className="px-4 py-3 font-bold">Status</th>
                         </tr>
                       </thead>
@@ -620,9 +649,9 @@ export default function InstitutionDashboardContent() {
                         {uploadResults.map((result, idx) => (
                           <tr key={idx} className="hover:bg-slate-50 transition-colors">
                             <td className="px-4 py-3 text-sm font-bold text-slate-700">{result.name || '---'}</td>
-                            <td className="px-4 py-3 text-sm text-slate-500">{result.email || '---'}</td>
-                            <td className="px-4 py-3 text-sm text-slate-500">{result.education_level || '---'}</td>
+                            <td className="px-4 py-3 text-sm text-slate-500">{result.username || result.email || '---'}</td>
                             <td className="px-4 py-3 text-sm font-mono text-slate-700">{result.password || '---'}</td>
+                            <td className="px-4 py-3 text-sm text-slate-500">{result.education_level || '---'}</td>
                             <td className="px-4 py-3 text-sm">
                               {result.status === 'success' && (
                                 <span className="text-emerald-600 font-bold flex items-center gap-1">

@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
 
       const digits = rawName.replace(/[^0-9]/g, '').slice(0, 20);
       const email = digits ? `E${digits}@mentormeright.com` : `student${Date.now()}@mentormeright.com`;
+      const username = email;
       const password = digits ? `E@${digits}` : `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123`;
       const sanitizedName = rawName.slice(0, 100);
       const sanitizedGrade = rawClass.slice(0, 50);
@@ -59,7 +60,7 @@ export async function POST(req: NextRequest) {
             institution_name: sanitizedInstitution,
             audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
           });
-        results.push({ name: sanitizedName, email, password, status: 'success', education_level: sanitizedGrade || null });
+        results.push({ name: sanitizedName, username, password, status: 'success', education_level: sanitizedGrade || null });
         continue;
       }
 
@@ -81,7 +82,7 @@ export async function POST(req: NextRequest) {
             institution_name: sanitizedInstitution,
             audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
           });
-        results.push({ name: sanitizedName, email, password, status: 'success', education_level: sanitizedGrade || null });
+        results.push({ name: sanitizedName, username, password, status: 'success', education_level: sanitizedGrade || null });
         continue;
       }
 
@@ -93,7 +94,7 @@ export async function POST(req: NextRequest) {
       });
 
       if (authError) {
-        results.push({ name: sanitizedName, email, status: 'error', error: authError.message });
+        results.push({ name: sanitizedName, username, password, status: 'error', error: authError.message, education_level: sanitizedGrade || null });
         continue;
       }
 
@@ -110,9 +111,9 @@ export async function POST(req: NextRequest) {
         });
 
       if (profileError) {
-        results.push({ name: sanitizedName, email, password, status: 'partial_success', error: 'Auth created but profile failed', education_level: sanitizedGrade || null });
+        results.push({ name: sanitizedName, username, password, status: 'partial_success', error: 'Auth created but profile failed', education_level: sanitizedGrade || null });
       } else {
-        results.push({ name: sanitizedName, email, password, status: 'success', education_level: sanitizedGrade || null });
+        results.push({ name: sanitizedName, username, password, status: 'success', education_level: sanitizedGrade || null });
       }
     }
 

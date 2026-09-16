@@ -182,7 +182,7 @@ export async function POST(req: NextRequest) {
         role: 'individual',
         education_level: sanitizedGrade || null,
         institution_name: sanitizedInstitution,
-        audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanizedGrade === 'Graduate' ? 'GR' : 'ST')
+        audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
       });
 
     if (profileError) {

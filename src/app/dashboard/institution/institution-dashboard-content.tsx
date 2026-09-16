@@ -256,13 +256,16 @@ export default function InstitutionDashboardContent() {
 
       const successResults = (data.results || []).filter((r: any) => r.status === 'success' || r.status === 'partial_success');
       const errorResults = (data.results || []).filter((r: any) => r.status === 'error');
+      const allResults = (data.results || []);
 
-      setUploadResults(successResults);
+      setUploadResults(allResults);
       setStudentsImported(successResults.length);
       setUploadStatus(successResults.length > 0 ? 'success' : 'error');
 
       if (successResults.length === 0 && errorResults.length > 0) {
-        setErrorMessage(`All ${errorResults.length} students failed: ${errorResults[0].error}`);
+        setErrorMessage(`All ${errorResults.length} students failed. See details below.`);
+      } else if (successResults.length > 0 && errorResults.length > 0) {
+        setErrorMessage(`${errorResults.length} students failed. See details below.`);
       } else if (successResults.length > 0) {
         await refreshStudents(institutionName);
       }
@@ -599,8 +602,8 @@ export default function InstitutionDashboardContent() {
               {uploadResults.length > 0 && (
                 <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                   <div className="p-4 border-b border-slate-100">
-                    <h3 className="text-sm font-black text-slate-800">Generated Credentials</h3>
-                    <p className="text-xs text-slate-500 font-medium">Share these login details with students.</p>
+                    <h3 className="text-sm font-black text-slate-800">Upload Results</h3>
+                    <p className="text-xs text-slate-500 font-medium">Review login details and upload status for each student.</p>
                   </div>
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
@@ -608,7 +611,9 @@ export default function InstitutionDashboardContent() {
                         <tr className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wider border-b border-slate-100">
                           <th className="px-4 py-3 font-bold">Name</th>
                           <th className="px-4 py-3 font-bold">Email</th>
+                          <th className="px-4 py-3 font-bold">Class</th>
                           <th className="px-4 py-3 font-bold">Password</th>
+                          <th className="px-4 py-3 font-bold">Status</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -616,7 +621,28 @@ export default function InstitutionDashboardContent() {
                           <tr key={idx} className="hover:bg-slate-50 transition-colors">
                             <td className="px-4 py-3 text-sm font-bold text-slate-700">{result.name || '---'}</td>
                             <td className="px-4 py-3 text-sm text-slate-500">{result.email || '---'}</td>
+                            <td className="px-4 py-3 text-sm text-slate-500">{result.education_level || '---'}</td>
                             <td className="px-4 py-3 text-sm font-mono text-slate-700">{result.password || '---'}</td>
+                            <td className="px-4 py-3 text-sm">
+                              {result.status === 'success' && (
+                                <span className="text-emerald-600 font-bold flex items-center gap-1">
+                                  <CheckCircle2 size={14} /> Success
+                                </span>
+                              )}
+                              {result.status === 'partial_success' && (
+                                <span className="text-amber-600 font-bold flex items-center gap-1">
+                                  <Clock size={14} /> Partial
+                                </span>
+                              )}
+                              {result.status === 'error' && (
+                                <span className="text-rose-600 font-bold flex items-center gap-1">
+                                  <AlertCircle size={14} /> Failed
+                                </span>
+                              )}
+                              {result.error && (
+                                <p className="text-xs text-rose-500 mt-1 font-medium">{result.error}</p>
+                              )}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

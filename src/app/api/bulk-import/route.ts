@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
             institution_name: sanitizedInstitution,
             audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
           });
-        results.push({ name: sanitizedName, email, password, status: 'success' });
+        results.push({ name: sanitizedName, email, password, status: 'success', education_level: sanitizedGrade || null });
         continue;
       }
 
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
             institution_name: sanitizedInstitution,
             audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
           });
-        results.push({ name: sanitizedName, email, password, status: 'success' });
+        results.push({ name: sanitizedName, email, password, status: 'success', education_level: sanitizedGrade || null });
         continue;
       }
 
@@ -110,9 +110,9 @@ export async function POST(req: NextRequest) {
         });
 
       if (profileError) {
-        results.push({ name: sanitizedName, email, password, status: 'partial_success', error: 'Auth created but profile failed' });
+        results.push({ name: sanitizedName, email, password, status: 'partial_success', error: 'Auth created but profile failed', education_level: sanitizedGrade || null });
       } else {
-        results.push({ name: sanitizedName, email, password, status: 'success' });
+        results.push({ name: sanitizedName, email, password, status: 'success', education_level: sanitizedGrade || null });
       }
     }
 

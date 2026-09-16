@@ -510,13 +510,49 @@ export default function InstitutionDashboardContent() {
                   >
                     {migratingEmails ? 'Migrating...' : 'Migrate Emails'}
                   </Button>
-                  <Button
-                    onClick={handleDownloadCredentials}
-                    variant="outline"
-                    className="bg-white border border-slate-200 hover:border-brand-blue text-slate-700 font-bold px-4 py-2 rounded-xl"
-                  >
-                    <Download size={16} className="mr-2" /> Download Credentials
-                  </Button>
+                   <Button
+                     onClick={handleDownloadCredentials}
+                     variant="outline"
+                     className="bg-white border border-slate-200 hover:border-brand-blue text-slate-700 font-bold px-4 py-2 rounded-xl"
+                   >
+                     <Download size={16} className="mr-2" /> Download Credentials
+                   </Button>
+                   {uploadResults.length > 0 && (
+                   <Button
+                     onClick={() => {
+                       const successResults = uploadResults.filter((r: any) => r.status === 'success' || r.status === 'partial_success');
+                       if (successResults.length === 0) {
+                         setErrorMessage('No successful uploads to download.');
+                         setUploadStatus('error');
+                         return;
+                       }
+                       const csvHeader = 'Name,Username,Password,Class,Status\n';
+                       const csvRows = successResults.map((r: any) => {
+                         const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
+                         const escapedUsername = `"${(r.username || r.email || '').replace(/"/g, '""')}"`;
+                         const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
+                         const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
+                         const status = r.status === 'partial_success' ? 'Partial Success' : 'Success';
+                         return `${escapedName},${escapedUsername},${escapedPassword},"${cls}",${status}`;
+                       }).join('\n');
+                       const csvContent = csvHeader + csvRows;
+                       const filename = `credentials_newly_uploaded_${new Date().toISOString().split('T')[0]}.csv`;
+                       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                       const downloadUrl = window.URL.createObjectURL(blob);
+                       const link = document.createElement('a');
+                       link.href = downloadUrl;
+                       link.setAttribute('download', filename);
+                       document.body.appendChild(link);
+                       link.click();
+                       document.body.removeChild(link);
+                       window.URL.revokeObjectURL(downloadUrl);
+                     }}
+                     variant="outline"
+                     className="bg-emerald-50 border border-emerald-200 hover:border-emerald-300 text-emerald-700 font-bold px-4 py-2 rounded-xl"
+                   >
+                     <Download size={16} className="mr-2" /> Download New Credentials
+                   </Button>
+                   )}
                   <Button
                     onClick={handleDownloadTemplate}
                     variant="outline"

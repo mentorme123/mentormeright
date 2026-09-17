@@ -33,12 +33,17 @@ export async function POST(req: NextRequest) {
       if (!rawName) continue;
 
       const classKey = studentKeys.find(k => k.toLowerCase() === 'class' || k.toLowerCase() === 'grade' || k.toLowerCase() === 'education_level');
+      const rollKey = studentKeys.find(k => k.toLowerCase() === 'roll number' || k.toLowerCase() === 'roll_number' || k.toLowerCase() === 'rollnumber' || k.toLowerCase() === 'roll');
       const rawClass = String(student[classKey || ''] || '').trim();
+      const rawRoll = String(student[rollKey || ''] || '').trim();
 
-      const digits = rawName.replace(/[^0-9]/g, '').slice(0, 20);
-      const email = digits ? `E${digits}@mentormeright.com` : `student${Date.now()}@mentormeright.com`;
+      const cleanName = rawName.replace(/[^a-zA-Z\s]/g, '').trim();
+      const firstName = cleanName.split(/\s+/)[0] || '';
+      const nameUser = firstName ? `${firstName.toLowerCase()}@mentormeright.com` : '';
+      const rollDigits = rawRoll.replace(/[^0-9]/g, '').slice(0, 20);
+      const email = rollDigits ? `R${rollDigits}@mentormeright.com` : (nameUser || `student${Date.now()}@mentormeright.com`);
       const username = email;
-      const password = digits ? `E@${digits}` : `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123`;
+      const password = rollDigits ? `R@${rollDigits}` : `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123`;
       const sanitizedName = rawName.slice(0, 100);
       const sanitizedGrade = rawClass.slice(0, 50);
 

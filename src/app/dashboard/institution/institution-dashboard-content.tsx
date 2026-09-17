@@ -87,6 +87,9 @@ export default function InstitutionDashboardContent() {
 
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
+  const [deletingDuplicates, setDeletingDuplicates] = useState(false);
+  const [duplicateResult, setDuplicateResult] = useState<{ deleted: number; kept: number } | null>(null);
+
   const refreshStudents = useCallback(async (currentInstitutionName: string) => {
     try {
       const response = await fetch(`/api/institution/students?institution=${encodeURIComponent(currentInstitutionName)}`, {
@@ -180,6 +183,27 @@ export default function InstitutionDashboardContent() {
     }
   };
 
+  const handleDeleteDuplicates = async () => {
+    if (!confirm('This will permanently delete only duplicate student accounts (newer duplicates will be removed). Original 66 accounts will not be touched. Continue?')) return;
+    setDeletingDuplicates(true);
+    setDuplicateResult(null);
+    try {
+      const response = await fetch(`/api/institution/duplicates?institution=${encodeURIComponent(institutionName)}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to delete duplicates');
+      setDuplicateResult({ deleted: data.deleted, kept: data.kept });
+      await refreshStudents(institutionName);
+    } catch (err: unknown) {
+      setErrorMessage(err instanceof Error ? err.message : 'Failed to delete duplicates');
+      setUploadStatus('error');
+    } finally {
+      setDeletingDuplicates(false);
+    }
+  };
+
   const handleDownloadCredentials = async () => {
     try {
       if (uploadResults.length > 0) {
@@ -189,16 +213,18 @@ export default function InstitutionDashboardContent() {
           setUploadStatus('error');
           return;
         }
-        const csvHeader = 'Name,Username,Password,Class,Status\n';
-        const csvRows = successResults.map((r: any) => {
-          const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
-          const escapedUsername = `"${(r.username || r.email || '').replace(/"/g, '""')}"`;
-          const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
-          const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
-          const status = r.status === 'partial_success' ? 'Partial Success' : 'Success';
-          return `${escapedName},${escapedUsername},${escapedPassword},"${cls}",${status}`;
-        }).join('\n');
-        const csvContent = csvHeader + csvRows;
+                        const csvHeader = `Name,Username,Password,Class,Status\n`;
+                        const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                        const dateRow = `"Upload Date: ${today}"\n`;
+                        const csvRows = successResults.map((r: any) => {
+                          const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
+                          const escapedUsername = `"${(r.username || r.email || '').replace(/"/g, '""')}"`;
+                          const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
+                          const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
+                          const status = r.status === 'partial_success' ? 'Partial Success' : 'Success';
+                          return `${escapedName},${escapedUsername},${escapedPassword},"${cls}",${status}`;
+                        }).join('\n');
+                        const csvContent = dateRow + csvHeader + csvRows;
         const filename = `credentials_newly_uploaded_${new Date().toISOString().split('T')[0]}.csv`;
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const downloadUrl = window.URL.createObjectURL(blob);
@@ -518,7 +544,7 @@ export default function InstitutionDashboardContent() {
                      <Download size={16} className="mr-2" /> Download Credentials
                    </Button>
                    {uploadResults.length > 0 && (
-                   <Button
+                    <Button
                      onClick={() => {
                        const successResults = uploadResults.filter((r: any) => r.status === 'success' || r.status === 'partial_success');
                        if (successResults.length === 0) {
@@ -526,16 +552,24 @@ export default function InstitutionDashboardContent() {
                          setUploadStatus('error');
                          return;
                        }
-                       const csvHeader = 'Name,Username,Password,Class,Status\n';
-                       const csvRows = successResults.map((r: any) => {
-                         const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
-                         const escapedUsername = `"${(r.username || r.email || '').replace(/"/g, '""')}"`;
-                         const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
-                         const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
-                         const status = r.status === 'partial_success' ? 'Partial Success' : 'Success';
-                         return `${escapedName},${escapedUsername},${escapedPassword},"${cls}",${status}`;
-                       }).join('\n');
-                       const csvContent = csvHeader + csvRows;
+                        const seen = new Set<string>();
+                        const uniqueResults = successResults.filter((r: any) => {
+                          const key = String(r.username || r.email || '').toLowerCase().trim();
+                          if (!key || seen.has(key)) return false;
+                          seen.add(key);
+                          return true;
+                        });
+                        const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                        const dateRow = `"Upload Date: ${today}"\n`;
+                        const csvHeader = 'Name,Username,Password,Class\n';
+                        const csvRows = uniqueResults.map((r: any) => {
+                          const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
+                          const escapedUsername = `"${(r.username || r.email || '').replace(/"/g, '""')}"`;
+                          const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
+                          const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
+                          return `${escapedName},${escapedUsername},${escapedPassword},"${cls}"`;
+                        }).join('\n');
+                        const csvContent = dateRow + csvHeader + csvRows;
                        const filename = `credentials_newly_uploaded_${new Date().toISOString().split('T')[0]}.csv`;
                        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                        const downloadUrl = window.URL.createObjectURL(blob);

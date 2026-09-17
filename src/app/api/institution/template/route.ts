@@ -6,8 +6,8 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   try {
     const data = [
-      ['Name', 'Class'],
-      ['', 'Ex: Class 6'],
+      ['Name', 'Roll Number', 'Class'],
+      ['', 'Ex: R 84388', 'Ex: Class 6'],
     ];
     const ws = XLSX.utils.aoa_to_sheet(data);
     const wb = XLSX.utils.book_new();

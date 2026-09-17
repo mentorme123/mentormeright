@@ -38,14 +38,13 @@ export async function GET(req: NextRequest) {
     }
     const results: Array<{ name: string; username: string; password: string; education_level?: string | null; error?: string }> = [];
 
-    const generateCredentials = (name: string, email: string) => {
-      const digits = String(name).replace(/[^0-9]/g, '').slice(0, 20);
-      if (!digits) {
-        return { username: email, password: `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123` };
+    const generateCredentials = (email: string) => {
+      const local = String(email || '').split('@')[0];
+      if (/^R\d+$/i.test(local)) {
+        const digits = local.replace(/^R/i, '').slice(0, 20);
+        return { username: email, password: `R@${digits}` };
       }
-      const username = `E${digits}@mentormeright.com`;
-      const password = `E@${digits}`;
-      return { username, password };
+      return { username: email, password: `MM${local.replace(/[^a-z0-9]/gi, '')}@123` };
     };
 
     const CONCURRENT_LIMIT = 20;
@@ -54,7 +53,7 @@ export async function GET(req: NextRequest) {
       const batchPromises = batch.map(async (student) => {
         const sanitizedName = String(student.name || '').trim().slice(0, 100);
         const email = String(student.email || '').trim();
-        const { username, password } = generateCredentials(sanitizedName, email);
+        const { username, password } = generateCredentials(email);
 
         try {
           await supabaseAdmin.auth.admin.updateUserById(student.id, {

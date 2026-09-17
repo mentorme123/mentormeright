@@ -139,9 +139,10 @@ export async function POST(req: NextRequest) {
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
     const emailDigits = String(name).replace(/[^0-9]/g, '').slice(0, 20);
-    const generatedEmail = emailDigits ? `E${emailDigits}@mentormeright.com` : '';
+    const firstName = String(name).trim().split(/\s+/)[0] || '';
+    const generatedEmail = emailDigits ? `R${emailDigits}@mentormeright.com` : (firstName ? `${firstName.toLowerCase()}@mentormeright.com` : '');
     const finalEmail = generatedEmail || email;
-    const generatedPassword = emailDigits ? `E@${emailDigits}` : 'MentorMe@123';
+    const generatedPassword = emailDigits ? `R@${emailDigits}` : (firstName ? `MM${firstName.replace(/[^a-z0-9]/gi, '')}@123` : 'MentorMe@123');
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(finalEmail)) {

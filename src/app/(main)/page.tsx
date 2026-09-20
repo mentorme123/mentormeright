@@ -961,6 +961,16 @@ export default function Home() {
       btn1Link: "/services",
       btn2Text: "Partner With Us",
       btn2Link: "/contact"
+    },
+    {
+      image: "/images/home-hero-1.png",
+      heading: "ALREADY CHOSEN COMMERCE",
+      highlight: "OR MANAGEMENT?",
+      subtitle: "You've Chosen Your Stream. Now Discover Your Direction. Discover which Commerce & Management careers best match your aptitude, interests and workstyle. 45 Career Pathways · Personalised Career Matches · Actionable Roadmaps.",
+      btn1Text: "DISCOVER MY BEST-FIT CAREERS",
+      btn1Link: "/assessment",
+      btn2Text: "Contact Us",
+      btn2Link: "/contact"
     }
   ];
 

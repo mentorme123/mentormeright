@@ -95,7 +95,7 @@ export default function PaymentPage() {
     const cls = profile?.education_level || classParam;
     const school = profile?.institution_name || schoolParam;
     setTimeout(() => {
-      window.location.href = `${nextUrl}?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&class=${encodeURIComponent(cls)}&school=${encodeURIComponent(school)}`;
+      window.location.href = `${nextUrl}?email=${encodeURIComponent(email)}&name=${encodeURIComponent(name)}&class=${encodeURIComponent(cls)}&school=${encodeURIComponent(school)}&paid=true`;
     }, 1500);
   };
 

@@ -964,11 +964,11 @@ export default function Home() {
     },
     {
       image: "/images/home-hero-1.png",
-      heading: "ALREADY CHOSEN COMMERCE",
-      highlight: "OR MANAGEMENT?",
-      subtitle: "You've Chosen Your Stream. Now Discover Your Direction. Discover which Commerce & Management careers best match your aptitude, interests and workstyle. 45 Career Pathways · Personalised Career Matches · Actionable Roadmaps.",
-      btn1Text: "DISCOVER MY BEST-FIT CAREERS",
-      btn1Link: "/assessment",
+      heading: "Turning Passions",
+      highlight: "into Professions",
+      subtitle: "Discover your strengths, interests and workstyle — then connect them to career pathways, academic routes, entrance options, Indian institutions and career economics.",
+      btn1Text: "Start Your Assessment",
+      btn1Link: "/career-intelligence.html",
       btn2Text: "Contact Us",
       btn2Link: "/contact"
     }

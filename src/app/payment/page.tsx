@@ -10,8 +10,8 @@ import { NoIndex } from "@/components/no-index";
 import Link from "next/link";
 
 const STEPS = [
-  { id: "assessment", title: "Career Assessment", desc: "Take the assessment" },
   { id: "payment", title: "Complete Payment", desc: "Unlock your report" },
+  { id: "assessment", title: "Career Assessment", desc: "Take the assessment" },
   { id: "report", title: "View Report", desc: "Download your career report" },
 ];
 

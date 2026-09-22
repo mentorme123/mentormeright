@@ -21,6 +21,10 @@ const careers = [
     label: "4] Management & Business",
   },
   {
+    href: "/career-library/commerce-management",
+    label: "5] Commerce & Management",
+  },
+  {
     href: "/career-library/design-creative",
     label: "5] Design & Creative",
   },

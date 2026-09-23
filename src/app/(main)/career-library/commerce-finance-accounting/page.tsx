@@ -267,7 +267,7 @@ export default function CommerceFinanceAccountingCareerPage() {
             </div>
             <p className="text-slate-700 leading-relaxed text-base pt-2">It may not be ideal if you strongly dislike numbers, spreadsheets, financial analysis or high-pressure work environments.</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-6">
             <div className="bg-brand-blue text-white p-8 md:p-10 rounded-3xl shadow-xl space-y-5">
               <h2 className="text-2xl md:text-3xl font-black leading-tight">ALREADY CHOSEN COMMERCE OR MANAGEMENT?</h2>
               <p className="text-white/90 text-base leading-relaxed font-semibold">You&apos;ve Chosen Your Stream.<br/>Now Discover Your Direction.</p>
@@ -289,7 +289,7 @@ export default function CommerceFinanceAccountingCareerPage() {
                   <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">Take MentorMe Career Intelligence Assessment</Button>
                 </Link>
               </div>
-              <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MentORME – TURNING PASSIONS INTO PROFESSIONS.</p>
+              <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
             </div>
           </div>
         </div>

@@ -979,7 +979,7 @@ export default function Home() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 3000);
+    }, 2000);
     return () => clearInterval(timer);
   }, []);
 
@@ -1000,7 +1000,7 @@ export default function Home() {
             return (
               <div
                 key={idx}
-                className={`absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-[800ms] ease-in-out ${translateClass}`}
+                className={`absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-500 ease-in-out ${translateClass}`}
                 style={{
                   backgroundImage: `url('${slide.image}')`,
                 }}
@@ -1015,27 +1015,27 @@ export default function Home() {
         {/* Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight drop-shadow-lg">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight drop-shadow-lg">
               {slides[currentSlide].heading}
               <br className="hidden md:block" />
               <span className="text-brand-orange drop-shadow-[0_2px_8px_rgba(244,114,22,0.25)]">
                 {slides[currentSlide].highlight}
               </span>
             </h1>
-            <p className="mt-6 text-lg text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+            <p className="mt-6 text-base text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               {slides[currentSlide].subtitle}
             </p>
-            <p className="mt-3 text-sm text-white/80 font-medium tracking-wide">
+            <p className="mt-3 text-xs text-white/80 font-medium tracking-wide">
               Powered by Psychometrics + Career Intelligence + AI
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
               <Link href={slides[currentSlide].btn1Link} className="w-full sm:w-auto">
-                <Button size="lg" className="w-full h-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-lg px-10 py-5 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-2 border-white/20">
+                <Button size="lg" className="w-full h-auto bg-brand-orange hover:bg-brand-orange/90 text-white font-extrabold text-base px-10 py-5 rounded-full shadow-2xl shadow-brand-orange/30 transition-transform hover:scale-105 border-2 border-white/20">
                   {slides[currentSlide].btn1Text}
                 </Button>
               </Link>
               <Link href={slides[currentSlide].btn2Link} className="w-full sm:w-auto">
-                <Button size="lg" variant="ghost" className="w-full h-auto text-lg font-extrabold px-10 py-5 rounded-full border-2 border-white/30 hover:border-white/60 text-white hover:bg-white/10 transition-all">
+                <Button size="lg" variant="ghost" className="w-full h-auto text-base font-extrabold px-10 py-5 rounded-full border-2 border-white/30 hover:border-white/60 text-white hover:bg-white/10 transition-all">
                   {slides[currentSlide].btn2Text}
                 </Button>
               </Link>

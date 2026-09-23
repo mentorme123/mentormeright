@@ -43,7 +43,7 @@ export default function CommerceManagementCareerPage() {
             </p>
             <p className="font-bold text-slate-800 text-base">Aptitude + Career Interests + Workstyle &amp; Traits</p>
             <div className="pt-2">
-              <Link href="/assessment">
+              <Link href="/career-intelligence.html">
                 <Button className="bg-brand-blue text-white hover:bg-brand-blue/90 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
               </Link>
             </div>

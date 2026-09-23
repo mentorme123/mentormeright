@@ -267,17 +267,30 @@ export default function CommerceFinanceAccountingCareerPage() {
             </div>
             <p className="text-slate-700 leading-relaxed text-base pt-2">It may not be ideal if you strongly dislike numbers, spreadsheets, financial analysis or high-pressure work environments.</p>
           </div>
-          <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Investment Banking?</h2>
-            <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">Choosing Investment Banking should not be based only on its salary or reputation.</p>
-            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">Students should first understand their interests, strengths, personality and aptitude, and then evaluate whether Finance and Investment Banking are a good fit.</p>
-            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree and specialisation.</p>
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <Link href="/assessment">
-                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">Take MentorMe Career Intelligence Assessment</Button>
-              </Link>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-brand-blue text-white p-8 md:p-10 rounded-3xl shadow-xl space-y-5">
+              <h2 className="text-2xl md:text-3xl font-black leading-tight">ALREADY CHOSEN COMMERCE OR MANAGEMENT?</h2>
+              <p className="text-white/90 text-base leading-relaxed font-semibold">You&apos;ve Chosen Your Stream.<br/>Now Discover Your Direction.</p>
+              <p className="text-white/90 text-base leading-relaxed">Finance? Accounting? Consulting? Marketing? HR? Analytics? Entrepreneurship?<br/>Discover which Commerce &amp; Management careers best match your aptitude, interests and workstyle.</p>
+              <p className="text-white/90 text-base leading-relaxed font-semibold">45 Career Pathways · Personalised Career Matches · Actionable Roadmaps</p>
+              <div className="pt-2">
+                <Link href="/career-intelligence.html">
+                  <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
+                </Link>
+              </div>
             </div>
-            <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MentorMe – Turning Passions into Professions.</p>
+            <div className="bg-brand-blue text-white p-8 md:p-10 rounded-3xl shadow-xl space-y-5">
+              <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Investment Banking?</h2>
+              <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">Choosing Investment Banking should not be based only on its salary or reputation.</p>
+              <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">Students should first understand their interests, strengths, personality and aptitude, and then evaluate whether Finance and Investment Banking are a good fit.</p>
+              <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree and specialisation.</p>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+                <Link href="/assessment">
+                  <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">Take MentorMe Career Intelligence Assessment</Button>
+                </Link>
+              </div>
+              <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MentORME – TURNING PASSIONS INTO PROFESSIONS.</p>
+            </div>
           </div>
         </div>
       </section>

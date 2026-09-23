@@ -964,11 +964,11 @@ export default function Home() {
     },
     {
       image: "/images/home-hero-1.png",
-      heading: "Turning Passions",
-      highlight: "into Professions",
-      subtitle: "Discover your strengths, interests and workstyle — then connect them to career pathways, academic routes, entrance options, Indian institutions and career economics.",
-      btn1Text: "Start Your Assessment",
-      btn1Link: "/career-intelligence.html",
+      heading: "45 COMMERCE & MANAGEMENT CAREERS",
+      highlight: "WHICH ONES FIT YOU?",
+      subtitle: "Discover Where You Fit in Commerce & Management. Discover the careers that best match your aptitude, interests and workstyle — and get a personalised roadmap to move forward with confidence. Aptitude + Career Interests + Workstyle & Traits",
+      btn1Text: "TAKE THE COMMERCE & MANAGEMENT CAREER ASSESSMENT",
+      btn1Link: "/assessment",
       btn2Text: "Contact Us",
       btn2Link: "/contact"
     }

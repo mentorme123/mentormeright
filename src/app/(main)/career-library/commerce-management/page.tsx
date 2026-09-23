@@ -35,25 +35,18 @@ export default function CommerceManagementCareerPage() {
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
             <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
               <Briefcase className="text-brand-blue shrink-0" />
-              45 Commerce &amp; Management Careers. Which Ones Fit You?
+              45 COMMERCE &amp; MANAGEMENT CAREERS. WHICH ONES FIT YOU?
             </h2>
+            <h3 className="text-xl font-bold text-slate-900">Discover Where You Fit<br/>in Commerce &amp; Management</h3>
             <p className="text-slate-700 leading-relaxed text-base">
-              Commerce and Management careers span a wide range of industries and roles. Whether you are drawn to financial markets, brand building, people management or business strategy — there is a pathway that matches your aptitude, interests and workstyle.
+              Discover the careers that best match your aptitude, interests and workstyle — and get a personalised roadmap to move forward with confidence.
             </p>
-            <p className="font-bold text-slate-800 text-base">Common career pathways include:</p>
-            <div className="grid sm:grid-cols-2 gap-2 text-slate-700 text-base pl-2">
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Investment Banking</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Chartered Accountancy (CA)</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Company Secretary (CS)</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Financial Analysis</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Digital Marketing</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Human Resources (HR)</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Management Consulting</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Entrepreneurship</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Business Analytics</div>
-              <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Sales &amp; Business Development</div>
+            <p className="font-bold text-slate-800 text-base">Aptitude + Career Interests + Workstyle &amp; Traits</p>
+            <div className="pt-2">
+              <Link href="/assessment">
+                <Button className="bg-brand-blue text-white hover:bg-brand-blue/90 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
+              </Link>
             </div>
-            <p className="text-slate-700 leading-relaxed text-base pt-2">Each of these careers requires a different mix of education, skills and personality traits. The key is to discover which one best matches your strengths before investing time and money.</p>
           </div>
 
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">

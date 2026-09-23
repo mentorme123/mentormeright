@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (error || !data.user) {
-      return NextResponse.json({ error: 'Invalid login details.' }, { status: 401 });
+      return NextResponse.json({ error: error?.message || 'Invalid login details.' }, { status: 401 });
     }
 
     const { data: profile } = await supabaseAdmin

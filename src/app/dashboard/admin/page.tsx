@@ -18,13 +18,17 @@ type DBUser = {
   name: string;
   role: string;
   phone: string | null;
+  mobile: string | null;
   gender: string | null;
   country: string | null;
   state: string | null;
+  school: string | null;
+  city: string | null;
   education_level: string | null;
   current_package: string | null;
   target_package: string | null;
   audience_type: string | null;
+  password: string | null;
   created_at: string;
 };
 
@@ -57,6 +61,7 @@ export default function AdminDashboard() {
   const [tourStep, setTourStep] = useState(0);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState<{ name: string; email: string } | null>(null);
+  const [showLoginDetails, setShowLoginDetails] = useState(false);
 
   // Analytics Embed URL
   const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
@@ -169,14 +174,18 @@ export default function AdminDashboard() {
     return (
       (u.name && u.name.toLowerCase().includes(term)) ||
       (u.email && u.email.toLowerCase().includes(term)) ||
-      (u.role && u.role.toLowerCase().includes(term))
+      (u.role && u.role.toLowerCase().includes(term)) ||
+      (u.mobile && u.mobile.toLowerCase().includes(term)) ||
+      (u.school && u.school.toLowerCase().includes(term)) ||
+      (u.city && u.city.toLowerCase().includes(term)) ||
+      (u.education_level && u.education_level.toLowerCase().includes(term))
     );
   });
 
   const handleExportData = () => {
     setIsExporting(true);
     setTimeout(() => {
-      const headers = "ID,Name,Email,Role,JoinedDate\n";
+      const headers = "ID,Name,Email,Mobile,School,City,Class,Role,JoinedDate\n";
       // Sanitize CSV data to prevent CSV injection
       const sanitizeCsv = (value: string) => {
         if (value.includes(',') || value.includes('\n') || value.startsWith('=') || value.startsWith('+') || value.startsWith('-') || value.startsWith('@')) {
@@ -184,7 +193,7 @@ export default function AdminDashboard() {
         }
         return value;
       };
-      const rows = users.map(u => `${sanitizeCsv(u.id)},${sanitizeCsv(u.name || 'N/A')},${sanitizeCsv(u.email)},${sanitizeCsv(u.role)},${sanitizeCsv(new Date(u.created_at).toLocaleDateString())}`).join("\n");
+      const rows = users.map(u => `${sanitizeCsv(u.id)},${sanitizeCsv(u.name || 'N/A')},${sanitizeCsv(u.email)},${sanitizeCsv(u.mobile || '')},${sanitizeCsv(u.school || '')},${sanitizeCsv(u.city || '')},${sanitizeCsv(u.education_level || '')},${sanitizeCsv(u.role)},${sanitizeCsv(new Date(u.created_at).toLocaleDateString())}`).join("\n");
       const csvData = headers + rows;
 
       const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
@@ -794,6 +803,9 @@ export default function AdminDashboard() {
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>#</th>
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Name</th>
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Email</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Mobile</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>School</th>
+                          <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>City</th>
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Class</th>
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Role</th>
                           <th className="py-4 font-bold" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>Joined</th>
@@ -803,7 +815,7 @@ export default function AdminDashboard() {
                       <tbody className="divide-y divide-slate-100">
                         {loading ? (
                           <tr>
-                            <td colSpan={6} className="px-6 py-12 text-center text-slate-500">
+                            <td colSpan={8} className="px-6 py-12 text-center text-slate-500">
                               <div className="flex flex-col items-center justify-center">
                                 <div className="w-8 h-8 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
                                 <p className="font-medium">Fetching live database records...</p>
@@ -812,7 +824,7 @@ export default function AdminDashboard() {
                           </tr>
                         ) : filteredUsers.length === 0 ? (
                           <tr>
-                            <td colSpan={6} className="px-6 py-12 text-center text-slate-500 font-medium">
+                            <td colSpan={8} className="px-6 py-12 text-center text-slate-500 font-medium">
                               No users found matching &quot;{searchTerm}&quot;
                             </td>
                           </tr>
@@ -830,12 +842,21 @@ export default function AdminDashboard() {
                                   {sanitizeText(user.name) || "N/A"}
                                 </div>
                               </td>
-                               <td className="py-4 text-slate-500 font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{sanitizeText(user.email)}</td>
-                               <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                                <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-xs font-black uppercase tracking-wider">
-                                  {sanitizeText(user.education_level) || "General"}
-                                </span>
-                              </td>
+                                <td className="py-4 text-slate-500 font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{sanitizeText(user.email)}</td>
+                                <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                 {sanitizeText(user.mobile) || "—"}
+                               </td>
+                                <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                 {sanitizeText(user.school) || "—"}
+                               </td>
+                                <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                 {sanitizeText(user.city) || "—"}
+                               </td>
+                                <td className="py-4 text-slate-500 text-sm font-medium" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
+                                 <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-md text-xs font-black uppercase tracking-wider">
+                                   {sanitizeText(user.education_level) || "General"}
+                                 </span>
+                               </td>
                                <td className="py-4" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
                                 <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${user.role === 'individual' ? 'bg-blue-50 text-blue-700 border border-blue-100' :
                                   user.role === 'institutional' ? 'bg-orange-50 text-orange-700 border border-orange-100' :
@@ -875,8 +896,34 @@ export default function AdminDashboard() {
               </div>
             </div>
           )}
-        </div>
-      </div>
+                   </div>
+                 </div>
+
+                 <div className="space-y-4">
+                   <div className="flex items-center justify-between">
+                     <h4 className="font-bold text-slate-800 uppercase text-sm tracking-wider">Login Details</h4>
+                     <Button
+                       size="sm"
+                       variant="ghost"
+                       onClick={() => setShowLoginDetails(!showLoginDetails)}
+                       className="text-purple-600 hover:text-purple-800 hover:bg-purple-50 font-bold"
+                     >
+                       {showLoginDetails ? 'Hide' : 'Show'} Login Details
+                     </Button>
+                   </div>
+                    {showLoginDetails && selectedUser && (
+                      <div className="bg-slate-50 p-4 rounded-xl space-y-3 text-sm">
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Username / Email</span>
+                          <span className="font-medium text-slate-700">{sanitizeText(selectedUser.email) || 'Not provided'}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-500">Password</span>
+                           <span className="font-medium text-slate-700">{sanitizeText(selectedUser.password) || 'Not available'}</span>
+                        </div>
+                      </div>
+                    )}
+                 </div>
     </div>
   );
 }

@@ -8,6 +8,10 @@ export async function registerUser(data: {
   fullName: string;
   role: string;
   institutionName?: string;
+  mobile?: string;
+  school?: string;
+  city?: string;
+  educationLevel?: string;
 }) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
@@ -72,7 +76,7 @@ export async function registerUser(data: {
   const { error: profileError } = await supabaseAdmin
     .from("users")
     .upsert(
-      [{ id: userId, email: normalizedEmail, name: data.fullName, role: data.role, institution_name: data.role === 'institutional' ? data.institutionName : null }],
+      [{ id: userId, email: normalizedEmail, name: data.fullName, role: data.role, institution_name: data.role === 'institutional' ? data.institutionName : null, mobile: data.mobile || null, school: data.school || null, city: data.city || null, education_level: data.educationLevel || null, password: data.password || null }],
       { onConflict: "id" }
     );
 

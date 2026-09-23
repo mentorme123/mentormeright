@@ -268,18 +268,18 @@ export default function CommerceFinanceAccountingCareerPage() {
             <p className="text-slate-700 leading-relaxed text-base pt-2">It may not be ideal if you strongly dislike numbers, spreadsheets, financial analysis or high-pressure work environments.</p>
           </div>
           <div className="space-y-6">
-            <div className="bg-brand-blue text-white p-8 md:p-10 rounded-3xl shadow-xl space-y-5">
+            <div className="bg-brand-blue text-white p-8 md:p-10 rounded-3xl shadow-xl space-y-5 text-center">
               <h2 className="text-2xl md:text-3xl font-black leading-tight">ALREADY CHOSEN COMMERCE OR MANAGEMENT?</h2>
               <p className="text-white/90 text-base leading-relaxed font-semibold">You&apos;ve Chosen Your Stream.<br/>Now Discover Your Direction.</p>
               <p className="text-white/90 text-base leading-relaxed">Finance? Accounting? Consulting? Marketing? HR? Analytics? Entrepreneurship?<br/>Discover which Commerce &amp; Management careers best match your aptitude, interests and workstyle.</p>
               <p className="text-white/90 text-base leading-relaxed font-semibold">45 Career Pathways · Personalised Career Matches · Actionable Roadmaps</p>
-              <div className="pt-2">
+              <div className="pt-2 flex justify-center">
                 <Link href="/career-intelligence.html">
                   <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
                 </Link>
               </div>
             </div>
-            <div className="bg-brand-blue text-white p-8 md:p-10 rounded-3xl shadow-xl space-y-5">
+            <div className="bg-brand-blue text-white p-8 md:p-10 rounded-3xl shadow-xl space-y-5 text-center">
               <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Investment Banking?</h2>
               <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">Choosing Investment Banking should not be based only on its salary or reputation.</p>
               <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">Students should first understand their interests, strengths, personality and aptitude, and then evaluate whether Finance and Investment Banking are a good fit.</p>

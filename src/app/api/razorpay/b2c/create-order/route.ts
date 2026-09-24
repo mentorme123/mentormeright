@@ -29,6 +29,12 @@ export async function POST(req: NextRequest) {
     const supabase = createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
+    const supabaseAdmin = createAdminClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      { auth: { autoRefreshToken: false, persistSession: false } }
+    );
+
     const { itemType, itemId, itemName, amount, metadata, email, name } = await req.json();
 
     if (!itemType || !amount) {
@@ -43,12 +49,6 @@ export async function POST(req: NextRequest) {
     let userId = user?.id;
 
     if (!userId && email) {
-      const supabaseAdmin = createAdminClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!,
-        { auth: { autoRefreshToken: false, persistSession: false } }
-      );
-
       const { data: existingUser } = await supabaseAdmin
         .from('users')
         .select('id')
@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
 
     console.log('[razorpay/b2c/create-order] Order created:', { orderId: order.id, amount: order.amount });
 
-    const { data: payment, error: paymentError } = await supabase
+    const { data: payment, error: paymentError } = await supabaseAdmin
       .from('payments')
       .insert({
         user_id: userId,

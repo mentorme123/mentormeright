@@ -63,6 +63,17 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    if (payment.item_type === 'career_assessment') {
+      const { error: updateError } = await supabaseAdmin
+        .from('users')
+        .update({ has_paid_assessment: true, assessment_payment_status: 'completed' })
+        .eq('id', payment.user_id);
+
+      if (updateError) {
+        console.error('Failed to update user assessment status:', updateError);
+      }
+    }
+
     return NextResponse.json({ 
       success: true, 
       paymentId: payment.id,

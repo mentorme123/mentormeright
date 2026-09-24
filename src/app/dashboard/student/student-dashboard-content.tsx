@@ -21,6 +21,7 @@ import {
 import CareerDashboard from "./career-dashboard";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { B2CPaymentModal } from "@/components/b2c-payment-modal";
 
 interface UserProfile {
   id: string;
@@ -53,6 +54,8 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [assessmentStatus, setAssessmentStatus] = useState<'not_started' | 'completed'>('not_started');
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showAssessmentPaymentModal, setShowAssessmentPaymentModal] = useState(false);
+  const [assessmentPaymentSuccess, setAssessmentPaymentSuccess] = useState(false);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -537,16 +540,65 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
         )}
 
         {assessmentStatus !== 'completed' ? (
-          <div className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm text-center">
-            <h3 className="text-lg font-black text-slate-800 mb-2">Complete Your Career Assessment</h3>
-            <p className="text-sm text-slate-500 mb-6">Take the assessment to unlock your personalized career dashboard.</p>
-             <a href={`/assessment?email=${encodeURIComponent(authUser?.email || '')}&name=${encodeURIComponent(profile?.name || authUser?.user_metadata?.full_name || '')}&class=${encodeURIComponent(profile?.education_level || '')}&school=${encodeURIComponent(profile?.institution_name || '')}`}>
-              <button className="bg-brand-orange text-white font-bold px-6 py-3 rounded-xl shadow-lg text-sm">
-                Take Assessment
-              </button>
-            </a>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gradient-to-br from-brand-blue to-blue-900 rounded-3xl p-8 text-white shadow-2xl relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2"></div>
+            <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              <div className="flex items-start gap-5">
+                <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
+                  <ClipboardList className="w-8 h-8 text-brand-orange" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-black">Your Assessment is Waiting</h3>
+                  <p className="text-blue-200 text-sm max-w-xl">
+                    Pay for the assessment and begin your 90-question, 60-minute MentorMe Career Intelligence assessment.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-col items-end gap-3 shrink-0">
+                <Button
+                  onClick={() => setShowAssessmentPaymentModal(true)}
+                  className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold px-8 py-6 rounded-2xl shadow-xl transition-all hover:scale-105 whitespace-nowrap"
+                >
+                  <ClipboardList className="mr-2" size={18} />
+                  Pay ₹999 & Start
+                </Button>
+              </div>
+            </div>
+          </motion.div>
         ) : null}
+
+        {assessmentPaymentSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 text-center"
+          >
+            <ClipboardList className="w-12 h-12 text-emerald-600 mx-auto mb-3" />
+            <h3 className="text-lg font-black text-emerald-800">Payment Successful!</h3>
+            <p className="text-sm text-emerald-600 mt-1">Starting your career assessment...</p>
+          </motion.div>
+        )}
+
+        <B2CPaymentModal
+          isOpen={showAssessmentPaymentModal}
+          onClose={() => setShowAssessmentPaymentModal(false)}
+          onSuccess={() => {
+            setAssessmentPaymentSuccess(true);
+            setTimeout(() => {
+              window.location.href = `/career-assessment.html?email=${encodeURIComponent(authUser?.email || '')}&name=${encodeURIComponent(profile?.name || authUser?.user_metadata?.full_name || '')}&class=${encodeURIComponent(profile?.education_level || '')}&school=${encodeURIComponent(profile?.institution_name || '')}`;
+            }, 1500);
+          }}
+          itemType="career_assessment"
+          itemName="Career Intelligence Assessment"
+          amount={999}
+          description="90-question, 60-minute MentorMe Career Intelligence assessment."
+          email={authUser?.email || profile?.email}
+          name={profile?.name || authUser?.user_metadata?.full_name}
+        />
 
       </div>
     </div>

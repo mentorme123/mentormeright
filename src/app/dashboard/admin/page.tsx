@@ -544,6 +544,13 @@ export default function AdminDashboard() {
           <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
+              onClick={() => { window.location.href = '/'; }}
+              className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+            >
+              <ArrowLeft size={16} /> Back to Home
+            </button>
+            <button
+              type="button"
               onClick={fetchData}
               disabled={refreshing || loading}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
@@ -573,13 +580,6 @@ export default function AdminDashboard() {
                </svg>
                Google Search Console
              </button>
-            <button
-              type="button"
-              onClick={() => { window.location.href = '/'; }}
-              className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
-            >
-              <ArrowLeft size={16} /> Back to Home
-            </button>
             <div className="relative">
               <button
                 type="button"

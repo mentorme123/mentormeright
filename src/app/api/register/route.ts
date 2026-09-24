@@ -63,7 +63,7 @@ export async function POST(request: Request) {
             id: userId,
             email: normalizedEmail,
             name,
-            role: role === 'school' || role === 'admin' ? role : 'individual',
+            role: role === 'school' || role === 'admin' ? role : 'student',
             mobile: mobile || null,
             school: school || null,
             city: city || null,

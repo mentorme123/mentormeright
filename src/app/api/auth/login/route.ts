@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       id: data.user.id,
       email: data.user.email,
       name: profile?.name || data.user.user_metadata?.full_name || '',
-      role: profile?.role || 'individual',
+      role: (profile?.role === 'school' || profile?.role === 'admin') ? profile.role : 'student',
       grade: profile?.education_level || '',
       school: profile?.institution_name || '',
       city: profile?.city || '',

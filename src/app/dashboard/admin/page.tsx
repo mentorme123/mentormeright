@@ -552,17 +552,27 @@ export default function AdminDashboard() {
                 <path fillRule="evenodd" d="M15.312 11.424a5.5 5.5 0 01-3.236 1.927l.563.367a4.5 4.5 0 002.638-2.452l.247-.275-.247.275zm-9.624.006l-.247-.275.247.275zm.447 2.967l-.358.672a4.5 4.5 0 002.638-2.452l.563-.367a5.5 5.5 0 01-6.316-1.927l-.003-.002-.003.002a5.5 5.5 0 013.323 3.773zm9.303-4.99l-4.243-4.243-1.414 1.414 4.243 4.243 1.414-1.414zm-11.951.01L4.293 5.293l1.414 1.414-1.414 1.414-1.414-1.414z" clipRule="evenodd" />
               </svg>
               Refresh
-            </button>
-              <button
-                type="button"
-                onClick={() => { window.location.href = '/career-intelligence.html?adminView=1'; }}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
-              >
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-                <path fillRule="evenodd" d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h11a1.5 1.5 0 0 0 1.5-1.5V7.621a1.5 1.5 0 0 0-.44-1.06l-3.868-3.868A1.5 1.5 0 0 0 12.621 2H4.5zm2.25 7a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75zm.75 3a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75z" clipRule="evenodd" />
-              </svg>
-              Career Intelligence
-            </button>
+             </button>
+             <button
+               type="button"
+               onClick={() => { window.location.href = '/career-intelligence.html?adminView=1'; }}
+               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+             >
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                 <path fillRule="evenodd" d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h11a1.5 1.5 0 0 0 1.5-1.5V7.621a1.5 1.5 0 0 0-.44-1.06l-3.868-3.868A1.5 1.5 0 0 0 12.621 2H4.5zm2.25 7a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75zm.75 3a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75z" clipRule="evenodd" />
+               </svg>
+               Career Intelligence
+             </button>
+             <button
+               type="button"
+               onClick={() => { window.open('https://search.google.com/search-console', '_blank'); }}
+               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+             >
+               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+                 <path fillRule="evenodd" d="M4.5 2A1.5 1.5 0 0 0 3 3.5v13A1.5 1.5 0 0 0 4.5 18h11a1.5 1.5 0 0 0 1.5-1.5V7.621a1.5 1.5 0 0 0-.44-1.06l-3.868-3.868A1.5 1.5 0 0 0 12.621 2H4.5zm2.25 7a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75zm.75 3a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75z" clipRule="evenodd" />
+               </svg>
+               Google Search Console
+             </button>
             <button
               type="button"
               onClick={() => { window.location.href = '/'; }}

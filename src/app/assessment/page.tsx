@@ -9,27 +9,28 @@ function AssessmentRedirect() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    const next = searchParams.get('next') || '/career-assessment.html';
     const email = searchParams.get('email') || '';
     const name = searchParams.get('name') || '';
     const cls = searchParams.get('class') || '';
     const school = searchParams.get('school') || '';
-    const paid = searchParams.get('paid') || '';
 
     const params = new URLSearchParams();
-    params.set('email', email);
+    params.set('next', next);
+    params.set('type', 'career_assessment');
+    if (email) params.set('email', email);
     if (name) params.set('name', name);
     if (cls) params.set('class', cls);
     if (school) params.set('school', school);
-    if (paid) params.set('paid', paid);
 
-    window.location.href = `/career-assessment.html?${params.toString()}`;
+    window.location.href = `/payment?${params.toString()}`;
   }, [searchParams]);
 
   return (
     <>
       <NoIndex />
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
-        <p className="text-sm font-semibold text-slate-600">Loading MentorMe Career Intelligence Assessment...</p>
+        <p className="text-sm font-semibold text-slate-600">Redirecting to payment...</p>
       </div>
     </>
   );

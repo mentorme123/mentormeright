@@ -560,7 +560,13 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
               </div>
               <div className="flex flex-col items-end gap-3 shrink-0">
                 <Button
-                  onClick={() => setShowAssessmentPaymentModal(true)}
+                  onClick={() => {
+                    if (!authUser) {
+                      window.location.href = `/login?redirect=${encodeURIComponent('/payment?type=career_assessment')}`;
+                      return;
+                    }
+                    setShowAssessmentPaymentModal(true);
+                  }}
                   className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold px-8 py-6 rounded-2xl shadow-xl transition-all hover:scale-105 whitespace-nowrap"
                 >
                   <ClipboardList className="mr-2" size={18} />

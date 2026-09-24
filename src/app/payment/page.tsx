@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Crown, Loader2, IndianRupee, BookOpen, ArrowLeft, Shield, Search, ZoomIn, ZoomOut } from "lucide-react";
+import { Crown, Loader2, IndianRupee, BookOpen, ArrowLeft, Shield, Search, ZoomIn, ZoomOut, ClipboardList } from "lucide-react";
 import { B2CPaymentModal } from "@/components/b2c-payment-modal";
 import { RazorpayScript } from "@/components/razorpay-script";
 import { NoIndex } from "@/components/no-index";
@@ -22,6 +22,7 @@ export default function PaymentPage() {
   const [profile, setProfile] = useState<any>(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentType, setPaymentType] = useState<"career_report" | "career_assessment">("career_report");
   const [nextUrl, setNextUrl] = useState("/career-assessment.html");
   const [emailParam, setEmailParam] = useState("");
   const [nameParam, setNameParam] = useState("");
@@ -32,6 +33,8 @@ export default function PaymentPage() {
   useEffect(() => {
     async function load() {
       const url = new URL(window.location.href);
+      const type = url.searchParams.get('type') || 'career_report';
+      setPaymentType(type as "career_report" | "career_assessment");
       setNextUrl(url.searchParams.get('next') || '/career-assessment.html');
       setEmailParam(url.searchParams.get('email') || '');
       setNameParam(url.searchParams.get('name') || '');
@@ -57,13 +60,20 @@ export default function PaymentPage() {
           return;
         }
 
-        if (userProfile && userProfile.has_paid_report) {
+        const hasPaid = type === 'career_assessment'
+          ? userProfile?.has_paid_assessment
+          : userProfile?.has_paid_report;
+
+        if (hasPaid) {
           window.location.href = `/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;
           return;
         }
       }
 
       setLoading(false);
+      if (!user) {
+        setShowPaymentModal(true);
+      }
     }
     load();
   }, [supabase]);
@@ -74,21 +84,28 @@ export default function PaymentPage() {
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'purchase', {
         transaction_id: `payment_${Date.now()}`,
-        value: 1999,
+        value: paymentType === 'career_assessment' ? 999 : 1999,
         currency: 'INR',
         items: [{
-          item_id: 'career_report',
-          item_name: 'Career Assessment And Detailed Career Report',
-          price: 1999,
+          item_id: paymentType,
+          item_name: paymentType === 'career_assessment' ? 'Career Intelligence Assessment' : 'Career Assessment And Detailed Career Report',
+          price: paymentType === 'career_assessment' ? 999 : 1999,
           quantity: 1
         }]
       });
     }
     if (user) {
-      await supabase
-        .from('users')
-        .update({ has_paid_report: true, payment_status: 'completed' })
-        .eq('id', user.id);
+      if (paymentType === 'career_assessment') {
+        await supabase
+          .from('users')
+          .update({ has_paid_assessment: true, assessment_payment_status: 'completed' })
+          .eq('id', user.id);
+      } else {
+        await supabase
+          .from('users')
+          .update({ has_paid_report: true, payment_status: 'completed' })
+          .eq('id', user.id);
+      }
     }
     const email = user?.email || emailParam;
     const name = profile?.name || user?.user_metadata?.full_name || nameParam;
@@ -114,6 +131,16 @@ export default function PaymentPage() {
     );
   }
 
+  const isAssessment = paymentType === 'career_assessment';
+  const paymentAmount = isAssessment ? 999 : 1999;
+  const paymentTitle = isAssessment ? 'Complete Your Assessment Payment' : 'Complete Your Payment';
+  const paymentDescription = isAssessment
+    ? 'Please complete the payment to access the career assessment.'
+    : 'Please complete the payment to access the career assessment and unlock your personalized report.';
+  const paymentItemName = isAssessment ? 'Career Assessment' : 'Career Assessment + Report';
+  const paymentButtonText = isAssessment ? 'Pay ₹999 to Continue' : 'Pay ₹1999 to Continue';
+  const PaymentIcon = isAssessment ? ClipboardList : Crown;
+
   return (
     <>
       <NoIndex />
@@ -127,7 +154,7 @@ export default function PaymentPage() {
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
             </button>
-            <span className="text-white font-bold text-sm">Career Assessment Payment</span>
+            <span className="text-white font-bold text-sm">{isAssessment ? 'Career Assessment Payment' : 'Career Assessment Payment'}</span>
           </div>
           <Link href="/assessment">
             <Button variant="ghost" size="sm" className="bg-white/10 hover:bg-white/20 text-white border border-white/20 rounded-full px-3 h-7 text-xs flex items-center gap-1.5">
@@ -188,7 +215,7 @@ export default function PaymentPage() {
             <div className="flex items-center gap-3">
               <Shield className="text-brand-blue" size={20} />
               <h1 className="text-white font-bold text-sm sm:text-base">
-                Complete Your Payment
+                {paymentTitle}
               </h1>
             </div>
             <div className="hidden sm:flex items-center gap-4">
@@ -205,51 +232,70 @@ export default function PaymentPage() {
             <div className="p-6 sm:p-10 flex items-center justify-center min-h-full">
               <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl border border-slate-200 text-center space-y-6">
                 <div className="w-20 h-20 bg-brand-blue/10 rounded-full flex items-center justify-center mx-auto">
-                  <Crown className="w-10 h-10 text-brand-orange" />
+                  <PaymentIcon className="w-10 h-10 text-brand-orange" />
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-2xl font-black text-slate-800">Complete Your Payment</h2>
+                  <h2 className="text-2xl font-black text-slate-800">{paymentTitle}</h2>
                   <p className="text-sm text-slate-500">
-                    Please complete the payment to access the career assessment and unlock your personalized report.
+                    {paymentDescription}
                   </p>
                 </div>
                 <div className="bg-slate-50 rounded-2xl p-6 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-bold text-slate-600">Career Assessment + Report</span>
+                    <span className="text-sm font-bold text-slate-600">{paymentItemName}</span>
                     <div className="flex items-center gap-1 text-xl font-black text-slate-800">
                       <IndianRupee size={20} />
-                      1999
+                      {paymentAmount}
                     </div>
                   </div>
-                  <ul className="text-left text-sm text-slate-600 space-y-2">
-                    <li className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
-                      Comprehensive career assessment
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
-                      AI-generated detailed report
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
-                      Career roadmap & skill plan
-                    </li>
-                  </ul>
+                  {isAssessment ? (
+                    <ul className="text-left text-sm text-slate-600 space-y-2">
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                        90-question career assessment
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                        AI-powered analysis
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                        Career recommendations
+                      </li>
+                    </ul>
+                  ) : (
+                    <ul className="text-left text-sm text-slate-600 space-y-2">
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                        Comprehensive career assessment
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                        AI-generated detailed report
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-brand-orange rounded-full"></div>
+                        Career roadmap & skill plan
+                      </li>
+                    </ul>
+                  )}
                 </div>
-                <a
-                  href="/view/Sample Career Report.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block text-center text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-4 py-3 rounded-xl transition-all"
-                >
-                  Review a Sample Report Before You Buy
-                </a>
+                {!isAssessment && (
+                  <a
+                    href="/view/Sample Career Report.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-center text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-4 py-3 rounded-xl transition-all"
+                  >
+                    Review a Sample Report Before You Buy
+                  </a>
+                )}
                 <Button
                   onClick={handlePayClick}
                   className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg transition-all"
                 >
-                  <Crown className="mr-2" size={18} />
-                  Pay ₹1999 to Continue
+                  <PaymentIcon className="mr-2" size={18} />
+                  {paymentButtonText}
                 </Button>
                 <p className="text-[10px] text-slate-400">
                   Secure payment powered by Razorpay
@@ -261,10 +307,13 @@ export default function PaymentPage() {
                 isOpen={showPaymentModal}
                 onClose={() => setShowPaymentModal(false)}
                 onSuccess={handlePaymentSuccess}
-                itemType="career_report"
-                itemName="Career Assessment And Detailed Career Report"
-                amount={1999}
-                description="AI-generated comprehensive career report with personalized recommendations and skill development plans."
+                itemType={paymentType}
+                itemName={isAssessment ? 'Career Intelligence Assessment' : 'Career Assessment And Detailed Career Report'}
+                amount={paymentAmount}
+                description={isAssessment
+                  ? "90-question, 60-minute MentorMe Career Intelligence assessment."
+                  : "AI-generated comprehensive career report with personalized recommendations and skill development plans."
+                }
                 email={user?.email || emailParam}
                 name={profile?.name || user?.user_metadata?.full_name || nameParam}
               />

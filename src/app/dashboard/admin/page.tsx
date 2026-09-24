@@ -541,7 +541,7 @@ export default function AdminDashboard() {
               </p>
             )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={fetchData}
@@ -635,7 +635,7 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               <Button
                 onClick={() => window.location.href = "/dashboard/admin/report"}
                 className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
@@ -847,7 +847,7 @@ export default function AdminDashboard() {
                             <tr key={user.id} className="hover:bg-slate-50 transition-colors group">
                                <td className="py-4 text-slate-500 font-mono text-sm" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>{idx + 1}</td>
                                <td className="py-4 font-bold text-slate-800" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
-                                <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
                                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs uppercase">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2.2" stroke="currentColor" className="w-4 h-4 text-slate-400">
                                       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />

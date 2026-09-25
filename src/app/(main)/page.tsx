@@ -1295,6 +1295,8 @@ export default function Home() {
                   { name: "Shree Daksha Academy, Bengaluru", logo: "/images/partners/shree-daksha.png", link: "/skills-hub" },
                   { name: "Iqra International School", logo: "/images/partners/Iqra%20International.jpg", link: "/skills-hub" },
                   { name: "Sri Aurobindo International School (SAIS), Hyderabad", logo: "/images/partners/sri aurobindo.webp", link: "/skills-hub" },
+                  { name: "Oasis International School", logo: "/images/partners/oasis-intrnational.png", link: "/skills-hub" },
+                  { name: "Narayana Group", logo: "/images/partners/narayana-group.jpg", link: "/skills-hub" },
                 ];
                 // Duplicate for seamless infinite scroll
                 return [...partners, ...partners].map((partner, i) => {

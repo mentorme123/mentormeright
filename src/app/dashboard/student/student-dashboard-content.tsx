@@ -16,7 +16,9 @@ import {
   Timer,
   Sparkles,
   IndianRupee,
-  LogOut
+  LogOut,
+  Crown,
+  CheckCircle2
 } from "lucide-react";
 import CareerDashboard from "./career-dashboard";
 import { Button } from "@/components/ui/button";
@@ -39,6 +41,7 @@ interface UserProfile {
   audience_type: string | null;
   profile_image: string | null;
   institution_name: string | null;
+  has_paid_report: boolean | null;
   created_at: string;
   updated_at: string;
 }
@@ -56,6 +59,10 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [showAssessmentPaymentModal, setShowAssessmentPaymentModal] = useState(false);
   const [assessmentPaymentSuccess, setAssessmentPaymentSuccess] = useState(false);
+  const [showReportPaymentModal, setShowReportPaymentModal] = useState(false);
+  const [reportPaymentSuccess, setReportPaymentSuccess] = useState(false);
+  const [isGoogleUser, setIsGoogleUser] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState<'pending' | 'done'>('pending');
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -501,10 +508,10 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
                      1999
                    </div>
                  </div>
-                <Button
-                  onClick={() => setShowPaymentModal(true)}
-                  className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold px-8 py-6 rounded-2xl shadow-xl transition-all hover:scale-105 whitespace-nowrap"
-                >
+                 <Button
+                   onClick={() => setShowReportPaymentModal(true)}
+                   className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold px-8 py-6 rounded-2xl shadow-xl transition-all hover:scale-105 whitespace-nowrap"
+                 >
                   <Crown className="mr-2" size={18} />
                   Unlock Report
                 </Button>
@@ -513,7 +520,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
           </motion.div>
         )}
 
-        {paymentSuccess && (
+        {reportPaymentSuccess && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -602,6 +609,24 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
           itemName="Career Intelligence Assessment"
           amount={999}
           description="90-question, 60-minute MentorMe Career Intelligence assessment."
+          email={authUser?.email || profile?.email}
+          name={profile?.name || authUser?.user_metadata?.full_name}
+        />
+
+        <B2CPaymentModal
+          isOpen={showReportPaymentModal}
+          onClose={() => setShowReportPaymentModal(false)}
+          onSuccess={() => {
+            setReportPaymentSuccess(true);
+            setShowReportPaymentModal(false);
+            if (profile) {
+              setProfile({ ...profile, has_paid_report: true });
+            }
+          }}
+          itemType="career_report"
+          itemName="Detailed Career Report"
+          amount={1999}
+          description="AI-generated comprehensive career report with personalized recommendations."
           email={authUser?.email || profile?.email}
           name={profile?.name || authUser?.user_metadata?.full_name}
         />

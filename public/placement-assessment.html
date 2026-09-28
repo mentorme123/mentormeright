@@ -46,6 +46,28 @@ button{font:inherit}
 footer{background:var(--brand-blue);color:#fff;font-size:12px;padding:28px 20px;margin-top:40px}
 .footer-inner{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .footer-logo{height:38px;width:auto;display:block}.footer-note{opacity:.85}
+.modal-overlay{position:fixed;inset:0;background:rgba(16,35,74,.45);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,71,198,.18);overflow:hidden}
+.modal-head{background:linear-gradient(180deg,#0047C6,#082f6e);color:#fff;padding:18px 20px;display:flex;align-items:center;justify-content:space-between}
+.modal-head h3{font-size:18px;margin:0}
+.modal-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:32px;height:32px;border-radius:10px;cursor:pointer;font-size:16px}
+.modal-close:hover{background:rgba(255,255,255,.25)}
+.modal-body{padding:18px 20px 20px}
+.price-box{background:#F6F9FF;border:1px solid #E4E7EC;border-radius:14px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.price-label{font-size:13px;font-weight:700;color:#667085}
+.price-value{font-size:20px;font-weight:900;color:#10234A}
+.payment-option{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;font-weight:700}
+.payment-option+.payment-option{margin-top:10px}
+.payment-option .dot{width:10px;height:10px;border-radius:999px;background:#0047C6}
+.email-box{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px;font:inherit;font-size:14px}
+.email-box:focus{outline:none;border-color:#0047C6;box-shadow:0 0 0 3px rgba(0,71,198,.12)}
+.pay-btn{width:100%;margin-top:14px;background:#0047C6;color:#fff;border:none;border-radius:12px;padding:14px;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 6px 18px rgba(0,71,198,.18)}
+.pay-btn:hover{background:#053bb3}
+.pay-btn:disabled{opacity:.6;cursor:not-allowed}
+.pay-note{margin-top:10px;text-align:center;color:#667085;font-size:12px}
+.modal-error{background:#fff5f5;color:#b54708;border:1px solid #fedf89;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;font-weight:700;display:none}
+.modal-success{background:#f6fdf9;color:#067647;border:1px solid #bceac3;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;font-weight:700;display:none}
 @media(max-width:760px){.grid{grid-template-columns:1fr}.brand{align-items:flex-start}.test-head{top:78px}}
 </style>
 </head>
@@ -84,6 +106,27 @@ footer{background:var(--brand-blue);color:#fff;font-size:12px;padding:28px 20px;
     <div class="footer-note">Placement Assessment Platform · © 2026 MentorMe</div>
     </div></footer>
 
+<div class="modal-overlay" id="payModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Unlock Assessment Pack</h3>
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="price-box">
+        <span class="price-label" id="modalPackName">Pack</span>
+        <span class="price-value">₹99</span>
+      </div>
+      <div class="payment-option"><span class="dot"></span> Razorpay · UPI / Cards / Wallets</div>
+      <input class="email-box" id="modalEmail" type="email" placeholder="Enter your email for receipt" />
+      <button class="pay-btn" id="modalPayBtn">Pay ₹99</button>
+      <div class="pay-note">Secured by Razorpay</div>
+      <div class="modal-error" id="modalError"></div>
+      <div class="modal-success" id="modalSuccess">Payment successful! Pack unlocked.</div>
+    </div>
+  </div>
+</div>
+
 <script>
 const PACK_NAMES = {"1": "Pack 1 · Foundation Placement", "2": "Pack 2 · Applied Employability", "3": "Pack 3 · Advanced Campus Hiring", "4": "Pack 4 · Professional & Business Roles"};
 const TESTS = [{"id": "T01", "pack": 1, "name": "Placement Pattern 1 — Foundation", "minutes": 45, "draw": 40, "criteria": [["quant", 10], ["reasoning", 9], ["verbal", 8], ["communication", 5], ["interview", 3], ["excel", 3], ["case", 2]], "desc": "Balanced foundation-level placement assessment across aptitude, communication and employability."}, {"id": "T02", "pack": 1, "name": "Placement Pattern 2 — Aptitude Plus", "minutes": 50, "draw": 45, "criteria": [["quant", 12], ["reasoning", 10], ["verbal", 8], ["communication", 4], ["interview", 3], ["excel", 4], ["case", 4]], "desc": "Aptitude-led placement pattern with communication, Excel, interview and GD/case elements."}, {"id": "T03", "pack": 1, "name": "Placement Pattern 3 — Communication Plus", "minutes": 50, "draw": 45, "criteria": [["quant", 8], ["reasoning", 8], ["verbal", 10], ["communication", 8], ["interview", 4], ["excel", 3], ["case", 4]], "desc": "Communication-heavy campus assessment with core aptitude and workplace-readiness components."}, {"id": "T04", "pack": 1, "name": "Placement Pattern 4 — Data & Business", "minutes": 50, "draw": 45, "criteria": [["quant", 9], ["reasoning", 8], ["verbal", 7], ["communication", 5], ["interview", 3], ["excel", 7], ["business_analyst", 4], ["case", 2]], "desc": "Business-data oriented placement pattern combining aptitude, Excel and analytical judgement."}, {"id": "T05", "pack": 1, "name": "Placement Pattern 5 — Foundation Grand Mock", "minutes": 60, "draw": 50, "criteria": [["quant", 12], ["reasoning", 10], ["verbal", 10], ["communication", 6], ["interview", 4], ["excel", 4], ["case", 4]], "desc": "Comprehensive foundation grand mock covering the full MentorMe CRT skill stack."}, {"id": "T06", "pack": 2, "name": "Placement Pattern 6 — Workplace Readiness", "minutes": 50, "draw": 45, "criteria": [["quant", 8], ["reasoning", 8], ["verbal", 8], ["communication", 8], ["interview", 5], ["excel", 4], ["case", 4]], "desc": "A workplace-readiness pattern balancing aptitude, communication, interview judgement and case skills."}, {"id": "T07", "pack": 2, "name": "Placement Pattern 7 — Analytical Business", "minutes": 55, "draw": 50, "criteria": [["quant", 10], ["reasoning", 10], ["verbal", 7], ["communication", 5], ["interview", 4], ["excel", 6], ["business_analyst", 4], ["case", 4]], "desc": "Analytical business pattern with stronger data, logic and structured-problem-solving emphasis."}, {"id": "T08", "pack": 2, "name": "Placement Pattern 8 — Communication & Interview", "minutes": 50, "draw": 45, "criteria": [["quant", 7], ["reasoning", 7], ["verbal", 9], ["communication", 8], ["interview", 8], ["excel", 2], ["case", 4]], "desc": "Recruiter-facing pattern with additional weight on verbal communication and interview judgement."}, {"id": "T09", "pack": 2, "name": "Placement Pattern 9 — GD, Case & Business Thinking", "minutes": 55, "draw": 50, "criteria": [["quant", 8], ["reasoning", 8], ["verbal", 7], ["communication", 6], ["interview", 4], ["excel", 3], ["business_analyst", 4], ["case", 10]], "desc": "Business-case and GD-heavy pattern supported by core aptitude and employability skills."}, {"id": "T10", "pack": 2, "name": "Placement Pattern 10 — Employability Grand Mock", "minutes": 65, "draw": 55, "criteria": [["quant", 11], ["reasoning", 11], ["verbal", 9], ["communication", 7], ["interview", 6], ["excel", 5], ["case", 6]], "desc": "Full employability grand mock across aptitude, communication, interview, Excel and GD/case."}, {"id": "T11", "pack": 3, "name": "Placement Pattern 11 — Cognitive Intensive", "minutes": 60, "draw": 50, "criteria": [["quant", 12], ["reasoning", 14], ["verbal", 8], ["communication", 4], ["interview", 3], ["excel", 4], ["case", 5]], "desc": "Higher cognitive-load pattern with stronger numerical and reasoning components."}, {"id": "T12", "pack": 3, "name": "Placement Pattern 12 — Integrated Campus Screening", "minutes": 60, "draw": 50, "criteria": [["quant", 10], ["reasoning", 11], ["verbal", 8], ["communication", 6], ["interview", 5], ["excel", 4], ["business_analyst", 2], ["case", 4]], "desc": "Integrated campus screening pattern combining cognitive, communication and applied workplace judgement."}, {"id": "T13", "pack": 3, "name": "Placement Pattern 13 — Numerical, Verbal & Reasoning", "minutes": 60, "draw": 50, "criteria": [["quant", 14], ["reasoning", 13], ["verbal", 11], ["communication", 4], ["interview", 2], ["excel", 3], ["case", 3]], "desc": "Core aptitude-heavy pattern with lighter but still present employability modules."}, {"id": "T14", "pack": 3, "name": "Placement Pattern 14 — Advanced Analytical", "minutes": 65, "draw": 55, "criteria": [["quant", 13], ["reasoning", 14], ["verbal", 8], ["communication", 4], ["interview", 3], ["excel", 5], ["business_analyst", 4], ["case", 4]], "desc": "Advanced analytical screening with stronger logic, numeracy and data/business analysis."}, {"id": "T15", "pack": 3, "name": "Placement Pattern 15 — Advanced Grand Mock", "minutes": 75, "draw": 60, "criteria": [["quant", 14], ["reasoning", 14], ["verbal", 10], ["communication", 6], ["interview", 4], ["excel", 5], ["business_analyst", 3], ["case", 4]], "desc": "High-intensity advanced campus grand mock covering the complete placement-readiness stack."}, {"id": "T16", "pack": 4, "name": "Placement Pattern 16 — Professional Services", "minutes": 60, "draw": 50, "criteria": [["quant", 9], ["reasoning", 8], ["verbal", 8], ["communication", 6], ["interview", 6], ["excel", 4], ["finance", 5], ["case", 4]], "desc": "Professional-services oriented pattern with numerical, verbal, business judgement and finance awareness."}, {"id": "T17", "pack": 4, "name": "Placement Pattern 17 — Business Advisory", "minutes": 60, "draw": 50, "criteria": [["quant", 8], ["reasoning", 8], ["verbal", 7], ["communication", 6], ["interview", 5], ["excel", 5], ["business_analyst", 6], ["case", 5]], "desc": "Business-advisory style pattern with structured analysis, data interpretation and stakeholder judgement."}, {"id": "T18", "pack": 4, "name": "Placement Pattern 18 — Finance & Commercial", "minutes": 60, "draw": 50, "criteria": [["quant", 9], ["reasoning", 7], ["verbal", 6], ["communication", 5], ["interview", 4], ["excel", 5], ["finance", 10], ["case", 4]], "desc": "Finance-commercial pattern retaining all core placement elements with stronger accounting and business numeracy."}, {"id": "T19", "pack": 4, "name": "Placement Pattern 19 — Business Analyst", "minutes": 60, "draw": 50, "criteria": [["quant", 8], ["reasoning", 8], ["verbal", 6], ["communication", 6], ["interview", 4], ["excel", 6], ["business_analyst", 8], ["case", 4]], "desc": "Business-analyst pattern combining aptitude, Excel, communication, requirements and case thinking."}, {"id": "T20", "pack": 4, "name": "Placement Pattern 20 — Professional Grand Mock", "minutes": 75, "draw": 60, "criteria": [["quant", 10], ["reasoning", 10], ["verbal", 8], ["communication", 7], ["interview", 6], ["excel", 5], ["finance", 5], ["business_analyst", 4], ["case", 5]], "desc": "Comprehensive professional-role grand mock across the full MentorMe CRT curriculum."}];
@@ -101,10 +144,28 @@ localStorage.setItem("mentorme_student_id", window.MENTORME_STUDENT_ID);
 window.onLockedTest = window.onLockedTest || function(testId, packId){
   if (packId === 1) { startTest(testId); return; }
   const packName = PACK_NAMES[packId] || `Pack ${packId}`;
-  if (!confirm(`Unlock ${packName} for ₹99?`)) return;
-  const email = prompt("Enter your email for receipt:");
-  if (!email) return;
+  const modal = document.getElementById('payModal');
+  const modalPackName = document.getElementById('modalPackName');
+  const modalEmail = document.getElementById('modalEmail');
+  const modalPayBtn = document.getElementById('modalPayBtn');
+  const modalError = document.getElementById('modalError');
+  const modalSuccess = document.getElementById('modalSuccess');
+  const modalClose = document.getElementById('modalClose');
+  modalPackName.textContent = packName;
+  modalEmail.value = '';
+  modalError.style.display = 'none';
+  modalSuccess.style.display = 'none';
+  modalPayBtn.disabled = false;
+  modal.classList.add('open');
+  const close = () => modal.classList.remove('open');
+  modalClose.onclick = close;
+  modal.onclick = (e) => { if (e.target === modal) close(); };
   const initiate = () => {
+    const email = modalEmail.value.trim();
+    if (!email) { modalError.textContent = 'Please enter your email.'; modalError.style.display = 'block'; return; }
+    modalError.style.display = 'none';
+    modalPayBtn.disabled = true;
+    modalPayBtn.textContent = 'Opening payment...';
     fetch('/api/razorpay/b2c/create-order', {
       method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ itemType: 'placement_pack', itemId: `pack_${packId}`, itemName: packName, amount: 99, email, name: email.split('@')[0] })
@@ -114,6 +175,7 @@ window.onLockedTest = window.onLockedTest || function(testId, packId){
         key: data.keyId, amount: data.amount, currency: data.currency, name: 'MentorMe',
         description: `Unlock ${packName}`, order_id: data.orderId,
         handler: async function(response) {
+          modalPayBtn.textContent = 'Verifying payment...';
           const verifyRes = await fetch('/api/razorpay/b2c/verify-payment', {
             method: 'POST', headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, razorpay_order_id: response.razorpay_order_id, razorpay_signature: response.razorpay_signature, paymentId: data.paymentId, itemType: 'placement_pack', itemId: `pack_${packId}` })
@@ -126,24 +188,38 @@ window.onLockedTest = window.onLockedTest || function(testId, packId){
             const allTests = TESTS.filter(t => t.pack === 1 || current.includes(t.pack)).map(t => t.id);
             window.MENTORME_ACCESS = [...new Set(allTests)];
             renderCards();
-            alert('Payment successful! Pack unlocked.');
+            modalSuccess.style.display = 'block';
+            modalPayBtn.textContent = 'Pay ₹99';
+            modalPayBtn.disabled = false;
+            setTimeout(close, 1200);
           } else {
-            alert('Payment verification failed: ' + (verifyData.error || 'Unknown error'));
+            modalError.textContent = 'Payment verification failed: ' + (verifyData.error || 'Unknown error');
+            modalError.style.display = 'block';
+            modalPayBtn.textContent = 'Pay ₹99';
+            modalPayBtn.disabled = false;
           }
         },
-        prefill: { email }, theme: { color: '#FF8B00' }
+        prefill: { email }, theme: { color: '#FF8B00' },
+        modal: { ondismiss: () => { modalPayBtn.textContent = 'Pay ₹99'; modalPayBtn.disabled = false; } }
       };
       const razorpay = new window.Razorpay(options);
       razorpay.open();
-    }).catch(err => alert('Payment error: ' + err.message));
+    }).catch(err => {
+      modalError.textContent = 'Payment error: ' + err.message;
+      modalError.style.display = 'block';
+      modalPayBtn.textContent = 'Pay ₹99';
+      modalPayBtn.disabled = false;
+    });
   };
+  modalPayBtn.onclick = initiate;
   if (!window.Razorpay) {
+    modalPayBtn.textContent = 'Loading payment...';
+    modalPayBtn.disabled = true;
     const script = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    script.onload = initiate;
+    script.onload = () => { modalPayBtn.textContent = 'Pay ₹99'; modalPayBtn.disabled = false; };
+    script.onerror = () => { modalError.textContent = 'Failed to load Razorpay.'; modalError.style.display = 'block'; modalPayBtn.textContent = 'Pay ₹99'; modalPayBtn.disabled = false; };
     document.head.appendChild(script);
-  } else {
-    initiate();
   }
 };
 

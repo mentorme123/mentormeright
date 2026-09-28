@@ -92,14 +92,62 @@ const QUESTION_BANK = [{"id": "Q0001", "cat": "quant", "topic": "Percentages", "
 // ===== ACCESS / PAYMENT HOOKS =====
 // Your team can set these after login/payment.
 // Example: window.MENTORME_ACCESS = ["T01","T02","T03","T04","T05"];
-window.MENTORME_ACCESS = window.MENTORME_ACCESS || TESTS.map(t=>t.id); // DEMO: all unlocked
+const savedPacks = JSON.parse(localStorage.getItem('mentorme_unlocked_packs') || '[]');
+const defaultAccess = TESTS.filter(t => t.pack === 1).map(t => t.id);
+const savedTests = savedPacks.flatMap(packId => TESTS.filter(t => t.pack === packId).map(t => t.id));
+window.MENTORME_ACCESS = window.MENTORME_ACCESS || [...new Set([...defaultAccess, ...savedTests])];
 window.MENTORME_STUDENT_ID = window.MENTORME_STUDENT_ID || localStorage.getItem("mentorme_student_id") || ("GUEST-"+Math.random().toString(36).slice(2,10));
 localStorage.setItem("mentorme_student_id", window.MENTORME_STUDENT_ID);
 window.onLockedTest = window.onLockedTest || function(testId, packId){
-  alert("This assessment is locked. Connect this hook to your Razorpay / entitlement flow. Test: "+testId+" · Pack: "+packId);
+  if (packId === 1) { startTest(testId); return; }
+  const packName = PACK_NAMES[packId] || `Pack ${packId}`;
+  if (!confirm(`Unlock ${packName} for ₹99?`)) return;
+  const email = prompt("Enter your email for receipt:");
+  if (!email) return;
+  const initiate = () => {
+    fetch('/api/razorpay/b2c/create-order', {
+      method: 'POST', headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ itemType: 'placement_pack', itemId: `pack_${packId}`, itemName: packName, amount: 99, email, name: email.split('@')[0] })
+    }).then(res => res.json()).then(data => {
+      if (!data.orderId) throw new Error(data.error || 'Failed to create order');
+      const options = {
+        key: data.keyId, amount: data.amount, currency: data.currency, name: 'MentorMe',
+        description: `Unlock ${packName}`, order_id: data.orderId,
+        handler: async function(response) {
+          const verifyRes = await fetch('/api/razorpay/b2c/verify-payment', {
+            method: 'POST', headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ razorpay_payment_id: response.razorpay_payment_id, razorpay_order_id: response.razorpay_order_id, razorpay_signature: response.razorpay_signature, paymentId: data.paymentId, itemType: 'placement_pack', itemId: `pack_${packId}` })
+          });
+          const verifyData = await verifyRes.json();
+          if (verifyData.success) {
+            const current = JSON.parse(localStorage.getItem('mentorme_unlocked_packs') || '[]');
+            if (!current.includes(packId)) current.push(packId);
+            localStorage.setItem('mentorme_unlocked_packs', JSON.stringify(current));
+            const allTests = TESTS.filter(t => t.pack === 1 || current.includes(t.pack)).map(t => t.id);
+            window.MENTORME_ACCESS = [...new Set(allTests)];
+            renderCards();
+            alert('Payment successful! Pack unlocked.');
+          } else {
+            alert('Payment verification failed: ' + (verifyData.error || 'Unknown error'));
+          }
+        },
+        prefill: { email }, theme: { color: '#FF8B00' }
+      };
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
+    }).catch(err => alert('Payment error: ' + err.message));
+  };
+  if (!window.Razorpay) {
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = initiate;
+    document.head.appendChild(script);
+  } else {
+    initiate();
+  }
 };
 
-let activePack=0, attempt=null, idx=0, timerHandle=null, secondsLeft=0;
+let activePack=1, attempt=null, idx=0, timerHandle=null, secondsLeft=0;
 
 function seededShuffle(arr){
   const a=[...arr];
@@ -110,13 +158,13 @@ function seededShuffle(arr){
 }
 function renderTabs(){
   const el=document.getElementById("tabs");
-  const tabs=[{id:0,n:"All 20 Tests"},...Object.entries(PACK_NAMES).map(([id,n])=>({id:+id,n}))];
+  const tabs=Object.entries(PACK_NAMES).map(([id,n])=>({id:+id,n}));
   el.innerHTML=tabs.map(x=>`<button class="tab ${activePack===x.id?'active':''}" onclick="setPack(${x.id})">${x.n}</button>`).join("");
 }
 function setPack(p){activePack=p;renderTabs();renderCards();}
 function renderCards(){
   const cards=document.getElementById("cards");
-  const list=activePack?TESTS.filter(t=>t.pack===activePack):TESTS;
+  const list=TESTS.filter(t=>t.pack===activePack);
   cards.innerHTML=list.map(t=>{
     const unlocked=window.MENTORME_ACCESS.includes(t.id);
     return `<article class="card" style="${t.pack%2===0?'background:linear-gradient(180deg,#FFFDFC 0%,#FFF7EF 100%)':'background:linear-gradient(180deg,#FFFFFF 0%,#F7FAFF 100%)'}"><div class="badge">${PACK_NAMES[t.pack]}</div><h3>${t.id} · ${t.name}</h3>

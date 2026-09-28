@@ -971,6 +971,16 @@ export default function Home() {
       btn1Link: "/career-intelligence.html",
       btn2Text: "Contact Us",
       btn2Link: "/contact"
+    },
+    {
+      image: "/images/home-hero-3.png",
+      heading: "Placement Assessment",
+      highlight: "20 Hiring Patterns",
+      subtitle: "Practice with 20 comprehensive hiring-pattern assessments covering aptitude, reasoning, verbal ability, communication, Excel, interview readiness, GD/case skills and workplace judgement.",
+      btn1Text: "Start Placement Assessment",
+      btn1Link: "/placement-assessment.html",
+      btn2Text: "Explore Programs",
+      btn2Link: "/services"
     }
   ];
 

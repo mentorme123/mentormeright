@@ -29,6 +29,17 @@ button{font:inherit}
 .badge{font-size:11px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:var(--brand-orange)}
 .card-actions{display:flex;gap:8px;align-items:center;justify-content:space-between}
 .notice{background:#fffaeb;border:1px solid #fedf89;padding:14px 16px;border-radius:12px;color:#7a2e0e;margin:16px 0}
+.info-section{max-width:900px;margin:24px auto;padding:0 20px}
+.info-section .lead{font-size:18px;color:var(--ink);margin-bottom:18px}
+.info-section h2{font-size:22px;margin:28px 0 12px;color:var(--brand-blue)}
+.pack-list{display:grid;gap:14px;margin-bottom:24px}
+.pack{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.pack h3{margin:0 0 6px;font-size:17px}
+.pack p{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+ul.perks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:10px 0 24px;padding:0;list-style:none}
+ul.perks li{padding-left:22px;position:relative;font-size:14px;color:var(--ink)}
+ul.perks li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
+.disclaimer{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;color:var(--muted);font-size:14px}
 .test-shell{display:none;max-width:900px;margin:20px auto 60px;padding:0 20px}
 .test-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;position:sticky;top:88px;z-index:5}
 .timer{font-weight:900;font-size:20px;color:var(--brand-orange)}
@@ -86,6 +97,35 @@ footer{background:var(--brand-blue);color:#fff;font-size:12px;padding:28px 20px;
 </section>
 <div class="wrap">
 <div class="notice"><strong>Important:</strong> Each assessment is an independent MentorMe hiring-pattern simulation. The weightage of subjects changes across patterns to reflect different styles of campus and graduate recruitment.</div>
+<div class="info-section">
+<p class="lead">Each attempt draws randomised questions from our question bank—giving you a fresh and meaningful practice experience.</p>
+
+<h2>Choose Your Assessment Pack</h2>
+<div class="pack-list">
+<div class="pack"><h3>1. Foundation Placement Pack</h3><p>Build strong fundamentals in aptitude, reasoning, verbal ability, communication and placement readiness.</p></div>
+<div class="pack"><h3>2. Applied Employability Pack</h3><p>Test your workplace communication, Excel, interview readiness, situational judgement and case-solving skills.</p></div>
+<div class="pack"><h3>3. Advanced Campus Hiring Pack</h3><p>Prepare for challenging cognitive, analytical, numerical and integrated campus recruitment assessments.</p></div>
+<div class="pack"><h3>4. Professional & Business Roles Pack</h3><p>Practise assessment patterns suited to finance, consulting, analytics and professional-services roles.</p></div>
+</div>
+
+<h2>Every Pack Includes</h2>
+<ul class="perks">
+<li>5 comprehensive placement assessments</li>
+<li>Randomised questions and answer choices</li>
+<li>Timed test experience</li>
+<li>Competency-wise performance analysis</li>
+<li>Placement Readiness Score</li>
+<li>Strength and improvement-area insights</li>
+<li>Recommended next steps</li>
+</ul>
+
+<div class="disclaimer">
+<strong>Not Sure Where to Begin?</strong><br>
+Start with the Placement Readiness Diagnostic to understand your current strengths and skill gaps.<br><br>
+<strong>Choose Your Pack and Start Practising</strong><br>
+These are pattern-based practice assessments designed by MentorMe and are not official tests of any employer.
+</div>
+</div>
 <div class="tabs" id="tabs"></div>
 <div class="grid" id="cards"></div>
 </div>

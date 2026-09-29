@@ -975,7 +975,7 @@ export default function Home() {
     {
       image: "/images/home-hero-3.png",
       heading: "MentorMe HireReady",
-      highlight: "20 Placement Tests. One Clear Goal. Get Hired.",
+      highlight: "20 Placement Tests.\nOne Clear Goal. Get Hired.",
       subtitle: "Practise aptitude, reasoning, communication, Excel and interview skills through randomised assessments.",
       btn1Text: "Take a free placement assessment",
       btn1Link: "/placement-assessment.html",
@@ -1029,14 +1029,16 @@ export default function Home() {
               {slides[currentSlide].heading}
               <br className="hidden md:block" />
               <span className="text-brand-orange drop-shadow-[0_2px_8px_rgba(244,114,22,0.25)]">
-                {slides[currentSlide].highlight}
+                {slides[currentSlide].highlight.split('\n').map((line, idx, arr) => (
+                  <span key={idx}>
+                    {line}
+                    {idx < arr.length - 1 && <br className="hidden md:block" />}
+                  </span>
+                ))}
               </span>
             </h1>
             <p className="mt-6 text-base text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
               {slides[currentSlide].subtitle}
-            </p>
-            <p className="mt-3 text-xs text-white/80 font-medium tracking-wide">
-              Powered by Psychometrics + Career Intelligence + AI
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
               <Link href={slides[currentSlide].btn1Link} className="w-full sm:w-auto">

@@ -974,10 +974,10 @@ export default function Home() {
     },
     {
       image: "/images/home-hero-3.png",
-      heading: "Placement Assessment",
-      highlight: "20 Hiring Patterns",
-      subtitle: "Practice with 20 comprehensive hiring-pattern assessments covering aptitude, reasoning, verbal ability, communication, Excel, interview readiness, GD/case skills and workplace judgement.",
-      btn1Text: "Start Placement Assessment",
+      heading: "MentorMe HireReady",
+      highlight: "20 Placement Tests. One Clear Goal. Get Hired.",
+      subtitle: "Practise aptitude, reasoning, communication, Excel and interview skills through randomised assessments.",
+      btn1Text: "Take a free placement assessment",
       btn1Link: "/placement-assessment.html",
       btn2Text: "Explore Programs",
       btn2Link: "/services"

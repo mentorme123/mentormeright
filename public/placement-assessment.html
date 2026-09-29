@@ -15,6 +15,8 @@ header{background:#fff;border-bottom:1px solid #D9E5FF;position:sticky;top:0;z-i
 .hero{padding:64px 20px 34px;text-align:center;background:linear-gradient(180deg,#F7FAFF 0%,#FFFFFF 100%)}
 .hero h1{font-size:clamp(34px,5vw,60px);line-height:1.02;margin:0 auto 14px;max-width:900px;letter-spacing:-2px;color:var(--brand-blue)}
 .hero p{max-width:760px;margin:auto;color:var(--muted);font-size:18px}
+.hero .tagline{margin:0 auto 18px;font-size:20px;font-weight:700;color:var(--brand-orange)}
+.hero .btn{margin-top:18px}
 .pill{display:inline-block;background:var(--soft-orange);color:#C85800;border:1px solid #FFD3A3;border-radius:999px;padding:8px 14px;font-weight:800;font-size:12px;margin-bottom:18px;letter-spacing:.06em}
 .tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
 button{font:inherit}
@@ -76,9 +78,11 @@ footer{background:var(--brand-blue);color:#fff;font-size:12px;padding:28px 20px;
 
 <main id="catalogue">
 <section class="hero">
-<div class="pill">20 HIRING PATTERNS · RANDOMISED FOR EVERY ATTEMPT</div>
-<h1>Practise. Prepare. <span style="color:var(--brand-orange)">Perform.</span></h1>
-<p>20 comprehensive hiring-pattern assessments covering aptitude, reasoning, verbal ability, communication, Excel, interview readiness, GD/case skills and workplace judgement.</p>
+<div class="pill">MentorMe HireReady</div>
+<h1>20 Placement Tests.</h1>
+<p class="tagline">One Clear Goal. Get Hired.</p>
+<p>Practise aptitude, reasoning, communication, Excel and interview skills through randomised assessments.</p>
+<button class="btn primary" onclick="document.getElementById('tabs').scrollIntoView({behavior:'smooth'})">Take a free placement assessment</button>
 </section>
 <div class="wrap">
 <div class="notice"><strong>Important:</strong> Each assessment is an independent MentorMe hiring-pattern simulation. The weightage of subjects changes across patterns to reflect different styles of campus and graduate recruitment.</div>

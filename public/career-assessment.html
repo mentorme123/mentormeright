@@ -1030,26 +1030,15 @@ function showAlreadyCompletedScreen(userId, email) {
   }
 }
 
-const FREE_CM_EMAILS = new Set([
-  "fareedameera8@gmail.com",
-  "aleenamariyamin@gmail.com",
-  "r26hsukainamarfani@email.com",
-  "fatimamaryamm488@gmail.com"
-]);
 // ════════════════════════════════════════════════════════════
 // PAYMENT
 // ════════════════════════════════════════════════════════════
 async function initPay(){
-  const email=document.getElementById('r-email').value.trim();
-  if(FREE_CM_EMAILS.has(email.toLowerCase())){
-    goTo('pg-paying');
-    setTimeout(unlockTest,1200);
-    return;
-  }
   const name=document.getElementById('r-name').value.trim();
   const cls=document.getElementById('r-class').value;
   const school=document.getElementById('r-school').value.trim();
   const phone=document.getElementById('r-phone').value.trim();
+  const email=document.getElementById('r-email').value.trim();
   const err=document.getElementById('reg-err');
   if(!name||!cls||!school){err.style.display='block';return;}
   err.style.display='none';

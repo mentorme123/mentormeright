@@ -52,6 +52,13 @@ export default function LoginPage() {
       const urlParams = new URLSearchParams(window.location.search);
       const redirect = urlParams.get('redirect');
 
+      const FREE_CM_EMAILS = new Set([
+        "fareedameera8@gmail.com",
+        "aleenamariyamin@gmail.com",
+        "r26hsukainamarfani@email.com",
+        "fatimamaryamm488@gmail.com"
+      ]);
+
       if (redirect === '/payment') {
         window.location.href = `/payment?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
         return;
@@ -61,6 +68,7 @@ export default function LoginPage() {
       if (role === 'institutional') target = '/dashboard/institution';
       else if (role === 'admin') target = '/dashboard/admin';
       else if (role === 'counselor') target = '/dashboard/counselor';
+      else if (FREE_CM_EMAILS.has(String(data.user.email || '').trim().toLowerCase())) target = `/career-intelligence.html?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
 
       window.location.href = target;
     } catch (err: unknown) {

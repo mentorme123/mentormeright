@@ -152,16 +152,45 @@ export default function RegisterPage() {
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-black text-slate-500 uppercase">Email Address</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none transition-all font-medium bg-slate-50"
-                  placeholder="rahul@example.com"
-                />
+               <div className="space-y-1">
+                 <label className="text-xs font-black text-slate-500 uppercase">Email Address</label>
+                 <input
+                   type="email"
+                   required
+                   value={email}
+                   onChange={(e) => setEmail(e.target.value)}
+                   className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none transition-all font-medium bg-slate-50"
+                   placeholder="rahul@example.com"
+                 />
+               </div>
+
+               <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-black text-slate-500 uppercase">I am a...</label>
+                  <select
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none bg-slate-50 font-bold"
+                  >
+                    <option value="individual">Student</option>
+                    <option value="institutional">Institution</option>
+                    <option value="counselor">Counselor</option>
+                    <option value="admin">admin</option>
+                  </select>
+                </div>
+               {role === 'institutional' && (
+                <div className="space-y-1">
+                  <label className="text-xs font-black text-slate-500 uppercase">Institution Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={institutionName}
+                    onChange={(e) => setInstitutionName(e.target.value)}
+                    className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none transition-all font-medium bg-slate-50"
+                    placeholder="e.g. Hyderabad Institution"
+                  />
+                </div>
+              )}
               </div>
 
                <div className="space-y-1">

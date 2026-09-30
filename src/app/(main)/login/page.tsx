@@ -56,7 +56,10 @@ export default function LoginPage() {
         "fareedameera8@gmail.com",
         "aleenamariyamin@gmail.com",
         "r26hsukainamarfani@email.com",
-        "fatimamaryamm488@gmail.com"
+        "fatimamaryamm488@gmail.com",
+        "madhihamanaal2008@gmail.com",
+        "firdousefathima443@gmail.com",
+        "sameeksharevannuru@gmail.com"
       ]);
 
       if (redirect === '/payment') {

@@ -1061,23 +1061,22 @@ async function initPay(){
     email:email,
     city:document.getElementById('r-city').value.trim(),
     subjects};
-  goTo('pg-paying');
-  /* ── LIVE RAZORPAY ─────────────────────────────────────────
-  fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({amount:CFG.RZP_AMOUNT,currency:'INR',receipt:'rcpt_'+Date.now()})
-  }).then(r=>r.json()).then(order=>{
-    const rzp=new Razorpay({
-      key:CFG.RZP_KEY,amount:CFG.RZP_AMOUNT,currency:'INR',
-      name:'MentorMe',description:'Career Discovery Assessment',order_id:order.id,
-      handler:()=>unlockTest(),
-      prefill:{name:student.name,contact:student.phone,email:student.email},
-      theme:{color:'#0f2460'},modal:{ondismiss:()=>goTo('pg-register')}
-    });
-    rzp.on('payment.failed',()=>{alert('Payment failed. Please try again.');goTo('pg-register');});
-    rzp.open();
-  }).catch(()=>{alert('Connection error. Please check your internet.');goTo('pg-register');});
-  ─────────────────────────────────────────────────────────── */
-  setTimeout(unlockTest,2000); // DEMO MODE — remove when Razorpay is live
+   goTo('pg-paying');
+   /* ── LIVE RAZORPAY ─────────────────────────────────────────
+   fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({amount:CFG.RZP_AMOUNT,currency:'INR',receipt:'rcpt_'+Date.now()})
+   }).then(r=>r.json()).then(order=>{
+     const rzp=new Razorpay({
+       key:CFG.RZP_KEY,amount:CFG.RZP_AMOUNT,currency:'INR',
+       name:'MentorMe',description:'Career Discovery Assessment',order_id:order.id,
+       handler:()=>unlockTest(),
+       prefill:{name:student.name,contact:student.phone,email:student.email},
+       theme:{color:'#0f2460'},modal:{ondismiss:()=>goTo('pg-register')}
+     });
+     rzp.on('payment.failed',()=>{alert('Payment failed. Please try again.');goTo('pg-register');});
+     rzp.open();
+   }).catch(()=>{alert('Connection error. Please check your internet.');goTo('pg-register');});
+   ─────────────────────────────────────────────────────────── */
 }
 
 function unlockTest(){buildBank();curSec=0;showSI();}

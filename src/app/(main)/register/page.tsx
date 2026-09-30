@@ -41,7 +41,7 @@ export default function RegisterPage() {
     setError("");
 
     try {
-      const result = await registerUser({ email, password, fullName: name, role, institutionName, mobile, school, city, educationLevel });
+      const result = await registerUser({ email, password, fullName: name, role, institutionName });
 
       if (!result.success || !result.user) {
         throw new Error(result.error || "Registration failed.");
@@ -164,100 +164,8 @@ export default function RegisterPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs font-black text-slate-500 uppercase">I am a...</label>
-                  <select
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none bg-slate-50 font-bold"
-                  >
-                    <option value="individual">Student</option>
-                    <option value="institutional">Institution</option>
-                    <option value="counselor">Counselor</option>
-                    <option value="admin">admin</option>
-                  </select>
-                </div>
-                {role === 'individual' && (
-                  <div className="space-y-1">
-                    <label className="text-xs font-black text-slate-500 uppercase">Grade/Level</label>
-                    <select
-                      value={audienceType}
-                      onChange={(e) => setAudienceType(e.target.value)}
-                      className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none bg-slate-50 font-bold"
-                    >
-                      <option value="ST">School</option>
-                      <option value="UG">College</option>
-                      <option value="GR">Graduate</option>
-                    </select>
-                  </div>
-                )}
-               {role === 'institutional' && (
-                 <div className="space-y-1">
-                   <label className="text-xs font-black text-slate-500 uppercase">Institution Name</label>
-                   <input
-                     type="text"
-                     required
-                     value={institutionName}
-                     onChange={(e) => setInstitutionName(e.target.value)}
-                     className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none transition-all font-medium bg-slate-50"
-                     placeholder="e.g. Hyderabad Institution"
-                   />
-                 </div>
-               )}
-               <div className="grid grid-cols-2 gap-4">
-                 <div className="space-y-1">
-                   <label className="text-xs font-black text-slate-500 uppercase">Mobile</label>
-                   <input
-                     type="tel"
-                     value={mobile}
-                     onChange={(e) => setMobile(e.target.value)}
-                     className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none transition-all font-medium bg-slate-50"
-                     placeholder="+91 98765 43210"
-                   />
-                 </div>
-                 <div className="space-y-1">
-                   <label className="text-xs font-black text-slate-500 uppercase">City</label>
-                   <input
-                     type="text"
-                     value={city}
-                     onChange={(e) => setCity(e.target.value)}
-                     className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none transition-all font-medium bg-slate-50"
-                     placeholder="e.g. Mumbai"
-                   />
-                 </div>
-               </div>
                <div className="space-y-1">
-                 <label className="text-xs font-black text-slate-500 uppercase">School / Institution</label>
-                 <input
-                   type="text"
-                   value={school}
-                   onChange={(e) => setSchool(e.target.value)}
-                   className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none transition-all font-medium bg-slate-50"
-                   placeholder="e.g. Delhi Public School"
-                 />
-               </div>
-               <div className="space-y-1">
-                 <label className="text-xs font-black text-slate-500 uppercase">Education Level</label>
-                 <select
-                   value={educationLevel}
-                   onChange={(e) => setEducationLevel(e.target.value)}
-                   className="w-full p-4 rounded-xl border-2 border-slate-100 focus:border-brand-orange focus:outline-none bg-slate-50 font-bold"
-                 >
-                   <option value="">Select</option>
-                   <option value="8">Class 8</option>
-                   <option value="9">Class 9</option>
-                   <option value="10">Class 10</option>
-                   <option value="11">Class 11</option>
-                   <option value="12">Class 12</option>
-                   <option value="Undergraduation">Undergraduation</option>
-                   <option value="Post Graduation">Post Graduation</option>
-                 </select>
-               </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-black text-slate-500 uppercase">Set Password</label>
+                 <label className="text-xs font-black text-slate-500 uppercase">Set Password</label>
                 <input
                   type="password"
                   required

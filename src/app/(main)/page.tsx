@@ -976,7 +976,6 @@ export default function Home() {
       image: "/images/home-hero-3.png",
       heading: "MentorMe HireReady",
       highlight: "20 Placement Tests.\nOne Clear Goal. Get Hired.",
-      highlightColor: "white",
       subtitle: "Practise aptitude, reasoning, communication, Excel and interview skills through randomised assessments.",
       btn1Text: "Take a free placement assessment",
       btn1Link: "/placement-assessment.html",
@@ -1029,7 +1028,7 @@ export default function Home() {
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white leading-tight drop-shadow-lg">
               {slides[currentSlide].heading}
               <br className="hidden md:block" />
-              <span className={slides[currentSlide].highlightColor === 'white' ? 'text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.25)]' : 'text-brand-orange drop-shadow-[0_2px_8px_rgba(244,114,22,0.25)]'}>
+              <span className="text-brand-orange drop-shadow-[0_2px_8px_rgba(244,114,22,0.25)]">
                 {slides[currentSlide].highlight.split('\n').map((line, idx, arr) => (
                   <span key={idx}>
                     {line}

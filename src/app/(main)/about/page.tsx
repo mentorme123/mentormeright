@@ -500,7 +500,7 @@ export default function AboutPage() {
             <Sparkles size={16} className="text-brand-orange" />
             Science-Driven Career Intelligence
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">About MentorMe</h1>
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">About Us</h1>
           <p className="text-xl text-white/80 leading-relaxed max-w-3xl mx-auto">
             AI-Powered Career Guidance & Career Counselling Platform.
           </p>

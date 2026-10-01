@@ -14,7 +14,7 @@ const QUICK_LINKS = [
   { href: "/ai-corner",      label: "AI Corner",           icon: Sparkles,      desc: "Chat with AI counselor" },
   { href: "/study-abroad",   label: "Study Abroad",        icon: Globe,         desc: "Global education guidance" },
   { href: "/programs",       label: "Training Programs",   icon: GraduationCap, desc: "Python, AI, SAP & more" },
-  { href: "/about",          label: "About MentorMe",      icon: Briefcase,     desc: "Our team & philosophy" },
+  { href: "/about",          label: "About Us",             icon: Briefcase,     desc: "Our team & philosophy" },
   { href: "/blogs",          label: "Blogs",               icon: FileText,      desc: "Career insights & tips" },
   { href: "/contact",        label: "Contact Us",          icon: Phone,         desc: "Get in touch" },
   { href: "/community",      label: "Community",           icon: MessageCircle, desc: "Join our network" },

@@ -15,7 +15,7 @@ export function Navbar() {
           <div>
             <Link href="/about">
               <div>
-                <span>About</span>
+                 <span>About Us</span>
               </div>
             </Link>
           </div>

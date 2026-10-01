@@ -1214,7 +1214,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7 }}
-                  className="flex justify-center"
+                  className="flex flex-col items-center text-center"
                 >
                   <div
                     onClick={() => setShowTestimonial(true)}
@@ -1229,6 +1229,12 @@ export default function Home() {
                       <span className="text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-brand-blue/80 px-5 py-2.5 rounded-full text-base">Read More</span>
                     </div>
                   </div>
+                  <button
+                    onClick={() => setShowTestimonial(true)}
+                    className="mt-6 text-brand-blue font-bold text-base hover:underline inline-flex items-center gap-1"
+                  >
+                    Read Full Testimonial <span className="text-lg">→</span>
+                  </button>
                 </motion.div>
 
                 <motion.div
@@ -1248,13 +1254,7 @@ export default function Home() {
                   <p className="text-slate-700 text-lg leading-relaxed mb-5">
                     MentorMe's career assessment was simple to complete, yet gave us meaningful insights into our daughter Meghana Dasari, who is in Class IX at Pragathi Central School, Pragathi Nagar, Hyderabad.
                   </p>
-                  <p className="text-base text-muted-foreground font-medium mb-5">— Father of Meghana Dasari, Class IX</p>
-                  <button
-                    onClick={() => setShowTestimonial(true)}
-                    className="text-brand-blue font-bold text-base hover:underline inline-flex items-center gap-1"
-                  >
-                    Read Full Testimonial <span className="text-lg">→</span>
-                  </button>
+                  <p className="text-base text-muted-foreground font-medium">— Father of Meghana Dasari, Class IX</p>
                 </motion.div>
               </div>
             </div>

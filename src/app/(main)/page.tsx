@@ -82,7 +82,6 @@ export default function Home() {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [selectedInstitution, setSelectedInstitution] = useState<number | null>(null);
   const [showTestimonial, setShowTestimonial] = useState(false);
-  const [testimonialIndex, setTestimonialIndex] = useState(0);
   const [showEnquiry, setShowEnquiry] = useState(false);
   const [enquirySubmitting, setEnquirySubmitting] = useState(false);
   const [enquirySuccess, setEnquirySuccess] = useState(false);
@@ -1197,133 +1196,69 @@ export default function Home() {
           </div>{/* end top grid */}
 
           {/* Testimonial Section */}
-          <section className="py-16 px-4 bg-white">
-            <div className="max-w-6xl mx-auto space-y-8">
+          <section className="py-24 px-4 bg-white">
+            <div className="max-w-6xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-center space-y-3"
+                className="text-center space-y-3 mb-16"
               >
-                <h2 className="text-3xl font-bold text-foreground">Parent & Student Testimonials</h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">Real experiences from families who have used MentorMe’s career guidance.</p>
+                <h2 className="text-4xl font-bold text-foreground">Parent & Student Testimonials</h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Real experiences from families who have used MentorMe’s career guidance.</p>
               </motion.div>
 
-              {(() => {
-                const testimonials = [
-                  {
-                    image: "/testimonial/image.png",
-                    name: "Rajesh Dasari",
-                    role: "Father of Meghana Dasari, Class IX",
-                    text: `MentorMe's career assessment was simple to complete, yet gave us meaningful insights into our daughter Meghana Dasari, who is in Class IX at Pragathi Central School, Pragathi Nagar, Hyderabad.`,
-                    fullText: `Dear Agastya,
-
-Here is my feedback on the career assessment test that you conducted for my daughter. A special thank you for letting us know on this specific test and guiding us on the process.
-
-"MentorMe's career assessment was simple to complete, yet gave us meaningful insights into our daughter Meghana Dasari, who is in Class IX at Pragathi Central School, Pragathi Nagar, Hyderabad.
-
-My wife and I appreciated the opportunity to share our observations about her personality and interests, while Meghana completed the aptitude section independently. The results helped us better understand her strengths and explore career directions suited to her interests and abilities.
-
-Our interaction with the Founder, Mr. Vijay Kiran, added further clarity. We came away feeling more confident about supporting my daughter's future."
-
-— *Rajesh Dasari*, father of Meghana Dasari, Class IX`,
-                  },
-                ];
-
-                const [selected, setSelected] = useState<number | null>(null);
-
-                return (
-                  <>
-                    <div className="relative overflow-hidden">
-                      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-                      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
-
-                      <div className="testimonials-scroll flex gap-5">
-                        {testimonials.map((t, i) => (
-                          <div
-                            key={i}
-                            onClick={() => setSelected(i)}
-                            className="flex-shrink-0 w-72 cursor-pointer group"
-                          >
-                            <div className="bg-slate-50 rounded-2xl border border-slate-100 p-5 shadow-sm hover:shadow-md transition-all duration-300 h-full flex flex-col items-center text-center gap-4">
-                              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-brand-blue/10">
-                                <img src={t.image} alt={t.name} className="w-full h-full object-cover" />
-                              </div>
-                              <div>
-                                <h4 className="font-bold text-slate-900 text-base mb-1">{t.name}</h4>
-                                <p className="text-xs text-muted-foreground mb-2">{t.role}</p>
-                                <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">{t.text}</p>
-                              </div>
-                              <span className="text-brand-blue text-sm font-bold">Read More →</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+              <div className="grid md:grid-cols-2 gap-12 items-center">
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7 }}
+                  className="flex justify-center"
+                >
+                  <div
+                    onClick={() => setShowTestimonial(true)}
+                    className="cursor-pointer group relative w-80 h-80 sm:w-96 sm:h-96 rounded-full overflow-hidden border-[6px] border-brand-blue/10 shadow-2xl hover:shadow-brand-blue/20 hover:border-brand-blue/30 transition-all duration-500"
+                  >
+                    <img
+                      src="/testimonial/image.png"
+                      alt="Testimonial"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-brand-blue/0 group-hover:bg-brand-blue/10 transition-colors duration-300 flex items-center justify-center">
+                      <span className="text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-brand-blue/80 px-5 py-2.5 rounded-full text-base">Read More</span>
                     </div>
+                  </div>
+                </motion.div>
 
-                    {selected !== null && (
-                      <div className="fixed inset-0 z-50">
-                        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setSelected(null)} />
-                        <div className="relative z-10 flex items-center justify-center min-h-screen p-4">
-                          <div className="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
-                            <div className="p-6 sm:p-8">
-                              <div className="flex items-start justify-between mb-6">
-                                <div className="flex items-center gap-4">
-                                  <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-blue/10">
-                                    <img src={testimonials[selected].image} alt={testimonials[selected].name} className="w-full h-full object-cover" />
-                                  </div>
-                                  <div>
-                                    <h3 className="text-xl font-bold text-slate-900">{testimonials[selected].name}</h3>
-                                    <p className="text-sm text-muted-foreground">{testimonials[selected].role}</p>
-                                  </div>
-                                </div>
-                                <button onClick={() => setSelected(null)} className="p-2 rounded-full hover:bg-slate-100 transition-colors">
-                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M18 6 6 18" />
-                                    <path d="m6 6 12 12" />
-                                  </svg>
-                                </button>
-                              </div>
-                              <div className="flex items-center gap-1 mb-4">
-                                {[...Array(5)].map((_, i) => (
-                                  <svg key={i} className="w-5 h-5 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                ))}
-                              </div>
-                              <div className="prose prose-slate max-w-none text-slate-700 leading-relaxed whitespace-pre-line">
-                                {testimonials[selected].fullText}
-                              </div>
-                              <div className="mt-8 flex justify-center">
-                                <button onClick={() => setSelected(null)} className="flex items-center gap-2 px-8 py-3 bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl transition-all shadow-md">
-                                  Close
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </>
-                );
-              })()}
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.7 }}
+                  className="bg-slate-50 rounded-3xl p-8 sm:p-10 border border-slate-100 shadow-sm"
+                >
+                  <div className="flex items-center gap-1.5 mb-5">
+                    {[...Array(5)].map((_, i) => (
+                      <svg key={i} className="w-6 h-6 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="text-slate-700 text-lg leading-relaxed mb-5">
+                    MentorMe's career assessment was simple to complete, yet gave us meaningful insights into our daughter Meghana Dasari, who is in Class IX at Pragathi Central School, Pragathi Nagar, Hyderabad.
+                  </p>
+                  <p className="text-base text-muted-foreground font-medium mb-5">— Father of Meghana Dasari, Class IX</p>
+                  <button
+                    onClick={() => setShowTestimonial(true)}
+                    className="text-brand-blue font-bold text-base hover:underline inline-flex items-center gap-1"
+                  >
+                    Read Full Testimonial <span className="text-lg">→</span>
+                  </button>
+                </motion.div>
+              </div>
             </div>
           </section>
-
-          <style>{`
-            .testimonials-scroll {
-              animation: scroll-testimonials 30s linear infinite;
-              display: flex;
-              width: max-content;
-            }
-            .testimonials-scroll:hover {
-              animation-play-state: paused;
-            }
-            @keyframes scroll-testimonials {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-          `}</style>
 
           {showTestimonial && (
             <div className="fixed inset-0 z-50">
@@ -1364,7 +1299,7 @@ Our interaction with the Founder, Mr. Vijay Kiran, added further clarity. We cam
 
                       My wife and I appreciated the opportunity to share our observations about her personality and interests, while Meghana completed the aptitude section independently. The results helped us better understand her strengths and explore career directions suited to her interests and abilities.
 
-                      Our interaction with the Founder, Mr. Vijay Kiran, added further clarity. We came away feeling more confident about supporting our daughter's future."
+                      Our interaction with the Founder, Mr. Vijay Kiran, added further clarity. We came away feeling more confident about supporting my daughter's future."
 
                       — *Rajesh Dasari*, father of Meghana Dasari, Class IX
                     </div>

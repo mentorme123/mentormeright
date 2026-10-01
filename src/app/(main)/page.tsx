@@ -1030,7 +1030,7 @@ export default function Home() {
               <br className="hidden md:block" />
               <span className="text-brand-orange drop-shadow-[0_2px_8px_rgba(244,114,22,0.25)]">
                 {slides[currentSlide].highlight.split('\n').map((line, idx, arr) => (
-                  <span key={idx}>
+                  <span key={idx} className={idx === 1 ? 'text-white drop-shadow-[0_2px_8px_rgba(255,255,255,0.35)]' : ''}>
                     {line}
                     {idx < arr.length - 1 && <br className="hidden md:block" />}
                   </span>

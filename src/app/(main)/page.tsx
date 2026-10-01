@@ -1391,7 +1391,7 @@ export default function Home() {
                 className="cursor-pointer group relative w-64 h-64 sm:w-72 sm:h-72 rounded-full overflow-hidden border-4 border-brand-blue/10 shadow-xl hover:shadow-2xl hover:border-brand-blue/30 transition-all duration-300"
               >
                 <img
-                  src="/images/student.png"
+                  src="/testimonial/image.png"
                   alt="Testimonial"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
@@ -1438,7 +1438,7 @@ export default function Home() {
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center gap-4">
                     <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-blue/10">
-                      <img src="/images/student.png" alt="Testimonial" className="w-full h-full object-cover" />
+                      <img src="/testimonial/image.png" alt="Testimonial" className="w-full h-full object-cover" />
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-slate-900">Rajesh Dasari</h3>

@@ -247,18 +247,14 @@ function CareerContent() {
           </div>
 
           <div className="bg-brand-blue text-white p-8 rounded-3xl shadow-xl space-y-4 text-center">
-            <h2 className="text-2xl font-black flex items-center justify-center gap-3">
-              <Briefcase className="text-white shrink-0" />
-              COMMERCE, FINANCE &amp; ACCOUNTING CAREERS. WHICH ONES FIT YOU?
-            </h2>
-            <h3 className="text-xl font-bold text-white">Discover Where You Fit<br/>in Commerce, Finance &amp; Accounting</h3>
-            <p className="text-white/90 leading-relaxed text-base">
-              Discover the careers that best match your aptitude, interests and workstyle — and get a personalised roadmap to move forward with confidence.
-            </p>
-            <p className="font-bold text-white text-base">Aptitude + Career Interests + Workstyle &amp; Traits</p>
+            <h2 className="text-2xl font-black text-white">ALREADY CHOSEN COMMERCE OR MANAGEMENT?</h2>
+            <p className="text-white/90 text-base leading-relaxed">You’ve Chosen Your Stream.<br/>Now Discover Your Direction.</p>
+            <p className="text-white/90 text-base leading-relaxed">Finance? Accounting? Consulting? Marketing? HR? Analytics? Entrepreneurship?</p>
+            <p className="text-white/90 text-base leading-relaxed">Discover which Commerce &amp; Management careers best match your aptitude, interests and workstyle.</p>
+            <p className="text-sm font-bold tracking-wider uppercase text-white/90">45 Career Pathways · Personalised Career Matches · Actionable Roadmaps</p>
             <div className="pt-2 flex justify-center">
               <Link href="/career-intelligence.html">
-                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
+                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">DISCOVER MY BEST-FIT CAREERS</Button>
               </Link>
             </div>
           </div>

@@ -84,12 +84,12 @@ export default function PaymentPage() {
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'purchase', {
         transaction_id: `payment_${Date.now()}`,
-        value: paymentType === 'career_assessment' ? 999 : 1999,
+        value: paymentType === 'career_assessment' ? 1999 : 1999,
         currency: 'INR',
         items: [{
           item_id: paymentType,
           item_name: paymentType === 'career_assessment' ? 'Career Intelligence Assessment' : 'Career Assessment And Detailed Career Report',
-          price: paymentType === 'career_assessment' ? 999 : 1999,
+          price: paymentType === 'career_assessment' ? 1999 : 1999,
           quantity: 1
         }]
       });
@@ -132,13 +132,13 @@ export default function PaymentPage() {
   }
 
   const isAssessment = paymentType === 'career_assessment';
-  const paymentAmount = isAssessment ? 999 : 1999;
+  const paymentAmount = isAssessment ? 1999 : 1999;
   const paymentTitle = isAssessment ? 'Complete Your Assessment Payment' : 'Complete Your Payment';
   const paymentDescription = isAssessment
     ? 'Please complete the payment to access the career assessment.'
     : 'Please complete the payment to access the career assessment and unlock your personalized report.';
   const paymentItemName = isAssessment ? 'Career Assessment' : 'Career Assessment + Report';
-  const paymentButtonText = isAssessment ? 'Pay ₹999 to Continue' : 'Pay ₹1999 to Continue';
+  const paymentButtonText = isAssessment ? 'Pay ₹1999 to Continue' : 'Pay ₹1999 to Continue';
   const PaymentIcon = isAssessment ? ClipboardList : Crown;
 
   return (

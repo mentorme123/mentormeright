@@ -577,7 +577,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
                   className="bg-brand-orange hover:bg-brand-orange/90 text-white font-bold px-8 py-6 rounded-2xl shadow-xl transition-all hover:scale-105 whitespace-nowrap"
                 >
                   <ClipboardList className="mr-2" size={18} />
-                  Pay ₹999 & Start
+                  Pay ₹1999 & Start
                 </Button>
               </div>
             </div>
@@ -607,7 +607,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
           }}
           itemType="career_assessment"
           itemName="Career Intelligence Assessment"
-          amount={999}
+          amount={1999}
           description="90-question, 60-minute MentorMe Career Intelligence assessment."
           email={authUser?.email || profile?.email}
           name={profile?.name || authUser?.user_metadata?.full_name}

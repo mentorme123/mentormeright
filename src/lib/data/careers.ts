@@ -51,6 +51,7 @@ export const careersData: Career[] = [
     riasec_codes: ["S", "I", "R"]
   },
 
+  {
     title: "Insolvency Professional",
     category: "Commerce, Finance & Accounting",
     stream: "Commerce",

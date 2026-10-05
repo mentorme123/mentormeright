@@ -52,10 +52,11 @@ export default function CareerLibraryLayout({
   const isEngineeringTechnology = pathname?.includes("/engineering-technology");
   const isMedicineHealthcare = pathname?.includes("/medicine-healthcare");
   const isCommerceFinanceAccounting = pathname?.includes("/commerce-finance-accounting");
+  const isCommerceManagement = pathname?.includes("/commerce-management");
 
   return (
-    <div className={`min-h-screen bg-slate-50 ${(isEmergingCareers || isEngineeringTechnology || isMedicineHealthcare || isCommerceFinanceAccounting) ? "" : "pt-24 pb-12"}`}>
-      <div className={`${(isEmergingCareers || isEngineeringTechnology || isMedicineHealthcare || isCommerceFinanceAccounting) ? "" : "max-w-7xl mx-auto px-4"}`}>
+    <div className={`min-h-screen bg-slate-50 ${(isEmergingCareers || isEngineeringTechnology || isMedicineHealthcare || isCommerceFinanceAccounting || isCommerceManagement) ? "" : "pt-24 pb-12"}`}>
+      <div className={`${(isEmergingCareers || isEngineeringTechnology || isMedicineHealthcare || isCommerceFinanceAccounting || isCommerceManagement) ? "" : "max-w-7xl mx-auto px-4"}`}>
         {children}
       </div>
     </div>

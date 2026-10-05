@@ -14,7 +14,7 @@ export default function CommerceManagementCareerPage() {
   return (
     <>
       <section className="bg-brand-blue text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto space-y-4">
+        <div className="space-y-4">
           <div className="inline-block px-3 py-1 bg-white/20 text-white text-xs font-bold rounded-full uppercase tracking-wider mb-2">
             Commerce &amp; Management
           </div>
@@ -31,7 +31,7 @@ export default function CommerceManagementCareerPage() {
       </section>
 
       <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto space-y-10">
+        <div className="space-y-10">
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
             <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
               <Briefcase className="text-brand-blue shrink-0" />

@@ -31,7 +31,7 @@ export default function CommerceManagementCareerPage() {
       </section>
 
       <section className="py-6 px-4">
-        <div className="space-y-8">
+        <div className="space-y-12">
           <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
             <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Commerce &amp; Management?</h2>
             <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">Choosing a Commerce or Management career should not be based only on salary or popularity.</p>
@@ -48,7 +48,7 @@ export default function CommerceManagementCareerPage() {
       </section>
 
       <section className="py-12 px-4">
-        <div className="space-y-10">
+        <div className="space-y-12">
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-center">
             <h2 className="text-2xl font-black text-slate-900 flex items-center justify-center gap-3">
               <Briefcase className="text-brand-blue shrink-0" />

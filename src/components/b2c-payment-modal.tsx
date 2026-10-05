@@ -193,6 +193,15 @@ export function B2CPaymentModal({
                 </div>
               </div>
 
+              <a
+                href="/view/Sample Career Report.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-4 py-3 rounded-xl transition-all"
+              >
+                Review a Sample Report Before You Buy
+              </a>
+
               <Button
                 onClick={handlePayment}
                 disabled={loading}

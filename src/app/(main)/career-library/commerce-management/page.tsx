@@ -49,8 +49,8 @@ export default function CommerceManagementCareerPage() {
 
       <section className="py-12 px-4">
         <div className="space-y-10">
-          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4 text-center">
+            <h2 className="text-2xl font-black text-slate-900 flex items-center justify-center gap-3">
               <Briefcase className="text-brand-blue shrink-0" />
               45 COMMERCE &amp; MANAGEMENT CAREERS. WHICH ONES FIT YOU?
             </h2>
@@ -60,7 +60,7 @@ export default function CommerceManagementCareerPage() {
             </p>
             <p className="font-bold text-slate-800 text-base">Aptitude + Career Interests + Workstyle &amp; Traits</p>
             <div className="pt-2 flex justify-center">
-              <Link href="https://www.mentormeright.com/career-intelligence.html">
+              <Link href="/career-intelligence.html">
                 <Button className="bg-brand-blue text-white hover:bg-brand-blue/90 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
               </Link>
             </div>

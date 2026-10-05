@@ -246,8 +246,8 @@ function CareerContent() {
             <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
           </div>
 
-          <div className="bg-brand-blue text-white p-8 rounded-3xl shadow-xl space-y-4">
-            <h2 className="text-2xl font-black flex items-center gap-3">
+          <div className="bg-brand-blue text-white p-8 rounded-3xl shadow-xl space-y-4 text-center">
+            <h2 className="text-2xl font-black flex items-center justify-center gap-3">
               <Briefcase className="text-white shrink-0" />
               COMMERCE, FINANCE &amp; ACCOUNTING CAREERS. WHICH ONES FIT YOU?
             </h2>
@@ -256,8 +256,8 @@ function CareerContent() {
               Discover the careers that best match your aptitude, interests and workstyle — and get a personalised roadmap to move forward with confidence.
             </p>
             <p className="font-bold text-white text-base">Aptitude + Career Interests + Workstyle &amp; Traits</p>
-            <div className="pt-2">
-              <Link href="/payment?type=career_assessment">
+            <div className="pt-2 flex justify-center">
+              <Link href="/career-intelligence.html">
                 <Button className="bg-white text-brand-blue hover:bg-slate-100 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
               </Link>
             </div>

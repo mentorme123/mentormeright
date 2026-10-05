@@ -246,17 +246,21 @@ function CareerContent() {
             <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
           </div>
 
-          <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Commerce, Finance &amp; Accounting?</h2>
-            <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">Choosing a Commerce, Finance or Accounting career should not be based only on salary or popularity.</p>
-            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">Your interests, strengths, personality and skills can help determine whether a career in Commerce, Finance &amp; Accounting is actually a good fit for you.</p>
-            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree or specialisation.</p>
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+            <h2 className="text-2xl font-black text-slate-900 flex items-center gap-3">
+              <Briefcase className="text-brand-blue shrink-0" />
+              COMMERCE, FINANCE &amp; ACCOUNTING CAREERS. WHICH ONES FIT YOU?
+            </h2>
+            <h3 className="text-xl font-bold text-slate-900">Discover Where You Fit<br/>in Commerce, Finance &amp; Accounting</h3>
+            <p className="text-slate-700 leading-relaxed text-base">
+              Discover the careers that best match your aptitude, interests and workstyle — and get a personalised roadmap to move forward with confidence.
+            </p>
+            <p className="font-bold text-slate-800 text-base">Aptitude + Career Interests + Workstyle &amp; Traits</p>
+            <div className="pt-2">
               <Link href="/payment?type=career_assessment">
-                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">Take MentorMe Career Intelligence Assessment</Button>
+                <Button className="bg-brand-orange text-white hover:bg-brand-orange/90 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
               </Link>
             </div>
-            <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
           </div>
         </div>
       </div>

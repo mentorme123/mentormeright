@@ -280,16 +280,14 @@ export default function PaymentPage() {
                     </ul>
                   )}
                 </div>
-                {!isAssessment && (
-                  <a
-                    href="/view/Sample Career Report.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block text-center text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-4 py-3 rounded-xl transition-all"
-                  >
-                    Review a Sample Report Before You Buy
-                  </a>
-                )}
+                <a
+                  href="/view/Sample Career Report.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-center text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-4 py-3 rounded-xl transition-all"
+                >
+                  Review a Sample Report Before You Buy
+                </a>
                 <Button
                   onClick={handlePayClick}
                   className="w-full bg-brand-blue hover:bg-brand-blue/90 text-white font-bold py-6 rounded-xl shadow-lg transition-all"

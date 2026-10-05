@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { BookOpen, ChevronLeft, ArrowLeft, Shield, Search, ZoomIn, ZoomOut } from "lucide-react";
+import { BookOpen, ChevronLeft, ArrowLeft, Shield, Search, ZoomIn, ZoomOut, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { careersData, Career } from "@/lib/data/careers";
 

@@ -30,6 +30,23 @@ export default function CommerceManagementCareerPage() {
         </div>
       </section>
 
+      <section className="py-6 px-4">
+        <div className="space-y-8">
+          <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
+            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Commerce &amp; Management?</h2>
+            <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">Choosing a Commerce or Management career should not be based only on salary or popularity.</p>
+            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">Your interests, strengths, personality and skills can help determine whether a career in Commerce &amp; Management is actually a good fit for you.</p>
+            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree or specialisation.</p>
+            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+              <Link href="/payment?type=career_assessment">
+                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">Take MentorMe Career Intelligence Assessment</Button>
+              </Link>
+            </div>
+            <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
+          </div>
+        </div>
+      </section>
+
       <section className="py-12 px-4">
         <div className="space-y-10">
           <div className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
@@ -43,7 +60,7 @@ export default function CommerceManagementCareerPage() {
             </p>
             <p className="font-bold text-slate-800 text-base">Aptitude + Career Interests + Workstyle &amp; Traits</p>
             <div className="pt-2">
-              <Link href="/career-intelligence.html">
+              <Link href="/payment?type=career_assessment">
                 <Button className="bg-brand-blue text-white hover:bg-brand-blue/90 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">TAKE THE COMMERCE &amp; MANAGEMENT CAREER ASSESSMENT</Button>
               </Link>
             </div>
@@ -274,19 +291,6 @@ export default function CommerceManagementCareerPage() {
               <div className="flex items-center gap-2.5"><CheckCircle2 size={18} className="text-brand-blue shrink-0" /> Are curious about how businesses operate</div>
             </div>
             <p className="text-slate-700 leading-relaxed text-base pt-2">It may not be ideal if you strongly dislike numbers, spreadsheets, business environments, targets, deadlines or people-facing roles.</p>
-          </div>
-
-          <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in Commerce &amp; Management?</h2>
-            <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">Choosing a Commerce or Management career should not be based only on salary or popularity.</p>
-            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">Students should first understand their interests, strengths, personality and aptitude, and then evaluate which Commerce and Management career best matches their profile.</p>
-            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree and specialisation.</p>
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <Link href="/assessment">
-                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">Take MentorMe Career Intelligence Assessment</Button>
-              </Link>
-            </div>
-            <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MentorMe – Turning Passions into Professions.</p>
           </div>
         </div>
       </section>

@@ -50,21 +50,7 @@ export const careersData: Career[] = [
     is_trending: true,
     riasec_codes: ["S", "I", "R"]
   },
-  {
-    id: "car_investment_banker",
-    title: "Investment Banker",
-    category: "Commerce, Finance & Accounting",
-    stream: "Commerce",
-    description: "Investment Banking involves advising corporations and institutions on mergers and acquisitions, capital raising, IPOs, corporate valuation, and strategic financial management.",
-    salary_range: "₹8L - ₹50L+ per year",
-    education_path: "B.Com / BBA / B.Tech followed by MBA in Finance (from top IIMs/B-schools) or CFA / CA certifications.",
-    skills_required: ["Financial Modelling", "Valuation (DCF/LBO)", "Accounting", "Quantitative Analysis", "Negotiation & Pitching"],
-    growth_outlook: "Rapidly Growing",
-    is_trending: true,
-    riasec_codes: ["E", "C", "I"]
-  },
-  {
-    id: "car_insolvency_professional",
+
     title: "Insolvency Professional",
     category: "Commerce, Finance & Accounting",
     stream: "Commerce",
@@ -192,7 +178,7 @@ export const careersData: Career[] = [
     riasec_codes: ["I", "C", "E"],
     subjects_after_10th: "Commerce with Mathematics is an excellent choice for students interested in Portfolio Management. Useful subjects include: Accountancy, Economics, Business Studies, Mathematics, and Statistics. However, students from Science can also build successful careers in investment management, particularly if they have strong quantitative and analytical skills. A useful combination is: Commerce + Mathematics + Economics + Accountancy. Students should gradually develop an interest in business, companies, economics and financial markets.",
     maths_compulsory: "No, Mathematics is not compulsory for every pathway into Portfolio Management. However, quantitative skills are extremely useful. Portfolio Managers regularly work with: Investment returns, Risk, Ratios, Statistics, Valuation, Portfolio performance, Probability, and Financial modelling. Students interested in quantitative investing, derivatives, risk modelling or algorithmic investment strategies will require much stronger Mathematics and Statistics. For traditional fundamental investing, strong knowledge of Accounting, Finance, Economics and Valuation is particularly important.",
-    degree_choices: "There is no single undergraduate degree that automatically makes someone a Portfolio Manager.\n\nPathway 1: Commerce → Investment Analysis → Portfolio Management\nClass 12 Commerce → B.Com → Financial/Investment Analyst → Portfolio Manager\n\nPathway 2: BBA/Management → Finance → Portfolio Management\nClass 12 → BBA/BMS → Finance Specialisation → Investment Career → Portfolio Manager\n\nPathway 3: Economics → Investment Research → Portfolio Management\nClass 12 → Economics Degree → Investment Research → Portfolio Manager\n\nPathway 4: CFA → Investment Management\nBachelor's Degree → CFA Pathway → Investment Analysis → Portfolio Management\n\nPathway 5: Quantitative Finance → Portfolio Management\nClass 12 Mathematics → Mathematics/Statistics/Engineering → Quantitative Finance → Portfolio Management\n\nPathway 6: Wealth Management → Portfolio Management\nCommerce/Finance → Wealth Management → Investment Advisory/Portfolio Management",
+    degree_choices: "There is no single undergraduate degree that automatically makes someone a Portfolio Manager.\n\nPathway 1: Commerce → Investment Analysis → Portfolio Management\nClass 12 Commerce → B.Com → Financial/Investment Analyst → Portfolio Manager\n\nPathway 2: BBA/Management → Finance → Portfolio Management\nClass 12 → BBA/BMS → Finance Specialisation → Investment Career → Portfolio Manager\n\nPathway 3: Economics → Investment Research → Portfolio Management\nClass 12 → Economics Degree → Investment Research → Portfolio Manager\n\nPathway 4: CFA → Investment Management\nBachelor's Degree → CFA Pathway → Investment Analysis → Portfolio Manager\n\nPathway 5: Quantitative Finance → Portfolio Management\nClass 12 Mathematics → Mathematics/Statistics/Engineering → Quantitative Finance → Portfolio Management\n\nPathway 6: Wealth Management → Portfolio Management\nCommerce/Finance → Wealth Management → Investment Advisory/Portfolio Management",
     entrance_exams: "There is no single entrance examination for becoming a Portfolio Manager.\n\nFor undergraduate programmes, admission may be through: CUET-UG, university-specific entrance examinations, institution-specific aptitude tests, merit-based admission.\n\nFor postgraduate management programmes: CAT, XAT, CMAT, MAT, GMAT, institution-specific examinations.\n\nProfessional qualifications such as CFA have their own examination and eligibility requirements.\n\nFor securities-market roles in India, professionals may also need relevant NISM certifications depending on the specific position and applicable regulations.",
     best_colleges: "Students should look for strong programs in: Commerce, Finance, Economics, Management, Mathematics, Statistics, and Business Analytics.\n\nWhen comparing colleges, look for: Strong finance curriculum, Investment and finance clubs, Financial markets exposure, Bloomberg/financial databases where available, Investment competitions, Internships, Industry interaction, Research opportunities, Strong placements in financial services.\n\nDo not select a college simply because it offers a course called Portfolio Management. A strong foundation in Finance, Accounting, Economics and Analytics is more important.",
     is_real_career: "Yes. Portfolio Manager is a well-established and regulated career in India. Professional portfolio management is a regulated financial activity in India. The Securities and Exchange Board of India (SEBI) regulates Portfolio Managers through the SEBI (Portfolio Managers) Regulations, 2020, as amended from time to time. Learning to invest or managing your own investments is different from professionally managing money for clients. Professional roles may involve specific regulatory, qualification, certification, experience and organisational requirements.",

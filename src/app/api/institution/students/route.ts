@@ -138,14 +138,17 @@ export async function POST(req: NextRequest) {
     const sanitizedGrade = String(grade || '').trim().slice(0, 50);
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
-    const emailDigits = String(name).replace(/[^0-9]/g, '').slice(0, 20);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const providedEmail = String(email || '').trim().toLowerCase();
+    const useProvidedEmail = providedEmail && emailRegex.test(providedEmail);
+
+    const emailDigits = String(name).replace(/[^0-9]/g).slice(0, 20);
     const firstName = String(name).trim().split(/\s+/)[0] || '';
     const generatedEmail = emailDigits ? `R${emailDigits}@mentormeright.com` : (firstName ? `${firstName.toLowerCase()}@mentormeright.com` : '');
-    const finalEmail = generatedEmail || email;
+    const finalEmail = useProvidedEmail ? providedEmail : (generatedEmail || email);
     const generatedPassword = emailDigits ? `R@${emailDigits}` : (firstName ? `MM${firstName.replace(/[^a-z0-9]/gi, '')}@123` : 'MentorMe@123');
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(finalEmail)) {
+    if (!finalEmail || !emailRegex.test(finalEmail)) {
       return NextResponse.json({ error: 'Invalid email format.' }, { status: 400 });
     }
 

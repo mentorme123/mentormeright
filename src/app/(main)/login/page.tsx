@@ -62,7 +62,10 @@ export default function LoginPage() {
         "sameeksharevannuru@gmail.com",
         "labdhi.jain1806@gmail.com",
         "121324086005@sfc.ac.in",
-        "121324083002@sfc.ac.in"
+        "121324083002@sfc.ac.in",
+        "st13109@hpsbegumpet.org.in",
+        "tanvinahata2008@gmail.com",
+        "st13036@hpsbegumpet.org.in"
       ]);
 
       if (redirect === '/payment') {

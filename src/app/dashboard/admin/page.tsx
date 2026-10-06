@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, useRef } from "react";
-import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft } from "lucide-react";
+import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft, UserPlus, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
@@ -62,6 +62,17 @@ export default function AdminDashboard() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [currentAdmin, setCurrentAdmin] = useState<{ name: string; email: string } | null>(null);
   const [showLoginDetails, setShowLoginDetails] = useState(false);
+
+  // Free C&M Assessment Student Creation
+  const [showCreateCMStudent, setShowCreateCMStudent] = useState(false);
+  const [cmStudentName, setCmStudentName] = useState("");
+  const [cmStudentEmail, setCmStudentEmail] = useState("");
+  const [cmStudentGrade, setCmStudentGrade] = useState("");
+  const [cmStudentSchool, setCmStudentSchool] = useState("");
+  const [cmStudentMobile, setCmStudentMobile] = useState("");
+  const [cmCreating, setCmCreating] = useState(false);
+  const [cmCreateError, setCmCreateError] = useState("");
+  const [cmCreateSuccess, setCmCreateSuccess] = useState("");
 
   // Analytics Embed URL
   const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
@@ -209,6 +220,44 @@ export default function AdminDashboard() {
   const closeTour = () => {
     setShowTour(false);
     localStorage.setItem('mentorme_admin_tour', 'true');
+  };
+
+  const handleCreateCMStudent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (cmCreating) return;
+    setCmCreating(true);
+    setCmCreateError("");
+    setCmCreateSuccess("");
+    try {
+      const email = cmStudentEmail.trim().toLowerCase();
+      if (!cmStudentName.trim() || !email || !cmStudentGrade.trim()) {
+        throw new Error("Name, email and class are required.");
+      }
+      const response = await fetch('/api/institution/students', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: cmStudentName.trim(),
+          email,
+          grade: cmStudentGrade.trim(),
+          institutionName: cmStudentSchool.trim() || 'MentorMe C&M Free Assessment',
+          mobile: cmStudentMobile.trim() || null
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to create student');
+      setCmCreateSuccess(`Student created. Username: ${data.student?.email || email}. Password: ${data.student?.password || '(see credentials)'}`);
+      setCmStudentName("");
+      setCmStudentEmail("");
+      setCmStudentGrade("");
+      setCmStudentSchool("");
+      setCmStudentMobile("");
+      await fetchData();
+    } catch (err: unknown) {
+      setCmCreateError(err instanceof Error ? err.message : "Failed to create student");
+    } finally {
+      setCmCreating(false);
+    }
   };
 
   // Tour Content
@@ -637,6 +686,13 @@ export default function AdminDashboard() {
             </div>
             <div className="flex flex-wrap items-center gap-2">
               <Button
+                onClick={() => setShowCreateCMStudent(true)}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all"
+              >
+                <UserPlus size={16} className="mr-1.5" />
+                Create C&M Free Student
+              </Button>
+              <Button
                 onClick={() => window.location.href = "/dashboard/admin/report"}
                 className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
               >
@@ -928,7 +984,142 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                     )}
-                 </div>
+                  </div>
+
+      {/* Create C&M Free Assessment Student Modal */}
+      <AnimatePresence>
+        {showCreateCMStudent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowCreateCMStudent(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-emerald-600 text-white p-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <GraduationCap size={22} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-lg">Create C&M Free Student</h3>
+                    <p className="text-emerald-100 text-xs font-semibold">Commerce & Management Career Assessment</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowCreateCMStudent(false)}
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <form onSubmit={handleCreateCMStudent} className="p-5 space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Student Name</label>
+                  <input
+                    type="text"
+                    value={cmStudentName}
+                    onChange={(e) => setCmStudentName(e.target.value)}
+                    placeholder="e.g. Lagan Jain"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Email</label>
+                  <input
+                    type="email"
+                    value={cmStudentEmail}
+                    onChange={(e) => setCmStudentEmail(e.target.value)}
+                    placeholder="e.g. student@school.org"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Class / Grade</label>
+                    <input
+                      type="text"
+                      value={cmStudentGrade}
+                      onChange={(e) => setCmStudentGrade(e.target.value)}
+                      placeholder="e.g. 12C"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Mobile</label>
+                    <input
+                      type="tel"
+                      value={cmStudentMobile}
+                      onChange={(e) => setCmStudentMobile(e.target.value)}
+                      placeholder="e.g. 9876543210"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">School / Institution</label>
+                  <input
+                    type="text"
+                    value={cmStudentSchool}
+                    onChange={(e) => setCmStudentSchool(e.target.value)}
+                    placeholder="e.g. HPS Begumpet"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  />
+                </div>
+
+                {cmCreateError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 text-sm font-semibold px-4 py-3 rounded-xl">
+                    {cmCreateError}
+                  </div>
+                )}
+
+                {cmCreateSuccess && (
+                  <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-semibold px-4 py-3 rounded-xl">
+                    {cmCreateSuccess}
+                  </div>
+                )}
+
+                <div className="flex gap-3 pt-2">
+                  <Button
+                    type="button"
+                    onClick={() => setShowCreateCMStudent(false)}
+                    variant="outline"
+                    className="flex-1 font-bold"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={cmCreating}
+                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold"
+                  >
+                    {cmCreating ? "Creating..." : "Create Student"}
+                  </Button>
+                </div>
+
+                <p className="text-xs text-slate-500 text-center leading-relaxed">
+                  The student will be created with a generated password. After creation, ensure the email is whitelisted for free C&M assessment access.
+                </p>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

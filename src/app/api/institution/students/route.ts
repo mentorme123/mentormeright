@@ -23,10 +23,7 @@ export async function GET(req: NextRequest) {
         education_level,
         role,
         institution_name,
-        created_at,
-        assessment_results (
-          id
-        )
+        created_at
       `)
       .eq('role', 'individual');
 
@@ -41,7 +38,30 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch students' }, { status: 500 });
     }
 
-    return NextResponse.json({ students: studentList || [] });
+    // Fetch assessment results directly to avoid join dependency on foreign key
+    const userIds = (studentList || []).map((s: any) => s.id).filter(Boolean);
+    const completedUserIds = new Set<string>();
+    if (userIds.length > 0) {
+      const { data: assessmentData, error: assessmentError } = await supabase
+        .from('assessment_results')
+        .select('user_id')
+        .in('user_id', userIds);
+
+      if (assessmentError) {
+        console.error('Failed to fetch assessment results:', assessmentError.message);
+      } else {
+        (assessmentData || []).forEach((a: any) => {
+          if (a.user_id) completedUserIds.add(a.user_id);
+        });
+      }
+    }
+
+    const studentsWithStatus = (studentList || []).map((s: any) => ({
+      ...s,
+      assessment_results: completedUserIds.has(s.id) ? [{ id: 'completed' }] : []
+    }));
+
+    return NextResponse.json({ students: studentsWithStatus || [] });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Failed to fetch students:', err);

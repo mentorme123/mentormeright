@@ -38,6 +38,23 @@ const sanitizeText = (text: string | null) => {
   return String(text).replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 };
 
+// Free C&M Assessment whitelist
+const FREE_CM_EMAILS = new Set([
+  "fareedameera8@gmail.com",
+  "aleenamariyamin@gmail.com",
+  "r26hsukainamarfani@email.com",
+  "fatimamaryamm488@gmail.com",
+  "madhihamanaal2008@gmail.com",
+  "firdousefathima443@gmail.com",
+  "sameeksharevannuru@gmail.com",
+  "labdhi.jain1806@gmail.com",
+  "121324086005@sfc.ac.in",
+  "121324083002@sfc.ac.in",
+  "st13109@hpsbegumpet.org.in",
+  "tanvinahata2008@gmail.com",
+  "st13036@hpsbegumpet.org.in"
+]);
+
 export default function AdminDashboard() {
   const router = useRouter();
   const supabase = createClient();
@@ -272,9 +289,10 @@ export default function AdminDashboard() {
     try {
       const response = await fetch('/api/institution/students');
       const data = await response.json();
-      const studentList = (data.students || []) as DBUser[];
-      setCmFreeStudents(studentList);
-      const completed = studentList.filter((s: any) => s.assessment_results && s.assessment_results.length > 0).length;
+      const allStudents = (data.students || []) as DBUser[];
+      const cmStudents = allStudents.filter((s: any) => FREE_CM_EMAILS.has(String(s.email || '').trim().toLowerCase()));
+      setCmFreeStudents(cmStudents);
+      const completed = cmStudents.filter((s: any) => s.assessment_results && s.assessment_results.length > 0).length;
       setCmCompletedCount(completed);
     } catch (err: unknown) {
       console.error('Failed to fetch C&M stats:', err);

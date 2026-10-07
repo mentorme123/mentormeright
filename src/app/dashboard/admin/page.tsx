@@ -744,45 +744,48 @@ export default function AdminDashboard() {
                 </div>
               )}
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Button
-                onClick={() => setShowCreateCMStudent(true)}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all"
-              >
-                <UserPlus size={16} className="mr-1.5" />
-                Create C&M Free Student
-              </Button>
-              <Button
-                onClick={handleShowCMStats}
-                disabled={cmLoadingStats}
-                className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md transition-all"
-              >
-                <CheckCircle2 size={16} className="mr-1.5" />
-                {cmLoadingStats ? "Loading..." : `C&M Tests: ${cmCompletedCount}`}
-              </Button>
-              <Button
-                onClick={handleDownloadCMStats}
-                disabled={cmFreeStudents.length === 0}
-                className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-md transition-all"
-              >
-                <Download size={16} className="mr-1.5" />
-                Download C&M List
-              </Button>
-              <Button
-                onClick={() => window.location.href = "/dashboard/admin/report"}
-                className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
-              >
-                <BarChart3 size={16} className="mr-1.5" />
-                Student Report
-              </Button>
-              <Button
-                onClick={handleExportData}
-                disabled={isExporting || loading}
-                className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all text-xs"
-              >
-                {isExporting ? "Compiling Backup..." : <><Download size={16} className="mr-1.5" /> Download DB</>}
-              </Button>
-            </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2 bg-emerald-50/60 border border-emerald-100 rounded-xl px-2.5 py-2.5">
+                  <Button
+                    onClick={() => setShowCreateCMStudent(true)}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <UserPlus size={16} className="mr-1.5" />
+                    Create C&M Free Student
+                  </Button>
+                  <Button
+                    onClick={handleShowCMStats}
+                    disabled={cmLoadingStats}
+                    className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <CheckCircle2 size={16} className="mr-1.5" />
+                    {cmLoadingStats ? "Loading..." : `C&M Tests: ${cmCompletedCount}`}
+                  </Button>
+                  <Button
+                    onClick={handleDownloadCMStats}
+                    disabled={cmFreeStudents.length === 0}
+                    className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <Download size={16} className="mr-1.5" />
+                    Download C&M List
+                  </Button>
+                </div>
+                <div className="w-px h-7 bg-slate-300 mx-1 hidden sm:block" />
+                <Button
+                  onClick={() => window.location.href = "/dashboard/admin/report"}
+                  className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
+                >
+                  <BarChart3 size={16} className="mr-1.5" />
+                  Student Report
+                </Button>
+                <Button
+                  onClick={handleExportData}
+                  disabled={isExporting || loading}
+                  className="bg-purple-600 hover:bg-purple-700 text-white font-bold shadow-md transition-all text-xs"
+                >
+                  {isExporting ? "Compiling Backup..." : <><Download size={16} className="mr-1.5" /> Download DB</>}
+                </Button>
+              </div>
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-6">
@@ -1234,14 +1237,24 @@ export default function AdminDashboard() {
               </div>
 
               <div className="p-5 overflow-y-auto flex-1">
-                <div className="grid grid-cols-2 gap-4 mb-5">
-                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total C&M Students</p>
-                    <p className="text-2xl font-black text-slate-800">{cmFreeStudents.length}</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                  <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-5 rounded-xl border border-slate-200 flex items-center gap-4">
+                    <div className="w-12 h-12 bg-slate-800/10 rounded-xl flex items-center justify-center text-slate-700 shrink-0">
+                      <Users size={24} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total C&M Students</p>
+                      <p className="text-3xl font-black text-slate-800 leading-tight">{cmFreeStudents.length}</p>
+                    </div>
                   </div>
-                  <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
-                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Tests Completed</p>
-                    <p className="text-2xl font-black text-emerald-700">{cmCompletedCount}</p>
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-5 rounded-xl border border-emerald-200 flex items-center gap-4">
+                    <div className="w-12 h-12 bg-emerald-600/10 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+                      <CheckCircle2 size={24} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Tests Completed</p>
+                      <p className="text-3xl font-black text-emerald-700 leading-tight">{cmCompletedCount}</p>
+                    </div>
                   </div>
                 </div>
 

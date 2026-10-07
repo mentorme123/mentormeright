@@ -74,6 +74,12 @@ export default function AdminDashboard() {
   const [cmCreateError, setCmCreateError] = useState("");
   const [cmCreateSuccess, setCmCreateSuccess] = useState("");
 
+  // C&M Free Student Test Completion
+  const [cmFreeStudents, setCmFreeStudents] = useState<DBUser[]>([]);
+  const [cmCompletedCount, setCmCompletedCount] = useState(0);
+  const [cmLoadingStats, setCmLoadingStats] = useState(false);
+  const [showCMStats, setShowCMStats] = useState(false);
+
   // Analytics Embed URL
   const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
   const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
@@ -258,6 +264,42 @@ export default function AdminDashboard() {
     } finally {
       setCmCreating(false);
     }
+  };
+
+  const handleShowCMStats = async () => {
+    setCmLoadingStats(true);
+    setShowCMStats(true);
+    try {
+      const response = await fetch('/api/institution/students');
+      const data = await response.json();
+      const studentList = (data.students || []) as DBUser[];
+      setCmFreeStudents(studentList);
+      const completed = studentList.filter((s: any) => s.assessment_results && s.assessment_results.length > 0).length;
+      setCmCompletedCount(completed);
+    } catch (err: unknown) {
+      console.error('Failed to fetch C&M stats:', err);
+    } finally {
+      setCmLoadingStats(false);
+    }
+  };
+
+  const handleDownloadCMStats = () => {
+    const headers = "Name,Email,Class,School,Completed,Joined\n";
+    const rows = cmFreeStudents.map((s: any) => {
+      const completed = s.assessment_results && s.assessment_results.length > 0 ? 'Yes' : 'No';
+      const joined = s.created_at ? new Date(s.created_at).toLocaleDateString() : '';
+      return `"${(s.name || '').replace(/"/g, '""')}","${(s.email || '').replace(/"/g, '""')}","${(s.education_level || '').replace(/"/g, '""')}","${(s.institution_name || '').replace(/"/g, '""')}","${completed}","${joined}"`;
+    }).join('\n');
+    const csvContent = headers + rows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `cm_free_students_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   // Tour Content
@@ -693,6 +735,22 @@ export default function AdminDashboard() {
                 Create C&M Free Student
               </Button>
               <Button
+                onClick={handleShowCMStats}
+                disabled={cmLoadingStats}
+                className="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs shadow-md transition-all"
+              >
+                <CheckCircle2 size={16} className="mr-1.5" />
+                {cmLoadingStats ? "Loading..." : `C&M Tests: ${cmCompletedCount}`}
+              </Button>
+              <Button
+                onClick={handleDownloadCMStats}
+                disabled={cmFreeStudents.length === 0}
+                className="bg-cyan-600 hover:bg-cyan-700 text-white font-bold text-xs shadow-md transition-all"
+              >
+                <Download size={16} className="mr-1.5" />
+                Download C&M List
+              </Button>
+              <Button
                 onClick={() => window.location.href = "/dashboard/admin/report"}
                 className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
               >
@@ -1116,6 +1174,115 @@ export default function AdminDashboard() {
                   The student will be created with a generated password. After creation, ensure the email is whitelisted for free C&M assessment access.
                 </p>
               </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* C&M Free Student Stats Modal */}
+      <AnimatePresence>
+        {showCMStats && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowCMStats(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-teal-600 text-white p-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <CheckCircle2 size={22} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-lg">C&M Free Student Test Status</h3>
+                    <p className="text-teal-100 text-xs font-semibold">Commerce & Management Career Assessment</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowCMStats(false)}
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="p-5 overflow-y-auto flex-1">
+                <div className="grid grid-cols-2 gap-4 mb-5">
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total C&M Students</p>
+                    <p className="text-2xl font-black text-slate-800">{cmFreeStudents.length}</p>
+                  </div>
+                  <div className="bg-emerald-50 p-4 rounded-xl border border-emerald-200">
+                    <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Tests Completed</p>
+                    <p className="text-2xl font-black text-emerald-700">{cmCompletedCount}</p>
+                  </div>
+                </div>
+
+                {cmLoadingStats ? (
+                  <div className="text-center py-8 text-slate-500 text-sm">Loading...</div>
+                ) : cmFreeStudents.length === 0 ? (
+                  <div className="text-center py-8 text-slate-500 text-sm">No C&M free students found.</div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 text-slate-400 text-xs uppercase tracking-wider border-b border-slate-100">
+                          <th className="py-3 px-3 font-bold">#</th>
+                          <th className="py-3 px-3 font-bold">Name</th>
+                          <th className="py-3 px-3 font-bold">Email</th>
+                          <th className="py-3 px-3 font-bold">Class</th>
+                          <th className="py-3 px-3 font-bold">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {cmFreeStudents.map((student: any, idx: number) => {
+                          const completed = student.assessment_results && student.assessment_results.length > 0;
+                          return (
+                            <tr key={student.id || idx} className="hover:bg-slate-50 transition-colors">
+                              <td className="py-3 px-3 text-slate-500 font-mono text-sm">{idx + 1}</td>
+                              <td className="py-3 px-3 font-bold text-slate-800">{sanitizeText(student.name) || 'N/A'}</td>
+                              <td className="py-3 px-3 text-slate-500 text-sm">{sanitizeText(student.email)}</td>
+                              <td className="py-3 px-3 text-slate-500 text-sm">{sanitizeText(student.education_level) || '-'}</td>
+                              <td className="py-3 px-3">
+                                <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${completed ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-slate-100 text-slate-600 border border-slate-200'}`}>
+                                  {completed ? 'Completed' : 'Pending'}
+                                </span>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 border-t border-slate-100 bg-slate-50 flex gap-3">
+                <Button
+                  onClick={() => setShowCMStats(false)}
+                  variant="outline"
+                  className="flex-1 font-bold"
+                >
+                  Close
+                </Button>
+                <Button
+                  onClick={handleDownloadCMStats}
+                  disabled={cmFreeStudents.length === 0}
+                  className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold"
+                >
+                  <Download size={16} className="mr-1.5" />
+                  Download CSV
+                </Button>
+              </div>
             </motion.div>
           </motion.div>
         )}

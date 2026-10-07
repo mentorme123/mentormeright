@@ -1237,8 +1237,8 @@ export default function AdminDashboard() {
               </div>
 
               <div className="p-5 overflow-y-auto flex-1">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                  <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-5 rounded-xl border border-slate-200 flex items-center gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-8">
+                  <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200 flex items-center gap-5 min-h-[96px]">
                     <div className="w-12 h-12 bg-slate-800/10 rounded-xl flex items-center justify-center text-slate-700 shrink-0">
                       <Users size={24} />
                     </div>
@@ -1247,7 +1247,7 @@ export default function AdminDashboard() {
                       <p className="text-3xl font-black text-slate-800 leading-tight">{cmFreeStudents.length}</p>
                     </div>
                   </div>
-                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-5 rounded-xl border border-emerald-200 flex items-center gap-4">
+                  <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-xl border border-emerald-200 flex items-center gap-5 min-h-[96px]">
                     <div className="w-12 h-12 bg-emerald-600/10 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
                       <CheckCircle2 size={24} />
                     </div>

@@ -225,37 +225,39 @@ function CareerContent() {
             )}
           </div>
 
-          <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
-            <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in {career.title}?</h2>
-            <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">
-              Choosing a career should not be based only on popularity.
-            </p>
-            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
-              Your interests, strengths, personality and skills can help determine whether a career in {career.title} is actually a good fit for you.
-            </p>
-            <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
-              MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree or specialisation.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <Link href="/payment?type=career_assessment">
-                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">
-                  Take MentorMe Career Intelligence Assessment
-                </Button>
-              </Link>
+          <div className="px-4 sm:px-6 pt-12 pb-10 space-y-8">
+            <div className="bg-brand-blue text-white p-8 md:p-12 rounded-3xl shadow-xl text-center space-y-6">
+              <h2 className="text-3xl md:text-4xl font-black">Thinking About a Career in {career.title}?</h2>
+              <p className="text-white/90 text-lg max-w-2xl mx-auto leading-relaxed">
+                Choosing a career should not be based only on popularity.
+              </p>
+              <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
+                Your interests, strengths, personality and skills can help determine whether a career in {career.title} is actually a good fit for you.
+              </p>
+              <p className="text-white/90 text-base max-w-2xl mx-auto leading-relaxed">
+                MentorMe&apos;s Career Assessment and Career Guidance can help students explore their strengths and discover suitable career pathways before choosing their subjects, degree or specialisation.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+                <Link href="/payment?type=career_assessment">
+                  <Button className="bg-white text-brand-blue hover:bg-slate-100 font-black px-8 py-6 text-lg rounded-2xl shadow-lg transition-all">
+                    Take MentorMe Career Intelligence Assessment
+                  </Button>
+                </Link>
+              </div>
+              <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
             </div>
-            <p className="text-sm font-bold tracking-wider uppercase pt-4 text-white/80">MENTORME – TURNING PASSIONS INTO PROFESSIONS.</p>
-          </div>
 
-          <div className="bg-brand-blue text-white p-8 rounded-3xl shadow-xl space-y-4 text-center">
-            <h2 className="text-2xl font-black text-white">ALREADY CHOSEN COMMERCE OR MANAGEMENT?</h2>
-            <p className="text-white/90 text-base leading-relaxed">You’ve Chosen Your Stream.<br/>Now Discover Your Direction.</p>
-            <p className="text-white/90 text-base leading-relaxed">Finance? Accounting? Consulting? Marketing? HR? Analytics? Entrepreneurship?</p>
-            <p className="text-white/90 text-base leading-relaxed">Discover which Commerce &amp; Management careers best match your aptitude, interests and workstyle.</p>
-            <p className="text-sm font-bold tracking-wider uppercase text-white/90">45 Career Pathways · Personalised Career Matches · Actionable Roadmaps</p>
-            <div className="pt-2 flex justify-center">
-              <Link href="/career-intelligence.html">
-                <Button className="bg-white text-brand-blue hover:bg-slate-100 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">DISCOVER MY BEST-FIT CAREERS</Button>
-              </Link>
+            <div className="bg-[#0a1628] text-white p-8 rounded-3xl shadow-xl space-y-4 text-center border border-white/10">
+              <h2 className="text-2xl font-black text-white">ALREADY CHOSEN COMMERCE OR MANAGEMENT?</h2>
+              <p className="text-white/90 text-base leading-relaxed">You’ve Chosen Your Stream.<br/>Now Discover Your Direction.</p>
+              <p className="text-white/90 text-base leading-relaxed">Finance? Accounting? Consulting? Marketing? HR? Analytics? Entrepreneurship?</p>
+              <p className="text-white/90 text-base leading-relaxed">Discover which Commerce &amp; Management careers best match your aptitude, interests and workstyle.</p>
+              <p className="text-sm font-bold tracking-wider uppercase text-white/90">45 Career Pathways · Personalised Career Matches · Actionable Roadmaps</p>
+              <div className="pt-2 flex justify-center">
+                <Link href="/career-intelligence.html">
+                  <Button className="bg-white text-brand-blue hover:bg-slate-100 font-bold px-6 py-3 text-base rounded-xl shadow-lg transition-all">DISCOVER MY BEST-FIT CAREERS</Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

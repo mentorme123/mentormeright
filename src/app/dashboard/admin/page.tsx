@@ -349,6 +349,23 @@ export default function AdminDashboard() {
   };
 
   const handleDownloadCMStats = () => {
+    const headers = "Name,Email,Class,School,Completed,Joined\n";
+    const rows = cmFreeStudents.map((s: any) => {
+      const completed = s.assessment_results && s.assessment_results.length > 0 ? 'Yes' : 'No';
+      const joined = s.created_at ? new Date(s.created_at).toLocaleDateString() : '';
+      return `"${(s.name || '').replace(/"/g, '""')}","${(s.email || '').replace(/"/g, '""')}","${(s.education_level || '').replace(/"/g, '""')}","${(s.institution_name || '').replace(/"/g, '""')}","${completed}","${joined}"`;
+    }).join('\n');
+    const csvContent = headers + rows;
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `cm_free_students_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   // Tour Content
   const tourSlides = [

@@ -1245,7 +1245,7 @@ export default function AdminDashboard() {
                               <td className="py-3 px-3">
                                 {completed ? (
                                     <button
-                                      onClick={() => window.open(`/career-report?userId=${encodeURIComponent(student.id)}`, '_blank')}
+                                      onClick={() => window.open(`/career-intelligence.html?userId=${encodeURIComponent(student.id)}&adminView=1`, '_blank')}
                                       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-blue hover:bg-brand-blue/90 text-white text-xs font-bold shadow-sm transition-all"
                                     >
                                       <Eye size={14} />

@@ -269,15 +269,29 @@ function normalizeScoresForV4(
     return canonicalKeyMap[clean] || canonicalKeyMap[k.toLowerCase()] || k;
   };
 
-  if (
+  const isCMFormat = typeof scores.aptitude === "object" || typeof scores.traits === "object";
+
+  if (isCMFormat) {
+    ["aptitude", "riasec", "traits"].forEach((cat) => {
+      const category = scores[cat];
+      if (category && typeof category === "object") {
+        Object.entries(category).forEach(([key, val]: [string, any]) => {
+          const canonical = getCanonicalKey(key);
+          if (typeof val === "object" && val !== null && typeof val.score === "number") {
+            flatScores[canonical] = Math.min(100, Math.max(0, Math.round(val.score)));
+          } else if (typeof val === "number") {
+            flatScores[canonical] = Math.min(100, Math.max(0, Math.round(val)));
+          }
+        });
+      }
+    });
+  } else if (
     typeof scores.passion === "object" ||
     typeof scores.riasec === "object" ||
     typeof scores.skills === "object" ||
-    typeof scores.individuality === "object" ||
-    typeof scores.aptitude === "object" ||
-    typeof scores.traits === "object"
+    typeof scores.individuality === "object"
   ) {
-    ["passion", "riasec", "skills", "individuality", "aptitude", "traits"].forEach((cat) => {
+    ["passion", "riasec", "skills", "individuality"].forEach((cat) => {
       const category = scores[cat];
       if (category && typeof category === "object") {
         Object.entries(category).forEach(([key, val]: [string, any]) => {

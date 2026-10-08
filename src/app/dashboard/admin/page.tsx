@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, useRef } from "react";
-import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft, UserPlus, GraduationCap } from "lucide-react";
+import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft, UserPlus, GraduationCap, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
@@ -1272,6 +1272,7 @@ export default function AdminDashboard() {
                           <th className="py-3 px-3 font-bold">Email</th>
                           <th className="py-3 px-3 font-bold">Class</th>
                           <th className="py-3 px-3 font-bold">Status</th>
+                          <th className="py-3 px-3 font-bold">View Report</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100">
@@ -1287,6 +1288,19 @@ export default function AdminDashboard() {
                                 <span className={`px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider ${completed ? 'bg-emerald-50 text-emerald-700 border border-emerald-100' : 'bg-slate-100 text-slate-600 border border-slate-200'}`}>
                                   {completed ? 'Completed' : 'Pending'}
                                 </span>
+                              </td>
+                              <td className="py-3 px-3">
+                                {completed ? (
+                                  <button
+                                    onClick={() => window.open(`/career-report?userId=${encodeURIComponent(student.id)}`, '_blank')}
+                                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-blue hover:bg-brand-blue/90 text-white text-xs font-bold shadow-sm transition-all"
+                                  >
+                                    <Eye size={14} />
+                                    View Report
+                                  </button>
+                                ) : (
+                                  <span className="text-slate-400 text-xs">-</span>
+                                )}
                               </td>
                             </tr>
                           );

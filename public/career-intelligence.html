@@ -120,7 +120,22 @@ function scoreAssessment(a){let sums={aptitude:{},riasec:{},traits:{}};let count
 function careerRank(scores){let careers=DB.profiles.map(p=>({name:p.Career,cluster:p.Cluster}));let ad=scores.aptitude.top,ri=scores.riasec.top,tr=scores.traits.top;let ideal=(p,section,topdims)=>{if(!topdims.length)return 0;let sum=topdims.reduce((s,x)=>s+(Number(p[x.dim])||0),0);return sum/topdims.length/5*100};let allFit=(p)=>{let a=scores.aptitude.all.reduce((s,x)=>s+(Number(p[x.dim])||0)*(x.score/100),0)/(scores.aptitude.all.length||1)/5*100;let r=scores.riasec.all.reduce((s,x)=>s+(Number(p[x.dim])||0)*(x.score/100),0)/(scores.riasec.all.length||1)/5*100;let t=scores.traits.all.reduce((s,x)=>s+(Number(p[x.dim])||0)*(x.score/100),0)/(scores.traits.all.length||1)/5*100;return a*.45+r*.35+t*.20};
  // Exact top-2 routing score from the source workbook's scoring logic.
  let routed=careers.map(c=>{let p=DB.profiles.find(x=>x.Career===c.name);let combo=ideal(p,'aptitude',ad)*.45+ideal(p,'riasec',ri)*.35+ideal(p,'traits',tr)*.20;return {...c,combo,full:allFit(p),score:combo*.6+allFit(p)*.4}}).sort((a,b)=>b.score-a.score);return routed.slice(0,5).map(x=>({career:x.name,cluster:x.cluster,score:x.score,routeScore:x.combo,fullFit:x.full}))}
-function openReport(attemptId){let d=db(),a=d.attempts.find(x=>x.id===attemptId);if(!a)return;let u=d.users.find(x=>x.id===a.userId)||state.user;state.report={attempt:a,user:u};document.getElementById('modalContent').innerHTML=reportHTML(a,u);document.getElementById('modal').classList.remove('hidden')}
+async function openReport(attemptId){
+  let attempts=0;
+  while((!DB||!DB.profiles)&&attempts<50){await new Promise(r=>setTimeout(r,100));attempts++;}
+  if(!DB||!DB.profiles){alert('Report data not loaded. Please refresh.');return;}
+  let d=db(),a=d.attempts.find(x=>x.id===attemptId);
+  if(!a)return;
+  let u=d.users.find(x=>x.id===a.userId)||state.user;
+  state.report={attempt:a,user:u};
+  try{
+    document.getElementById('modalContent').innerHTML=reportHTML(a,u);
+  }catch(e){
+    console.error(e);
+    document.getElementById('modalContent').innerHTML='<div class="empty">Failed to generate report. Please try again later.</div>';
+  }
+  document.getElementById('modal').classList.remove('hidden');
+}
 function closeModal(){document.getElementById('modal').classList.add('hidden');document.getElementById('modalContent').innerHTML=''}
 function roadmap(c){return DB.roadmaps.find(x=>x.Career===c)}function econ(c){return DB.economics.find(x=>x.Career===c)}
 function institutionsFor(c,u){let r=roadmap(c);if(!r)return [];let level=String(u?.grade||'');let wantPG=(level==='Undergraduation'||level==='Post Graduation');let careerText=((r['UG Pathway']||'')+' '+(r['PG / Advanced Pathway']||'')+' '+(r['Career Cluster']||'')+' '+c).toLowerCase();let terms=careerText.split(/[^a-z0-9]+/).filter(x=>x.length>3&&!['career','management','business','pathway','degree','professional'].includes(x));return (DB.cmInstitutions||[]).map(i=>{let txt=((i['Major Academic Domains']||'')+' '+i.Institution).toLowerCase();let hits=terms.filter(t=>txt.includes(t)).length;let band=i['MentorMe Institution Band']||'';let bonus=band==='Aspirational'?1:band==='Strong Fit'?0.75:0.45;let levelBonus=wantPG?(String(i.Level).includes('PG')?1:-2):(String(i.Level).includes('UG')?1:-1);return {...i,_s:hits+bonus+levelBonus}}).filter(x=>x._s>0).sort((a,b)=>b._s-a._s).slice(0,8)}

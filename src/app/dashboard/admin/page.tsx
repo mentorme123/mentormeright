@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, useRef } from "react";
-import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft, UserPlus, GraduationCap, Eye } from "lucide-react";
+import { Download, Users, Building2, UserCircle, Settings, ShieldAlert, Search, X, ChevronRight, CheckCircle2, AlertCircle, BarChart3, LogOut, User, ArrowLeft, UserPlus, GraduationCap, Eye, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchAllUsers, fetchRoleCounts } from "./actions";
@@ -96,6 +96,11 @@ export default function AdminDashboard() {
   const [cmCompletedCount, setCmCompletedCount] = useState(0);
   const [cmLoadingStats, setCmLoadingStats] = useState(false);
   const [showCMStats, setShowCMStats] = useState(false);
+
+  // Placement Assessment Results
+  const [placementResults, setPlacementResults] = useState<any[]>([]);
+  const [placementLoading, setPlacementLoading] = useState(false);
+  const [showPlacementResults, setShowPlacementResults] = useState(false);
 
   // Analytics Embed URL
   const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
@@ -288,24 +293,62 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleDownloadCMStats = () => {
-    const headers = "Name,Email,Class,School,Completed,Joined\n";
-    const rows = cmFreeStudents.map((s: any) => {
-      const completed = s.assessment_results && s.assessment_results.length > 0 ? 'Yes' : 'No';
-      const joined = s.created_at ? new Date(s.created_at).toLocaleDateString() : '';
-      return `"${(s.name || '').replace(/"/g, '""')}","${(s.email || '').replace(/"/g, '""')}","${(s.education_level || '').replace(/"/g, '""')}","${(s.institution_name || '').replace(/"/g, '""')}","${completed}","${joined}"`;
+  const handleShowPlacementResults = async () => {
+    setPlacementLoading(true);
+    setShowPlacementResults(true);
+    try {
+      const response = await fetch('/api/placement/results');
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to fetch placement results');
+      
+      const resultsWithUsers = await Promise.all(
+        (data.results || []).map(async (result: any) => {
+          try {
+            const userRes = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(result.userId)}`);
+            const userData = await userRes.json();
+            return {
+              ...result,
+              userName: userData.userName || 'Guest User',
+              userEmail: userData.userEmail || result.userId
+            };
+          } catch {
+            return {
+              ...result,
+              userName: 'Guest User',
+              userEmail: result.userId
+            };
+          }
+        })
+      );
+      
+      setPlacementResults(resultsWithUsers);
+    } catch (err: unknown) {
+      console.error('Failed to fetch placement results:', err);
+      setPlacementResults([]);
+    } finally {
+      setPlacementLoading(false);
+    }
+  };
+
+  const handleDownloadPlacementResults = () => {
+    const headers = "Name,Email,Test Name,Score,Correct,Total,Completed At\n";
+    const rows = placementResults.map((r: any) => {
+      const completed = r.completedAt ? new Date(r.completedAt).toLocaleString() : '';
+      return `"${(r.userName || '').replace(/"/g, '""')}","${(r.userEmail || '').replace(/"/g, '""')}","${(r.testName || '').replace(/"/g, '""')}","${r.score || 0}","${r.correctAnswers || 0}","${r.totalQuestions || 0}","${completed}"`;
     }).join('\n');
     const csvContent = headers + rows;
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.setAttribute('download', `cm_free_students_${new Date().toISOString().split('T')[0]}.csv`);
+    link.setAttribute('download', `placement_results_${new Date().toISOString().split('T')[0]}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
+
+  const handleDownloadCMStats = () => {
 
   // Tour Content
   const tourSlides = [
@@ -721,6 +764,32 @@ export default function AdminDashboard() {
                   >
                     <Download size={16} className="mr-1.5" />
                     Download C&M List
+                  </Button>
+                </div>
+                <div className="w-px h-7 bg-slate-300 mx-1 hidden sm:block" />
+                <div className="flex flex-wrap items-center gap-2 bg-orange-50/60 border border-orange-100 rounded-xl px-2.5 py-2.5">
+                  <Button
+                    onClick={() => window.open('/placement-assessment.html', '_blank')}
+                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <ClipboardList size={16} className="mr-1.5" />
+                    Placement Assessment
+                  </Button>
+                  <Button
+                    onClick={handleShowPlacementResults}
+                    disabled={placementLoading}
+                    className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <CheckCircle2 size={16} className="mr-1.5" />
+                    {placementLoading ? "Loading..." : `Placement Tests: ${placementResults.length}`}
+                  </Button>
+                  <Button
+                    onClick={handleDownloadPlacementResults}
+                    disabled={placementResults.length === 0}
+                    className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <Download size={16} className="mr-1.5" />
+                    Download Placement List
                   </Button>
                 </div>
                 <div className="w-px h-7 bg-slate-300 mx-1 hidden sm:block" />
@@ -1276,6 +1345,133 @@ export default function AdminDashboard() {
                   onClick={handleDownloadCMStats}
                   disabled={cmFreeStudents.length === 0}
                   className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-bold"
+                >
+                  <Download size={16} className="mr-1.5" />
+                  Download CSV
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Placement Assessment Results Modal */}
+      <AnimatePresence>
+        {showPlacementResults && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowPlacementResults(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[80vh] overflow-hidden flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-orange-600 text-white p-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <ClipboardList size={22} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-lg">Placement Assessment Results</h3>
+                    <p className="text-orange-100 text-xs font-semibold">View student placement test completion status</p>
+                  </div>
+                </div>
+                <button onClick={() => setShowPlacementResults(false)} className="text-white/80 hover:text-white">
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="p-4 bg-white">
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Attempts</p>
+                    <p className="text-2xl font-black text-slate-800">{placementResults.length}</p>
+                  </div>
+                  <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Unique Students</p>
+                    <p className="text-2xl font-black text-emerald-700">
+                      {new Set(placementResults.map((r: any) => r.userId)).size}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-1 overflow-auto px-4 pb-4">
+                {placementLoading ? (
+                  <div className="text-center py-10">
+                    <div className="w-10 h-10 border-4 border-orange-600 border-t-transparent rounded-full animate-spin mx-auto mb-3"></div>
+                    <p className="text-slate-600 font-bold text-sm">Loading placement results...</p>
+                  </div>
+                ) : placementResults.length === 0 ? (
+                  <div className="text-center py-10">
+                    <p className="text-slate-500 font-semibold text-sm">No placement results yet.</p>
+                    <p className="text-slate-400 text-xs mt-1">Results will appear here once students complete placement assessments.</p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border border-slate-200 rounded-xl overflow-hidden">
+                      <thead>
+                        <tr className="bg-slate-50 border-b border-slate-200">
+                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">#</th>
+                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Name</th>
+                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Email</th>
+                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Test Name</th>
+                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Score</th>
+                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">View Report</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {placementResults.map((result: any, idx: number) => {
+                          const scoreColor = result.score >= 80 ? 'text-emerald-700' : result.score >= 60 ? 'text-amber-700' : 'text-red-700';
+                          return (
+                            <tr key={result.id} className="border-b border-slate-100 hover:bg-slate-50/60">
+                              <td className="py-3 px-3 text-xs font-bold text-slate-600">{idx + 1}</td>
+                              <td className="py-3 px-3 text-xs font-bold text-slate-800">{result.userName || 'Guest User'}</td>
+                              <td className="py-3 px-3 text-xs text-slate-600">{result.userEmail || result.userId}</td>
+                              <td className="py-3 px-3 text-xs text-slate-700">{result.testName || result.testId}</td>
+                              <td className={`py-3 px-3 text-xs font-black ${scoreColor}`}>{result.score || 0}/100</td>
+                              <td className="py-3 px-3">
+                                <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black ${(result.score || 0) >= 80 ? 'bg-emerald-100 text-emerald-700' : (result.score || 0) >= 60 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`}>
+                                  {(result.score || 0) >= 80 ? 'Strong' : (result.score || 0) >= 60 ? 'Good' : 'Needs Work'}
+                                </span>
+                              </td>
+                              <td className="py-3 px-3">
+                                <button
+                                  onClick={() => window.open(`/placement-assessment.html?result=${encodeURIComponent(result.id)}`, '_blank')}
+                                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-blue hover:bg-brand-blue/90 text-white text-xs font-bold shadow-sm transition-all"
+                                >
+                                  <Eye size={14} />
+                                  View Report
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 border-t border-slate-100 bg-slate-50 flex gap-3">
+                <Button
+                  onClick={() => setShowPlacementResults(false)}
+                  variant="outline"
+                  className="flex-1 font-bold"
+                >
+                  Close
+                </Button>
+                <Button
+                  onClick={handleDownloadPlacementResults}
+                  disabled={placementResults.length === 0}
+                  className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold"
                 >
                   <Download size={16} className="mr-1.5" />
                   Download CSV

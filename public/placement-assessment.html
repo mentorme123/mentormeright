@@ -363,6 +363,24 @@ function submitTest(){
     history.push({test:attempt.test.id,score:pct,date:new Date().toISOString()});
     localStorage.setItem("mentorme_attempts",JSON.stringify(history.slice(-100)));
   }catch(e){}
+  try{
+    const payload={
+      email:window.MENTORME_STUDENT_EMAIL||('guest-'+window.MENTORME_STUDENT_ID+'@mentormeright.local'),
+      testId:attempt.test.id,
+      testName:attempt.test.name,
+      score:pct,
+      totalQuestions:attempt.qs.length,
+      correctAnswers:correct,
+      breakdown:byCat,
+      message:msg
+    };
+    if(navigator.sendBeacon){
+      const blob=new Blob([JSON.stringify(payload)],{type:'application/json'});
+      navigator.sendBeacon('/api/placement/submit',blob);
+    }else{
+      fetch('/api/placement/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).catch(()=>{});
+    }
+  }catch(e){}
   window.scrollTo({top:0,behavior:"smooth"});
 }
 function showCatalogue(){

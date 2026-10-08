@@ -38,20 +38,6 @@ export const careersData: Career[] = [
     riasec_codes: ["I", "C", "R"]
   },
   {
-    id: "car_occupational_therapist",
-    title: "Occupational Therapist",
-    category: "Medicine & Healthcare",
-    stream: "Science",
-    description: "Occupational Therapy is a healthcare career that helps people of all ages become more independent in daily activities through rehabilitation, therapeutic activities, and adaptive techniques.",
-    salary_range: "₹3.5L - ₹18L per year",
-    education_path: "Bachelor of Occupational Therapy (BOT) - 4.5 years, followed optionally by Master of Occupational Therapy (MOT).",
-    skills_required: ["Patience & Empathy", "Anatomy & Physiology", "Problem-Solving", "Communication", "Rehabilitation Planning"],
-    growth_outlook: "High",
-    is_trending: true,
-    riasec_codes: ["S", "I", "R"]
-  },
-
-  {
     title: "Insolvency Professional",
     category: "Commerce, Finance & Accounting",
     stream: "Commerce",

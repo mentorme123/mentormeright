@@ -273,9 +273,11 @@ function normalizeScoresForV4(
     typeof scores.passion === "object" ||
     typeof scores.riasec === "object" ||
     typeof scores.skills === "object" ||
-    typeof scores.individuality === "object"
+    typeof scores.individuality === "object" ||
+    typeof scores.aptitude === "object" ||
+    typeof scores.traits === "object"
   ) {
-    ["passion", "riasec", "skills", "individuality"].forEach((cat) => {
+    ["passion", "riasec", "skills", "individuality", "aptitude", "traits"].forEach((cat) => {
       const category = scores[cat];
       if (category && typeof category === "object") {
         Object.entries(category).forEach(([key, val]: [string, any]) => {

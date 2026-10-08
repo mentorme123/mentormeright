@@ -784,32 +784,6 @@ export default function AdminDashboard() {
                   </Button>
                 </div>
                 <div className="w-px h-7 bg-slate-300 mx-1 hidden sm:block" />
-                <div className="flex flex-wrap items-center gap-2 bg-orange-50/60 border border-orange-100 rounded-xl px-2.5 py-2.5">
-                  <Button
-                    onClick={() => window.open('/placement-assessment.html', '_blank')}
-                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md transition-all"
-                  >
-                    <ClipboardList size={16} className="mr-1.5" />
-                    Placement Assessment
-                  </Button>
-                  <Button
-                    onClick={handleShowPlacementResults}
-                    disabled={placementLoading}
-                    className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition-all"
-                  >
-                    <CheckCircle2 size={16} className="mr-1.5" />
-                    {placementLoading ? "Loading..." : `Placement Tests: ${placementResults.length}`}
-                  </Button>
-                  <Button
-                    onClick={handleDownloadPlacementResults}
-                    disabled={placementResults.length === 0}
-                    className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-xs shadow-md transition-all"
-                  >
-                    <Download size={16} className="mr-1.5" />
-                    Download Placement List
-                  </Button>
-                </div>
-                <div className="w-px h-7 bg-slate-300 mx-1 hidden sm:block" />
                 <Button
                   onClick={() => window.location.href = "/dashboard/admin/report"}
                   className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"

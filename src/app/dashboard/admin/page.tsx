@@ -155,29 +155,16 @@ export default function AdminDashboard() {
     window.location.href = '/login';
   };
 
+  const checkLocalAssessment = () => {
+    if (!selectedUser) return;
+    const hasResults = selectedUser.assessment_results && selectedUser.assessment_results.length > 0;
+    setHasAssessment(hasResults);
+    setAssessmentError(null);
+    setCheckingAssessment(false);
+  };
+
   useEffect(() => {
-    async function checkAssessment() {
-      if (!selectedUser) return;
-      setCheckingAssessment(true);
-      setHasAssessment(false);
-      setAssessmentError(null);
-      try {
-        console.log('AdminDashboard: checking assessment for', selectedUser.id, selectedUser.email);
-        const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
-        console.log('AdminDashboard: assessment check response', res.status, await res.json().catch(() => 'no body'));
-        setHasAssessment(res.ok);
-        if (!res.ok) {
-          const j = await res.json().catch(() => ({}));
-          setAssessmentError(j?.error || `HTTP ${res.status}`);
-        }
-      } catch (e) {
-        setHasAssessment(false);
-        setAssessmentError(e instanceof Error ? e.message : 'Network error');
-      } finally {
-        setCheckingAssessment(false);
-      }
-    }
-    checkAssessment();
+    checkLocalAssessment();
   }, [selectedUser]);
 
   useEffect(() => {
@@ -486,24 +473,7 @@ export default function AdminDashboard() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={async () => {
-                          setCheckingAssessment(true);
-                          setHasAssessment(false);
-                          setAssessmentError(null);
-                          try {
-                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
-                            setHasAssessment(res.ok);
-                            if (!res.ok) {
-                              const j = await res.json().catch(() => ({}));
-                              setAssessmentError(j?.error || `HTTP ${res.status}`);
-                            }
-                          } catch (e) {
-                            setHasAssessment(false);
-                            setAssessmentError(e instanceof Error ? e.message : 'Network error');
-                          } finally {
-                            setCheckingAssessment(false);
-                          }
-                        }}
+                        onClick={checkLocalAssessment}
                       >
                         Refresh
                       </Button>
@@ -557,24 +527,7 @@ export default function AdminDashboard() {
                       <Button
                         size="sm"
                         variant="ghost"
-                        onClick={async () => {
-                          setCheckingAssessment(true);
-                          setHasAssessment(false);
-                          setAssessmentError(null);
-                          try {
-                            const res = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(selectedUser.id)}&email=${encodeURIComponent(selectedUser.email || '')}`);
-                            setHasAssessment(res.ok);
-                            if (!res.ok) {
-                              const j = await res.json().catch(() => ({}));
-                              setAssessmentError(j?.error || `HTTP ${res.status}`);
-                            }
-                          } catch (e) {
-                            setHasAssessment(false);
-                            setAssessmentError(e instanceof Error ? e.message : 'Network error');
-                          } finally {
-                            setCheckingAssessment(false);
-                          }
-                        }}
+                        onClick={checkLocalAssessment}
                       >
                         Refresh
                       </Button>

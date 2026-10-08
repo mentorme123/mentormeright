@@ -53,6 +53,31 @@ export default function PaymentPage() {
 
         setProfile(userProfile);
 
+        const FREE_CM_EMAILS = new Set([
+          "fareedameera8@gmail.com",
+          "aleenamariyamin@gmail.com",
+          "r26hsukainamarfani@email.com",
+          "fatimamaryamm488@gmail.com",
+          "madhihamanaal2008@gmail.com",
+          "firdousefathima443@gmail.com",
+          "sameeksharevannuru@gmail.com",
+          "labdhi.jain1806@gmail.com",
+          "121324086005@sfc.ac.in",
+          "121324083002@sfc.ac.in",
+          "st13109@hpsbegumpet.org.in",
+          "tanvinahata2008@gmail.com",
+          "st13036@hpsbegumpet.org.in"
+        ]);
+
+        const isFreeAccess = FREE_CM_EMAILS.has(String(user.email || '').trim().toLowerCase()) ||
+                             userProfile?.role === 'institutional' ||
+                             userProfile?.role === 'school';
+
+        if (isFreeAccess) {
+          window.location.href = `/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;
+          return;
+        }
+
         const isGoogleUser = user.user_metadata?.provider === 'google' || user.user_metadata?.iss === 'https://accounts.google.com';
 
         if (!isGoogleUser) {

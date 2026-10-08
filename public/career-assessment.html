@@ -1062,6 +1062,7 @@ async function initPay(){
     city:document.getElementById('r-city').value.trim(),
     subjects};
    goTo('pg-paying');
+   setTimeout(() => unlockTest(), 1500);
    /* ── LIVE RAZORPAY ─────────────────────────────────────────
    fetch('/api/create-order',{method:'POST',headers:{'Content-Type':'application/json'},
      body:JSON.stringify({amount:CFG.RZP_AMOUNT,currency:'INR',receipt:'rcpt_'+Date.now()})

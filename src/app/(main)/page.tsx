@@ -1864,7 +1864,7 @@ export default function Home() {
       {(showEnquiry || showCareerAI) && (
         <div className="fixed inset-0 z-[200] bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
           <div className="min-h-full w-full flex flex-col lg:flex-row p-4">
-            <div className="m-auto flex flex-col lg:flex-row items-center justify-center gap-4">
+            <div className="m-auto flex flex-col lg:flex-row items-center lg:items-stretch justify-center gap-4">
             {showEnquiry && (
               <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden shrink-0">
             <div className="bg-brand-blue px-6 py-5 flex items-center justify-between">
@@ -1942,7 +1942,7 @@ export default function Home() {
             )}
 
             {showCareerAI && (
-              <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden shrink-0">
+              <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden shrink-0 flex flex-col">
                 <div className="bg-gradient-to-r from-[#0D2545] to-[#00A6A6] px-6 py-4 flex items-center justify-between">
                   <div>
                     <h2 className="text-xl font-black text-white">CareerAI Lens 🔍</h2>
@@ -1956,16 +1956,16 @@ export default function Home() {
                   </button>
                 </div>
 
-                <div className="p-5 space-y-3">
+                <div className="p-5 space-y-3 flex-1 flex flex-col">
                   <p className="text-sm text-slate-600 leading-relaxed">
                     Explore 250 careers and see how AI could change the work, what stays human, and what to build next — free, no login.
                   </p>
                   <Link
                     href="/careerai-lens"
                     onClick={() => setShowCareerAI(false)}
-                    className="block rounded-2xl overflow-hidden border border-slate-100 hover:opacity-95 transition-opacity"
+                    className="flex-1 flex rounded-2xl overflow-hidden border border-slate-100 hover:opacity-95 transition-opacity bg-slate-50"
                   >
-                    <img src="/popp/ailens.jpeg" alt="CareerAI Lens" className="w-full" />
+                    <img src="/popp/ailens.jpeg" alt="CareerAI Lens" className="w-full h-full object-contain" />
                   </Link>
                   <Link
                     href="/careerai-lens"

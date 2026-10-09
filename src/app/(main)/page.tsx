@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect, useRef, Suspense } from "react";
+import { useState, useEffect, useRef, useMemo, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { CheckCircle2, Phone, Mail, MapPin, Briefcase, GraduationCap, Globe2, X, Loader2, Users, ClipboardList, Megaphone, CircleDollarSign, Award } from "lucide-react";
+import { CAREERAI_CAREERS, CareerAICareer } from "@/lib/data/careerai-lens";
 
 function Counter({ value }: { value: string }) {
   const [count, setCount] = useState(0);
@@ -85,9 +86,14 @@ export default function Home() {
   const [showEnquiry, setShowEnquiry] = useState(false);
   const [enquirySubmitting, setEnquirySubmitting] = useState(false);
   const [enquirySuccess, setEnquirySuccess] = useState(false);
+  const [showCareerAI, setShowCareerAI] = useState(false);
+  const [careerAICluster, setCareerAICluster] = useState("");
+  const [careerAICareer, setCareerAICareer] = useState("");
+  const [careerAIResult, setCareerAIResult] = useState<CareerAICareer | null>(null);
 
   useEffect(() => {
     setShowEnquiry(true);
+    setShowCareerAI(true);
   }, []);
 
   const handleEnquirySubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -136,6 +142,25 @@ export default function Home() {
   const handleCloseEnquiry = () => {
     setShowEnquiry(false);
     setEnquirySuccess(false);
+  };
+
+  const careerAIClusters = useMemo(() => Array.from(new Set(CAREERAI_CAREERS.map((c) => c.cluster))).sort(), []);
+  const careerAICareersInCluster = useMemo(
+    () =>
+      careerAICluster
+        ? CAREERAI_CAREERS.filter((c) => c.cluster === careerAICluster).sort((a, b) => a.career.localeCompare(b.career))
+        : [],
+    [careerAICluster]
+  );
+
+  const handleCareerAIExplore = () => {
+    const x = CAREERAI_CAREERS.find((c) => c.career === careerAICareer && c.cluster === careerAICluster);
+    if (x) setCareerAIResult(x);
+  };
+
+  const handleCareerAIAnother = () => {
+    setCareerAIResult(null);
+    setCareerAICareer("");
   };
 
   const toggleCard = (index: number) => {
@@ -1859,9 +1884,11 @@ export default function Home() {
         </div>
       )}
 
-      {showEnquiry && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+      {(showEnquiry || showCareerAI) && (
+        <div className="fixed inset-0 z-[200] bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
+          <div className="min-h-full w-full flex flex-col lg:flex-row items-center justify-center gap-4 p-4">
+            {showEnquiry && (
+              <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden shrink-0">
             <div className="bg-brand-blue px-6 py-5 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-black text-white">Welcome to MentorMe 🎉</h2>
@@ -1933,6 +1960,117 @@ export default function Home() {
                 </form>
               )}
             </div>
+              </div>
+            )}
+
+            {showCareerAI && (
+              <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden shrink-0">
+                <div className="bg-gradient-to-r from-[#0D2545] to-[#00A6A6] px-6 py-5 flex items-center justify-between">
+                  <div>
+                    <h2 className="text-xl font-black text-white">CareerAI Lens 🔍</h2>
+                    <p className="text-white/80 text-xs mt-1">See how AI could reshape any career.</p>
+                  </div>
+                  <button
+                    onClick={() => setShowCareerAI(false)}
+                    className="w-8 h-8 rounded-lg bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <div className="p-6 space-y-4">
+                  {careerAIResult ? (
+                    <>
+                      <div>
+                        <p className="text-[11px] font-black text-[#00A6A6] uppercase tracking-wider">CareerAI Lens · MentorMe</p>
+                        <h3 className="text-2xl font-black text-[#0D2545] mt-1">{careerAIResult.career}</h3>
+                        <p className="text-sm text-slate-500">{careerAIResult.cluster}</p>
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          <span className="bg-[#F28C28] text-white text-xs font-bold px-3 py-1.5 rounded-full">Potential AI impact: {careerAIResult.level}</span>
+                          <span className="border border-slate-200 text-slate-700 text-xs font-bold px-3 py-1.5 rounded-full">{careerAIResult.outlook}</span>
+                        </div>
+                      </div>
+                      <p className="text-sm font-bold text-[#0D2545] border-l-4 border-[#F28C28] pl-3 leading-relaxed">{careerAIResult.shift}</p>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        <div className="bg-slate-50 rounded-xl p-3">
+                          <p className="text-[11px] font-black text-[#F28C28] uppercase">What AI may handle</p>
+                          <p className="text-slate-600 mt-1 text-xs leading-relaxed">{careerAIResult.ai}</p>
+                        </div>
+                        <div className="bg-teal-50 rounded-xl p-3">
+                          <p className="text-[11px] font-black text-teal-700 uppercase">Your human edge</p>
+                          <p className="text-slate-600 mt-1 text-xs leading-relaxed">{careerAIResult.human}</p>
+                        </div>
+                        <div className="bg-slate-50 rounded-xl p-3">
+                          <p className="text-[11px] font-black text-[#F28C28] uppercase">Skills worth building</p>
+                          <p className="text-slate-600 mt-1 text-xs leading-relaxed">{careerAIResult.skills}</p>
+                        </div>
+                        <div className="bg-amber-50 rounded-xl p-3">
+                          <p className="text-[11px] font-black text-amber-700 uppercase">Start now</p>
+                          <p className="text-slate-600 mt-1 text-xs leading-relaxed">{careerAIResult.action}</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={handleCareerAIAnother}
+                          className="flex-1 py-3 rounded-xl border border-slate-200 text-slate-700 font-bold text-sm hover:bg-slate-50 transition-all"
+                        >
+                          Explore Another
+                        </button>
+                        <Link
+                          href="/careerai-lens"
+                          className="flex-1 py-3 rounded-xl bg-[#0D2545] text-white font-bold text-sm text-center hover:bg-[#173B68] transition-all"
+                        >
+                          Open Full Tool →
+                        </Link>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <img src="/popp/ailens.jpeg" alt="CareerAI Lens" className="w-full rounded-2xl border border-slate-100" />
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-1">
+                          <label className="text-[11px] font-black text-slate-500 uppercase">Career Cluster</label>
+                          <select
+                            value={careerAICluster}
+                            onChange={(e) => { setCareerAICluster(e.target.value); setCareerAICareer(""); }}
+                            className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-700 focus:border-brand-blue focus:outline-none"
+                          >
+                            <option value="">Select cluster</option>
+                            {careerAIClusters.map((c) => (
+                              <option key={c} value={c}>{c}</option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="space-y-1">
+                          <label className="text-[11px] font-black text-slate-500 uppercase">Career</label>
+                          <select
+                            value={careerAICareer}
+                            disabled={!careerAICluster}
+                            onChange={(e) => setCareerAICareer(e.target.value)}
+                            className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-medium text-slate-700 focus:border-brand-blue focus:outline-none disabled:opacity-50"
+                          >
+                            <option value="">Select career</option>
+                            {careerAICareersInCluster.map((c) => (
+                              <option key={c.career} value={c.career}>{c.career}</option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <button
+                        onClick={handleCareerAIExplore}
+                        disabled={!careerAICareer}
+                        className="w-full py-4 rounded-xl text-white font-black text-base shadow-lg bg-[#F28C28] hover:bg-[#F28C28]/90 disabled:opacity-45 disabled:cursor-not-allowed transition-all"
+                      >
+                        See My AI Career Outlook →
+                      </button>
+                      <p className="text-xs text-slate-400 text-center">
+                        Free tool · No login · <Link href="/careerai-lens" className="text-brand-blue font-bold hover:underline">Open full CareerAI Lens</Link>
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

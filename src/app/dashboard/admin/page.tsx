@@ -30,6 +30,7 @@ type DBUser = {
   audience_type: string | null;
   password: string | null;
   created_at: string;
+  assessment_results?: any[];
 };
 
 // Sanitize text to prevent XSS
@@ -102,6 +103,23 @@ export default function AdminDashboard() {
   const [placementLoading, setPlacementLoading] = useState(false);
   const [showPlacementResults, setShowPlacementResults] = useState(false);
 
+  // Placement Test Stats
+  const [placementStats, setPlacementStats] = useState<{ total: number; uniqueStudents: number }>({ total: 0, uniqueStudents: 0 });
+  const [placementStatsLoading, setPlacementStatsLoading] = useState(false);
+  const [showPlacementStats, setShowPlacementStats] = useState(false);
+
+  // Placement Free Student Creation
+  const [showCreatePlacementStudent, setShowCreatePlacementStudent] = useState(false);
+  const [placementStudentName, setPlacementStudentName] = useState("");
+  const [placementStudentEmail, setPlacementStudentEmail] = useState("");
+  const [placementStudentGrade, setPlacementStudentGrade] = useState("");
+  const [placementStudentSchool, setPlacementStudentSchool] = useState("");
+  const [placementStudentMobile, setPlacementStudentMobile] = useState("");
+  const [placementCreating, setPlacementCreating] = useState(false);
+  const [placementCreateError, setPlacementCreateError] = useState("");
+  const [placementCreateSuccess, setPlacementCreateSuccess] = useState("");
+  const [placementDownloading, setPlacementDownloading] = useState(false);
+
   // Analytics Embed URL
   const [analyticsUrl, setAnalyticsUrl] = useState("https://datastudio.google.com/embed/reporting/2a7ab41d-3110-4d3c-a8d4-db45fbc18e83/page/S8c4F");
   const [isEditingAnalytics, setIsEditingAnalytics] = useState(false);
@@ -162,7 +180,7 @@ export default function AdminDashboard() {
 
   const checkLocalAssessment = () => {
     if (!selectedUser) return;
-    const hasResults = selectedUser.assessment_results && selectedUser.assessment_results.length > 0;
+    const hasResults = (selectedUser.assessment_results || []).length > 0;
     setHasAssessment(hasResults);
     setAssessmentError(null);
     setCheckingAssessment(false);
@@ -297,36 +315,98 @@ export default function AdminDashboard() {
     setPlacementLoading(true);
     setShowPlacementResults(true);
     try {
-      const response = await fetch('/api/placement/results');
+      const response = await fetch('/api/placement/list');
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to fetch placement results');
-      
-      const resultsWithUsers = await Promise.all(
-        (data.results || []).map(async (result: any) => {
-          try {
-            const userRes = await fetch(`/api/admin/user-scores?userId=${encodeURIComponent(result.userId)}`);
-            const userData = await userRes.json();
-            return {
-              ...result,
-              userName: userData.userName || 'Guest User',
-              userEmail: userData.userEmail || result.userId
-            };
-          } catch {
-            return {
-              ...result,
-              userName: 'Guest User',
-              userEmail: result.userId
-            };
-          }
-        })
-      );
-      
-      setPlacementResults(resultsWithUsers);
+      setPlacementResults(data.results || []);
     } catch (err: unknown) {
       console.error('Failed to fetch placement results:', err);
       setPlacementResults([]);
     } finally {
       setPlacementLoading(false);
+    }
+  };
+
+  const handleCreatePlacementStudent = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (placementCreating) return;
+    setPlacementCreating(true);
+    setPlacementCreateError("");
+    setPlacementCreateSuccess("");
+    try {
+      const email = placementStudentEmail.trim().toLowerCase();
+      if (!placementStudentName.trim() || !email || !placementStudentGrade.trim()) {
+        throw new Error("Name, email and class are required.");
+      }
+      const response = await fetch('/api/institution/students', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: placementStudentName.trim(),
+          email,
+          grade: placementStudentGrade.trim(),
+          institutionName: placementStudentSchool.trim() || 'MentorMe Placement Free Assessment',
+          mobile: placementStudentMobile.trim() || null
+        })
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to create student');
+      setPlacementCreateSuccess(`Student created. Username: ${data.student?.email || email}. Password: ${data.student?.password || '(see credentials)'}`);
+      setPlacementStudentName("");
+      setPlacementStudentEmail("");
+      setPlacementStudentGrade("");
+      setPlacementStudentSchool("");
+      setPlacementStudentMobile("");
+      await fetchData();
+    } catch (err: unknown) {
+      setPlacementCreateError(err instanceof Error ? err.message : "Failed to create student");
+    } finally {
+      setPlacementCreating(false);
+    }
+  };
+
+  const handleDownloadPlacementList = async () => {
+    if (placementDownloading) return;
+    setPlacementDownloading(true);
+    try {
+      const response = await fetch('/api/placement/list');
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to fetch placement results');
+      const results = data.results || [];
+      const headers = "Name,Email,Test Name,Score,Correct,Total,Completed At\n";
+      const rows = results.map((r: any) => {
+        const completed = r.completedAt ? new Date(r.completedAt).toLocaleString() : '';
+        return `"${(r.userName || '').replace(/"/g, '""')}","${(r.userEmail || '').replace(/"/g, '""')}","${(r.testName || '').replace(/"/g, '""')}","${r.score || 0}","${r.correctAnswers || 0}","${r.totalQuestions || 0}","${completed}"`;
+      }).join('\n');
+      const csvContent = headers + rows;
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `placement_results_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err: unknown) {
+      console.error('Failed to download placement results:', err);
+    } finally {
+      setPlacementDownloading(false);
+    }
+  };
+
+  const handleShowPlacementStats = async () => {
+    setPlacementStatsLoading(true);
+    setShowPlacementStats(true);
+    try {
+      const response = await fetch('/api/placement/stats');
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Failed to fetch placement stats');
+      setPlacementStats({ total: data.total || 0, uniqueStudents: data.uniqueStudents || 0 });
+    } catch (err: unknown) {
+      console.error('Failed to fetch placement stats:', err);
+    } finally {
+      setPlacementStatsLoading(false);
     }
   };
 
@@ -784,6 +864,32 @@ export default function AdminDashboard() {
                   </Button>
                 </div>
                 <div className="w-px h-7 bg-slate-300 mx-1 hidden sm:block" />
+                <div className="flex flex-wrap items-center gap-2 bg-orange-50/60 border border-orange-100 rounded-xl px-2.5 py-2.5">
+                  <Button
+                    onClick={() => setShowCreatePlacementStudent(true)}
+                    className="bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <UserPlus size={16} className="mr-1.5" />
+                    Create Placement Free Student
+                  </Button>
+                  <Button
+                    onClick={handleShowPlacementStats}
+                    disabled={placementStatsLoading}
+                    className="bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <CheckCircle2 size={16} className="mr-1.5" />
+                    {placementStatsLoading ? "Loading..." : `Placement Tests: ${placementStats.total}`}
+                  </Button>
+                  <Button
+                    onClick={handleDownloadPlacementList}
+                    disabled={placementDownloading}
+                    className="bg-yellow-600 hover:bg-yellow-700 text-white font-bold text-xs shadow-md transition-all"
+                  >
+                    <Download size={16} className="mr-1.5" />
+                    {placementDownloading ? "Downloading..." : "Download Placement List"}
+                  </Button>
+                </div>
+                <div className="w-px h-7 bg-slate-300 mx-1 hidden sm:block" />
                 <Button
                   onClick={() => window.location.href = "/dashboard/admin/report"}
                   className="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-md transition-all"
@@ -1213,6 +1319,141 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
+      {/* Create Placement Free Assessment Student Modal */}
+      <AnimatePresence>
+        {showCreatePlacementStudent && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowCreatePlacementStudent(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-orange-600 text-white p-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <GraduationCap size={22} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-lg">Create Placement Free Student</h3>
+                    <p className="text-orange-100 text-xs font-semibold">Placement Assessment</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowCreatePlacementStudent(false)}
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <form onSubmit={handleCreatePlacementStudent} className="p-5 space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Student Name</label>
+                  <input
+                    type="text"
+                    value={placementStudentName}
+                    onChange={(e) => setPlacementStudentName(e.target.value)}
+                    placeholder="e.g. Lagan Jain"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Email</label>
+                  <input
+                    type="email"
+                    value={placementStudentEmail}
+                    onChange={(e) => setPlacementStudentEmail(e.target.value)}
+                    placeholder="e.g. student@school.org"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                    required
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Class / Grade</label>
+                    <input
+                      type="text"
+                      value={placementStudentGrade}
+                      onChange={(e) => setPlacementStudentGrade(e.target.value)}
+                      placeholder="e.g. 12C"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">Mobile</label>
+                    <input
+                      type="tel"
+                      value={placementStudentMobile}
+                      onChange={(e) => setPlacementStudentMobile(e.target.value)}
+                      placeholder="e.g. 9876543210"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">School / Institution</label>
+                  <input
+                    type="text"
+                    value={placementStudentSchool}
+                    onChange={(e) => setPlacementStudentSchool(e.target.value)}
+                    placeholder="e.g. HPS Begumpet"
+                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                  />
+                </div>
+
+                {placementCreateError && (
+                  <div className="bg-red-50 border border-red-200 text-red-700 text-sm font-semibold px-4 py-3 rounded-xl">
+                    {placementCreateError}
+                  </div>
+                )}
+
+                {placementCreateSuccess && (
+                  <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-semibold px-4 py-3 rounded-xl">
+                    {placementCreateSuccess}
+                  </div>
+                )}
+
+                <div className="flex gap-3 pt-2">
+                  <Button
+                    type="button"
+                    onClick={() => setShowCreatePlacementStudent(false)}
+                    variant="outline"
+                    className="flex-1 font-bold"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={placementCreating}
+                    className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold"
+                  >
+                    {placementCreating ? "Creating..." : "Create Student"}
+                  </Button>
+                </div>
+
+                <p className="text-xs text-slate-500 text-center leading-relaxed">
+                  The student will be created with a generated password. After creation, ensure the email is whitelisted for free placement assessment access.
+                </p>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* C&M Free Student Stats Modal */}
       <AnimatePresence>
         {showCMStats && (
@@ -1346,6 +1587,93 @@ export default function AdminDashboard() {
         )}
       </AnimatePresence>
 
+      {/* Placement Test Stats Modal */}
+      <AnimatePresence>
+        {showPlacementStats && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setShowPlacementStats(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="bg-amber-600 text-white p-5 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+                    <ClipboardList size={22} />
+                  </div>
+                  <div>
+                    <h3 className="font-black text-lg">Placement Test Stats</h3>
+                    <p className="text-amber-100 text-xs font-semibold">Placement Assessment Overview</p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPlacementStats(false)}
+                  className="text-white/80 hover:text-white transition-colors"
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="p-5 overflow-y-auto flex-1">
+                {placementStatsLoading ? (
+                  <div className="text-center py-8 text-slate-500 text-sm">Loading...</div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                    <div className="bg-gradient-to-br from-slate-50 to-slate-100 p-6 rounded-xl border border-slate-200 flex items-center gap-5 min-h-[96px]">
+                      <div className="w-12 h-12 bg-slate-800/10 rounded-xl flex items-center justify-center text-slate-700 shrink-0">
+                        <ClipboardList size={24} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">Total Placement Tests</p>
+                        <p className="text-3xl font-black text-slate-800 leading-tight">{placementStats.total}</p>
+                      </div>
+                    </div>
+                    <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 p-6 rounded-xl border border-emerald-200 flex items-center gap-5 min-h-[96px]">
+                      <div className="w-12 h-12 bg-emerald-600/10 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+                        <Users size={24} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-emerald-600 uppercase tracking-wider">Unique Students</p>
+                        <p className="text-3xl font-black text-emerald-700 leading-tight">{placementStats.uniqueStudents}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="p-4 border-t border-slate-100 bg-slate-50 flex gap-3">
+                <Button
+                  onClick={() => setShowPlacementStats(false)}
+                  variant="outline"
+                  className="flex-1 font-bold"
+                >
+                  Close
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowPlacementStats(false);
+                    handleShowPlacementResults();
+                  }}
+                  className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-bold"
+                >
+                  <Eye size={16} className="mr-1.5" />
+                  View Full Results
+                </Button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Placement Assessment Results Modal */}
       <AnimatePresence>
         {showPlacementResults && (
@@ -1409,25 +1737,19 @@ export default function AdminDashboard() {
                     <table className="w-full text-left border border-slate-200 rounded-xl overflow-hidden">
                       <thead>
                         <tr className="bg-slate-50 border-b border-slate-200">
-                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">#</th>
                           <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Name</th>
                           <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Email</th>
-                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Test Name</th>
-                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Score</th>
                           <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
                           <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">View Report</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {placementResults.map((result: any, idx: number) => {
+                        {placementResults.map((result: any) => {
                           const scoreColor = result.score >= 80 ? 'text-emerald-700' : result.score >= 60 ? 'text-amber-700' : 'text-red-700';
                           return (
                             <tr key={result.id} className="border-b border-slate-100 hover:bg-slate-50/60">
-                              <td className="py-3 px-3 text-xs font-bold text-slate-600">{idx + 1}</td>
                               <td className="py-3 px-3 text-xs font-bold text-slate-800">{result.userName || 'Guest User'}</td>
                               <td className="py-3 px-3 text-xs text-slate-600">{result.userEmail || result.userId}</td>
-                              <td className="py-3 px-3 text-xs text-slate-700">{result.testName || result.testId}</td>
-                              <td className={`py-3 px-3 text-xs font-black ${scoreColor}`}>{result.score || 0}/100</td>
                               <td className="py-3 px-3">
                                 <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black ${(result.score || 0) >= 80 ? 'bg-emerald-100 text-emerald-700' : (result.score || 0) >= 60 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`}>
                                   {(result.score || 0) >= 80 ? 'Strong' : (result.score || 0) >= 60 ? 'Good' : 'Needs Work'}

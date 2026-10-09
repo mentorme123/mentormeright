@@ -1963,6 +1963,13 @@ export default function Home() {
                   <Link
                     href="/careerai-lens"
                     onClick={() => setShowCareerAI(false)}
+                    className="block rounded-2xl overflow-hidden border border-slate-100 hover:opacity-95 transition-opacity"
+                  >
+                    <img src="/popp/ailens.jpeg" alt="CareerAI Lens" className="w-full" />
+                  </Link>
+                  <Link
+                    href="/careerai-lens"
+                    onClick={() => setShowCareerAI(false)}
                     className="block w-full py-3 rounded-xl text-white font-black text-base shadow-lg bg-[#F28C28] hover:bg-[#F28C28]/90 text-center transition-all"
                   >
                     Open CareerAI Lens →

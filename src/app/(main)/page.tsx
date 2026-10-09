@@ -1218,12 +1218,12 @@ export default function Home() {
                 >
                   <div
                     onClick={() => setShowTestimonial(true)}
-                    className="cursor-pointer group relative w-80 h-80 sm:w-96 sm:h-96 rounded-full overflow-hidden border-[6px] border-brand-blue/10 shadow-2xl hover:shadow-brand-blue/20 hover:border-brand-blue/30 transition-all duration-500"
+                    className="cursor-pointer group relative w-80 h-80 sm:w-96 sm:h-96 rounded-full overflow-hidden border-[6px] border-brand-blue/10 shadow-2xl hover:shadow-brand-blue/20 hover:border-brand-blue/30 transition-all duration-500 bg-slate-50 p-[12%]"
                   >
                     <img
                       src="/testimonial/image.png"
                       alt="Testimonial"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700"
                     />
                     <div className="absolute inset-0 bg-brand-blue/0 group-hover:bg-brand-blue/10 transition-colors duration-300 flex items-center justify-center">
                       <span className="text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-brand-blue/80 px-5 py-2.5 rounded-full text-base">Read More</span>
@@ -1268,8 +1268,8 @@ export default function Home() {
                   <div className="p-6 sm:p-8">
                     <div className="flex items-start justify-between mb-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-blue/10">
-                          <img src="/testimonial/image.png" alt="Testimonial" className="w-full h-full object-cover" />
+                        <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-brand-blue/10 bg-slate-50 p-[12%]">
+                          <img src="/testimonial/image.png" alt="Testimonial" className="w-full h-full object-contain" />
                         </div>
                         <div>
                           <h3 className="text-xl font-bold text-slate-900">Rajesh Dasari</h3>

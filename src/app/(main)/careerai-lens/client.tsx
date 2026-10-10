@@ -119,7 +119,7 @@ www.mentormeright.com`;
               See My AI Career Outlook →
             </button>
             <Link
-              href="/career-intelligence.html"
+              href="/career-assessment.html"
               className="flex items-center justify-center w-full mt-3 h-[58px] rounded-[14px] bg-[#0D2545] text-white font-extrabold text-base shadow-[0_10px_24px_rgba(13,37,69,0.24)] hover:brightness-95 hover:-translate-y-px transition-all"
             >
               Take MentorMe Career Intelligence Assessment →

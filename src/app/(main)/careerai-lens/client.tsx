@@ -168,7 +168,7 @@ www.mentormeright.com`;
                   <div className="border border-[#D5F0F0] rounded-[17px] p-5 min-h-[155px] bg-[#F0FAFA]">
                     <p className="text-xs font-black text-[#F28C28] tracking-[0.1em]">04</p>
                     <h3 className="text-base text-[#0D2545] font-bold mt-2 mb-2">The opportunity</h3>
-                    <p className="text-sm leading-[1.6] text-[#64748B]">The strongest professionals are likely to be those who combine career-specific expertise with the ability to use AI thoughtfully, verify its output and turn it into better decisions.</p>
+                    <p className="text-sm leading-[1.6] text-[#64748B]">{result.opportunity}</p>
                   </div>
                 </div>
 

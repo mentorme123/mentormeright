@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useRef, useState } from "react";
 import { CAREERAI_CAREERS, CareerAICareer } from "@/lib/data/careerai-lens";
 import { Check, Copy, Printer, RotateCcw } from "lucide-react";
@@ -118,12 +117,6 @@ www.mentormeright.com`;
             >
               See My AI Career Outlook →
             </button>
-            <Link
-              href="/career-assessment.html"
-              className="flex items-center justify-center w-full mt-3 h-[58px] rounded-[14px] bg-[#0D2545] text-white font-extrabold text-base shadow-[0_10px_24px_rgba(13,37,69,0.24)] hover:brightness-95 hover:-translate-y-px transition-all"
-            >
-              Take MentorMe Career Intelligence Assessment →
-            </Link>
           </div>
         </div>
       </section>
@@ -186,7 +179,7 @@ www.mentormeright.com`;
                     Discover career pathways that fit your interests, strengths and individuality with MentorMe Career Intelligence.
                   </p>
                   <a
-                    href="https://www.mentormeright.com/"
+                    href="/career-assessment.html"
                     target="_blank"
                     rel="noopener"
                     className="inline-block no-underline bg-[#0D2545] text-white font-extrabold px-5 py-3.5 rounded-xl"

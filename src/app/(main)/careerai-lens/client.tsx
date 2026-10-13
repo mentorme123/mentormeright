@@ -179,7 +179,7 @@ www.mentormeright.com`;
                     Discover career pathways that fit your interests, strengths and individuality with MentorMe Career Intelligence.
                   </p>
                   <a
-                    href="/career-assessment.html"
+                    href="/assessment"
                     target="_blank"
                     rel="noopener"
                     className="inline-block no-underline bg-[#0D2545] text-white font-extrabold px-5 py-3.5 rounded-xl"

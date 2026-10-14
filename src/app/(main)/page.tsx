@@ -1686,19 +1686,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-24 px-4 bg-background border-b">
-        <div className="max-w-6xl mx-auto text-center space-y-12">
-          <h2 className="text-3xl font-bold">Why Choose MentorMe?</h2>
-          <p className="text-lg text-muted-foreground">We are proud to present the success of our Programs</p>
+    {/* Stats Section */}
+    <section className="py-24 px-4 bg-background border-b">
+      <div className="max-w-6xl mx-auto text-center space-y-12">
+        <h2 className="text-3xl font-bold">Why Choose MentorMe for Career Guidance in Bangalore?</h2>
+        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">Trusted career guidance for students across India — our psychometric assessments and expert career counselling have empowered 15k+ students to choose their right career path after 10th and 12th.</p>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { label: "States", value: "20+" },
-              { label: "Clients", value: "150+" },
-              { label: "Students", value: "50k+" },
-              { label: "Hours", value: "10k+" },
-            ].map((stat, i) => (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+           {[
+             { label: "States", value: "6" },
+             { label: "Institutions", value: "40+" },
+             { label: "Students", value: "15k+" },
+             { label: "Training Hrs", value: "500k+" },
+           ].map((stat, i) => (
               <motion.div
                 key={i}
                 initial={{ scale: 0.5, opacity: 0 }}

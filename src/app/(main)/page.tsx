@@ -1326,41 +1326,41 @@ export default function Home() {
             className="space-y-8"
           >
             <div className="text-center space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Career Guidance for Every Stage</h3>
-              <p className="text-muted-foreground text-base max-w-2xl mx-auto">Personalized career support at every step of the learning journey — from school to career success.</p>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground">Career Guidance for Students in Bangalore & Across India</h3>
+              <p className="text-muted-foreground text-base max-w-2xl mx-auto">Personalized career guidance for students at every stage — from school admissions to professional career success. Serving Bangalore, Hyderabad, Karnataka & Telangana.</p>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {[
-                {
-                  grade: "Grades 6–7",
-                  icon: "🌱",
-                  color: "from-green-400 to-emerald-500",
-                  bg: "bg-green-50 border-green-100",
-                  desc: "Build self-awareness, identify strengths, and develop a strong foundation for future career planning."
-                },
-                {
-                  grade: "Grades 8–10",
-                  icon: "🧭",
-                  color: "from-blue-400 to-brand-blue",
-                  bg: "bg-blue-50 border-blue-100",
-                  desc: "Discover the right path after 10th through career assessments and expert counselling. Get guidance on stream selection — PCM, PCB, Commerce, Arts, and Humanities — based on your aptitude, interests, and future career goals."
-                },
-                {
-                  grade: "Grades 11–12",
-                  icon: "🎯",
-                  color: "from-purple-400 to-indigo-500",
-                  bg: "bg-purple-50 border-purple-100",
-                  desc: "Explore what to do after 12th, career options, entrance exams, and higher education pathways. Receive guidance for Engineering, Medicine, B.Com, BBA, BCA, Law, Design, Liberal Arts, Allied Health Sciences, and admission support for top colleges across India."
-                },
-                {
-                  grade: "College & Professionals",
-                  icon: "🚀",
-                  color: "from-brand-orange to-orange-400",
-                  bg: "bg-orange-50 border-orange-100",
-                  desc: "Plan career growth, improve employability, explore MBA, MCA, Master's programs, certifications, career transitions, leadership pathways, and achieve long-term professional success."
-                },
-              ].map((stage, i) => (
+               {[
+                 {
+                   grade: "Grades 6–7",
+                   icon: "🌱",
+                   color: "from-green-400 to-emerald-500",
+                   bg: "bg-green-50 border-green-100",
+                   desc: "Career guidance for school students — build self-awareness with psychometric assessment, identify strengths, and create a strong foundation for future career planning."
+                 },
+                 {
+                   grade: "Grades 8–10",
+                   icon: "🧭",
+                   color: "from-blue-400 to-brand-blue",
+                   bg: "bg-blue-50 border-blue-100",
+                   desc: "Career guidance after 10th in Bangalore. Discover the right path with expert career counselling for students. Stream selection (PCM, PCB, Commerce, Arts & Humanities) based on aptitude."
+                 },
+                 {
+                   grade: "Grades 11–12",
+                   icon: "🎯",
+                   color: "from-purple-400 to-indigo-500",
+                   bg: "bg-purple-50 border-purple-100",
+                   desc: "Career guidance after 12th & career counselling after 12th. Explore career options, entrance exams & admission support for Engineering, MBBS, B.Com, BBA, BCA, Law across top colleges in India."
+                 },
+                 {
+                   grade: "College & Professionals",
+                   icon: "🚀",
+                   color: "from-brand-orange to-orange-400",
+                   bg: "bg-orange-50 border-orange-100",
+                   desc: "Career coaching in Bangalore for growth & transitions. Explore MBA, MCA, Master's programs, certifications & leadership pathways for long-term professional success."
+                 },
+               ].map((stage, i) => (
                 <motion.div
                   key={i}
                   initial={{ opacity: 0, y: 20 }}

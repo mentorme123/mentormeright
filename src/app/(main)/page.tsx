@@ -1150,27 +1150,28 @@ export default function Home() {
             </span>
 
             <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-foreground">
-              Career Guidance, Admissions &amp; Psychometric Assessments{" "}
-              <span className="text-brand-blue">for Students and Professionals</span>
+              Career Guidance for Students in{" "}
+              <span className="text-brand-blue">Bangalore, Hyderabad, Karnataka &amp; Telangana</span>
             </h2>
 
             <p className="text-lg text-muted-foreground leading-relaxed">
-              MentorMe&apos;s AI-powered Career Guidance Platform helps students and professionals make informed academic and career decisions through science-informed <strong className="text-foreground">Psychometric Assessments</strong>, Career Counselling, Admission Guidance, and Personalized Career Roadmaps.
+              MentorMe's AI-powered <strong className="text-foreground">Career Guidance for Students</strong> helps students and professionals in Bangalore & Hyderabad make informed academic and career decisions through science-informed <strong className="text-foreground">Psychometric Assessments</strong>, expert Career Counselling, Admission Guidance, and Personalized Career Roadmaps.
             </p>
 
             <p className="text-base text-muted-foreground leading-relaxed">
-              Our comprehensive Career Assessment evaluates interests, personality, aptitude, strengths, and career preferences to help answer important questions such as <em>&ldquo;What should I do after 10th?&rdquo;</em>, <em>&ldquo;What should I do after 12th?&rdquo;</em>, <em>&ldquo;Which subject stream is right for me?&rdquo;</em>, and <em>&ldquo;Which career best matches my potential?&rdquo;</em>
+              Our comprehensive <strong className="text-foreground">Career Assessment for students</strong> evaluates interests, personality, aptitude, strengths, and career preferences through our <strong className="text-foreground">psychometric test for career guidance</strong> to answer key questions like <em>&ldquo;What to do after 10th?&rdquo;</em>, <em>&ldquo;What to do after 12th?&rdquo;</em>, <em>&ldquo;Which stream to choose after 10th?&rdquo;</em>, and <em>&ldquo;Which career best matches my potential?&rdquo;</em>
             </p>
 
             {/* Checkmarks */}
             <div className="grid sm:grid-cols-2 gap-3 pt-2">
               {[
-                "Career Path Recommendations & Career Growth Options",
-                "Stream Selection Guidance (PCM, PCB, Commerce, Arts & Humanities)",
-                "Course & College Recommendations",
-                "Engineering, Medical, B.Com, BBA, BCA, Law, Design, MBA & More",
-                "College Admission Guidance for Top Universities in India",
-                "Career Growth, Career Transition & Career Change Planning",
+                "Career Guidance for Students - Career Path & Career Growth Options",
+                "Career Counselling After 12th & Stream Selection (PCM, PCB, Commerce, Arts)",
+                "Career Counsellor in Bangalore | Career Assessment for Students",
+                "Courses After 10th, Best Courses After 10th & Stream Selection Guidance",
+                "Course & College Recommendations: Engineering, Medical, B.Com, BBA, BCA, Law, Design, MBA",
+                "College Admission Guidance - Top Universities in India & Study Abroad",
+                "Career Counselling After 12th: Career Growth, Transition & Change Planning",
               ].map((point, i) => (
                 <div key={i} className="flex items-start gap-2.5">
                   <span className="h-5 w-5 rounded-full bg-brand-orange/15 text-brand-orange flex items-center justify-center text-xs flex-shrink-0 mt-0.5 font-bold">✓</span>
@@ -1982,6 +1983,89 @@ export default function Home() {
         </div>
       )}
 
+
+      {/* FAQ Section - SEO Keywords */}
+      <section className="py-24 px-4 bg-background">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center space-y-4 mb-14"
+          >
+            <h2 className="text-4xl font-bold text-foreground">
+              Frequently Asked Questions &mdash; Career Guidance for Students
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Answers to common questions about career guidance after 10th, courses after 12th, stream selection, and our psychometric career assessment.
+            </p>
+          </motion.div>
+
+          <div className="space-y-4">
+            {[
+              {
+                q: "What should I do after 10th?",
+                a: "After 10th (SSLC), choose Science (PCM/PCMB), Commerce, or Arts based on your interests and aptitude. Our career guidance for students uses psychometric assessments to help you pick the right stream and course in Bangalore, Hyderabad, and across Karnataka.",
+              },
+              {
+                q: "How to choose the right career after 12th?",
+                a: "Consider your interests, strengths, and goals. Take our career assessment for students for personalized recommendations. We provide expert career counselling after 12th for Engineering, MBBS, B.Com, BBA, BCA, Law, Design, and more.",
+              },
+              {
+                q: "Which stream to choose after 10th?",
+                a: "Compare Science (PCM/PCMB for Engineering/Medical), Commerce (for CA, B.Com, BBA), and Arts (for Law, UPSC). Our stream selection guidance in Bangalore helps you decide with our psychometric test and expert career counselling.",
+              },
+              {
+                q: "What are the best courses after 12th?",
+                a: "Top courses after 12th include B.Tech, MBBS, B.Com, BBA, BCA, LLB, B.Des, B.Sc and more. Our career counselling after 12th provides a personalized list of best courses matching your aptitude and career interests.",
+              },
+              {
+                q: "How does the psychometric career assessment work?",
+                a: "Our science-informed psychometric test for career guidance evaluates interests, personality type, aptitude, and strengths. The 20-minute assessment generates a detailed report with career path recommendations and college admissions guidance.",
+              },
+              {
+                q: "Do you provide study abroad counselling in Bangalore?",
+                a: "Yes! As leading study abroad consultants in Bangalore, we partner with United Educational Services for end-to-end admission guidance to US, UK, Australia, Canada, Ireland, and New Zealand.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="border border-slate-200 rounded-xl bg-white shadow-sm"
+              >
+                <details className="group">
+                  <summary className="cursor-pointer list-none p-6 flex items-center justify-between font-semibold text-slate-800 hover:text-brand-blue transition-colors">
+                    <span>{item.q}</span>
+                    <span className="text-brand-blue group-open:text-brand-orange transition-colors">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 5v14M5 12h14" />
+                      </svg>
+                    </span>
+                  </summary>
+                  <div className="px-6 pb-4 text-slate-600 leading-relaxed">
+                    <p>{item.a}</p>
+                  </div>
+                </details>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Career Counselling After 12th - SEO Keywords */}
+      <section className="py-20 px-4 bg-brand-blue/5">
+        <div className="max-w-5xl mx-auto text-center space-y-6">
+          <h2 className="text-3xl font-bold text-foreground">
+            Career Counselling After 12th & Career Guidance for Students
+          </h2>
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+            Whether you need career guidance after 10th, career counselling after 12th for Engineering or MBBS, or want to explore the best courses after 10th and 12th in Bangalore — our certified career counsellors in Bangalore & Hyderabad are here to help.
+          </p>
+        </div>
+      </section>
 
     </div>
   );

@@ -17,16 +17,31 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "MentorMe | Empowering Careers Beyond Classrooms",
-  description: "MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability.",
+  title: "MentorMe | Career Guidance for Students in Bangalore | Psychometric Assessment & Admissions",
+  description: "MentorMe provides AI-powered Career Guidance for Students in Bangalore & Hyderabad. Get Psychometric Assessments, Career Counselling after 10th & 12th, Stream Selection, College Admissions, Study Abroad & MBBS/Engineering counselling.",
+  keywords: [
+    "career guidance for students",
+    "career counselling for students",
+    "career guidance after 10th",
+    "career guidance after 12th",
+    "career counselling after 12th",
+    "career guidance in Bangalore",
+    "career counsellor in Bangalore",
+    "career assessment for students",
+    "psychometric test for career guidance",
+    "career options after 10th",
+    "career aptitude test for students",
+    "career guidance for school students",
+    "career counselling for parents and students",
+  ],
   manifest: "/manifest.json",
   icons: {
     icon: [{ url: "/favicon.svg?v=6", type: "image/svg+xml" }],
     apple: [{ url: "/favicon.svg?v=6", type: "image/svg+xml" }],
   },
   openGraph: {
-    title: "MentorMe | Empowering Careers Beyond Classrooms",
-    description: "MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability.",
+    title: "MentorMe | Career Guidance for Students in Bangalore | Psychometric Assessment & Admissions",
+    description: "MentorMe provides AI-powered Career Guidance for Students in Bangalore & Hyderabad. Get Psychometric Assessments, Career Counselling after 10th & 12th, Stream Selection, College Admissions, Study Abroad & MBBS/Engineering counselling.",
     url: "https://www.mentormeright.com",
     siteName: "MentorMe",
     images: [
@@ -42,8 +57,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MentorMe | Empowering Careers Beyond Classrooms",
-    description: "MentorMe Career Intelligence is a one-stop career and skill development partner helping students move from self-discovery to employability.",
+    title: "MentorMe | Career Guidance for Students in Bangalore | Psychometric Assessment & Admissions",
+    description: "MentorMe provides AI-powered Career Guidance for Students in Bangalore & Hyderabad. Get Psychometric Assessments, Career Counselling after 10th & 12th, Stream Selection, College Admissions, Study Abroad & MBBS/Engineering counselling.",
     images: ["/logo.png"],
   },
   // NOTE: themeColor intentionally omitted — Next.js auto-injects the deprecated

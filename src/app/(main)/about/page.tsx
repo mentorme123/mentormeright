@@ -521,10 +521,10 @@ export default function AboutPage() {
                 From Self-Discovery to Employability
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed">
-                At MentorMe, we help students and professionals make informed career decisions through AI-powered career guidance, psychometric assessments, aptitude testing, and expert career counselling.
+                At MentorMe, we empower students and professionals with AI-powered <strong>career guidance for students</strong>, psychometric assessments, career aptitude tests, and expert career counselling to make informed career decisions.
               </p>
               <p className="text-lg text-slate-600 leading-relaxed">
-                Our mission is to bridge the gap between education and employability by helping individuals discover their strengths, interests, personality traits, and career opportunities. Through advanced AI technology and experienced career counsellors, we provide personalized career roadmaps that lead to long-term success.
+                Our mission is to bridge the gap between education and employability by helping individuals discover their strengths, interests, personality traits, and career opportunities. Through advanced AI technology and expert counsellors, we deliver personalized career roadmaps, supporting <strong>career guidance after 10th and 12th</strong> and building pathways to long-term success.
               </p>
             </div>
 

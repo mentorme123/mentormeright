@@ -1146,8 +1146,8 @@ export default function Home() {
             className="space-y-6 order-1 lg:order-2 lg:col-span-7"
           >
             {/* Badge */}
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-blue/10 text-brand-blue text-sm font-semibold border border-brand-blue/20">
-              🎯 AI-Powered Career Intelligence
+            <span className="inline-block px-4 py-1.5 rounded-full bg-brand-blue/10 text-brand-blue text-sm font-semibold border border-brand-blue/20 mb-4">
+              Career Guidance for Students in Bangalore, Hyderabad, Karnataka &amp; Telangana
             </span>
 
             <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-foreground">

@@ -572,10 +572,10 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto space-y-14">
           <div className="text-center space-y-4">
             <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight">
-              What Sets Us Apart
+              What Sets MentorMe Apart
             </h2>
             <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-              A comprehensive ecosystem designed to empower every stage of your career journey.
+              A comprehensive career development ecosystem designed to guide students and professionals toward a successful future.
             </p>
           </div>
 
@@ -584,37 +584,37 @@ export default function AboutPage() {
               {
                 icon: Compass,
                 title: "Holistic Career Guidance",
-                description: "We offer comprehensive career counselling services that combine AI-powered insights, psychometric testing, and one-on-one expert guidance to help students make the right career decisions.",
+                description: "Make informed career decisions with personalized career counselling, AI-powered insights, psychometric assessments, and expert guidance tailored to your strengths and interests.",
                 gradient: "from-brand-blue to-blue-700",
               },
               {
                 icon: Users2,
-                title: "Network of Career Counsellors & Industry Mentors",
-                description: "Connect with experienced career counsellors, industry experts, and mentors who provide practical guidance based on real-world industry requirements.",
+                title: "Expert Career Counsellors & Industry Mentors",
+                description: "Connect with experienced career counsellors, industry experts, and professional mentors who offer practical advice aligned with real-world industry requirements.",
                 gradient: "from-brand-orange to-orange-600",
               },
               {
                 icon: Database,
                 title: "Extensive Career Database",
-                description: "Explore hundreds of career options, emerging professions, salary trends, skill requirements, and industry insights through our comprehensive career database.",
+                description: "Explore diverse career options, emerging professions, salary trends, skill requirements, and industry insights to identify opportunities that match your aspirations.",
                 gradient: "from-emerald-600 to-teal-600",
               },
               {
                 icon: Plane,
                 title: "Study Abroad Counselling",
-                description: "Get complete support for international education, including university selection, admission guidance, application assistance, visa support, scholarship information, and pre-departure preparation.",
+                description: "Plan your international education journey with university selection, admission guidance, application assistance, visa support, scholarship information, and pre-departure preparation.",
                 gradient: "from-violet-600 to-purple-600",
               },
               {
                 icon: Sparkles,
                 title: "Future-Ready Skill Development",
-                description: "Our skill development programs focus on communication, leadership, digital skills, employability skills, and industry-relevant training to prepare students for the future workforce.",
+                description: "Build essential communication, leadership, digital, and employability skills through industry-relevant training designed to prepare you for the evolving job market.",
                 gradient: "from-rose-600 to-pink-600",
               },
               {
                 icon: Target,
                 title: "Empowering Career Success",
-                description: "Whether you are a student exploring career options after 10th or 12th grade, a graduate seeking career direction, or a professional looking for growth opportunities, MentorMe provides personalized career guidance to help you achieve your goals.",
+                description: "Whether you're exploring career options after 10th or 12th, choosing a college course, planning your graduate career, or seeking professional growth, MentorMe provides personalized career guidance to help you move forward with confidence.",
                 gradient: "from-amber-500 to-orange-500",
               },
             ].map((pillar, i) => (
@@ -634,7 +634,7 @@ export default function AboutPage() {
           {/* Closing CTA note */}
           <div className="text-center mt-4 max-w-2xl mx-auto">
             <p className="text-base text-slate-600 leading-relaxed">
-              Start your journey with MentorMe and discover the career path that matches your strengths, interests, and aspirations.
+              <strong>Start your journey with MentorMe</strong> and discover a career path aligned with your strengths, interests, and aspirations.
             </p>
           </div>
         </div>

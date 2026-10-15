@@ -1147,12 +1147,7 @@ export default function Home() {
           >
 {/* Badge */}
             <span className="inline-block px-4 py-1.5 rounded-full bg-brand-blue/10 text-brand-blue text-sm font-semibold border border-brand-blue/20 mb-4">
-              Career Guidance for Students in Bangalore, Hyderabad, Karnataka & Telangana
-            </span>
-            <span className="inline-block px-4 py-1.5 rounded-full bg-brand-orange/10 text-brand-orange text-sm font-semibold border border-brand-orange/20 mb-4">
-              <a href="https://www.mentormeright.com/study-abroad" target="_blank" rel="noopener noreferrer" className="text-brand-orange hover:text-white transition-colors">
-                Study Abroad
-              </a>
+              Career Guidance for Students in Bangalore, Hyderabad, Karnataka &amp; Telangana
             </span>
 
             <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-foreground">
@@ -1666,7 +1661,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-4xl font-bold"
           >
-            Study Abroad Support
+            Study Abroad & Admission Support
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -1675,7 +1670,16 @@ export default function Home() {
             transition={{ delay: 0.2 }}
             className="text-xl leading-relaxed text-white/90"
           >
-            MentorMe announces a strategic collaboration with <strong>United Educational Services</strong>, an AIRC, British Council, and British High Commission certified agency. We provide students with a seamless journey to top international destinations, including the US, UK, Australia, Canada, Ireland, and New Zealand.
+            MentorMe, in collaboration with UniThink Education International Pvt. Ltd., helps students make informed decisions about higher education in India and abroad. From career counselling and university selection to admission applications, scholarship guidance and visa assistance, we support students in planning their academic journey.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-lg leading-relaxed text-white/80"
+          >
+            With 25+ years of career counselling experience, 2,500+ students and executives trained, and a network of 1,500+ partner universities, students can explore higher education opportunities across a wide range of countries and courses.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1683,7 +1687,7 @@ export default function Home() {
             viewport={{ once: true }}
             transition={{ delay: 0.4 }}
           >
-            <Link href="/study-abroad">
+            <Link href="/contact">
               <button className="bg-brand-orange hover:bg-brand-orange/90 text-white text-lg font-bold px-10 py-4 rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
                 Learn more
               </button>
@@ -1692,7 +1696,7 @@ export default function Home() {
         </div>
       </section>
 
-    {/* Stats Section */}
+      {/* Stats Section */}
     <section className="py-24 px-4 bg-background border-b">
       <div className="max-w-6xl mx-auto text-center space-y-12">
         <h2 className="text-3xl font-bold">Why Choose MentorMe for Career Guidance in Bangalore?</h2>
@@ -2231,8 +2235,5 @@ export default function Home() {
     </div>
   );
 }
-
-// force deploy
-
 
 // force deploy

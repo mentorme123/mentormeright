@@ -2027,6 +2027,146 @@ export default function Home() {
                 q: "Do you provide study abroad counselling in Bangalore?",
                 a: "Yes! As leading study abroad consultants in Bangalore, we partner with United Educational Services for end-to-end admission guidance to US, UK, Australia, Canada, Ireland, and New Zealand.",
               },
+              {
+                q: "What career options are best after 10th in Bangalore?",
+                a: "Career options after 10th depend on your chosen stream: Science (PCM/PCMB for Engineering/Medical), Commerce (CA, B.Com, BBA), or Arts (Law, UPSC). Our career guidance for students in Bangalore helps you pick the right course based on your aptitude and interests.",
+              },
+              {
+                q: "How to get career counselling after 12th for Engineering or MBBS?",
+                a: "We provide expert career counselling after 12th in Bangalore for PCM (JEE/COMET), PCB (NEET/Medical), and Commerce students. Get guidance on courses after 12th, entrance exams, and college admissions through our science-informed career assessment for students.",
+              },
+              {
+                q: "What career guidance do you offer for school students?",
+                a: "Our career guidance for school students (Grades 6–12) includes psychometric tests, stream selection (PCM, PCB, Commerce, Arts & Humanities), courses after 10th guidance, career options after 12th planning, and personalized career roadmaps.",
+              },
+              {
+                q: "What courses after 10th should I choose for a good career?",
+                a: "Best courses after 10th depend on your stream. For Science: PCM for Engineering, PCB for Medical. For Commerce: CA, B.Com, BBA. For Arts: Law, UPSC. Our career guidance for students in Bangalore can help you decide.",
+              },
+              {
+                q: "How to choose between PCM and PCB after 10th?",
+                a: "Choose PCM if you want to pursue Engineering or Architecture (JEE). Choose PCB if you aim for Medical (NEET) or life sciences. Our psychometric test for career guidance helps you decide based on your aptitude.",
+              },
+              {
+                q: "Which is better PCM or PCB for career growth?",
+                a: "Both PCM and PCB lead to great careers. PCM opens engineering & tech paths; PCB opens medical & healthcare. Career growth depends on your passion and performance. Get career counselling after 12th for personalized advice.",
+              },
+              {
+                q: "What career options after 12th science without JEE?",
+                a: "After 12th science without JEE: B.Sc, BCA, B.V.Sc, B.Pharm, Hotel Management, CA, BBA, Integrated M.Sc. Our career assessment for students identifies paths matching your aptitude and interests.",
+              },
+              {
+                q: "Best career options after 12th commerce for high salary?",
+                a: "Best courses after 12th commerce: CA, CS, B.Com, BBA, MBA, CFA, Digital Marketing, ACCA. Top career options include Chartered Accountant, Investment Banker, and Financial Analyst. Career counselling after 12th helps select the right path.",
+              },
+              {
+                q: "What courses after 12th commerce without maths?",
+                a: "Courses after 12th commerce without maths: BBA, B.Com, Hotel Management, Journalism, CA, CS, Fashion Designing, Digital Marketing. Our career guidance for students in Bangalore provides personalized recommendations.",
+              },
+              {
+                q: "How to prepare for KCET engineering counselling?",
+                a: "For KCET engineering counselling: prepare a priority list of colleges, understand cutoff trends, keep documents ready, and practice mock counselling. Our career counselling after 12th includes KCET/ COMEDK counselling guidance in Bangalore.",
+              },
+              {
+                q: "What documents are needed for NEET counseling?",
+                a: "NEET counselling requires: NEET scorecard, Class 10 & 12 mark sheets, transfer certificate, domicile certificate, category certificate, identity proof, and passport photos. We provide NEET counselling guidance and MBBS admission support in Bangalore.",
+              },
+              {
+                q: "Which engineering colleges in Bangalore have direct admission?",
+                a: "Top engineering colleges in Bangalore offering direct admission: RVCE, PES University, MS Ramaiah, BMS College, Dayananda Sagar. Management quota seats are available for direct admission in engineering colleges in Karnataka.",
+              },
+              {
+                q: "What career counselling for students in Bangalore covers?",
+                a: "Our career counselling for students in Bangalore covers stream selection, college recommendations, entrance exam prep (NEET, JEE, COMEDK), study abroad, and career planning. Certified career counsellors provide personalized guidance.",
+              },
+              {
+                q: "How to get admission in MBBS colleges in Karnataka?",
+                a: "For MBBS admission in Karnataka: clear NEET with cutoff rank, register for state counselling, fill preferences, and attend document verification. We provide MBBS admission counselling in Bangalore with NEET counselling guidance.",
+              },
+              {
+                q: "What is the MBBS fees in Karnataka for private colleges?",
+                a: "MBBS fees in Karnataka private colleges range from 6 to 12 lakhs per year, while government colleges charge around 1-2 lakhs. Contact our MBBS admission counsellors in Bangalore for verified fee structures and scholarships.",
+              },
+              {
+                q: "Can I do MBBS abroad after 12th? What is the process?",
+                a: "Yes! MBBS abroad for Indian students: clear NEET, then apply to NMC-recognized colleges in Russia, Georgia, Kazakhstan, or Kyrgyzstan. We provide MBBS abroad counselling and admission guidance in Bangalore for international medical education.",
+              },
+              {
+                q: "How to choose best courses after 12th science for future?",
+                a: "Best courses after 12th science: B.Tech (JEE), MBBS (NEET), B.Arch, B.Sc, B.Pharm, BCA, Hotel Management. Our career guidance for students evaluates your aptitude to recommend the best fit for your future career goals.",
+              },
+              {
+                q: "What are career options after 12th arts?",
+                a: "Career options after 12th arts: Law (LLB), Journalism, Psychology, Sociology, UPSC, B.Ed, Fashion Designing, Digital Marketing, BBA, B.A. Our career assessment for students helps arts students find suitable career paths.",
+              },
+              {
+                q: "How to become a career counsellor in India?",
+                a: "To become a career counsellor: pursue a degree in Psychology/Counseling, get certified by NCDA or similar bodies, gain experience in career guidance. We are certified career counsellors in Bangalore providing career guidance for students and professionals.",
+              },
+              {
+                q: "What is the difference between career guidance and career counselling?",
+                a: "Career guidance provides information about career options and pathways. Career counselling offers personalized one-on-one support to make decisions. Both are part of our career guidance for students in Bangalore.",
+              },
+              {
+                q: "How much does career counselling for students cost in Bangalore?",
+                a: "Career counselling for students in Bangalore starts at ₹2,999 for a basic session and ₹5,999-9,999 for comprehensive career guidance including psychometric test. Contact us for current pricing and packages.",
+              },
+              {
+                q: "How to get into top engineering colleges in Karnataka?",
+                a: "To get into top engineering colleges in Karnataka: clear KCET or COMEDK, practice mock counselling, fill choices strategically, and complete document verification. We offer engineering admission guidance in Bangalore with KCET & COMEDK counselling support.",
+              },
+              {
+                q: "What is COMEDK counseling and how to apply?",
+                a: "COMEDK counselling is for private engineering colleges in Karnataka. Register on the COMEDK website, pay fees, fill preferences, and attend virtual counseling. We provide COMEDK counselling guidance for students in Bangalore and Hyderabad.",
+              },
+              {
+                q: "Which B.Tech specialization is best after 12th PCM?",
+                a: "Best B.Tech specializations after 12th PCM: Computer Science (CSE), Information Technology (IT), Electronics (ECE), Mechanical (ME), Civil (CE). CSE has the best career growth. Get career counselling after 12th for personalized advice.",
+              },
+              {
+                q: "What are the career options after 12th without entrance exam?",
+                a: "Courses after 12th without entrance exam: B.A, B.Com, BBA, BCA, B.Sc, B.Ed, Hotel Management, Fashion Designing, Journalism, CA (Foundation only). Our career counselling after 12th helps you choose merit-based programs.",
+              },
+              {
+                q: "How to get college admission guidance for top universities?",
+                a: "For college admission guidance to top universities: understand eligibility, prepare application portfolio, write SOPs, and meet deadlines. We provide college admission guidance for Engineering, MBBS, B.Com, BBA, and study abroad programs.",
+              },
+              {
+                q: "What is the scope of commerce after 10th?",
+                a: "Commerce after 10th offers careers in CA, CS, B.Com, MBA, BBA, Banking, Finance, and Accounting. The scope is vast with high salary potential. Get career guidance after 10th in Bangalore to explore commerce vs science options.",
+              },
+              {
+                q: "How to prepare for career aptitude test for students?",
+                a: "Prepare for career aptitude tests by practicing quantitative reasoning, logical reasoning, verbal ability, and personality assessment. Our psychometric test for career guidance evaluates all these areas to identify your strengths.",
+              },
+              {
+                q: "What is the best stream after 10th for future?",
+                a: "The best stream after 10th depends on your interests: Science for Engineering/Medical, Commerce for Finance/Business, Arts for Law/Journalism/UPSC. Our career guidance for students in Bangalore helps you choose the right stream.",
+              },
+              {
+                q: "How to study abroad after 12th from India?",
+                a: "To study abroad after 12th: clear IELTS/TOEFL, prepare applications, write SOPs, and get transcripts. We are leading study abroad consultants in Bangalore offering admission guidance for US, UK, Canada, Australia, and Germany.",
+              },
+              {
+                q: "What scholarships are available for study abroad?",
+                a: "Scholarships for study abroad include: Education USA scholarships, Chevening (UK), DAAD (Germany), Vanier (Canada), and more. We help you find scholarships for Indian students abroad through our study abroad counselling in Bangalore.",
+              },
+              {
+                q: "What career guidance for parents and students includes?",
+                a: "Our career guidance for parents and students includes joint counselling sessions, psychometric assessments, college selection, financial planning, and ongoing support through the admission process. Book a session in Bangalore or Hyderabad.",
+              },
+              {
+                q: "How to choose between B.Com and BBA after 12th?",
+                a: "B.Com focuses on commerce and accounting; BBA is broader, covering management and marketing. B.Com is better for CA/CS; BBA for MBA prep. Get career counselling after 12th for personalized advice in Bangalore.",
+              },
+              {
+                q: "What are the best career options after 12th science PCB?",
+                a: "Career options after 12th PCB: MBBS, BDS, BAMS, BHMS, B.Sc, B.Pharm, BPT, Nursing, Biotechnology. Our career counselling after 12th provides NEET counselling guidance and MBBS admission support in Bangalore.",
+              },
+              {
+                q: "What career options after 12th PCB besides MBBS?",
+                a: "After 12th PCB besides MBBS: BDS (Dentistry), BAMS (Ayurveda), B.Sc (Biology, Biotechnology), Nursing, Physiotherapy (BPT), Pharmacy (B.Pharm). Get career counselling after 12th to explore all medical and healthcare career options.",
+              },
             ].map((item, i) => (
               <motion.div
                 key={i}

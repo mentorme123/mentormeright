@@ -86,6 +86,7 @@ export default function Home() {
   const [enquirySubmitting, setEnquirySubmitting] = useState(false);
   const [enquirySuccess, setEnquirySuccess] = useState(false);
   const [showCareerAI, setShowCareerAI] = useState(false);
+  const [showAllFaqs, setShowAllFaqs] = useState(false);
 
   useEffect(() => {
     setShowEnquiry(true);
@@ -2001,20 +2002,20 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="space-y-4">
-            {[
-              {
-                q: "What should I do after 10th?",
-                a: "After 10th (SSLC), choose Science (PCM/PCMB), Commerce, or Arts based on your interests and aptitude. Our career guidance for students uses psychometric assessments to help you pick the right stream and course in Bangalore, Hyderabad, and across Karnataka.",
-              },
-              {
-                q: "How to choose the right career after 12th?",
-                a: "Consider your interests, strengths, and goals. Take our career assessment for students for personalized recommendations. We provide expert career counselling after 12th for Engineering, MBBS, B.Com, BBA, BCA, Law, Design, and more.",
-              },
-              {
-                q: "Which stream to choose after 10th?",
-                a: "Compare Science (PCM/PCMB for Engineering/Medical), Commerce (for CA, B.Com, BBA), and Arts (for Law, UPSC). Our stream selection guidance in Bangalore helps you decide with our psychometric test and expert career counselling.",
-              },
+           <div className="space-y-4">
+             {[
+               {
+                 q: "What should I do after 10th?",
+                 a: "After 10th (SSLC), choose Science (PCM/PCMB), Commerce, or Arts based on your interests and aptitude. Our career guidance for students uses psychometric assessments to help you pick the right stream and course in Bangalore, Hyderabad, and across Karnataka.",
+               },
+               {
+                 q: "How to choose the right career after 12th?",
+                 a: "Consider your interests, strengths, and goals. Take our career assessment for students for personalized recommendations. We provide expert career counselling after 12th for Engineering, MBBS, B.Com, BBA, BCA, Law, Design, and more.",
+               },
+               {
+                 q: "Which stream to choose after 10th?",
+                 a: "Compare Science (PCM/PCMB for Engineering/Medical), Commerce (for CA, B.Com, BBA), and Arts (for Law, UPSC). Our stream selection guidance in Bangalore helps you decide with our psychometric test and expert career counselling.",
+               },
               {
                 q: "What are the best courses after 12th?",
                 a: "Top courses after 12th include B.Tech, MBBS, B.Com, BBA, BCA, LLB, B.Des, B.Sc and more. Our career counselling after 12th provides a personalized list of best courses matching your aptitude and career interests.",
@@ -2167,7 +2168,7 @@ export default function Home() {
                 q: "What career options after 12th PCB besides MBBS?",
                 a: "After 12th PCB besides MBBS: BDS (Dentistry), BAMS (Ayurveda), B.Sc (Biology, Biotechnology), Nursing, Physiotherapy (BPT), Pharmacy (B.Pharm). Get career counselling after 12th to explore all medical and healthcare career options.",
               },
-            ].map((item, i) => (
+              ].slice(0, showAllFaqs ? undefined : 15).map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 10 }}
@@ -2193,9 +2194,25 @@ export default function Home() {
             ))}
           </div>
         </div>
+        <div className="text-center mt-10">
+          {!showAllFaqs && (
+            <button
+              onClick={() => setShowAllFaqs(true)}
+              className="px-8 py-3 bg-brand-blue hover:bg-brand-blue/90 text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg"
+            >
+              Show All 41 Questions
+            </button>
+          )}
+          {showAllFaqs && (
+            <button
+              onClick={() => setShowAllFaqs(false)}
+              className="px-8 py-3 bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold rounded-xl transition-all"
+            >
+              Show Less
+            </button>
+          )}
+        </div>
       </section>
-
-      {/* Career Counselling After 12th - SEO Keywords */}
       <section className="py-20 px-4 bg-brand-blue/5">
         <div className="max-w-5xl mx-auto text-center space-y-6">
           <h2 className="text-3xl font-bold text-foreground">

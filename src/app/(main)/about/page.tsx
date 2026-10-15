@@ -536,7 +536,7 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Psychometric Assessments &amp; Career Guidance</h3>
                 <p className="text-slate-600 leading-relaxed mb-6">
-                  MentorMe offers AI-powered psychometric assessments and career aptitude tests to help students understand their personality, strengths, skills, interests, and career preferences.
+                  MentorMe provides AI-powered psychometric assessments and career aptitude tests to help students identify their strengths, personality traits, interests, skills, and career preferences.
                 </p>
                 <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Our assessment solutions include:</p>
                 <div className="space-y-3">
@@ -557,7 +557,7 @@ export default function AboutPage() {
                   ))}
                 </div>
                 <p className="text-sm text-slate-500 leading-relaxed mt-5">
-                  Our science-informed assessments provide actionable insights to help students make informed decisions about career paths, college selection, course choices, and future opportunities with confidence.
+                  Our science-informed assessments deliver actionable career insights, empowering students to choose the right career path, explore suitable courses and colleges, and make confident decisions about their future.
                 </p>
               </div>
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-brand-orange/10 rounded-full blur-2xl" />

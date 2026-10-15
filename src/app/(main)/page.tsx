@@ -2229,10 +2229,9 @@ export default function Home() {
         </div>
       </section>
 
-</section>
-
-    {/* Career Guidance FAQ Section */}
-    <section className="py-24 px-4 bg-white">
+      {/* Career Guidance FAQ Section */}
+      <section className="py-24 px-4 bg-white">
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -2245,10 +2244,10 @@ export default function Home() {
           <p className="text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto">
             With 25+ years of career counselling experience, 2,500+ students and executives trained, and a network of 1,500+ partner universities as stated on UniThink's About page, students can explore higher education opportunities across a wide range of countries and courses.
           </p>
-        </motion-div>
-
+        </motion.div
+>
         {/* Study Destinations */}
-        <motion-div
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -2269,10 +2268,10 @@ export default function Home() {
               Explore Countries with UniThink
             </a>
           </div>
-        </motion-div>
-
+        </motion.div
+>
         {/* Courses and Study Areas */}
-        <motion-div
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -2310,10 +2309,10 @@ export default function Home() {
               Explore Courses and Universities
             </a>
           </div>
-        </motion-div>
-
+        </motion.div
+>
         {/* Entrance Exams and Language Tests */}
-        <motion-div
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -2337,10 +2336,10 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </motion-div>
-
+        </motion.div
+>
         {/* Our Admission Support Services */}
-        <motion-div
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -2365,10 +2364,10 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </motion-div>
-
+        </motion.div
+>
         {/* Conclusion */}
-        <motion-div
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -2397,8 +2396,8 @@ export default function Home() {
               Contact MentorMe to enquire about admission support
             </a>
           </div>
-        </motion-div>
-      </section>
+        </motion.div
+>      </section>
     </div>
   );
 }

@@ -2229,24 +2229,10 @@ export default function Home() {
         </div>
       </section>
 
-    {/* Study Abroad Support */}
-    <section className="py-24 px-4 bg-background">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center space-y-3 mb-16"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-blue/10 text-brand-blue text-sm font-semibold border border-brand-blue/20">
-            🎓 Study Abroad & Admission Support
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-foreground">
-            Your Partner in Higher Education — India and Abroad
-          </h2>
-        </motion.div>
+</section>
 
-        <motion.div
+    {/* Career Guidance FAQ Section */}
+    <section className="py-24 px-4 bg-white">
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -2259,7 +2245,7 @@ export default function Home() {
           <p className="text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto">
             With 25+ years of career counselling experience, 2,500+ students and executives trained, and a network of 1,500+ partner universities as stated on UniThink's About page, students can explore higher education opportunities across a wide range of countries and courses.
           </p>
-        </motion.div>
+        </motion-div>
 
         {/* Study Destinations */}
         <motion-div

@@ -2229,6 +2229,190 @@ export default function Home() {
         </div>
       </section>
 
+    {/* Study Abroad Support */}
+    <section className="py-24 px-4 bg-background">
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center space-y-3 mb-16"
+        >
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-blue/10 text-brand-blue text-sm font-semibold border border-brand-blue/20">
+            🎓 Study Abroad & Admission Support
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-foreground">
+            Your Partner in Higher Education — India and Abroad
+          </h2>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="prose prose-lg max-w-none text-center mb-16"
+        >
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+            MentorMe, in collaboration with UniThink Education International Pvt. Ltd., helps students make informed decisions about higher education in India and abroad. From career counselling and university selection to admission applications, scholarship guidance and visa assistance, we support students in planning their academic journey.
+          </p>
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+            With 25+ years of career counselling experience, 2,500+ students and executives trained, and a network of 1,500+ partner universities as stated on UniThink's About page, students can explore higher education opportunities across a wide range of countries and courses.
+          </p>
+        </motion.div>
+
+        {/* Study Destinations */}
+        <motion-div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="mb-16"
+        >
+          <h3 className="text-2xl font-bold text-center text-foreground mb-8">Study Destinations</h3>
+          <p className="text-lg text-muted-foreground leading-relaxed text-center max-w-4xl mx-auto mb-6">
+            Explore study opportunities in the USA, UK, Canada, Australia, Germany, France, UAE, Russia, Switzerland and India, along with other destinations featured by UniThink for specific courses, including Singapore, Sweden, Japan, the Netherlands, Georgia, Uzbekistan, Kazakhstan, Vietnam, the Philippines, Poland and Nepal.
+          </p>
+          <div className="text-center">
+            <a
+              href="https://www.unithinkedu.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-sm text-white bg-brand-blue hover:bg-brand-blue/90 font-semibold px-6 py-3 rounded-xl transition-all"
+            >
+              Explore Countries with UniThink
+            </a>
+          </div>
+        </motion-div>
+
+        {/* Courses and Study Areas */}
+        <motion-div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-16"
+        >
+          <h3 className="text-2xl font-bold text-center text-foreground mb-8">Courses and Study Areas</h3>
+          <p className="text-center text-muted-foreground mb-8">
+            Explore undergraduate and postgraduate programs in:
+          </p>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {[
+              "Medicine & Healthcare: MBBS, Public Health and related healthcare programs",
+              "Business & Management: Business Administration, BBA, MBA and Management",
+              "Computer Science & IT: Computer Science and Information Technology",
+              "Data Science & Emerging Technologies: Data Science, Data Analytics and Machine Learning",
+              "Engineering: Engineering and related specializations",
+              "Commerce & Finance: Finance and related business disciplines",
+              "Arts & Social Sciences: Psychology and Economics",
+              "Law: Law and related specializations",
+            ].map((point, i) => (
+              <div key={i} className="flex items-start gap-2.5">
+                <span className="h-5 w-5 rounded-full bg-brand-blue/15 text-brand-blue flex items-center justify-center text-xs flex-shrink-0 mt-0.5 font-bold">✓</span>
+                <span className="text-sm font-medium text-foreground leading-snug">{point}</span>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <a
+              href="https://www.unithinkedu.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-6 py-3 rounded-xl transition-all"
+            >
+              Explore Courses and Universities
+            </a>
+          </div>
+        </motion-div>
+
+        {/* Entrance Exams and Language Tests */}
+        <motion-div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-16"
+        >
+          <h3 className="text-2xl font-bold text-center text-foreground mb-8">Entrance Exams and Language Tests</h3>
+          <p className="text-center text-muted-foreground mb-8">
+            Get guidance on entrance examinations and application requirements, including:
+          </p>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {[
+              "India: JEE, NEET, CUET and CAT",
+              "International admissions: SAT, GRE and GMAT",
+              "English language proficiency: IELTS, TOEFL, PTE and Duolingo English Test",
+              "Language learning: German and Japanese language training",
+            ].map((point, i) => (
+              <div key={i} className="flex items-start gap-2.5">
+                <span className="h-5 w-5 rounded-full bg-brand-orange/15 text-brand-orange flex items-center justify-center text-xs flex-shrink-0 mt-0.5 font-bold">✓</span>
+                <span className="text-sm font-medium text-foreground leading-snug">{point}</span>
+              </div>
+            ))}
+          </div>
+        </motion-div>
+
+        {/* Our Admission Support Services */}
+        <motion-div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="mb-16"
+        >
+          <h3 className="text-2xl font-bold text-center text-foreground mb-8">Our Admission Support Services</h3>
+          <div className="grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+            {[
+              "Career counselling and psychometric assessment",
+              "Course and university selection",
+              "Undergraduate and postgraduate admission support in India and abroad",
+              "Application guidance, SOPs, essays and Letters of Recommendation (LORs)",
+              "Profile building and interview preparation",
+              "Entrance exam guidance and application deadline updates",
+              "Scholarship guidance and fee planning",
+              "Documentation, visa guidance and pre-departure assistance",
+            ].map((point, i) => (
+              <div key={i} className="flex items-start gap-2.5">
+                <span className="h-5 w-5 rounded-full bg-brand-blue/15 text-brand-blue flex items-center justify-center text-xs flex-shrink-0 mt-0.5 font-bold">✓</span>
+                <span className="text-sm font-medium text-foreground leading-snug">{point}</span>
+              </div>
+            ))}
+          </div>
+        </motion-div>
+
+        {/* Conclusion */}
+        <motion-div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="text-center space-y-8 mb-16"
+        >
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+            Whether you are planning to pursue MBBS in India or abroad, an MBA in the USA, Engineering in Germany, Data Science in Canada, or undergraduate and postgraduate programs in other destinations, MentorMe and UniThink can help you explore suitable options based on your academic background, interests and goals.
+          </p>
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto">
+            Start planning your future with MentorMe and UniThink Education.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="https://www.unithinkedu.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block text-sm text-white bg-brand-blue hover:bg-brand-blue/90 font-semibold px-6 py-3 rounded-xl transition-all"
+            >
+              Explore UniThink's Counselling and Admission Services
+            </a>
+            <a
+              href="/contact"
+              className="inline-block text-sm text-white bg-brand-orange hover:bg-brand-orange/90 font-semibold px-6 py-3 rounded-xl transition-all"
+            >
+              Contact MentorMe to enquire about admission support
+            </a>
+          </div>
+        </motion-div>
+      </section>
     </div>
   );
 }

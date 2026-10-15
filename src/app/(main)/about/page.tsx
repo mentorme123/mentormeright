@@ -534,9 +534,9 @@ export default function AboutPage() {
                 <div className="w-16 h-16 bg-gradient-to-br from-brand-blue to-brand-blue/80 rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-brand-blue/20">
                   <Brain size={32} className="text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Free Mini Psychometric Assessments</h3>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">AI-Powered Psychometric Assessments &amp; Career Guidance</h3>
                 <p className="text-slate-600 leading-relaxed mb-6">
-                  MentorMe uses advanced artificial intelligence and science-informed psychometric assessments to evaluate an individual&apos;s personality, aptitude, skills, interests, and career preferences.
+                  MentorMe offers AI-powered psychometric assessments and career aptitude tests to help students understand their personality, strengths, skills, interests, and career preferences.
                 </p>
                 <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Our assessment solutions include:</p>
                 <div className="space-y-3">
@@ -546,7 +546,7 @@ export default function AboutPage() {
                     "Personality Profiling",
                     "Interest Mapping",
                     "Skill Gap Analysis",
-                    "Career Recommendation Reports",
+                    "Personalized Career Recommendation Reports",
                   ].map((item) => (
                     <div key={item} className="flex items-center gap-3">
                       <div className="w-6 h-6 rounded-full bg-brand-orange/10 flex items-center justify-center shrink-0">
@@ -557,7 +557,7 @@ export default function AboutPage() {
                   ))}
                 </div>
                 <p className="text-sm text-slate-500 leading-relaxed mt-5">
-                  These insights help students choose the right career path, college, course, and future opportunities with confidence.
+                  Our science-informed assessments provide actionable insights to help students make informed decisions about career paths, college selection, course choices, and future opportunities with confidence.
                 </p>
               </div>
               <div className="absolute -top-4 -right-4 w-24 h-24 bg-brand-orange/10 rounded-full blur-2xl" />

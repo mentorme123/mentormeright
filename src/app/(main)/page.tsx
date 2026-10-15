@@ -87,6 +87,7 @@ export default function Home() {
   const [enquirySuccess, setEnquirySuccess] = useState(false);
   const [showCareerAI, setShowCareerAI] = useState(false);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
+  const [showMoreStudyAbroad, setShowMoreStudyAbroad] = useState(false);
 
   useEffect(() => {
     setShowEnquiry(true);
@@ -1688,56 +1689,63 @@ export default function Home() {
             transition={{ delay: 0.4 }}
             className="space-y-6"
           >
-            <div className="text-left">
-              <h3 className="text-xl font-semibold mb-3 text-white">Study Destinations</h3>
-              <p className="text-white/80 leading-relaxed">
-                Explore study opportunities in the USA, UK, Canada, Australia, Germany, France, UAE, Russia, Switzerland and India, along with other destinations featured by UniThink for specific courses, including Singapore, Sweden, Japan, the Netherlands, Georgia, Uzbekistan, Kazakhstan, Vietnam, the Philippines, Poland and Nepal.
-              </p>
+            <div
+              className={`overflow-hidden transition-all duration-500 ${
+                showMoreStudyAbroad ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
+              }`}
+            >
+              <div className="text-left">
+                <h3 className="text-xl font-semibold mb-3 text-white">Study Destinations</h3>
+                <p className="text-white/80 leading-relaxed">
+                  Explore study opportunities in the USA, UK, Canada, Australia, Germany, France, UAE, Russia, Switzerland and India, along with other destinations featured by UniThink for specific courses, including Singapore, Sweden, Japan, the Netherlands, Georgia, Uzbekistan, Kazakhstan, Vietnam, the Philippines, Poland and Nepal.
+                </p>
+              </div>
+
+              <div className="text-left">
+                <h3 className="text-xl font-semibold mb-3 text-white">Courses and Study Areas</h3>
+                <ul className="text-white/80 space-y-1 list-disc list-inside">
+                  <li>Medicine & Healthcare: MBBS, Public Health and related healthcare programs</li>
+                  <li>Business & Management: Business Administration, BBA, MBA and Management</li>
+                  <li>Computer Science & IT: Computer Science and Information Technology</li>
+                  <li>Data Science & Emerging Technologies: Data Science, Data Analytics and Machine Learning</li>
+                  <li>Engineering: Engineering and related specializations</li>
+                  <li>Commerce & Finance: Finance and related business disciplines</li>
+                  <li>Arts & Social Sciences: Psychology and Economics</li>
+                  <li>Law: Law and related specializations</li>
+                </ul>
+              </div>
+
+              <div className="text-left">
+                <h3 className="text-xl font-semibold mb-3 text-white">Entrance Exams and Language Tests</h3>
+                <ul className="text-white/80 space-y-1 list-disc list-inside">
+                  <li>India: JEE, NEET, CUET and CAT</li>
+                  <li>International admissions: SAT, GRE and GMAT</li>
+                  <li>English language proficiency: IELTS, TOEFL, PTE and Duolingo English Test</li>
+                  <li>Language learning: German and Japanese language training</li>
+                </ul>
+              </div>
+
+              <div className="text-left">
+                <h3 className="text-xl font-semibold mb-3 text-white">Our Admission Support Services</h3>
+                <ul className="text-white/80 space-y-1 list-disc list-inside">
+                  <li>Career counselling and psychometric assessment</li>
+                  <li>Course and university selection</li>
+                  <li>Undergraduate and postgraduate admission support in India and abroad</li>
+                  <li>Application guidance, SOPs, essays and Letters of Recommendation (LORs)</li>
+                  <li>Profile building and interview preparation</li>
+                  <li>Scholarship guidance and fee planning</li>
+                  <li>Documentation, visa guidance and pre-departure assistance</li>
+                </ul>
+              </div>
             </div>
 
-            <div className="text-left">
-              <h3 className="text-xl font-semibold mb-3 text-white">Courses and Study Areas</h3>
-              <ul className="text-white/80 space-y-1 list-disc list-inside">
-                <li>Medicine & Healthcare: MBBS, Public Health and related healthcare programs</li>
-                <li>Business & Management: Business Administration, BBA, MBA and Management</li>
-                <li>Computer Science & IT: Computer Science and Information Technology</li>
-                <li>Data Science & Emerging Technologies: Data Science, Data Analytics and Machine Learning</li>
-                <li>Engineering: Engineering and related specializations</li>
-                <li>Commerce & Finance: Finance and related business disciplines</li>
-                <li>Arts & Social Sciences: Psychology and Economics</li>
-                <li>Law: Law and related specializations</li>
-              </ul>
-            </div>
-
-            <div className="text-left">
-              <h3 className="text-xl font-semibold mb-3 text-white">Entrance Exams and Language Tests</h3>
-              <ul className="text-white/80 space-y-1 list-disc list-inside">
-                <li>India: JEE, NEET, CUET and CAT</li>
-                <li>International admissions: SAT, GRE and GMAT</li>
-                <li>English language proficiency: IELTS, TOEFL, PTE and Duolingo English Test</li>
-                <li>Language learning: German and Japanese language training</li>
-              </ul>
-            </div>
-
-            <div className="text-left">
-              <h3 className="text-xl font-semibold mb-3 text-white">Our Admission Support Services</h3>
-              <ul className="text-white/80 space-y-1 list-disc list-inside">
-                <li>Career counselling and psychometric assessment</li>
-                <li>Course and university selection</li>
-                <li>Undergraduate and postgraduate admission support in India and abroad</li>
-                <li>Application guidance, SOPs, essays and Letters of Recommendation (LORs)</li>
-                <li>Profile building and interview preparation</li>
-                <li>Scholarship guidance and fee planning</li>
-                <li>Documentation, visa guidance and pre-departure assistance</li>
-              </ul>
-            </div>
-
-            <div className="pt-4">
-              <Link href="/contact">
-                <button className="bg-brand-orange hover:bg-brand-orange/90 text-white text-lg font-bold px-10 py-4 rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95">
-                  Contact MentorMe
-                </button>
-              </Link>
+            <div className="pt-4 text-center">
+              <button
+                onClick={() => setShowMoreStudyAbroad(!showMoreStudyAbroad)}
+                className="bg-brand-orange hover:bg-brand-orange/90 text-white text-lg font-bold px-10 py-4 rounded-xl shadow-xl transition-all hover:scale-105 active:scale-95"
+              >
+                {showMoreStudyAbroad ? "Show less" : "Read more"}
+              </button>
             </div>
           </motion.div>
         </div>

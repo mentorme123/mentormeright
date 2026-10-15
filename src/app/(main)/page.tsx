@@ -1145,9 +1145,14 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="space-y-6 order-1 lg:order-2 lg:col-span-7"
           >
-            {/* Badge */}
+{/* Badge */}
             <span className="inline-block px-4 py-1.5 rounded-full bg-brand-blue/10 text-brand-blue text-sm font-semibold border border-brand-blue/20 mb-4">
-              Career Guidance for Students in Bangalore, Hyderabad, Karnataka &amp; Telangana
+              Career Guidance for Students in Bangalore, Hyderabad, Karnataka & Telangana
+            </span>
+            <span className="inline-block px-4 py-1.5 rounded-full bg-brand-orange/10 text-brand-orange text-sm font-semibold border border-brand-orange/20 mb-4">
+              <a href="https://www.mentormeright.com/study-abroad" target="_blank" rel="noopener noreferrer" className="text-brand-orange hover:text-white transition-colors">
+                Study Abroad
+              </a>
             </span>
 
             <h2 className="text-3xl sm:text-4xl font-bold leading-tight text-foreground">

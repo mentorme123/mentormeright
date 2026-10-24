@@ -275,15 +275,20 @@ function submitRegistration(){
     return;
   }
 
-  const regData = { name, email, phone, college, savedAt: new Date().toISOString() };
-  saveRegistrationData(regData);
-  window.MENTORME_REGISTRATION = regData;
-  window.MENTORME_STUDENT_ID = email;
-  window.MENTORME_STUDENT_EMAIL = email;
-  localStorage.setItem("mentorme_student_id", email);
+   const regData = { name, email, phone, college, savedAt: new Date().toISOString() };
+   saveRegistrationData(regData);
+   window.MENTORME_REGISTRATION = regData;
+   window.MENTORME_STUDENT_ID = email;
+   window.MENTORME_STUDENT_EMAIL = email;
+   localStorage.setItem("mentorme_student_id", email);
 
-  hideRegistrationModal();
-  if(_regCallback){ const cb = _regCallback; _regCallback = null; cb(); }
+   fetch('/api/placement/register', {
+     method: 'POST', headers: {'Content-Type': 'application/json'},
+     body: JSON.stringify({ name, email, phone, college })
+   }).catch(()=>{});
+
+   hideRegistrationModal();
+   if(_regCallback){ const cb = _regCallback; _regCallback = null; cb(); }
 }
 window.onLockedTest = window.onLockedTest || function(testId, packId){
   if (packId === 1) { startTest(testId); return; }
@@ -331,9 +336,15 @@ window.onLockedTest = window.onLockedTest || function(testId, packId){
      window.MENTORME_REGISTRATION = savedReg;
      window.MENTORME_STUDENT_ID = email;
      window.MENTORME_STUDENT_EMAIL = email;
-     localStorage.setItem("mentorme_student_id", email);
-     modalError.style.display = 'none';
-     modalPayBtn.disabled = true;
+      localStorage.setItem("mentorme_student_id", email);
+
+      fetch('/api/placement/register', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ name, email, phone, college })
+      }).catch(()=>{});
+
+      modalError.style.display = 'none';
+      modalPayBtn.disabled = true;
      modalPayBtn.textContent = 'Opening payment...';
      fetch('/api/razorpay/b2c/create-order', {
        method: 'POST', headers: {'Content-Type': 'application/json'},

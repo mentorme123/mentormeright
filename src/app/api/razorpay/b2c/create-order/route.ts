@@ -41,38 +41,43 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields: itemType, amount' }, { status: 400 });
     }
 
+    const normalizedEmail = email ? String(email).trim().toLowerCase() : '';
+    const normalizedName = name ? String(name).trim() : '';
+    const normalizedPhone = phone ? String(phone).trim() : '';
+    const normalizedCollege = college ? String(college).trim() : '';
+
     const amountNum = Math.round(Number(amount));
     if (isNaN(amountNum) || amountNum <= 0 || amountNum > 100000) {
       return NextResponse.json({ error: 'Invalid amount. Must be a positive number between 1 and 100,000.' }, { status: 400 });
     }
 
-    let userId = user?.id;
+     let userId = user?.id;
 
-     if (!userId && email) {
+     if (!userId && normalizedEmail) {
        const { data: existingUser } = await supabaseAdmin
          .from('users')
          .select('id')
-         .eq('email', email)
+         .eq('email', normalizedEmail)
          .maybeSingle();
 
        if (existingUser) {
          userId = existingUser.id;
          const updates: Record<string, string | null> = {
-           name: name || email?.split('@')[0] || 'User',
+           name: normalizedName || normalizedEmail.split('@')[0] || 'User',
          };
-         if (phone) updates.mobile = phone;
-         if (college) updates.school = college;
+         if (normalizedPhone) updates.mobile = normalizedPhone;
+         if (normalizedCollege) updates.school = normalizedCollege;
          await supabaseAdmin
            .from('users')
            .update(updates)
            .eq('id', existingUser.id);
        } else {
          const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-           email,
+           email: normalizedEmail,
            email_confirm: true,
-           phone: phone || null,
+            phone: normalizedPhone || undefined,
            user_metadata: {
-             full_name: name || email?.split('@')[0] || 'User',
+             full_name: normalizedName || normalizedEmail.split('@')[0] || 'User',
            },
          });
 
@@ -85,11 +90,11 @@ export async function POST(req: NextRequest) {
            .from('users')
            .upsert({
              id: newUser.user.id,
-             email,
-             name: name || email?.split('@')[0] || 'User',
+             email: normalizedEmail,
+             name: normalizedName || normalizedEmail.split('@')[0] || 'User',
              role: 'individual',
-             mobile: phone || null,
-             school: college || null,
+             mobile: normalizedPhone || null,
+             school: normalizedCollege || null,
            });
 
         if (profileError) {
@@ -100,7 +105,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (!userId) {
+     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized. Please login or provide email for guest payment.' }, { status: 401 });
     }
 
@@ -108,7 +113,11 @@ export async function POST(req: NextRequest) {
       itemType, 
       amountNum, 
       amountInPaise: amountNum * 100,
-      userId 
+      userId,
+      email: normalizedEmail,
+      name: normalizedName,
+      phone: normalizedPhone,
+      college: normalizedCollege
     });
 
     const receipt = `mentorme_b2c_${itemType}_${Date.now()}`;
@@ -119,12 +128,16 @@ export async function POST(req: NextRequest) {
         amount: amountNum * 100,
         currency: 'INR',
         receipt: receipt,
-        notes: {
-          user_id: userId,
-          item_type: itemType,
-          item_id: itemId || '',
-          item_name: itemName || '',
-        },
+         notes: {
+           user_id: userId,
+           item_type: itemType,
+           item_id: itemId || '',
+           item_name: itemName || '',
+           student_email: normalizedEmail || '',
+           student_name: normalizedName || '',
+           student_phone: normalizedPhone || '',
+           student_college: normalizedCollege || '',
+         },
       });
     } catch (razorpayError: unknown) {
       const err = razorpayError as Error;
@@ -141,18 +154,18 @@ export async function POST(req: NextRequest) {
 
     console.log('[razorpay/b2c/create-order] Order created:', { orderId: order.id, amount: order.amount });
 
-    const { data: payment, error: paymentError } = await supabaseAdmin
-      .from('payments')
-      .insert({
-        user_id: userId,
-        razorpay_order_id: order.id,
-        amount: amountNum,
-        currency: 'INR',
-        status: 'pending',
-        item_type: itemType,
-        item_id: itemId || null,
-        item_name: itemName || null,
-        metadata: metadata || {},
+     const { data: payment, error: paymentError } = await supabaseAdmin
+       .from('payments')
+       .insert({
+         user_id: userId,
+         razorpay_order_id: order.id,
+         amount: amountNum,
+         currency: 'INR',
+         status: 'pending',
+         item_type: itemType,
+         item_id: itemId || null,
+         item_name: itemName || null,
+         metadata: { ...(metadata || {}), student_email: normalizedEmail, student_name: normalizedName, student_phone: normalizedPhone, student_college: normalizedCollege },
       })
       .select('id')
       .single();

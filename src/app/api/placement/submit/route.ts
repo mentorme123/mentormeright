@@ -16,8 +16,8 @@ function getSupabaseAdmin() {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { email, testId, testName, score, totalQuestions, correctAnswers, breakdown, message } = body;
+     const body = await req.json();
+    const { email, testId, testName, score, totalQuestions, correctAnswers, breakdown, message, registration } = body;
 
     if (!email || !testId || typeof score !== 'number') {
       return NextResponse.json({ error: 'email, testId and score are required' }, { status: 400 });
@@ -40,15 +40,28 @@ export async function POST(req: NextRequest) {
           {
             id: generatedUserId,
             email: normalizedEmail,
-            name: normalizedEmail.split('@')[0],
+            name: registration?.name || normalizedEmail.split('@')[0],
             role: 'individual',
-            audience_type: 'ST'
+            audience_type: 'ST',
+            mobile: registration?.phone || null,
+            school: registration?.college || null
           }
         ]);
 
       if (profileInsertError) {
         console.error('Error creating user profile for placement result:', profileInsertError);
         return NextResponse.json({ error: profileInsertError.message }, { status: 500 });
+      }
+    } else if (registration) {
+      const updates: Record<string, string | null> = {};
+      if (registration.name) updates.name = registration.name;
+      if (registration.phone) updates.mobile = registration.phone;
+      if (registration.college) updates.school = registration.college;
+      if (Object.keys(updates).length > 0) {
+        await getSupabaseAdmin()
+          .from('users')
+          .update(updates)
+          .eq('id', generatedUserId);
       }
     }
 

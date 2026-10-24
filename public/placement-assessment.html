@@ -81,7 +81,19 @@ footer{background:var(--brand-blue);color:#fff;font-size:12px;padding:28px 20px;
 .pay-note{margin-top:10px;text-align:center;color:#667085;font-size:12px}
 .modal-error{background:#fff5f5;color:#b54708;border:1px solid #fedf89;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;font-weight:700;display:none}
 .modal-success{background:#f6fdf9;color:#067647;border:1px solid #bceac3;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;font-weight:700;display:none}
-@media(max-width:760px){.grid{grid-template-columns:1fr}.brand{align-items:flex-start}.test-head{top:78px}}
+.reg-modal-overlay{position:fixed;inset:0;background:rgba(16,35,74,.55);backdrop-filter:blur(4px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
+.reg-modal-overlay.open{display:flex}
+.reg-modal{background:#fff;border-radius:20px;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,71,198,.2);overflow:hidden}
+.reg-modal-head{background:linear-gradient(180deg,#0047C6,#082f6e);color:#fff;padding:18px 20px;font-size:18px;font-weight:700}
+.reg-modal-body{padding:20px}
+.reg-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.reg-grid .full{grid-column:1/-1}
+.reg-field label{font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:6px}
+.reg-field input{width:100%;border:1.5px solid #D1D7DB;border-radius:10px;padding:11px 13px;font-size:14px;color:#10234A;outline:none;transition:border-color .18s}
+.reg-field input:focus{border-color:#0047C6;box-shadow:0 0 0 3px rgba(0,71,198,.1)}
+.reg-field input::placeholder{color:#94A3B8}
+.reg-error{background:#fff5f5;color:#b54708;border:1px solid #fedf89;border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:13px;font-weight:600;display:none}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.brand{align-items:flex-start}.test-head{top:78px}.reg-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -148,6 +160,26 @@ These are pattern-based practice assessments designed by MentorMe and are not of
     <div class="footer-note">Placement Assessment Platform · © 2026 MentorMe</div>
     </div></footer>
 
+<div class="reg-modal-overlay" id="regModal">
+  <div class="reg-modal">
+    <div class="reg-modal-head">Your Details</div>
+    <div class="reg-modal-body">
+      <p style="font-size:14px;color:#667085;margin-bottom:16px">Please enter your details before starting the free assessment.</p>
+      <div class="reg-error" id="regError"></div>
+      <div class="reg-grid">
+        <div class="reg-field"><label>Full Name *</label><input type="text" id="regName" placeholder="e.g. Arjun Sharma" maxlength="100" /></div>
+        <div class="reg-field"><label>Email Address *</label><input type="email" id="regEmail" placeholder="you@email.com" maxlength="100" /></div>
+        <div class="reg-field"><label>Phone Number *</label><input type="tel" id="regPhone" placeholder="10-digit number" maxlength="20" /></div>
+        <div class="reg-field full"><label>College Name *</label><input type="text" id="regCollege" placeholder="e.g. XYZ College of Engineering" maxlength="150" /></div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn primary" id="regStartBtn" style="flex:1" onclick="submitRegistration()">Start Assessment</button>
+        <button class="btn" id="regCloseBtn" style="flex:1;background:#fff;color:#667085;border:1px solid #D1D7DB">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="payModal">
   <div class="modal">
     <div class="modal-head">
@@ -183,6 +215,70 @@ const savedTests = savedPacks.flatMap(packId => TESTS.filter(t => t.pack === pac
 window.MENTORME_ACCESS = window.MENTORME_ACCESS || [...new Set([...defaultAccess, ...savedTests])];
 window.MENTORME_STUDENT_ID = window.MENTORME_STUDENT_ID || localStorage.getItem("mentorme_student_id") || ("GUEST-"+Math.random().toString(36).slice(2,10));
 localStorage.setItem("mentorme_student_id", window.MENTORME_STUDENT_ID);
+
+const MENTORME_REG_KEY = "mentorme_registration";
+function getRegistrationData(){
+  try{ return JSON.parse(localStorage.getItem(MENTORME_REG_KEY) || 'null'); }catch(e){ return null; }
+}
+function saveRegistrationData(data){
+  try{ localStorage.setItem(MENTORME_REG_KEY, JSON.stringify(data)); }catch(e){}
+}
+window.MENTORME_REGISTRATION = getRegistrationData();
+let _regCallback = null;
+
+function showRegistrationModal(callback){
+  const data = getRegistrationData();
+  const modal = document.getElementById('regModal');
+  const errorEl = document.getElementById('regError');
+  if(data){
+    document.getElementById('regName').value = data.name || '';
+    document.getElementById('regEmail').value = data.email || '';
+    document.getElementById('regPhone').value = data.phone || '';
+    document.getElementById('regCollege').value = data.college || '';
+  }
+  errorEl.style.display = 'none';
+  errorEl.textContent = '';
+  _regCallback = callback;
+  modal.classList.add('open');
+}
+function hideRegistrationModal(){
+  document.getElementById('regModal').classList.remove('open');
+  _regCallback = null;
+}
+function submitRegistration(){
+  const modal = document.getElementById('regModal');
+  const errorEl = document.getElementById('regError');
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const college = document.getElementById('regCollege').value.trim();
+
+  if(!name || !email || !phone || !college){
+    errorEl.textContent = 'Please fill in all required fields.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    errorEl.textContent = 'Please enter a valid email address.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  if(!/^\d{10}$/.test(phone.replace(/\s/g,''))){
+    errorEl.textContent = 'Please enter a valid 10-digit phone number.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const regData = { name, email, phone, college, savedAt: new Date().toISOString() };
+  saveRegistrationData(regData);
+  window.MENTORME_REGISTRATION = regData;
+  window.MENTORME_STUDENT_ID = email;
+  window.MENTORME_STUDENT_EMAIL = email;
+  localStorage.setItem("mentorme_student_id", email);
+
+  hideRegistrationModal();
+  if(_regCallback){ const cb = _regCallback; _regCallback = null; cb(); }
+}
 window.onLockedTest = window.onLockedTest || function(testId, packId){
   if (packId === 1) { startTest(testId); return; }
   const packName = PACK_NAMES[packId] || `Pack ${packId}`;
@@ -312,6 +408,16 @@ function pickByCriteria(test){
 }
 function startTest(id){
   const t=TESTS.find(x=>x.id===id);
+  if(t.pack > 1){
+    window.onLockedTest(id, t.pack);
+    return;
+  }
+  const existing = getRegistrationData();
+  if(!existing){
+    showRegistrationModal(function(){ startTest(id); });
+    return;
+  }
+  window.MENTORME_STUDENT_ID = existing.email;
   const qs=pickByCriteria(t);
   attempt={test:t,qs,answers:Array(qs.length).fill(null),started:Date.now()};
   idx=0;secondsLeft=t.minutes*60;
@@ -372,8 +478,9 @@ function submitTest(){
       totalQuestions:attempt.qs.length,
       correctAnswers:correct,
       breakdown:byCat,
-      message:msg
-    };
+       message:msg,
+       registration: window.MENTORME_REGISTRATION || undefined
+     };
     if(navigator.sendBeacon){
       const blob=new Blob([JSON.stringify(payload)],{type:'application/json'});
       navigator.sendBeacon('/api/placement/submit',blob);
@@ -391,6 +498,8 @@ function showCatalogue(){
   renderTabs();renderCards();window.scrollTo({top:0,behavior:"smooth"});
 }
 renderTabs();renderCards();
+document.getElementById('regCloseBtn').onclick = hideRegistrationModal;
+document.getElementById('regModal').onclick = function(e){ if(e.target === this) hideRegistrationModal(); };
 </script>
 </body>
 </html>

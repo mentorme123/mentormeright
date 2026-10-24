@@ -79,6 +79,7 @@ footer{background:var(--brand-blue);color:#fff;font-size:12px;padding:28px 20px;
 .pay-btn:hover{background:#053bb3}
 .pay-btn:disabled{opacity:.6;cursor:not-allowed}
 .pay-note{margin-top:10px;text-align:center;color:#667085;font-size:12px}
+.label-pay{font-size:13px;font-weight:600;color:#334155;display:block;margin-bottom:6px}
 .modal-error{background:#fff5f5;color:#b54708;border:1px solid #fedf89;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;font-weight:700;display:none}
 .modal-success{background:#f6fdf9;color:#067647;border:1px solid #bceac3;border-radius:10px;padding:10px 12px;margin-top:10px;font-size:13px;font-weight:700;display:none}
 .reg-modal-overlay{position:fixed;inset:0;background:rgba(16,35,74,.55);backdrop-filter:blur(4px);z-index:300;display:none;align-items:center;justify-content:center;padding:20px}
@@ -192,7 +193,12 @@ These are pattern-based practice assessments designed by MentorMe and are not of
         <span class="price-value">₹99</span>
       </div>
       <div class="payment-option"><span class="dot"></span> Razorpay · UPI / Cards / Wallets</div>
-      <input class="email-box" id="modalEmail" type="email" placeholder="Enter your email for receipt" />
+      <div class="reg-grid" style="margin-bottom:14px">
+        <div class="reg-field"><label>Full Name *</label><input class="email-box" id="modalName" type="text" placeholder="e.g. Arjun Sharma" maxlength="100" /></div>
+        <div class="reg-field"><label>Phone Number *</label><input class="email-box" id="modalPhone" type="tel" placeholder="10-digit number" maxlength="20" /></div>
+        <div class="reg-field full"><label>College Name *</label><input class="email-box" id="modalCollege" type="text" placeholder="e.g. XYZ College of Engineering" maxlength="150" /></div>
+        <div class="reg-field full"><label>Email Address *</label><input class="email-box" id="modalEmail" type="email" placeholder="Enter your email for receipt" /></div>
+      </div>
       <button class="pay-btn" id="modalPayBtn">Pay ₹99</button>
       <div class="pay-note">Secured by Razorpay</div>
       <div class="modal-error" id="modalError"></div>
@@ -284,30 +290,55 @@ window.onLockedTest = window.onLockedTest || function(testId, packId){
   const packName = PACK_NAMES[packId] || `Pack ${packId}`;
   const modal = document.getElementById('payModal');
   const modalPackName = document.getElementById('modalPackName');
-  const modalEmail = document.getElementById('modalEmail');
-  const modalPayBtn = document.getElementById('modalPayBtn');
-  const modalError = document.getElementById('modalError');
-  const modalSuccess = document.getElementById('modalSuccess');
-  const modalClose = document.getElementById('modalClose');
-  modalPackName.textContent = packName;
-  modalEmail.value = '';
-  modalError.style.display = 'none';
-  modalSuccess.style.display = 'none';
-  modalPayBtn.disabled = false;
-  modal.classList.add('open');
-  const close = () => modal.classList.remove('open');
-  modalClose.onclick = close;
-  modal.onclick = (e) => { if (e.target === modal) close(); };
-  const initiate = () => {
-    const email = modalEmail.value.trim();
-    if (!email) { modalError.textContent = 'Please enter your email.'; modalError.style.display = 'block'; return; }
-    modalError.style.display = 'none';
-    modalPayBtn.disabled = true;
-    modalPayBtn.textContent = 'Opening payment...';
-    fetch('/api/razorpay/b2c/create-order', {
-      method: 'POST', headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ itemType: 'placement_pack', itemId: `pack_${packId}`, itemName: packName, amount: 99, email, name: email.split('@')[0] })
-    }).then(res => res.json()).then(data => {
+   const modalName = document.getElementById('modalName');
+   const modalPhone = document.getElementById('modalPhone');
+   const modalCollege = document.getElementById('modalCollege');
+   const modalEmail = document.getElementById('modalEmail');
+   const modalPayBtn = document.getElementById('modalPayBtn');
+   const modalError = document.getElementById('modalError');
+   const modalSuccess = document.getElementById('modalSuccess');
+   const modalClose = document.getElementById('modalClose');
+   const regData = getRegistrationData();
+   modalPackName.textContent = packName;
+   modalName.value = regData?.name || '';
+   modalPhone.value = regData?.phone || '';
+   modalCollege.value = regData?.college || '';
+   modalEmail.value = regData?.email || '';
+   modalError.style.display = 'none';
+   modalSuccess.style.display = 'none';
+   modalPayBtn.disabled = false;
+   modal.classList.add('open');
+   const close = () => modal.classList.remove('open');
+   modalClose.onclick = close;
+   modal.onclick = (e) => { if (e.target === modal) close(); };
+   const initiate = () => {
+     const name = modalName.value.trim();
+     const email = modalEmail.value.trim();
+     const phone = modalPhone.value.trim();
+     const college = modalCollege.value.trim();
+     if(!name || !email || !phone || !college){
+       modalError.textContent = 'Please fill in all required fields.';
+       modalError.style.display = 'block';
+       return;
+     }
+     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+       modalError.textContent = 'Please enter a valid email address.';
+       modalError.style.display = 'block';
+       return;
+     }
+     const savedReg = { name, email, phone, college, savedAt: new Date().toISOString() };
+     saveRegistrationData(savedReg);
+     window.MENTORME_REGISTRATION = savedReg;
+     window.MENTORME_STUDENT_ID = email;
+     window.MENTORME_STUDENT_EMAIL = email;
+     localStorage.setItem("mentorme_student_id", email);
+     modalError.style.display = 'none';
+     modalPayBtn.disabled = true;
+     modalPayBtn.textContent = 'Opening payment...';
+     fetch('/api/razorpay/b2c/create-order', {
+       method: 'POST', headers: {'Content-Type': 'application/json'},
+       body: JSON.stringify({ itemType: 'placement_pack', itemId: `pack_${packId}`, itemName: packName, amount: 99, email, name, phone, college })
+     }).then(res => res.json()).then(data => {
       if (!data.orderId) throw new Error(data.error || 'Failed to create order');
       const options = {
         key: data.keyId, amount: data.amount, currency: data.currency, name: 'MentorMe',
@@ -337,7 +368,7 @@ window.onLockedTest = window.onLockedTest || function(testId, packId){
             modalPayBtn.disabled = false;
           }
         },
-        prefill: { email }, theme: { color: '#FF8B00' },
+         prefill: { name, email, contact: phone }, theme: { color: '#FF8B00' },
         modal: { ondismiss: () => { modalPayBtn.textContent = 'Pay ₹99'; modalPayBtn.disabled = false; } }
       };
       const razorpay = new window.Razorpay(options);

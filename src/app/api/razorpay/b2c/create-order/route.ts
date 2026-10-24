@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       { auth: { autoRefreshToken: false, persistSession: false } }
     );
 
-    const { itemType, itemId, itemName, amount, metadata, email, name } = await req.json();
+     const { itemType, itemId, itemName, amount, metadata, email, name, phone, college } = await req.json();
 
     if (!itemType || !amount) {
       return NextResponse.json({ error: 'Missing required fields: itemType, amount' }, { status: 400 });
@@ -48,37 +48,49 @@ export async function POST(req: NextRequest) {
 
     let userId = user?.id;
 
-    if (!userId && email) {
-      const { data: existingUser } = await supabaseAdmin
-        .from('users')
-        .select('id')
-        .eq('email', email)
-        .maybeSingle();
+     if (!userId && email) {
+       const { data: existingUser } = await supabaseAdmin
+         .from('users')
+         .select('id')
+         .eq('email', email)
+         .maybeSingle();
 
-      if (existingUser) {
-        userId = existingUser.id;
-      } else {
-        const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-          email,
-          email_confirm: true,
-          user_metadata: {
-            full_name: name || email?.split('@')[0] || 'User',
-          },
-        });
+       if (existingUser) {
+         userId = existingUser.id;
+         const updates: Record<string, string | null> = {
+           name: name || email?.split('@')[0] || 'User',
+         };
+         if (phone) updates.mobile = phone;
+         if (college) updates.school = college;
+         await supabaseAdmin
+           .from('users')
+           .update(updates)
+           .eq('id', existingUser.id);
+       } else {
+         const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+           email,
+           email_confirm: true,
+           phone: phone || null,
+           user_metadata: {
+             full_name: name || email?.split('@')[0] || 'User',
+           },
+         });
 
         if (createError || !newUser.user) {
           console.error('[razorpay/b2c/create-order] Guest user creation failed:', createError);
           return NextResponse.json({ error: 'Failed to create user account for payment' }, { status: 500 });
         }
 
-        const { error: profileError } = await supabaseAdmin
-          .from('users')
-          .upsert({
-            id: newUser.user.id,
-            email,
-            name: name || email?.split('@')[0] || 'User',
-            role: 'individual',
-          });
+         const { error: profileError } = await supabaseAdmin
+           .from('users')
+           .upsert({
+             id: newUser.user.id,
+             email,
+             name: name || email?.split('@')[0] || 'User',
+             role: 'individual',
+             mobile: phone || null,
+             school: college || null,
+           });
 
         if (profileError) {
           console.error('[razorpay/b2c/create-order] Profile creation failed:', profileError);

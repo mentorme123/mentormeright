@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
       { auth: { autoRefreshToken: false, persistSession: false } }
     );
 
-     const { itemType, itemId, itemName, amount, metadata, email, name, phone, college } = await req.json();
+    const { itemType, itemId, itemName, amount, metadata, email, name, phone, college } = await req.json();
 
     if (!itemType || !amount) {
       return NextResponse.json({ error: 'Missing required fields: itemType, amount' }, { status: 400 });
@@ -45,57 +45,63 @@ export async function POST(req: NextRequest) {
     const normalizedName = name ? String(name).trim() : '';
     const normalizedPhone = phone ? String(phone).trim() : '';
     const normalizedCollege = college ? String(college).trim() : '';
+    const guestEmail = normalizedEmail || `guest_${crypto.randomUUID().slice(0,8)}@mentormeright.local`;
 
     const amountNum = Math.round(Number(amount));
     if (isNaN(amountNum) || amountNum <= 0 || amountNum > 100000) {
       return NextResponse.json({ error: 'Invalid amount. Must be a positive number between 1 and 100,000.' }, { status: 400 });
     }
 
-     let userId = user?.id;
+    let userId = user?.id;
 
-     if (!userId && normalizedEmail) {
-       const { data: existingUser } = await supabaseAdmin
-         .from('users')
-         .select('id')
-         .eq('email', normalizedEmail)
-         .maybeSingle();
+    if (!userId) {
+      let existingUser = null;
 
-       if (existingUser) {
-         userId = existingUser.id;
-         const updates: Record<string, string | null> = {
-           name: normalizedName || normalizedEmail.split('@')[0] || 'User',
-         };
-         if (normalizedPhone) updates.mobile = normalizedPhone;
-         if (normalizedCollege) updates.school = normalizedCollege;
-         await supabaseAdmin
-           .from('users')
-           .update(updates)
-           .eq('id', existingUser.id);
-       } else {
-         const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-           email: normalizedEmail,
-           email_confirm: true,
-            phone: normalizedPhone || undefined,
-           user_metadata: {
-             full_name: normalizedName || normalizedEmail.split('@')[0] || 'User',
-           },
-         });
+      if (normalizedEmail) {
+        const { data: lookup } = await supabaseAdmin
+          .from('users')
+          .select('id')
+          .eq('email', normalizedEmail)
+          .maybeSingle();
+        existingUser = lookup;
+      }
+
+      if (existingUser) {
+        userId = existingUser.id;
+        const updates: Record<string, string | null> = {
+          name: normalizedName || normalizedEmail.split('@')[0] || 'User',
+        };
+        if (normalizedPhone) updates.mobile = normalizedPhone;
+        if (normalizedCollege) updates.school = normalizedCollege;
+        await supabaseAdmin
+          .from('users')
+          .update(updates)
+          .eq('id', existingUser.id);
+      } else {
+        const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
+          email: guestEmail,
+          email_confirm: true,
+          phone: normalizedPhone || undefined,
+          user_metadata: {
+            full_name: normalizedName || (normalizedEmail ? normalizedEmail.split('@')[0] : 'Guest User'),
+          },
+        });
 
         if (createError || !newUser.user) {
           console.error('[razorpay/b2c/create-order] Guest user creation failed:', createError);
           return NextResponse.json({ error: 'Failed to create user account for payment' }, { status: 500 });
         }
 
-         const { error: profileError } = await supabaseAdmin
-           .from('users')
-           .upsert({
-             id: newUser.user.id,
-             email: normalizedEmail,
-             name: normalizedName || normalizedEmail.split('@')[0] || 'User',
-             role: 'individual',
-             mobile: normalizedPhone || null,
-             school: normalizedCollege || null,
-           });
+        const { error: profileError } = await supabaseAdmin
+          .from('users')
+          .upsert({
+            id: newUser.user.id,
+            email: normalizedEmail || guestEmail,
+            name: normalizedName || (normalizedEmail ? normalizedEmail.split('@')[0] : 'Guest User'),
+            role: 'individual',
+            mobile: normalizedPhone || null,
+            school: normalizedCollege || null,
+          });
 
         if (profileError) {
           console.error('[razorpay/b2c/create-order] Profile creation failed:', profileError);
@@ -105,7 +111,7 @@ export async function POST(req: NextRequest) {
       }
     }
 
-     if (!userId) {
+    if (!userId) {
       return NextResponse.json({ error: 'Unauthorized. Please login or provide email for guest payment.' }, { status: 401 });
     }
 
@@ -128,16 +134,16 @@ export async function POST(req: NextRequest) {
         amount: amountNum * 100,
         currency: 'INR',
         receipt: receipt,
-         notes: {
-           user_id: userId,
-           item_type: itemType,
-           item_id: itemId || '',
-           item_name: itemName || '',
-           student_email: normalizedEmail || '',
-           student_name: normalizedName || '',
-           student_phone: normalizedPhone || '',
-           student_college: normalizedCollege || '',
-         },
+        notes: {
+          user_id: userId,
+          item_type: itemType,
+          item_id: itemId || '',
+          item_name: itemName || '',
+          student_email: normalizedEmail || '',
+          student_name: normalizedName || '',
+          student_phone: normalizedPhone || '',
+          student_college: normalizedCollege || '',
+        },
       });
     } catch (razorpayError: unknown) {
       const err = razorpayError as Error;
@@ -154,18 +160,18 @@ export async function POST(req: NextRequest) {
 
     console.log('[razorpay/b2c/create-order] Order created:', { orderId: order.id, amount: order.amount });
 
-     const { data: payment, error: paymentError } = await supabaseAdmin
-       .from('payments')
-       .insert({
-         user_id: userId,
-         razorpay_order_id: order.id,
-         amount: amountNum,
-         currency: 'INR',
-         status: 'pending',
-         item_type: itemType,
-         item_id: itemId || null,
-         item_name: itemName || null,
-         metadata: { ...(metadata || {}), student_email: normalizedEmail, student_name: normalizedName, student_phone: normalizedPhone, student_college: normalizedCollege },
+    const { data: payment, error: paymentError } = await supabaseAdmin
+      .from('payments')
+      .insert({
+        user_id: userId,
+        razorpay_order_id: order.id,
+        amount: amountNum,
+        currency: 'INR',
+        status: 'pending',
+        item_type: itemType,
+        item_id: itemId || null,
+        item_name: itemName || null,
+        metadata: { ...(metadata || {}), student_email: normalizedEmail, student_name: normalizedName, student_phone: normalizedPhone, student_college: normalizedCollege },
       })
       .select('id')
       .single();

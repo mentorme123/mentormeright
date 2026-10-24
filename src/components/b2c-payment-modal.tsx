@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { X, Loader2, CheckCircle2, IndianRupee } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,6 +17,14 @@ interface B2CPaymentModalProps {
   name?: string;
 }
 
+const REG_KEY = "mentorme_registration";
+function getStoredReg(): { name?: string; email?: string; phone?: string; college?: string } {
+  try { return JSON.parse(localStorage.getItem(REG_KEY) || 'null') || {}; } catch { return {}; }
+}
+function saveStoredReg(data: { name: string; email: string; phone: string; college: string }) {
+  try { localStorage.setItem(REG_KEY, JSON.stringify(data)); } catch {}
+}
+
 export function B2CPaymentModal({
   isOpen,
   onClose,
@@ -31,8 +39,50 @@ export function B2CPaymentModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [inputName, setInputName] = useState(name || "");
+  const [inputEmail, setInputEmail] = useState(email || "");
+  const [inputPhone, setInputPhone] = useState("");
+  const [inputCollege, setInputCollege] = useState("");
+
+  const needDetails = !email || !name;
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const stored = getStoredReg();
+      if (stored.name) setInputName(stored.name);
+      if (stored.email) setInputEmail(stored.email);
+      if (stored.phone) setInputPhone(stored.phone);
+      if (stored.college) setInputCollege(stored.college);
+    }
+  }, []);
 
   const handlePayment = async () => {
+    if (needDetails) {
+      if (!inputName.trim() || !inputEmail.trim() || !inputPhone.trim() || !inputCollege.trim()) {
+        setError("Please enter your name, email, phone number, and college name.");
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail.trim())) {
+        setError("Please enter a valid email address.");
+        return;
+      }
+    }
+
+    if (needDetails) {
+      const regData = {
+        name: inputName.trim(),
+        email: inputEmail.trim(),
+        phone: inputPhone.trim(),
+        college: inputCollege.trim(),
+      };
+      saveStoredReg(regData);
+      await fetch("/api/placement/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(regData),
+      }).catch(() => {});
+    }
+
     setLoading(true);
     setError("");
 
@@ -46,8 +96,10 @@ export function B2CPaymentModal({
           itemName,
           amount: amountInRupees,
           metadata: { description: description || itemName },
-          email,
-          name,
+          email: needDetails ? inputEmail.trim() : email,
+          name: needDetails ? inputName.trim() : name,
+          phone: needDetails ? inputPhone.trim() : undefined,
+          college: needDetails ? inputCollege.trim() : undefined,
         }),
       });
 
@@ -65,9 +117,9 @@ export function B2CPaymentModal({
         description: description || itemName,
         order_id: orderData.orderId,
         prefill: {
-          name: name || "",
-          email: email || "",
-          contact: "",
+          name: needDetails ? inputName.trim() : (name || ""),
+          email: needDetails ? inputEmail.trim() : (email || ""),
+          contact: needDetails ? inputPhone.trim() : "",
         },
         theme: {
           color: "#0872B8",
@@ -171,14 +223,64 @@ export function B2CPaymentModal({
               </div>
             </div>
 
-            <div className="p-6 space-y-6">
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl text-sm font-medium">
-                  {error}
-                </div>
-              )}
+             <div className="p-6 space-y-6">
+               {error && (
+                 <div className="bg-red-50 border border-red-200 text-red-600 p-4 rounded-xl text-sm font-medium">
+                   {error}
+                 </div>
+               )}
 
-              <div className="bg-slate-50 rounded-2xl p-5 space-y-4 border border-slate-100">
+               {needDetails && (
+                 <div className="space-y-4">
+                   <p className="text-xs text-slate-500">Enter your details to complete the payment.</p>
+                   <div>
+                     <label className="block text-xs font-semibold text-slate-600 mb-1">Full Name *</label>
+                     <input
+                       type="text"
+                       value={inputName}
+                       onChange={(e) => setInputName(e.target.value)}
+                       placeholder="e.g. Arjun Sharma"
+                       maxLength={100}
+                       className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                     />
+                   </div>
+                   <div>
+                     <label className="block text-xs font-semibold text-slate-600 mb-1">Email Address *</label>
+                     <input
+                       type="email"
+                       value={inputEmail}
+                       onChange={(e) => setInputEmail(e.target.value)}
+                       placeholder="you@email.com"
+                       maxLength={100}
+                       className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                     />
+                   </div>
+                   <div>
+                     <label className="block text-xs font-semibold text-slate-600 mb-1">Phone Number *</label>
+                     <input
+                       type="tel"
+                       value={inputPhone}
+                       onChange={(e) => setInputPhone(e.target.value)}
+                       placeholder="10-digit number"
+                       maxLength={20}
+                       className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                     />
+                   </div>
+                   <div>
+                     <label className="block text-xs font-semibold text-slate-600 mb-1">College Name *</label>
+                     <input
+                       type="text"
+                       value={inputCollege}
+                       onChange={(e) => setInputCollege(e.target.value)}
+                       placeholder="e.g. XYZ College of Engineering"
+                       maxLength={150}
+                       className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                     />
+                   </div>
+                 </div>
+               )}
+
+               <div className="bg-slate-50 rounded-2xl p-5 space-y-4 border border-slate-100">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-bold text-slate-600">Item</span>
                   <span className="text-sm font-bold text-slate-800 text-right max-w-[60%]">{itemName}</span>

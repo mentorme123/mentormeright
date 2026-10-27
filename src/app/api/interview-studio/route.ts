@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { createClient } from '@supabase/supabase-js';
 import { catalogue } from '../../(main)/interview-studio/catalogue';
 
 export const dynamic = 'force-dynamic';
@@ -59,20 +60,10 @@ function isAdmin(user: any, env: any) {
   return user && env.ADMIN_EMAILS.includes(user.email.toLowerCase());
 }
 
-async function getSupabase(req?: NextRequest) {
+function getSupabase() {
   if (!supabaseUrl || !supabaseServiceKey) {
     throw new Error('Supabase is not configured.');
   }
-  if (req) {
-    return createServerClient(supabaseUrl, supabaseServiceKey, {
-      cookies: {
-        get(name: string) {
-          return req.cookies.get(name)?.value;
-        },
-      },
-    });
-  }
-  const { createClient } = await import('@supabase/supabase-js');
   return createClient(supabaseUrl, supabaseServiceKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
@@ -118,7 +109,7 @@ export async function GET(req: NextRequest) {
 
     // Handle audio download
     if (url.searchParams.has('audio')) {
-      const supabase = await getSupabase(req);
+      const supabase = getSupabase();
       const attemptId = url.searchParams.get('attempt') || '';
       const { data: attempt, error: attemptError } = await supabase
         .from('interview_attempts')
@@ -133,7 +124,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(`${supabaseUrl}/storage/v1/object/public/recordings/${attemptId}/${url.searchParams.get('audio')}`);
     }
 
-    const supabase = await getSupabase(req);
+    const supabase = getSupabase();
     const admin = isAdmin(user, env);
 
     // Get profile
@@ -202,7 +193,7 @@ export async function POST(req: NextRequest) {
     const data: any = contentType.includes('multipart/form-data') ? await req.formData() : await req.json();
     const action = data instanceof FormData ? data.get('action') : data.action;
 
-    const supabase = await getSupabase(req);
+    const supabase = getSupabase();
     const admin = isAdmin(user, env);
 
     if (action === 'profile') {
@@ -500,7 +491,7 @@ export async function POST(req: NextRequest) {
     return json({ error: e.message || 'Something went wrong.' }, e.status || 500);
   } finally {
     if (lockedId) {
-      const supabase = await getSupabase(req);
+      const supabase = getSupabase();
       await supabase.from('interview_attempts').update({ busy: 0 }).eq('id', lockedId);
     }
   }

@@ -108,8 +108,8 @@ async function transcribeAudio(file: File): Promise<string> {
       detail = String(errorData.error?.message || JSON.stringify(errorData));
     } catch {}
     if (response.status === 401) fail('Audio transcription failed: API key rejected.', 502);
-    if (response.status === 429) fail('Audio transcription failed: rate limit reached.', 502);
-    if (response.status >= 500) fail('Audio transcription failed: service is temporarily unavailable.', 502);
+    if (response.status === 429) fail('Audio transcription failed: rate limit reached. Please retry.', 502);
+    if (response.status >= 500) fail(`Audio transcription failed: service is temporarily unavailable. ${detail.slice(0, 200)}`, 502);
     fail(`Audio transcription failed: ${detail.slice(0, 200)}`, 502);
   }
 
@@ -149,8 +149,8 @@ async function evaluateAnswer(prompt: any): Promise<any> {
       detail = String(errorData.error?.message || JSON.stringify(errorData));
     } catch {}
     if (response.status === 401) fail('AI answer evaluation failed: API key rejected.', 502);
-    if (response.status === 429) fail('AI answer evaluation failed: rate limit reached.', 502);
-    if (response.status >= 500) fail('AI answer evaluation failed: service is temporarily unavailable.', 502);
+    if (response.status === 429) fail('AI answer evaluation failed: rate limit reached. Please retry.', 502);
+    if (response.status >= 500) fail(`AI answer evaluation failed: service is temporarily unavailable. ${detail.slice(0, 200)}`, 502);
     fail(`AI answer evaluation failed: ${detail.slice(0, 200)}`, 502);
   }
 

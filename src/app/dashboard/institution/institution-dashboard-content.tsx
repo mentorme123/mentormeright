@@ -184,7 +184,7 @@ export default function InstitutionDashboardContent() {
   };
 
   const handleDeleteDuplicates = async () => {
-    if (!confirm('This will permanently delete only duplicate student accounts (newer duplicates will be removed). Original 66 accounts will not be touched. Continue?')) return;
+    if (!confirm('This will scan for duplicate student accounts (same email appearing multiple times). No accounts will be deleted. Continue?')) return;
     setDeletingDuplicates(true);
     setDuplicateResult(null);
     try {

@@ -19,7 +19,7 @@ export async function DELETE(req: NextRequest) {
     const institutionName = String(searchParams.get('institution') || '').trim();
 
     if (!institutionName) {
-      return NextResponse.json({ error: 'Institution name is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Institution name is required', status: 400 });
     }
 
     const { data: students, error: studentError } = await supabaseAdmin
@@ -43,30 +43,36 @@ export async function DELETE(req: NextRequest) {
       emailGroups.get(key)!.push(s);
     }
 
-    let deleted = 0;
+    const duplicateGroups: Array<{ email: string; keep: string; remove: string[] }> = [];
+    let totalDuplicates = 0;
     let kept = 0;
-    for (const [, group] of emailGroups) {
+
+    for (const [email, group] of emailGroups) {
       if (group.length <= 1) {
         kept += group.length;
         continue;
       }
       const [oldest, ...duplicates] = group;
       kept += 1;
-      const idsToDelete = duplicates.map(d => d.id);
-      for (const id of idsToDelete) {
-        const { error: delError } = await supabaseAdmin.auth.admin.deleteUser(id);
-        if (delError) {
-          console.error(`Failed to delete duplicate ${id}:`, delError);
-        } else {
-          deleted += 1;
-        }
-      }
+      const duplicateIds = duplicates.map(d => d.id);
+      totalDuplicates += duplicateIds.length;
+      duplicateGroups.push({
+        email,
+        keep: oldest.id,
+        remove: duplicateIds,
+      });
     }
 
-    return NextResponse.json({ deleted, kept });
+    return NextResponse.json({
+      deleted: 0,
+      kept,
+      duplicateCount: totalDuplicates,
+      duplicateGroups,
+      message: 'No users were deleted. Duplicate IDs are reported for manual review.',
+    });
   } catch (error: unknown) {
     const err = error as Error;
-    console.error('Delete duplicates error:', err);
-    return NextResponse.json({ error: err.message || 'Failed to delete duplicates' }, { status: 500 });
+    console.error('Duplicates check error:', err);
+    return NextResponse.json({ error: err.message || 'Failed to scan for duplicates' }, { status: 500 });
   }
 }

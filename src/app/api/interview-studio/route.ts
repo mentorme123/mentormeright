@@ -74,23 +74,25 @@ async function transcribeAudio(file: File): Promise<string> {
   const arrayBuffer = await file.arrayBuffer();
   const base64 = Buffer.from(arrayBuffer).toString('base64');
 
-  const encoding = file.type.includes('wav') ? 'LINEAR16'
-    : file.type.includes('mp4') ? 'MP4'
-    : file.type.includes('ogg') ? ' OGG_OPUS'
-    : 'WEBM_OPUS';
+  const mimeType = file.type || 'audio/webm';
 
   const body = JSON.stringify({
-    config: {
-      encoding,
-      sampleRateHertz: 16000,
-      languageCode: 'en-US',
-      enableAutomaticPunctuation: true,
-    },
-    audio: { content: base64 },
+    contents: [{
+      role: 'user',
+      parts: [
+        { text: 'Transcribe the following audio to text. Return ONLY the transcribed text, nothing else.' },
+        {
+          inlineData: {
+            mimeType,
+            data: base64,
+          }
+        }
+      ]
+    }]
   });
 
   const response = await fetch(
-    `https://speech.googleapis.com/v1/speech:recognize?key=${env.GOOGLE_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -112,8 +114,8 @@ async function transcribeAudio(file: File): Promise<string> {
   }
 
   const result: any = await response.json();
-  const transcript = result.results?.[0]?.alternatives?.[0]?.transcript || '';
-  return transcript.trim();
+  const text = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  return text.trim();
 }
 
 async function evaluateAnswer(prompt: any): Promise<any> {
@@ -200,16 +202,15 @@ export async function GET(req: NextRequest) {
       .eq('id', user.userId)
       .single();
 
-    // Check for free completed attempt
+    // Check for free attempt used (any attempt with no payment)
     let freeUsed = false;
     if (profile) {
       const { data: freeAttempt } = await supabase
         .from('interview_attempts')
         .select('id')
         .eq('user_id', user.userId)
-        .eq('status', 'complete')
         .is('payment_id', null)
-        .not('history', 'eq', '[]')
+        .is('order_id', null)
         .maybeSingle();
       freeUsed = !!freeAttempt;
     }
@@ -319,14 +320,13 @@ export async function POST(req: NextRequest) {
 
       if (pending) return json({ id: pending.id, question: pending.question, created: pending.created, history: JSON.parse(pending.history || '[]') });
 
-      // Check if free attempt was used
+      // Check if free attempt was used - look for ANY attempt with no payment
       const { data: freeAttempt } = await supabase
         .from('interview_attempts')
         .select('id')
         .eq('user_id', user.userId)
-        .eq('status', 'complete')
         .is('payment_id', null)
-        .not('history', 'eq', '[]')
+        .is('order_id', null)
         .limit(1)
         .maybeSingle();
 

@@ -465,12 +465,12 @@ export async function POST(req: NextRequest) {
         fail('Record a valid audio answer (maximum 12 MB).');
       }
 
-      const claimTime = Date.now();
+      const claimTime = Math.floor(Date.now() / 1000);
       const { data: claimResult, error: claimError } = await supabase
         .from('interview_attempts')
         .update({ busy: claimTime })
         .eq('id', attemptId)
-        .or('busy.eq.0,busy.lt.' + (claimTime - 180000))
+        .or('busy.eq.0,busy.lt.' + (claimTime - 180))
         .eq('status', 'active');
 
       if (claimError) throw claimError;

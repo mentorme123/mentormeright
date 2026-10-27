@@ -20,7 +20,7 @@ create table if not exists interview_attempts (
   history text default '[]' not null,
   order_id text,
   payment_id text,
-  busy integer default 0,
+  busy bigint default 0,
   audio_purged integer default 0
 );
 

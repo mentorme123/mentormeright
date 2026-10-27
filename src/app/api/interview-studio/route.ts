@@ -13,8 +13,8 @@ function getEnv() {
     GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '',
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID || '',
     RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET || '',
-    TRANSCRIPTION_MODEL: process.env.TRANSCRIPTION_MODEL || 'gpt-4o-mini-transcribe',
-    EVALUATION_MODEL: process.env.EVALUATION_MODEL || 'gpt-4o-mini',
+    TRANSCRIPTION_MODEL: process.env.TRANSCRIPTION_MODEL || 'gemini-3.8-flash',
+    EVALUATION_MODEL: process.env.EVALUATION_MODEL || 'gemini-3.8-flash',
     ADMIN_EMAILS: (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean),
   };
 }
@@ -92,7 +92,7 @@ async function transcribeAudio(file: File): Promise<string> {
   });
 
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -121,7 +121,7 @@ async function transcribeAudio(file: File): Promise<string> {
 async function evaluateAnswer(prompt: any): Promise<any> {
   const env = getEnv();
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

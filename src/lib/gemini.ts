@@ -30,8 +30,8 @@ export async function generateWithRetry(
     modelName,
     'gemini-3.5-flash',
     'gemini-flash-latest',
-    'gemini-2.5-flash',
-    'gemini-2.0-flash'
+     'gemini-2.5-flash',
+    'gemini-3.8-flash'
   ].filter((v, i, a) => a.indexOf(v) === i); // Remove duplicates
 
   if (!apiKey) {

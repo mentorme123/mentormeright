@@ -202,7 +202,7 @@ export async function GET(req: NextRequest) {
       .eq('id', user.userId)
       .single();
 
-    // Check for free attempt used (any attempt with no payment)
+    // Check for free attempt used (attempt with no payment that has answers)
     let freeUsed = false;
     if (profile) {
       const { data: freeAttempt } = await supabase
@@ -211,6 +211,7 @@ export async function GET(req: NextRequest) {
         .eq('user_id', user.userId)
         .is('payment_id', null)
         .is('order_id', null)
+        .neq('history', '[]')
         .maybeSingle();
       freeUsed = !!freeAttempt;
     }
@@ -320,13 +321,14 @@ export async function POST(req: NextRequest) {
 
       if (pending) return json({ id: pending.id, question: pending.question, created: pending.created, history: JSON.parse(pending.history || '[]') });
 
-      // Check if free attempt was used - look for ANY attempt with no payment
+      // Check if free attempt was used - only count attempts with actual answers
       const { data: freeAttempt } = await supabase
         .from('interview_attempts')
         .select('id')
         .eq('user_id', user.userId)
         .is('payment_id', null)
         .is('order_id', null)
+        .neq('history', '[]')
         .limit(1)
         .maybeSingle();
 

@@ -10,7 +10,7 @@ const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 function getEnv() {
   return {
-    OPENAI_API_KEY: process.env.OPENAI_API_KEY || process.env.OPENAI_KEY || '',
+    GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '',
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID || '',
     RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET || '',
     TRANSCRIPTION_MODEL: process.env.TRANSCRIPTION_MODEL || 'gpt-4o-mini-transcribe',
@@ -69,32 +69,98 @@ function getSupabase() {
   });
 }
 
-async function callOpenAI(path: string, body: any, form = false) {
+async function transcribeAudio(file: File): Promise<string> {
   const env = getEnv();
-  const response = await fetch(`https://api.openai.com/v1/${path}`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-      ...(form ? {} : { 'Content-Type': 'application/json' }),
+  const arrayBuffer = await file.arrayBuffer();
+  const base64 = Buffer.from(arrayBuffer).toString('base64');
+
+  const encoding = file.type.includes('wav') ? 'LINEAR16'
+    : file.type.includes('mp4') ? 'MP4'
+    : file.type.includes('ogg') ? ' OGG_OPUS'
+    : 'WEBM_OPUS';
+
+  const body = JSON.stringify({
+    config: {
+      encoding,
+      sampleRateHertz: 16000,
+      languageCode: 'en-US',
+      enableAutomaticPunctuation: true,
     },
-    body: form ? body : JSON.stringify(body),
-    signal: AbortSignal.timeout(60000),
+    audio: { content: base64 },
   });
+
+  const response = await fetch(
+    `https://speech.googleapis.com/v1/speech:recognize?key=${env.GOOGLE_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+      signal: AbortSignal.timeout(60000),
+    }
+  );
 
   if (!response.ok) {
     let detail = '';
     try {
       const errorData: any = await response.json();
-      detail = String(errorData.error?.message || errorData.error?.reason || '');
+      detail = String(errorData.error?.message || JSON.stringify(errorData));
     } catch {}
-    const step = path === 'audio/transcriptions' ? 'Audio transcription' : 'AI answer evaluation';
-    if (response.status === 401) fail(`${step} failed: OpenAI rejected the API key.`, 502);
-    if (response.status === 429) fail(`${step} failed: OpenAI rate limit reached.`, 502);
-    if (response.status >= 500) fail(`${step} failed: OpenAI is temporarily unavailable.`, 502);
-    fail(`${step} failed: ${detail.slice(0, 200)}`, 502);
+    if (response.status === 401) fail('Audio transcription failed: API key rejected.', 502);
+    if (response.status === 429) fail('Audio transcription failed: rate limit reached.', 502);
+    if (response.status >= 500) fail('Audio transcription failed: service is temporarily unavailable.', 502);
+    fail(`Audio transcription failed: ${detail.slice(0, 200)}`, 502);
   }
 
-  return response.json();
+  const result: any = await response.json();
+  const transcript = result.results?.[0]?.alternatives?.[0]?.transcript || '';
+  return transcript.trim();
+}
+
+async function evaluateAnswer(prompt: any): Promise<any> {
+  const env = getEnv();
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        generationConfig: {
+          responseMimeType: 'application/json',
+        },
+        contents: [
+          {
+            role: 'user',
+            parts: [{
+              text: `You are MentorMe, an interview practice coach for Indian graduates. Return JSON: {technical:number 0..100,english:number 0..100,strength:string,improvement:string,example:string,nextQuestion:string,nextRubric:string}. Technical: correctness 40%, application 30%, completeness 20%, reasoning 10%. English: grammar 30%, vocabulary 20%, clarity 30%, structure 20%. Explain errors specifically.\n\n${JSON.stringify(prompt)}`
+            }]
+          }
+        ]
+      }),
+      signal: AbortSignal.timeout(60000),
+    }
+  );
+
+  if (!response.ok) {
+    let detail = '';
+    try {
+      const errorData: any = await response.json();
+      detail = String(errorData.error?.message || JSON.stringify(errorData));
+    } catch {}
+    if (response.status === 401) fail('AI answer evaluation failed: API key rejected.', 502);
+    if (response.status === 429) fail('AI answer evaluation failed: rate limit reached.', 502);
+    if (response.status >= 500) fail('AI answer evaluation failed: service is temporarily unavailable.', 502);
+    fail(`AI answer evaluation failed: ${detail.slice(0, 200)}`, 502);
+  }
+
+  const result: any = await response.json();
+  const content = result.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+  let feedback: any;
+  try {
+    feedback = JSON.parse(content);
+  } catch {
+    fail('Evaluation was incomplete. Please retry.', 502);
+  }
+  return feedback;
 }
 
 export async function GET(req: NextRequest) {
@@ -104,7 +170,7 @@ export async function GET(req: NextRequest) {
     const url = new URL(req.url);
     
     if (!user) {
-      return json({ authenticated: false, catalogue: catalogue, ready: !!env.OPENAI_API_KEY });
+      return json({ authenticated: false, catalogue: catalogue, ready: !!env.GOOGLE_API_KEY });
     }
 
     // Handle audio download
@@ -164,7 +230,7 @@ export async function GET(req: NextRequest) {
       profile: normalizedProfile,
       admin,
       catalogue: catalogue,
-      ready: !!env.OPENAI_API_KEY,
+      ready: !!env.GOOGLE_API_KEY,
       paymentsReady: !!(env.RAZORPAY_KEY_ID && env.RAZORPAY_KEY_SECRET && !/replace|placeholder|xxxx|paste|example/i.test(env.RAZORPAY_KEY_ID + env.RAZORPAY_KEY_SECRET)),
       attempts: (attempts || []).map((a: any) => ({ ...a, history: JSON.parse(a.history || '[]') })),
     });
@@ -223,7 +289,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (action === 'start') {
-      if (!env.OPENAI_API_KEY) fail('Cloud AI has not been configured. Please contact MentorMe.', 503);
+      if (!env.GOOGLE_API_KEY) fail('Cloud AI has not been configured. Please contact MentorMe.', 503);
       
       const { data: profile } = await supabase
         .from('interview_profiles')
@@ -328,7 +394,7 @@ export async function POST(req: NextRequest) {
     if (action === 'reconcile') {
       const { data: a } = await supabase.from('interview_attempts').select('*').eq('id', data.id).single();
       if (!a || a.user_id !== user.userId || a.status !== 'payment_pending') fail('This payment cannot be resumed.');
-      if (!env.OPENAI_API_KEY || !env.RAZORPAY_KEY_SECRET) fail('Service configuration is incomplete.', 503);
+      if (!env.GOOGLE_API_KEY || !env.RAZORPAY_KEY_SECRET) fail('Service configuration is incomplete.', 503);
 
       const res = await fetch(`https://api.razorpay.com/v1/orders/${encodeURIComponent(a.order_id)}/payments`, {
         headers: { 'Authorization': `Basic ${Buffer.from(env.RAZORPAY_KEY_ID + ':' + env.RAZORPAY_KEY_SECRET).toString('base64')}` },
@@ -411,50 +477,24 @@ export async function POST(req: NextRequest) {
 
       lockedId = attemptId;
 
-      // Upload audio to Supabase storage
-      const formData = new FormData();
-      formData.append('file', file, file.type.includes('mp4') ? 'answer.mp4' : 'answer.webm');
-      formData.append('model', env.TRANSCRIPTION_MODEL || 'gpt-4o-mini-transcribe');
-      formData.append('language', 'en');
-      
-      const transcription = await callOpenAI('audio/transcriptions', formData, true);
-      const transcript = String(transcription.text || '').trim();
+      // Transcribe audio with Google Speech-to-Text
+      const transcript = await transcribeAudio(file);
       if (transcript.length < 8) fail('Speech could not be understood. Please record your answer again.');
 
       const allSets = [...catalogue];
       const s = allSets.find((x: any) => x.id === a.assessment);
       if (!s) fail('Assessment unavailable.');
 
-      const result = await callOpenAI('chat/completions', {
-        model: env.EVALUATION_MODEL || 'gpt-4o-mini',
-        response_format: { type: 'json_object' },
-        messages: [
-          {
-            role: 'system',
-            content: 'You are MentorMe, an interview practice coach for Indian graduates. Return JSON: {technical:number 0..100,english:number 0..100,strength:string,improvement:string,example:string,nextQuestion:string,nextRubric:string}. Technical: correctness 40%, application 30%, completeness 20%, reasoning 10%. English: grammar 30%, vocabulary 20%, clarity 30%, structure 20%. Explain errors specifically.'
-          },
-          {
-            role: 'user',
-            content: JSON.stringify({
-              assessment: s.title,
-              track: s.track,
-              question: a.question,
-              rubric: history.length ? history[history.length - 1].nextRubric : s.rubric,
-              answer: transcript,
-              priorQuestions: history.map((h: any) => h.question),
-              scenario: s.scenario,
-              scenarioRubric: s.scenarioRubric
-            })
-          }
-        ]
+      const feedback = await evaluateAnswer({
+        assessment: s.title,
+        track: s.track,
+        question: a.question,
+        rubric: history.length ? history[history.length - 1].nextRubric : s.rubric,
+        answer: transcript,
+        priorQuestions: history.map((h: any) => h.question),
+        scenario: s.scenario,
+        scenarioRubric: s.scenarioRubric
       });
-
-      let feedback: any;
-      try {
-        feedback = JSON.parse(result.choices[0].message.content);
-      } catch {
-        fail('Evaluation was incomplete. Please retry.', 502);
-      }
 
       const historyEntry = { question: a.question, transcript, ...feedback };
       history.push(historyEntry);

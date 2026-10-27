@@ -220,7 +220,7 @@ export default function InstitutionDashboardContent() {
                           const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
                           const escapedUsername = `"${(r.username || r.email || '').replace(/"/g, '""')}"`;
                           const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
-                          const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
+                          const cls = (r.education_level || institutionName || '').replace(/"/g, '""');
                           const status = r.status === 'partial_success' ? 'Partial Success' : 'Success';
                           return `${escapedName},${escapedUsername},${escapedPassword},"${cls}",${status}`;
                         }).join('\n');

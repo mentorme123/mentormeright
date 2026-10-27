@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
       const allIndividual = await supabaseAdmin.from('users').select('id, name, email, education_level, institution_name').eq('role', 'individual').limit(10);
       console.log('Credentials API: sample individual users=', JSON.stringify(allIndividual.data?.slice(0, 5)));
     }
-    const results: Array<{ name: string; username: string; password: string; education_level?: string | null; error?: string }> = [];
+    const results: Array<{ name: string; username: string; password: string; education_level?: string | null; institution_name?: string | null; error?: string }> = [];
 
     const generateCredentials = (email: string) => {
       const local = String(email || '').split('@')[0];
@@ -59,11 +59,11 @@ export async function GET(req: NextRequest) {
           await supabaseAdmin.auth.admin.updateUserById(student.id, {
             password: password,
           });
-          return { name: sanitizedName, username, password, education_level: student.education_level };
+           return { name: sanitizedName, username, password, education_level: student.education_level, institution_name: student.institution_name };
         } catch (authError: unknown) {
           const err = authError as Error;
           console.error(`Failed to update password for ${email}:`, err);
-          return { name: sanitizedName, username, password, education_level: student.education_level, error: err.message || 'Failed to update password' };
+           return { name: sanitizedName, username, password, education_level: student.education_level, institution_name: student.institution_name, error: err.message || 'Failed to update password' };
         }
       });
 
@@ -75,12 +75,13 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const csvHeader = 'Username,Password,Class\n';
+    const csvHeader = 'Name,Username,Password,Class\n';
     const csvRows = results.map(r => {
+      const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
       const escapedUsername = `"${(r.username || '').replace(/"/g, '""')}"`;
       const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
-      const cls = r.education_level ? String(r.education_level).replace(/"/g, '""') : '';
-      return `${escapedUsername},${escapedPassword},"${cls}"`;
+      const cls = (r.education_level || r.institution_name || '').replace(/"/g, '""');
+      return `${escapedName},${escapedUsername},${escapedPassword},"${cls}"`;
     }).join('\n');
     const csvContent = csvHeader + csvRows;
 

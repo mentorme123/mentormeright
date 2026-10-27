@@ -1,0 +1,46 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#F6F9FF"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#0047C6"/>
+      <stop offset="1" stop-color="#082f6e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bgGradient)"/>
+  <rect x="140" y="140" width="1640" height="800" rx="40" fill="url(#accentGrad)" opacity="0.08"/>
+  
+  <circle cx="580" cy="420" r="160" fill="#0047C6" opacity="0.1"/>
+  
+  <rect x="420" y="340" width="320" height="160" rx="80" fill="#0047C6"/>
+  <rect x="420" y="300" width="320" height="40" rx="20" fill="#0047C6"/>
+  
+  <circle cx="1400" cy="380" r="100" fill="#FF8B00"/>
+  <path d="M1400 320 v120" stroke="white" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="1400" cy="380" r="20" fill="white"/>
+  
+  <rect x="1450" y="520" width="260" height="60" rx="30" fill="#FFFFFF" opacity="0.9"/>
+  <path d="M1450 560 h260M1480 520 v120" stroke="#0047C6" stroke-width="3" stroke-linecap="round"/>
+  
+  <rect x="360" y="600" width="1200" height="80" rx="40" fill="#0047C6"/>
+  <circle cx="400" cy="640" r="20" fill="white"/>
+  <circle cx="450" cy="640" r="20" fill="white"/>
+  <circle cx="1520" cy="640" r="20" fill="white"/>
+  
+  <path d="M700 800 Q800 760 900 780 T1100 760" stroke="#0047C6" stroke-width="4" fill="none" stroke-linecap="round"/>
+  
+  <path d="M960 700 L780 760 L780 840 L960 900 L1140 840 L1140 760 Z" fill="white" stroke="#0047C6" stroke-width="2"/>
+  
+  <text x="960" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-size="72" font-weight="800" fill="#10234A">Interview Studio</text>
+  <text x="960" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="32" font-weight="600" fill="#667085">AI-Powered Mock Interviews with Real-Time Feedback</text>
+  
+  <text x="960" y="680" text-anchor="middle" font-family="Inter, sans-serif" font-size="42" font-weight="700" fill="#10234A">Ace your next interview with</text>
+  <text x="960" y="730" text-anchor="middle" font-family="Inter, sans-serif" font-size="56" font-weight="800" fill="#0047C6">confidence and skill</text>
+  
+  <rect x="780" y="770" width="360" height="60" rx="30" fill="#FF8B00"/>
+  <text x="960" y="810" text-anchor="middle" font-family="Inter, sans-serif" font-size="24" font-weight="700" fill="white">GET A FREE MOCK INTERVIEW</text>
+  
+  <text x="960" y="950" text-anchor="middle" font-family="Inter, sans-serif" font-size="20" font-weight="500" fill="#667085">Voice practice • Real-time feedback • 15-minute sessions • All career tracks</text>
+</svg>

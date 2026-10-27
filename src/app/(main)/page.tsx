@@ -986,6 +986,16 @@ export default function Home() {
       btn1Link: "/placement-assessment.html",
       btn2Text: "Explore Programs",
       btn2Link: "/services"
+    },
+    {
+      image: "/images/home-hero-interview-studio.svg",
+      heading: "Interview Studio",
+      highlight: "AI-Powered\nMock Interviews",
+      subtitle: "Practice with AI-powered mock interviews across 5 career tracks — AI, Computer Science, Accounting, Banking, and more. Get real-time feedback on your technical and communication skills.",
+      btn1Text: "Try a Free Mock Interview",
+      btn1Link: "/interview-studio",
+      btn2Text: "Placement Preparation",
+      btn2Link: "/placement-assessment.html"
     }
   ];
 

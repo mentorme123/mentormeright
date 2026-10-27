@@ -206,47 +206,14 @@ export default function InstitutionDashboardContent() {
 
   const handleDownloadCredentials = async () => {
     try {
-      if (uploadResults.length > 0) {
-        const successResults = uploadResults.filter((r: any) => r.status === 'success' || r.status === 'partial_success');
-        if (successResults.length === 0) {
-          setErrorMessage('No successful uploads to download credentials for.');
-          setUploadStatus('error');
-          return;
-        }
-                        const csvHeader = `Name,Username,Password,Class,Status\n`;
-                        const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                        const dateRow = `"Upload Date: ${today}"\n`;
-                        const csvRows = successResults.map((r: any) => {
-                          const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
-                          const escapedUsername = `"${(r.username || r.email || '').replace(/"/g, '""')}"`;
-                          const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
-                          const cls = (r.education_level || institutionName || '').replace(/"/g, '""');
-                          const status = r.status === 'partial_success' ? 'Partial Success' : 'Success';
-                          return `${escapedName},${escapedUsername},${escapedPassword},"${cls}",${status}`;
-                        }).join('\n');
-                        const csvContent = dateRow + csvHeader + csvRows;
-        const filename = `credentials_newly_uploaded_${new Date().toISOString().split('T')[0]}.csv`;
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const downloadUrl = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = downloadUrl;
-        link.setAttribute('download', filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(downloadUrl);
-        return;
-      }
+      setUploading(true);
       const url = `/api/institution/credentials?institution=${encodeURIComponent(institutionName)}`;
-      console.log('Downloading credentials from:', url, 'institutionName:', institutionName);
       const response = await fetch(url);
-      console.log('Credentials response status:', response.status, 'content-type:', response.headers.get('content-type'));
-      const text = await response.text();
-      console.log('Credentials response text length:', text.length, 'preview:', text.slice(0, 200));
       if (!response.ok) {
+        const text = await response.text();
         throw new Error(text || 'Failed to download credentials');
       }
-      const blob = new Blob([text], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob([await response.blob()], { type: 'text/csv;charset=utf-8;' });
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = downloadUrl;
@@ -261,6 +228,8 @@ export default function InstitutionDashboardContent() {
       console.error('Download credentials error:', err);
       setErrorMessage(err instanceof Error ? err.message : 'Failed to download credentials');
       setUploadStatus('error');
+    } finally {
+      setUploading(false);
     }
   };
 

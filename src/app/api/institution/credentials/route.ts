@@ -58,6 +58,7 @@ export async function GET(req: NextRequest) {
         try {
           await supabaseAdmin.auth.admin.updateUserById(student.id, {
             password: password,
+            email_confirm: true,
           });
            return { name: sanitizedName, username, password, education_level: student.education_level, institution_name: student.institution_name };
         } catch (authError: unknown) {

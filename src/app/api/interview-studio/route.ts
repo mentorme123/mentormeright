@@ -25,6 +25,21 @@ function fail(s: string, n = 400): never {
   throw Object.assign(new Error(s), { status: n });
 }
 
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (e: any) {
+      if (attempt < maxRetries - 1 && (e.status === 429 || e.status >= 500 || !e.status)) {
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+        continue;
+      }
+      throw e;
+    }
+  }
+  throw new Error('Max retries exceeded');
+}
+
 function getAuthUser(req: NextRequest) {
   const userId = req.headers.get('x-user-id');
   const email = req.headers.get('x-user-email');
@@ -91,15 +106,23 @@ async function transcribeAudio(file: File): Promise<string> {
     }]
   });
 
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body,
-      signal: AbortSignal.timeout(60000),
+  const response = await withRetry(async () => {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body,
+        signal: AbortSignal.timeout(60000),
+      }
+    );
+    if (!r.ok && (r.status === 429 || r.status >= 500)) {
+      let detail = '';
+      try { const errorData: any = await r.json(); detail = String(errorData.error?.message || ''); } catch {}
+      throw Object.assign(new Error(detail || r.statusText), { status: r.status });
     }
-  );
+    return r;
+  });
 
   if (!response.ok) {
     let detail = '';
@@ -120,12 +143,13 @@ async function transcribeAudio(file: File): Promise<string> {
 
 async function evaluateAnswer(prompt: any): Promise<any> {
   const env = getEnv();
-  const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+  const response = await withRetry(async () => {
+    const r = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
         generationConfig: {
           responseMimeType: 'application/json',
         },
@@ -141,6 +165,13 @@ async function evaluateAnswer(prompt: any): Promise<any> {
       signal: AbortSignal.timeout(60000),
     }
   );
+    if (!r.ok && (r.status === 429 || r.status >= 500)) {
+      let detail='';
+      try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
+      throw Object.assign(new Error(detail||r.statusText), {status: r.status});
+    }
+    return r;
+  });
 
   if (!response.ok) {
     let detail = '';
@@ -148,10 +179,9 @@ async function evaluateAnswer(prompt: any): Promise<any> {
       const errorData: any = await response.json();
       detail = String(errorData.error?.message || JSON.stringify(errorData));
     } catch {}
-    if (response.status === 401) fail('AI answer evaluation failed: API key rejected.', 502);
-    if (response.status === 429) fail('AI answer evaluation failed: rate limit reached. Please retry.', 502);
-    if (response.status >= 500) fail(`AI answer evaluation failed: service is temporarily unavailable. ${detail.slice(0, 200)}`, 502);
-    fail(`AI answer evaluation failed: ${detail.slice(0, 200)}`, 502);
+    if (response.status === 401) throw Object.assign(new Error('AI answer evaluation failed: API key rejected.'), { status: 401 });
+    if (response.status === 429 || response.status >= 500) throw Object.assign(new Error('AI answer evaluation failed: ' + detail.slice(0, 200)), { status: response.status });
+    throw Object.assign(new Error('AI answer evaluation failed: ' + detail.slice(0, 200)), { status: 400 });
   }
 
   const result: any = await response.json();
@@ -211,6 +241,7 @@ export async function GET(req: NextRequest) {
         .eq('user_id', user.userId)
         .is('payment_id', null)
         .is('order_id', null)
+        .eq('status', 'complete')
         .neq('history', '[]')
         .maybeSingle();
       freeUsed = !!freeAttempt;
@@ -328,6 +359,7 @@ export async function POST(req: NextRequest) {
         .eq('user_id', user.userId)
         .is('payment_id', null)
         .is('order_id', null)
+        .eq('status', 'complete')
         .neq('history', '[]')
         .limit(1)
         .maybeSingle();

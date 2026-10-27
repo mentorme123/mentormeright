@@ -206,7 +206,7 @@ export default function InstitutionDashboardContent() {
 
   const handleDownloadCredentials = async () => {
     try {
-      setUploading(true);
+      setLoading(true);
       const url = `/api/institution/credentials?institution=${encodeURIComponent(institutionName)}`;
       const response = await fetch(url);
       if (!response.ok) {
@@ -229,7 +229,7 @@ export default function InstitutionDashboardContent() {
       setErrorMessage(err instanceof Error ? err.message : 'Failed to download credentials');
       setUploadStatus('error');
     } finally {
-      setUploading(false);
+      setLoading(false);
     }
   };
 

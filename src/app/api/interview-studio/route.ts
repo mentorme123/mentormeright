@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createServerClient } from '@supabase/ssr';
 import { catalogue } from '../../(main)/interview-studio/catalogue';
 
 export const dynamic = 'force-dynamic';
@@ -38,8 +38,7 @@ function getAuthUser(req: NextRequest) {
 
 async function getSupabaseUser(req: NextRequest) {
   if (!supabaseUrl || !supabaseServiceKey) return null;
-  const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-    auth: { autoRefreshToken: false, persistSession: false },
+  const supabase = createServerClient(supabaseUrl, supabaseServiceKey, {
     cookies: {
       get(name: string) {
         return req.cookies.get(name)?.value;
@@ -65,8 +64,7 @@ async function getSupabase(req?: NextRequest) {
     throw new Error('Supabase is not configured.');
   }
   if (req) {
-    return createClient(supabaseUrl, supabaseServiceKey, {
-      auth: { autoRefreshToken: false, persistSession: false },
+    return createServerClient(supabaseUrl, supabaseServiceKey, {
       cookies: {
         get(name: string) {
           return req.cookies.get(name)?.value;
@@ -74,6 +72,7 @@ async function getSupabase(req?: NextRequest) {
       },
     });
   }
+  const { createClient } = await import('@supabase/supabase-js');
   return createClient(supabaseUrl, supabaseServiceKey, {
     auth: { autoRefreshToken: false, persistSession: false },
   });
@@ -506,5 +505,3 @@ export async function POST(req: NextRequest) {
     }
   }
 }
-
-export { getAuthUser };

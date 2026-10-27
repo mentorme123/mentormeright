@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       const firstName = cleanName.split(/\s+/)[0] || '';
       const nameUser = firstName ? `${firstName.toLowerCase()}@mentormeright.com` : '';
       const rollDigits = rawRoll.replace(/[^0-9]/g, '').slice(0, 20);
-      const email = rollDigits ? `R${rollDigits}@mentormeright.com` : (nameUser || `student${Date.now()}@mentormeright.com`);
+      const email = rollDigits ? `R${rollDigits}@mentormeright.com` : (nameUser || `student${Math.floor(Date.now() / 1000)}@mentormeright.com`);
       const username = email;
       const password = rollDigits ? `R@${rollDigits}` : `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123`;
       const sanitizedName = rawName.slice(0, 100);

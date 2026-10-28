@@ -30,7 +30,7 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
     try {
       return await fn();
     } catch (e: any) {
-      if (attempt < maxRetries - 1 && (e.status === 429 || e.status >= 500 || !e.status)) {
+      if (attempt < maxRetries - 1 && (e.status >= 500 || !e.status)) {
         await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
         continue;
       }
@@ -116,7 +116,7 @@ async function transcribeAudio(file: File): Promise<string> {
         signal: AbortSignal.timeout(60000),
       }
     );
-    if (!r.ok && (r.status === 429 || r.status >= 500)) {
+    if (!r.ok && r.status >= 500) {
       let detail = '';
       try { const errorData: any = await r.json(); detail = String(errorData.error?.message || ''); } catch {}
       throw Object.assign(new Error(detail || r.statusText), { status: r.status });
@@ -131,7 +131,7 @@ async function transcribeAudio(file: File): Promise<string> {
       detail = String(errorData.error?.message || JSON.stringify(errorData));
     } catch {}
     if (response.status === 401) fail('Audio transcription failed: API key rejected.', 502);
-    if (response.status === 429) fail('Audio transcription failed: rate limit reached. Please retry.', 502);
+    if (response.status === 429) fail(`Audio transcription failed: ${detail.includes('uota')||detail.includes('imit exceeded')?'quota exceeded. ':'rate limit reached. '}${detail.slice(0, 200)}`, 502);
     if (response.status >= 500) fail(`Audio transcription failed: service is temporarily unavailable. ${detail.slice(0, 200)}`, 502);
     fail(`Audio transcription failed: ${detail.slice(0, 200)}`, 502);
   }
@@ -165,7 +165,7 @@ async function evaluateAnswer(prompt: any): Promise<any> {
       signal: AbortSignal.timeout(60000),
     }
   );
-    if (!r.ok && (r.status === 429 || r.status >= 500)) {
+    if (!r.ok && r.status >= 500) {
       let detail='';
       try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
       throw Object.assign(new Error(detail||r.statusText), {status: r.status});
@@ -180,7 +180,7 @@ async function evaluateAnswer(prompt: any): Promise<any> {
       detail = String(errorData.error?.message || JSON.stringify(errorData));
     } catch {}
     if (response.status === 401) throw Object.assign(new Error('AI answer evaluation failed: API key rejected.'), { status: 401 });
-    if (response.status === 429 || response.status >= 500) throw Object.assign(new Error('AI answer evaluation failed: ' + detail.slice(0, 200)), { status: response.status });
+    if (response.status === 429) throw Object.assign(new Error('AI answer evaluation failed: ' + (detail.includes('uota')||detail.includes('imit exceeded')?'quota exceeded. ':'') + detail.slice(0, 200)), { status: response.status });
     throw Object.assign(new Error('AI answer evaluation failed: ' + detail.slice(0, 200)), { status: 400 });
   }
 

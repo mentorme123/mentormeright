@@ -5,39 +5,21 @@ export const dynamic = 'force-dynamic';
 
 function getSupabaseAdmin() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!supabaseUrl || !supabaseServiceKey) {
+  const supabaseServiceRole = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!supabaseUrl || !supabaseServiceRole) {
     throw new Error('Supabase environment variables are not configured');
   }
-  return createClient(supabaseUrl, supabaseServiceKey, {
+  return createClient(supabaseUrl, supabaseServiceRole, {
     auth: { autoRefreshToken: false, persistSession: false }
   });
 }
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const email = (searchParams.get('email') || '').trim().toLowerCase();
-
-    let targetUserId: string | null = null;
-    if (email) {
-      const { data: userByEmail } = await getSupabaseAdmin()
-        .from('users')
-        .select('id')
-        .ilike('email', email)
-        .maybeSingle();
-      targetUserId = userByEmail?.id || null;
-    }
-
-    const query = getSupabaseAdmin()
+    const { data, error } = await getSupabaseAdmin()
       .from('placement_results')
       .select('id, test_id, test_name, score, total_questions, correct_answers, completed_at, user_id')
-      .not('user_id', 'is', null)
       .order('completed_at', { ascending: false });
-
-    const { data, error } = targetUserId
-      ? await query.eq('user_id', targetUserId)
-      : await query;
 
     if (error) {
       console.error('Error fetching placement results:', error);
@@ -45,7 +27,7 @@ export async function GET(req: NextRequest) {
     }
 
     const results = data || [];
-    const userIds = Array.from(new Set(results.map((r: { user_id: string }) => r.user_id).filter(Boolean)));
+    const userIds = Array.from(new Set(results.map((r: any) => r.user_id).filter(Boolean)));
 
     const userMap: Record<string, { name: string; email: string }> = {};
     if (userIds.length > 0) {
@@ -53,21 +35,12 @@ export async function GET(req: NextRequest) {
         .from('users')
         .select('id, name, email')
         .in('id', userIds);
-      (usersData || []).forEach((u: { id: string; name: string; email: string }) => {
+      (usersData || []).forEach((u: any) => {
         userMap[u.id] = { name: u.name || '', email: u.email || '' };
       });
     }
 
-    const mapped = results.map((r: {
-      id: string;
-      test_id: string;
-      test_name: string;
-      score: number;
-      total_questions: number;
-      correct_answers: number;
-      completed_at: string;
-      user_id: string;
-    }) => ({
+    const mapped = results.map((r: any) => ({
       id: r.id,
       testId: r.test_id,
       testName: r.test_name,

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
@@ -14,22 +14,30 @@ function getSupabaseAdmin() {
   });
 }
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
-    const { data, error } = await getSupabaseAdmin()
-      .from('placement_results')
-      .select('user_id');
+    const sbAdmin = getSupabaseAdmin();
 
-    if (error) {
-      console.error('Error fetching placement stats:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+    const { count: total, error: totalError } = await sbAdmin
+      .from('placement_results')
+      .select('*', { count: 'exact', head: true });
+
+    if (totalError) {
+      console.error('Error fetching placement stats:', totalError);
+      return NextResponse.json({ error: totalError.message }, { status: 500 });
     }
 
-    const rows = data || [];
-    const total = rows.length;
-    const uniqueStudents = new Set(rows.map((r: any) => r.user_id).filter(Boolean)).size;
+    const { count: uniqueStudents, error: uniqueError } = await sbAdmin
+      .from('placement_results')
+      .select('user_id', { count: 'exact', head: true })
+      .not('user_id', 'is', null);
 
-    return NextResponse.json({ total, uniqueStudents });
+    if (uniqueError) {
+      console.error('Error fetching unique students:', uniqueError);
+      return NextResponse.json({ error: uniqueError.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ total: total || 0, uniqueStudents: uniqueStudents || 0 });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Error fetching placement stats:', err);

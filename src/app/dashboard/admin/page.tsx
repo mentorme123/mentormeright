@@ -129,9 +129,16 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     setRefreshing(true);
     try {
-      const [data, counts] = await Promise.all([fetchAllUsers(), fetchRoleCounts()]);
+      const [data, counts, placementStatsData] = await Promise.all([
+        fetchAllUsers(),
+        fetchRoleCounts(),
+        fetch('/api/placement/stats').then(r => r.ok ? r.json() : null).catch(() => null),
+      ]);
       if (data) setUsers(data);
       if (counts) setRoleCounts(counts);
+      if (placementStatsData) {
+        setPlacementStats({ total: placementStatsData.total || 0, uniqueStudents: placementStatsData.uniqueStudents || 0 });
+      }
       setLastUpdated(new Date());
 
       const hasSeenTour = localStorage.getItem('mentorme_admin_tour');

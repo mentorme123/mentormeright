@@ -31,37 +31,51 @@ export async function POST(req: NextRequest) {
       .ilike('email', normalizedEmail)
       .maybeSingle();
 
-    const generatedUserId = existingUser?.id || crypto.randomUUID();
+    let userId: string;
 
-    if (!existingUser?.id) {
-      const { error: profileInsertError } = await getSupabaseAdmin()
-        .from('users')
-        .insert([
-          {
-            id: generatedUserId,
-            email: normalizedEmail,
-            name: registration?.name || normalizedEmail.split('@')[0],
-            role: 'individual',
-            audience_type: 'ST',
-            mobile: registration?.phone || null,
-            school: registration?.college || null
-          }
-        ]);
-
-      if (profileInsertError) {
-        console.error('Error creating user profile for placement result:', profileInsertError);
-        return NextResponse.json({ error: profileInsertError.message }, { status: 500 });
+    if (existingUser?.id) {
+      userId = existingUser.id;
+      if (registration) {
+        const updates: Record<string, string | null> = {};
+        if (registration.name) updates.name = registration.name;
+        if (registration.phone) updates.mobile = registration.phone;
+        if (registration.college) updates.school = registration.college;
+        if (Object.keys(updates).length > 0) {
+          await getSupabaseAdmin()
+            .from('users')
+            .update(updates)
+            .eq('id', userId);
+        }
       }
-    } else if (registration) {
-      const updates: Record<string, string | null> = {};
-      if (registration.name) updates.name = registration.name;
-      if (registration.phone) updates.mobile = registration.phone;
-      if (registration.college) updates.school = registration.college;
-      if (Object.keys(updates).length > 0) {
-        await getSupabaseAdmin()
-          .from('users')
-          .update(updates)
-          .eq('id', generatedUserId);
+    } else {
+      // Create the auth user first — the on_auth_user_created trigger
+      // automatically inserts the matching public.users row, satisfying
+      // the users_id_fkey foreign key constraint.
+      const { data: authData, error: authError } = await getSupabaseAdmin().auth.admin.createUser({
+        email: normalizedEmail,
+        password: crypto.randomUUID(),
+        email_confirm: true,
+        user_metadata: { full_name: registration?.name || normalizedEmail.split('@')[0] },
+      });
+
+      if (authError) {
+        console.error('Error creating auth user for placement result:', authError);
+        return NextResponse.json({ error: authError.message }, { status: 500 });
+      }
+
+      userId = authData.user.id;
+
+      if (registration) {
+        const updates: Record<string, string | null> = {};
+        if (registration.name) updates.name = registration.name;
+        if (registration.phone) updates.mobile = registration.phone;
+        if (registration.college) updates.school = registration.college;
+        if (Object.keys(updates).length > 0) {
+          await getSupabaseAdmin()
+            .from('users')
+            .update(updates)
+            .eq('id', userId);
+        }
       }
     }
 
@@ -69,7 +83,7 @@ export async function POST(req: NextRequest) {
       .from('placement_results')
       .insert([
         {
-          user_id: generatedUserId,
+          user_id: userId,
           test_id: String(testId),
           test_name: String(testName || ''),
           score: Math.min(100, Math.max(0, score)),
@@ -86,7 +100,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: insertError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, userId: generatedUserId });
+    return NextResponse.json({ success: true, userId });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Error submitting placement result:', err);

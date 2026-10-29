@@ -58,26 +58,38 @@ export async function POST(req: NextRequest) {
     }
 
     const generatedUserId = crypto.randomUUID();
-    const { error: insertError } = await supabaseAdmin
-      .from('users')
-      .insert([
-        {
-          id: generatedUserId,
-          email: normalizedEmail,
-          name: normalizedName,
-          role: 'individual',
-          audience_type: 'ST',
-          mobile: normalizedPhone,
-          school: normalizedCollege,
-        },
-      ]);
 
-    if (insertError) {
-      console.error('[placement/register] User profile creation failed:', insertError);
-      return NextResponse.json({ error: insertError.message }, { status: 500 });
+    // Create the auth user first — the on_auth_user_created trigger
+    // automatically inserts the matching public.users row, satisfying
+    // the users_id_fkey foreign key constraint.
+    const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
+      email: normalizedEmail,
+      password: generatedUserId,
+      email_confirm: true,
+      user_metadata: { full_name: normalizedName },
+    });
+
+    if (authError) {
+      console.error('[placement/register] Auth user creation failed:', authError);
+      return NextResponse.json({ error: authError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, userId: generatedUserId, updated: false });
+    const { error: profileError } = await supabaseAdmin
+      .from('users')
+      .update({
+        name: normalizedName,
+        mobile: normalizedPhone,
+        school: normalizedCollege,
+        role: 'individual',
+        audience_type: 'ST',
+      })
+      .eq('id', authData.user.id);
+
+    if (profileError) {
+      console.error('[placement/register] Profile update failed:', profileError);
+    }
+
+    return NextResponse.json({ success: true, userId: authData.user.id, updated: false });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('[placement/register] Error saving registration:', err);

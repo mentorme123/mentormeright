@@ -106,19 +106,33 @@ async function transcribeAudio(file: File): Promise<string> {
     }]
   });
 
-  const response = await withRetry(async () => {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body,
-        signal: AbortSignal.timeout(60000),
+  let response;
+  try {
+    response = await withRetry(async () => {
+      const r = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body,
+          signal: AbortSignal.timeout(90000),
+        }
+      );
+      if (!r.ok && r.status >= 500) {
+        let detail='';
+        try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
+        throw Object.assign(new Error(detail||r.statusText), {status: r.status});
       }
-    );
-    return r;
-  });
+      return r;
+    });
+  } catch (e: any) {
+    if (e.name === 'AbortError' || e.message?.includes('timeout') || e.message?.includes('aborted') || e.message?.includes('aborted')) {
+      fail('Audio transcription timed out. The language model API is busy; please try again in a few minutes.', 502);
+    }
+    throw e;
+  }
 
+  if (!response) fail('Audio transcription request was aborted. Please try again.', 502);
   if (!response.ok) {
     let detail = '';
     try {
@@ -136,33 +150,48 @@ async function transcribeAudio(file: File): Promise<string> {
   return text.trim();
 }
 
+
 async function evaluateAnswer(prompt: any): Promise<any> {
   const env = getEnv();
-  const response = await withRetry(async () => {
-    const r = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-        generationConfig: {
-          responseMimeType: 'application/json',
-        },
-        contents: [
-          {
-            role: 'user',
-            parts: [{
-              text: `You are MentorMe, an interview practice coach for Indian graduates. Return JSON: {technical:number 0..100,english:number 0..100,strength:string,improvement:string,example:string,nextQuestion:string,nextRubric:string}. Technical: correctness 40%, application 30%, completeness 20%, reasoning 10%. English: grammar 30%, vocabulary 20%, clarity 30%, structure 20%. Explain errors specifically.\n\n${JSON.stringify(prompt)}`
-            }]
-          }
-        ]
-      }),
-      signal: AbortSignal.timeout(60000),
+  let response;
+  try {
+    response = await withRetry(async () => {
+      const r = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+          generationConfig: {
+            responseMimeType: 'application/json',
+          },
+          contents: [
+            {
+              role: 'user',
+              parts: [{
+                text: `You are MentorMe, an interview practice coach for Indian graduates. Return JSON: {technical:number 0..100,english:number 0..100,strength:string,improvement:string,example:string,nextQuestion:string,nextRubric:string}. Technical: correctness 40%, application 30%, completeness 20%, reasoning 10%. English: grammar 30%, vocabulary 20%, clarity 30%, structure 20%. Explain errors specifically.\\n\\n${JSON.stringify(prompt)}`
+              }]
+            }
+          ]
+        }),
+        signal: AbortSignal.timeout(90000),
+      }
+      );
+      if (!r.ok && r.status >= 500) {
+        let detail='';
+        try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
+        throw Object.assign(new Error(detail||r.statusText), {status: r.status});
+      }
+      return r;
+    });
+  } catch (e: any) {
+    if (e.name === 'AbortError' || e.message?.includes('timeout') || e.message?.includes('aborted')) {
+      fail('AI answer evaluation timed out. The language model API is busy; please try again in a few minutes.', 502);
     }
-  );
-    return r;
-  });
+    throw e;
+  }
 
+  if (!response) fail('AI answer evaluation request was aborted. Please try again.', 502);
   if (!response.ok) {
     let detail = '';
     try {
@@ -184,6 +213,7 @@ async function evaluateAnswer(prompt: any): Promise<any> {
   }
   return feedback;
 }
+
 
 export async function GET(req: NextRequest) {
   try {

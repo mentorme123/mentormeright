@@ -534,6 +534,35 @@ function showCatalogue(){
   document.getElementById("catalogue").style.display="block";
   renderTabs();renderCards();window.scrollTo({top:0,behavior:"smooth"});
 }
+  try{
+    const urlParams = new URLSearchParams(window.location.search);
+    const resultId = urlParams.get('result');
+    if (resultId) {
+      const res = await fetch(`/api/placement/results?resultId=${encodeURIComponent(resultId)}`, { credentials: 'same-origin' });
+      if (res.ok) {
+        const json = await res.json();
+        const item = (json.results || [])[0];
+        if (item) {
+          document.getElementById("testShell").style.display = "none";
+          document.getElementById("catalogue").style.display = "none";
+          document.getElementById("result").style.display = "block";
+          document.getElementById("resultTitle").textContent = item.testName || 'Placement Assessment';
+          document.getElementById("score").textContent = Math.round(item.score || 0) + "/100";
+          const pct = item.score || 0;
+          const msg = pct>=80?"Strong placement readiness on this assessment.":pct>=65?"Good base. Target the weaker sections before your next attempt.":pct>=50?"Developing. Review concepts and practise before retaking.":"Foundation needs strengthening. Use the workbook and targeted practice first.";
+          const correct = item.correctAnswers || 0;
+          const total = item.totalQuestions || 0;
+          document.getElementById("resultMsg").innerHTML = `<p>${correct} correct out of ${total}. <strong>${msg}</strong></p>`;
+          const breakdown = item.breakdown || {};
+          const breakdownHtml = Object.entries(breakdown).map(([k,v]: [string, any]) => {
+            const pctVal = Math.round((v.c/v.n)*100);
+            return `<div class="stat"><strong>${String(k).replaceAll('_',' ').toUpperCase()}</strong><br><span class="small">${pctVal}% · ${v.c}/${v.n} correct</span></div>`;
+          }).join("");
+          document.getElementById("breakdown").innerHTML = breakdownHtml;
+        }
+      }
+    }
+  }catch(e){}
   renderTabs();renderCards();
   document.getElementById('regCloseBtn').onclick = hideRegistrationModal;
   document.getElementById('regModal').onclick = function(e){ if(e.target === this) hideRegistrationModal(); };

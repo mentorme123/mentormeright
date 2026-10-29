@@ -25,7 +25,7 @@ function fail(s: string, n = 400): never {
   throw Object.assign(new Error(s), { status: n });
 }
 
-async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 1): Promise<T> {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       return await fn();
@@ -116,11 +116,6 @@ async function transcribeAudio(file: File): Promise<string> {
         signal: AbortSignal.timeout(60000),
       }
     );
-    if (!r.ok && r.status >= 500) {
-      let detail = '';
-      try { const errorData: any = await r.json(); detail = String(errorData.error?.message || ''); } catch {}
-      throw Object.assign(new Error(detail || r.statusText), { status: r.status });
-    }
     return r;
   });
 
@@ -165,11 +160,6 @@ async function evaluateAnswer(prompt: any): Promise<any> {
       signal: AbortSignal.timeout(60000),
     }
   );
-    if (!r.ok && r.status >= 500) {
-      let detail='';
-      try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
-      throw Object.assign(new Error(detail||r.statusText), {status: r.status});
-    }
     return r;
   });
 

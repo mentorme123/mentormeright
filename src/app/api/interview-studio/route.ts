@@ -118,11 +118,6 @@ async function transcribeAudio(file: File): Promise<string> {
           signal: AbortSignal.timeout(90000),
         }
       );
-      if (!r.ok && r.status >= 500) {
-        let detail='';
-        try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
-        throw Object.assign(new Error(detail||r.statusText), {status: r.status});
-      }
       return r;
     });
   } catch (e: any) {
@@ -177,11 +172,6 @@ async function evaluateAnswer(prompt: any): Promise<any> {
         signal: AbortSignal.timeout(90000),
       }
       );
-      if (!r.ok && r.status >= 500) {
-        let detail='';
-        try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
-        throw Object.assign(new Error(detail||r.statusText), {status: r.status});
-      }
       return r;
     });
   } catch (e: any) {

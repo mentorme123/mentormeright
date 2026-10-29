@@ -32,6 +32,7 @@ export async function GET(req: NextRequest) {
     const query = getSupabaseAdmin()
       .from('placement_results')
       .select('id, test_id, test_name, score, total_questions, correct_answers, completed_at, user_id')
+      .not('user_id', 'is', null)
       .order('completed_at', { ascending: false });
 
     const { data, error } = targetUserId

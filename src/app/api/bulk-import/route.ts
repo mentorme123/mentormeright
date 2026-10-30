@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
     let counter = 0;
+    const seenEmails = new Set<string>();
     for (const student of students) {
       counter++;
       const studentKeys = Object.keys(student);
@@ -45,15 +46,30 @@ export async function POST(req: NextRequest) {
       const sanitizedName = rawName.slice(0, 100);
       const sanitizedGrade = rawClass.slice(0, 50);
 
+      // Deterministic unique-email generator based on the FULL name so that
+      // different students sharing a first name never collide (e.g. multiple
+      // "Mohammed ..." must each get their own account).
+      const makeUniqueEmail = (base: string, taken: Set<string>) => {
+        if (!base) base = `student${counter}@mentormeright.com`;
+        if (!taken.has(base)) return base;
+        const slug = sanitizedName.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 28) || 'student';
+        let n = 1;
+        let candidate = `${slug}${n}@mentormeright.com`;
+        while (taken.has(candidate)) { n++; candidate = `${slug}${n}@mentormeright.com`; }
+        return candidate;
+      };
+
       let email: string;
       let password: string;
 
       if (rollDigits) {
-        email = `R${rollDigits}@mentormeright.com`;
+        email = makeUniqueEmail(`R${rollDigits}@mentormeright.com`, seenEmails);
         password = `R@${rollDigits}`;
       } else if (nameUser) {
-        email = nameUser;
-        password = `MM${firstName || 'student'}@123`;
+        // Use full-name-derived slug to avoid first-name collisions
+        const slug = sanitizedName.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 28) || firstName.toLowerCase() || 'student';
+        email = makeUniqueEmail(`${slug}@mentormeright.com`, seenEmails);
+        password = `MM${slug}@123`;
       } else {
         // Deterministic fallback: hash the full name + institution + counter so
         // re-importing the same CSV resolves to the SAME email every time.
@@ -63,11 +79,12 @@ export async function POST(req: NextRequest) {
           hash = ((hash << 5) - hash + stableSeed.charCodeAt(i)) | 0;
         }
         const stableNum = Math.abs(hash).toString().slice(0, 10);
-        email = `student${stableNum}@mentormeright.com`;
+        email = makeUniqueEmail(`student${stableNum}@mentormeright.com`, seenEmails);
         password = `MMstudent${stableNum}@123`;
       }
 
       const username = email;
+      seenEmails.add(email);
 
       // 1. Check by email (exact match)
       const { data: existingUser } = await supabaseAdmin

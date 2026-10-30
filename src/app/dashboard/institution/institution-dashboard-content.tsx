@@ -72,7 +72,7 @@ export default function InstitutionDashboardContent() {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
   const [studentsImported, setStudentsImported] = useState(0);
-  const [uploadResults, setUploadResults] = useState<Array<{ name?: string; email?: string; password?: string; status: string; error?: string }>>([]);
+  const [uploadResults, setUploadResults] = useState<Array<{ name?: string; email?: string; username?: string; password?: string; status: string; error?: string; education_level?: string | null }>>([]);
   const [institutionName, setInstitutionName] = useState("Global School System");
 
   const [institutionEmail, setInstitutionEmail] = useState("");
@@ -88,7 +88,7 @@ export default function InstitutionDashboardContent() {
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
   const [deletingDuplicates, setDeletingDuplicates] = useState(false);
-  const [duplicateResult, setDuplicateResult] = useState<{ deleted: number; kept: number } | null>(null);
+  const [duplicateResult, setDuplicateResult] = useState<{ deleted: number; kept: number; transferred: number } | null>(null);
 
   const refreshStudents = useCallback(async (currentInstitutionName: string) => {
     try {
@@ -184,17 +184,17 @@ export default function InstitutionDashboardContent() {
   };
 
   const handleDeleteDuplicates = async () => {
-    if (!confirm('This will scan for duplicate student accounts (same email appearing multiple times). No accounts will be deleted. Continue?')) return;
+    if (!confirm('This will find and delete duplicate student accounts (same email). Completed assessments will be transferred to the kept account. Continue?')) return;
     setDeletingDuplicates(true);
     setDuplicateResult(null);
     try {
-      const response = await fetch(`/api/institution/duplicates?institution=${encodeURIComponent(institutionName)}`, {
+      const response = await fetch(`/api/institution/duplicates?institution=${encodeURIComponent(institutionName)}&delete=true`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' }
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to delete duplicates');
-      setDuplicateResult({ deleted: data.deleted, kept: data.kept });
+      setDuplicateResult({ deleted: data.deleted, kept: data.kept, transferred: data.transferredAssessments });
       await refreshStudents(institutionName);
     } catch (err: unknown) {
       setErrorMessage(err instanceof Error ? err.message : 'Failed to delete duplicates');
@@ -505,6 +505,14 @@ export default function InstitutionDashboardContent() {
                   >
                     {migratingEmails ? 'Migrating...' : 'Migrate Emails'}
                   </Button>
+                  <Button
+                    onClick={handleDeleteDuplicates}
+                    disabled={deletingDuplicates}
+                    variant="outline"
+                    className="bg-white border border-rose-200 hover:border-rose-400 text-rose-700 font-bold px-4 py-2 rounded-xl"
+                  >
+                    {deletingDuplicates ? 'Processing...' : 'Delete Duplicates'}
+                  </Button>
                    <Button
                      onClick={handleDownloadCredentials}
                      variant="outline"
@@ -726,6 +734,11 @@ export default function InstitutionDashboardContent() {
               {migrateResult && (
                 <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
                   <CheckCircle2 size={18} /> Email migration complete: {migrateResult.updated} updated, {migrateResult.skipped} skipped, {migrateResult.errors} errors.
+                </div>
+              )}
+              {duplicateResult && (
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
+                  <CheckCircle2 size={18} /> Duplicate cleanup complete: {duplicateResult.deleted} deleted, {duplicateResult.kept} kept, {duplicateResult.transferred} assessment(s) transferred to kept accounts.
                 </div>
               )}
             </div>

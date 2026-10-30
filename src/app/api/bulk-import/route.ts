@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid students data' }, { status: 400 });
     }
 
-    const results: Array<{ name?: string; email?: string; password?: string; status: string; error?: string }> = [];
+    const results: Array<{ name?: string; email?: string; username?: string; password?: string; status: string; error?: string; education_level?: string | null }> = [];
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
     let counter = 0;
@@ -42,11 +42,32 @@ export async function POST(req: NextRequest) {
       const firstName = (rawName.split(/\s+/)[0] || '').replace(/[^a-zA-Z0-9]/gi, '');
       const nameUser = firstName ? `${firstName.toLowerCase()}@mentormeright.com` : '';
       const rollDigits = rawRoll.replace(/[^0-9]/g, '').slice(0, 20);
-      const email = rollDigits ? `R${rollDigits}@mentormeright.com` : (nameUser || `student${Math.floor(Date.now() / 1000)}_${counter}@mentormeright.com`);
-      const username = email;
-      const password = rollDigits ? `R@${rollDigits}` : `MM${firstName || 'student'}@123`;
       const sanitizedName = rawName.slice(0, 100);
       const sanitizedGrade = rawClass.slice(0, 50);
+
+      let email: string;
+      let password: string;
+
+      if (rollDigits) {
+        email = `R${rollDigits}@mentormeright.com`;
+        password = `R@${rollDigits}`;
+      } else if (nameUser) {
+        email = nameUser;
+        password = `MM${firstName || 'student'}@123`;
+      } else {
+        // Deterministic fallback: hash the full name + institution + counter so
+        // re-importing the same CSV resolves to the SAME email every time.
+        const stableSeed = `${sanitizedInstitution}|${sanitizedName}|${counter}`;
+        let hash = 0;
+        for (let i = 0; i < stableSeed.length; i++) {
+          hash = ((hash << 5) - hash + stableSeed.charCodeAt(i)) | 0;
+        }
+        const stableNum = Math.abs(hash).toString().slice(0, 10);
+        email = `student${stableNum}@mentormeright.com`;
+        password = `MMstudent${stableNum}@123`;
+      }
+
+      const username = email;
 
       const { data: existingUser } = await supabaseAdmin
         .from('users')

@@ -13,7 +13,20 @@ const nextConfig = {
         hostname: '**',
       },
     ],
-  }
+  },
+  async headers() {
+    return [
+      {
+        source: '/placement-assessment.html',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

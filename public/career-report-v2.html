@@ -1,241 +1,899 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MentorMe Comprehensive Career Intelligence Report</title>
-<style>
-:root{--navy:#0d2545;--navy2:#173b68;--teal:#00a6a6;--orange:#f28c28;--gold:#d9a441;--ink:#17212f;--muted:#525e75;--light:#f4f7fa;--line:#d0d7de;--white:#fff;--green:#16865c}
-*{box-sizing:border-box}html,body{margin:0;padding:0;background:#eef2f6;color:var(--ink);font-family:Inter,Segoe UI,Arial,sans-serif}body{line-height:1.5;font-size:12px}
-.toolbar{position:sticky;top:0;z-index:50;background:rgba(13,37,69,.98);color:#fff;padding:10px 16px;display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
-.toolbar button,.toolbar label{border:1px solid rgba(255,255,255,.25);background:#fff;color:var(--navy);border-radius:7px;padding:8px 12px;font-weight:800;cursor:pointer;font-size:13px}.toolbar .secondary{background:transparent;color:#fff}
-#jsonBox{width:min(1180px,94vw);height:190px;margin:14px auto;display:none;font:13px/1.5 Consolas,monospace;padding:12px;border:1px solid var(--line);border-radius:8px;background:#fff}
-.app{max-width:1000px;margin:20px auto}.report{background:#fff;box-shadow:0 10px 35px rgba(16,24,40,.12)}
-.page{min-height:280mm;padding:18mm 15mm 15mm;position:relative;page-break-after:always;overflow:hidden}.page:last-child{page-break-after:auto}
-.page-head{position:absolute;top:6mm;left:15mm;right:15mm;height:12mm;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e7ebef;padding-bottom:3mm}.page-head img{width:38mm;height:auto;max-height:12mm;object-fit:contain;object-position:left center}.page-head .head-title{font-size:9.5px;color:#808ca1;font-weight:700;letter-spacing:.5px}
-.cover{min-height:280mm;background:linear-gradient(145deg,var(--navy),#0a5670);color:#fff;display:flex;flex-direction:column;justify-content:space-between}
-.brand{font-weight:900;letter-spacing:.4px;font-size:24px;display:inline-flex;align-items:center;justify-content:flex-start;max-width:100px;flex-shrink:1;overflow:hidden}.brand img{height:24px;width:auto;object-fit:contain;max-width:80px;flex-shrink:1}.cover .brand img{height:24px;width:auto;object-fit:contain;max-width:80px;filter:brightness(0) invert(1);flex-shrink:1}.page-head .brand img{height:22px;width:auto;object-fit:contain;max-width:80px;flex-shrink:1}.brand span{color:#63e6e2}.cover .eyebrow{text-transform:uppercase;letter-spacing:3px;font-size:13px;opacity:.85}.cover h1{font-size:48px;line-height:1.05;margin:18px 0}.cover h2{font-size:22px;line-height:1.35;font-weight:700;margin:0;max-width:760px;color:var(--orange)}.student{border-left:5px solid var(--orange);padding-left:18px;margin-top:42px}.student strong{font-size:30px}.meta{opacity:.9;margin-top:6px;font-size:13px}
-.footer{position:absolute;bottom:7mm;left:15mm;right:15mm;display:flex;justify-content:space-between;font-size:10px;color:var(--muted);border-top:1px solid var(--line);padding-top:6px}.cover .footer{color:rgba(255,255,255,.8);border-color:rgba(255,255,255,.2)}
-.section-kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--teal);font-weight:900}h2{font-size:24px;color:var(--navy);margin:4px 0 6px}h3{font-size:16px;color:var(--navy);margin:12px 0 6px}.lead{font-size:14px;color:#2c3a4e;max-width:880px;line-height:1.45}.page p.small{font-size:11px;line-height:1.4}.page p.tiny,.page .tiny{font-size:9.5px;line-height:1.35}.page .card{padding:12px;border-radius:8px}
-.salary-table td,.salary-table th{font-size:10px}.salary-table td{padding:6px 8px}.salary-table th{padding:7px 8px}.economics-note{font-size:9px;color:#667085;margin-top:4px}.investment-total{font-size:12px;font-weight:900;color:var(--navy)}.institution-career{margin:8px 0 10px}.institution-career h4{font-size:13px;color:var(--navy);margin:0 0 4px}.institution-career .table{margin:0}.institution-career .table td,.institution-career .table th{padding:5px 8px;font-size:10px}.dev-summary{background:#f7fafc;border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:12px}.dev-list{display:flex;flex-direction:column;gap:8px;margin-top:8px}.dev-item{background:#fff;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:11px;color:var(--navy)}
-.callout{background:#f0fbfb;border-left:4px solid var(--teal);padding:10px 12px;border-radius:6px;margin:10px 0}.callout.orange{background:#fff6ea;border-left-color:var(--orange)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.card{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fff}.card h4{margin:0 0 4px;color:var(--navy);font-size:12.5px}.muted{color:var(--muted)}.kpi{font-size:24px;font-weight:900;color:var(--navy)}.badge{display:inline-block;border-radius:999px;padding:3px 8px;font-size:9.5px;font-weight:800;background:#eaf7f6;color:#087b7a}.badge.orange{background:#fff0dc;color:#a55d0b}.badge.blue{background:#eaf0fa;color:#214b7c}.badge.green{background:#eaf7ef;color:#16734f}
-.rank{display:flex;flex-direction:column;gap:4px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin:6px 0;background:#fff}.rank-header{display:flex;align-items:center;justify-content:space-between;width:100%}.rank-left{display:flex;align-items:center;gap:10px}.ranknum{width:28px;height:28px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;flex-shrink:0}.score{font-weight:900;color:var(--teal);font-size:15px}.bar{height:6px;background:#e8edf2;border-radius:999px;overflow:hidden;margin-top:3px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),#46c5c0)}
-.fit-desc{font-size:10.5px;color:#2c3a4e;background:#f8fafc;padding:6px 8px;border-radius:4px;border-left:3px solid var(--teal);margin-top:4px;line-height:1.4}
-.profile-row{margin:6px 0}.profile-row .head{display:flex;justify-content:space-between;font-size:11px;font-weight:700}.param-desc{font-size:9px;color:var(--muted);margin-top:2px;line-height:1.25}
-.table{width:100%;border-collapse:collapse;font-size:10px;table-layout:fixed}.table th{background:var(--navy);color:#fff;text-align:left;padding:7px 8px;word-wrap:break-word;overflow-wrap:break-word;font-size:10.5px}.table td{border-bottom:1px solid var(--line);padding:7px 8px;vertical-align:top;word-wrap:break-word;overflow-wrap:break-word}
-.disclaimer{font-size:9.5px;color:#525e75;background:#f7f8fa;padding:10px;border-radius:6px;line-height:1.4}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>MentorMe Comprehensive Career Intelligence Report</title>
+  <style>
+    :root {
+      --navy: #0d2545;
+      --navy2: #173b68;
+      --teal: #00a6a6;
+      --orange: #f28c28;
+      --gold: #d9a441;
+      --ink: #17212f;
+      --muted: #525e75;
+      --light: #f4f7fa;
+      --line: #d0d7de;
+      --white: #fff;
+      --green: #16865c
+    }
 
-.roadmap-table-wrapper{width:100%;overflow-x:auto;margin-top:8px}
-.roadmap-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:9.5px}
-.roadmap-table th{background:var(--navy);color:#fff;padding:6px 5px;text-align:left;font-size:9.5px;font-weight:700;word-wrap:break-word;overflow-wrap:break-word}
-.roadmap-table td{padding:6px 5px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top;line-height:1.3}
-.roadmap-table tr:nth-child(even){background:#f9fbfd}
-.roadmap-table td:last-child,.roadmap-table th:last-child{border-right:none}
+    * {
+      box-sizing: border-box
+    }
 
-.radar-box{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px;margin-bottom:12px}
-.radar-title{font-size:12px;font-weight:800;color:var(--navy);margin-bottom:4px}
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #eef2f6;
+      color: var(--ink);
+      font-family: Inter, Segoe UI, Arial, sans-serif
+    }
 
-.contact-banner{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:10px;padding:16px;margin-top:14px;box-shadow:0 4px 12px rgba(13,37,69,0.15)}
-.contact-banner h3{color:#fff;font-size:17px;margin:0 0 6px;text-transform:uppercase;letter-spacing:1px;font-weight:900;text-align:center}
-.contact-banner p{font-size:11px;color:#e2e8f0;margin:0 0 12px;text-align:center}
-.contact-table{width:100%;border-collapse:collapse;background:rgba(255,255,255,0.08);border-radius:8px;overflow:hidden}
-.contact-table td{padding:10px 14px;color:#fff;font-size:11px;border-right:1px solid rgba(255,255,255,0.15);vertical-align:middle}
-.contact-table td:last-child{border-right:none}
-.contact-table strong{color:var(--teal);display:block;font-size:10px;text-transform:uppercase;margin-bottom:3px}
+    body {
+      line-height: 1.5;
+      font-size: 12px
+    }
 
-@media print{@page{size:A4;margin:0}body{background:#fff}.toolbar,#jsonBox{display:none!important}.app{max-width:none;margin:0}.report{box-shadow:none}.page{width:210mm;min-height:297mm;page-break-after:always}.page:last-child{page-break-after:auto}.no-print{display:none!important}}
-</style>
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(13, 37, 69, .98);
+      color: #fff;
+      padding: 10px 16px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap
+    }
+
+    .toolbar button,
+    .toolbar label {
+      border: 1px solid rgba(255, 255, 255, .25);
+      background: #fff;
+      color: var(--navy);
+      border-radius: 7px;
+      padding: 8px 12px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 13px
+    }
+
+    .toolbar .secondary {
+      background: transparent;
+      color: #fff
+    }
+
+    #jsonBox {
+      width: min(1180px, 94vw);
+      height: 190px;
+      margin: 14px auto;
+      display: none;
+      font: 13px/1.5 Consolas, monospace;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff
+    }
+
+    .app {
+      max-width: 1000px;
+      margin: 20px auto
+    }
+
+    .report {
+      background: #fff;
+      box-shadow: 0 10px 35px rgba(16, 24, 40, .12)
+    }
+
+    .page {
+      min-height: 280mm;
+      padding: 18mm 15mm 15mm;
+      position: relative;
+      page-break-after: always;
+      overflow: hidden
+    }
+
+    .page:last-child {
+      page-break-after: auto
+    }
+
+    .page-head {
+      position: absolute;
+      top: 6mm;
+      left: 15mm;
+      right: 15mm;
+      height: 12mm;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e7ebef;
+      padding-bottom: 3mm
+    }
+
+    .page-head img {
+      width: 38mm;
+      height: auto;
+      max-height: 12mm;
+      object-fit: contain;
+      object-position: left center
+    }
+
+    .page-head .head-title {
+      font-size: 9.5px;
+      color: #808ca1;
+      font-weight: 700;
+      letter-spacing: .5px
+    }
+
+    .cover {
+      min-height: 280mm;
+      background: linear-gradient(145deg, var(--navy), #0a5670);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between
+    }
+
+    .brand {
+      font-weight: 900;
+      letter-spacing: .4px;
+      font-size: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      max-width: 100px;
+      flex-shrink: 1;
+      overflow: hidden
+    }
+
+    .brand img {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+      max-width: 80px;
+      flex-shrink: 1
+    }
+
+    .cover .brand img {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+      max-width: 80px;
+      filter: brightness(0) invert(1);
+      flex-shrink: 1
+    }
+
+    .page-head .brand img {
+      height: 22px;
+      width: auto;
+      object-fit: contain;
+      max-width: 80px;
+      flex-shrink: 1
+    }
+
+    .brand span {
+      color: #63e6e2
+    }
+
+    .cover .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 13px;
+      opacity: .85
+    }
+
+    .cover h1 {
+      font-size: 48px;
+      line-height: 1.05;
+      margin: 18px 0
+    }
+
+    .cover h2 {
+      font-size: 22px;
+      line-height: 1.35;
+      font-weight: 700;
+      margin: 0;
+      max-width: 760px;
+      color: var(--orange)
+    }
+
+    .student {
+      border-left: 5px solid var(--orange);
+      padding-left: 18px;
+      margin-top: 42px
+    }
+
+    .student strong {
+      font-size: 30px
+    }
+
+    .meta {
+      opacity: .9;
+      margin-top: 6px;
+      font-size: 13px
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 7mm;
+      left: 15mm;
+      right: 15mm;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 6px
+    }
+
+    .cover .footer {
+      color: rgba(255, 255, 255, .8);
+      border-color: rgba(255, 255, 255, .2)
+    }
+
+    .section-kicker {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-weight: 900
+    }
+
+    h2 {
+      font-size: 24px;
+      color: var(--navy);
+      margin: 4px 0 6px
+    }
+
+    h3 {
+      font-size: 16px;
+      color: var(--navy);
+      margin: 12px 0 6px
+    }
+
+    .lead {
+      font-size: 14px;
+      color: #2c3a4e;
+      max-width: 880px;
+      line-height: 1.45
+    }
+
+    .page p.small {
+      font-size: 11px;
+      line-height: 1.4
+    }
+
+    .page p.tiny,
+    .page .tiny {
+      font-size: 9.5px;
+      line-height: 1.35
+    }
+
+    .page .card {
+      padding: 12px;
+      border-radius: 8px
+    }
+
+    .salary-table td,
+    .salary-table th {
+      font-size: 10px
+    }
+
+    .salary-table td {
+      padding: 6px 8px
+    }
+
+    .salary-table th {
+      padding: 7px 8px
+    }
+
+    .economics-note {
+      font-size: 9px;
+      color: #667085;
+      margin-top: 4px
+    }
+
+    .investment-total {
+      font-size: 12px;
+      font-weight: 900;
+      color: var(--navy)
+    }
+
+    .institution-career {
+      margin: 8px 0 10px
+    }
+
+    .institution-career h4 {
+      font-size: 13px;
+      color: var(--navy);
+      margin: 0 0 4px
+    }
+
+    .institution-career .table {
+      margin: 0
+    }
+
+    .institution-career .table td,
+    .institution-career .table th {
+      padding: 5px 8px;
+      font-size: 10px
+    }
+
+    .dev-summary {
+      background: #f7fafc;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px
+    }
+
+    .dev-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 8px
+    }
+
+    .dev-item {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 11px;
+      color: var(--navy)
+    }
+
+    .callout {
+      background: #f0fbfb;
+      border-left: 4px solid var(--teal);
+      padding: 10px 12px;
+      border-radius: 6px;
+      margin: 10px 0
+    }
+
+    .callout.orange {
+      background: #fff6ea;
+      border-left-color: var(--orange)
+    }
+
+    .grid2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px
+    }
+
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: #fff
+    }
+
+    .card h4 {
+      margin: 0 0 4px;
+      color: var(--navy);
+      font-size: 12.5px
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    .kpi {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--navy)
+    }
+
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 9.5px;
+      font-weight: 800;
+      background: #eaf7f6;
+      color: #087b7a
+    }
+
+    .badge.orange {
+      background: #fff0dc;
+      color: #a55d0b
+    }
+
+    .badge.blue {
+      background: #eaf0fa;
+      color: #214b7c
+    }
+
+    .badge.green {
+      background: #eaf7ef;
+      color: #16734f
+    }
+
+    .rank {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin: 6px 0;
+      background: #fff
+    }
+
+    .rank-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%
+    }
+
+    .rank-left {
+      display: flex;
+      align-items: center;
+      gap: 10px
+    }
+
+    .ranknum {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+      flex-shrink: 0
+    }
+
+    .score {
+      font-weight: 900;
+      color: var(--teal);
+      font-size: 15px
+    }
+
+    .bar {
+      height: 6px;
+      background: #e8edf2;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 3px
+    }
+
+    .bar i {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), #46c5c0)
+    }
+
+    .fit-desc {
+      font-size: 10.5px;
+      color: #2c3a4e;
+      background: #f8fafc;
+      padding: 6px 8px;
+      border-radius: 4px;
+      border-left: 3px solid var(--teal);
+      margin-top: 4px;
+      line-height: 1.4
+    }
+
+    .profile-row {
+      margin: 6px 0
+    }
+
+    .profile-row .head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700
+    }
+
+    .param-desc {
+      font-size: 9px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.25
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+      table-layout: fixed
+    }
+
+    .table th {
+      background: var(--navy);
+      color: #fff;
+      text-align: left;
+      padding: 7px 8px;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      font-size: 10.5px
+    }
+
+    .table td {
+      border-bottom: 1px solid var(--line);
+      padding: 7px 8px;
+      vertical-align: top;
+      word-wrap: break-word;
+      overflow-wrap: break-word
+    }
+
+    .disclaimer {
+      font-size: 9.5px;
+      color: #525e75;
+      background: #f7f8fa;
+      padding: 10px;
+      border-radius: 6px;
+      line-height: 1.4
+    }
+
+    .roadmap-table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 8px
+    }
+
+    .roadmap-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 9.5px
+    }
+
+    .roadmap-table th {
+      background: var(--navy);
+      color: #fff;
+      padding: 6px 5px;
+      text-align: left;
+      font-size: 9.5px;
+      font-weight: 700;
+      word-wrap: break-word;
+      overflow-wrap: break-word
+    }
+
+    .roadmap-table td {
+      padding: 6px 5px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      vertical-align: top;
+      line-height: 1.3
+    }
+
+    .roadmap-table tr:nth-child(even) {
+      background: #f9fbfd
+    }
+
+    .roadmap-table td:last-child,
+    .roadmap-table th:last-child {
+      border-right: none
+    }
+
+    .radar-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 12px
+    }
+
+    .radar-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 4px
+    }
+
+    .contact-banner {
+      background: linear-gradient(135deg, var(--navy), var(--navy2));
+      color: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 14px;
+      box-shadow: 0 4px 12px rgba(13, 37, 69, 0.15)
+    }
+
+    .contact-banner h3 {
+      color: #fff;
+      font-size: 17px;
+      margin: 0 0 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+      text-align: center
+    }
+
+    .contact-banner p {
+      font-size: 11px;
+      color: #e2e8f0;
+      margin: 0 0 12px;
+      text-align: center
+    }
+
+    .contact-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      overflow: hidden
+    }
+
+    .contact-table td {
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 11px;
+      border-right: 1px solid rgba(255, 255, 255, 0.15);
+      vertical-align: middle
+    }
+
+    .contact-table td:last-child {
+      border-right: none
+    }
+
+    .contact-table strong {
+      color: var(--teal);
+      display: block;
+      font-size: 10px;
+      text-transform: uppercase;
+      margin-bottom: 3px
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 0
+      }
+
+      body {
+        background: #fff
+      }
+
+      .toolbar,
+      #jsonBox {
+        display: none !important
+      }
+
+      .app {
+        max-width: none;
+        margin: 0
+      }
+
+      .report {
+        box-shadow: none
+      }
+
+      .page {
+        width: 210mm;
+        min-height: 297mm;
+        page-break-after: always
+      }
+
+      .page:last-child {
+        page-break-after: auto
+      }
+
+      .no-print {
+        display: none !important
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="app"><div id="report" class="report"></div></div>
+  <div class="app">
+    <div id="report" class="report"></div>
+  </div>
 
-<script>
-const parameterDefinitions = {
-  Administrative: "Ability to organize, structure, process data, and follow procedural tasks systematically.",
-  Numerical: "Proficiency in mathematical reasoning, numerical calculations, and quantitative problem-solving.",
-  Logical: "Capability to analyze complex structured problems, identify patterns, and reason algorithmically.",
-  Mechanical: "Understanding of physical mechanisms, structural relations, spatial orientation, and machinery.",
-  Verbal: "Fluency in language comprehension, articulation, written expression, and textual reasoning.",
-  Realistic: "Preference for concrete, hands-on, practical tasks working with technology, tools, or physical objects.",
-  Investigative: "Preference for analytical, research-oriented, scientific, and intellectual problem-solving.",
-  Artistic: "Preference for creative, original, self-expressive, design-focused, and non-routine pursuits.",
-  Social: "Preference for mentoring, helping, collaborating with, and directly supporting others.",
-  Enterprising: "Preference for leadership, persuasion, business strategy, negotiation, and driving initiatives.",
-  Conventional: "Preference for structured, organized, detail-oriented, rule-bound, and quantitative workflows.",
-  Empathy: "Capacity to understand, relate to, and authentically care for the feelings and perspectives of others.",
-  "Emotional Intelligence": "Ability to recognize, regulate, and navigate interpersonal dynamics and personal emotions.",
-  Engagement: "Level of active dedication, persistence, focus, and drive brought to tasks and goals.",
-  Exploration: "Inquisitiveness, intellectual openness, and active eagerness to discover new domains.",
-  Efficiency: "Capacity for productivity, time management, active execution, and operational effectiveness.",
-  Extraversion: "Capacity for productivity, time management, active execution, and operational effectiveness."
-};
+  <script>
+    const parameterDefinitions = {
+      Administrative: "Ability to organize, structure, process data, and follow procedural tasks systematically.",
+      Numerical: "Proficiency in mathematical reasoning, numerical calculations, and quantitative problem-solving.",
+      Logical: "Capability to analyze complex structured problems, identify patterns, and reason algorithmically.",
+      Mechanical: "Understanding of physical mechanisms, structural relations, spatial orientation, and machinery.",
+      Verbal: "Fluency in language comprehension, articulation, written expression, and textual reasoning.",
+      Realistic: "Preference for concrete, hands-on, practical tasks working with technology, tools, or physical objects.",
+      Investigative: "Preference for analytical, research-oriented, scientific, and intellectual problem-solving.",
+      Artistic: "Preference for creative, original, self-expressive, design-focused, and non-routine pursuits.",
+      Social: "Preference for mentoring, helping, collaborating with, and directly supporting others.",
+      Enterprising: "Preference for leadership, persuasion, business strategy, negotiation, and driving initiatives.",
+      Conventional: "Preference for structured, organized, detail-oriented, rule-bound, and quantitative workflows.",
+      Empathy: "Capacity to understand, relate to, and authentically care for the feelings and perspectives of others.",
+      "Emotional Intelligence": "Ability to recognize, regulate, and navigate interpersonal dynamics and personal emotions.",
+      Engagement: "Level of active dedication, persistence, focus, and drive brought to tasks and goals.",
+      Exploration: "Inquisitiveness, intellectual openness, and active eagerness to discover new domains.",
+      Efficiency: "Capacity for productivity, time management, active execution, and operational effectiveness.",
+      Extraversion: "Capacity for productivity, time management, active execution, and operational effectiveness."
+    };
 
-const sampleData = {
-  studentName: "Aarav Sharma",
-  classGrade: "Grade 10",
-  schoolName: "Delhi Public School",
-  testDate: "15 Oct 2023",
-  scores: {
-    Administrative: 4, Numerical: 5, Logical: 5, Mechanical: 2, Verbal: 4,
-    Realistic: 3, Investigative: 5, Artistic: 2, Social: 3, Enterprising: 4, Conventional: 4,
-    Empathy: 3, "Emotional Intelligence": 4, Engagement: 5, Exploration: 4, Efficiency: 3
-  },
-  triProfile: {
-    skillProficiency: 88,
-    individualityProfile: 76,
-    passionExploration: 84
-  },
-  executiveSummary: {
-    archetype: "Quantitative Investigator & Strategic Analyst",
-    keyStrengths: ["High Numerical & Algorithmic Logic (5/5)", "Inquisitive Problem Solving (Investigative 5/5)", "High Task Engagement & Goal Focus (5/5)"],
-    primaryCluster: "Engineering, Data Science & Quantitative Finance",
-    overviewText: "Aarav demonstrates an outstanding cognitive profile characterized by exceptional mathematical reasoning and logical synthesis. Coupled with strong investigative curiosity, he excels in structured problem-solving, analytical research, and technology-driven domain execution."
-  },
-  developmentPriorities: [
-    {
-      skill: "Public Speaking & Articulation",
-      subjectMapping: "English & Social Sciences",
-      description: "Enhances presentation of technical concepts, team communication, and leadership presence."
-    },
-    {
-      skill: "Time Management & Goal Planning",
-      subjectMapping: "General Academic Schedule / Project Work",
-      description: "Builds structure for balancing competitive exam preparation with core board studies."
-    },
-    {
-      skill: "Advanced Data Analysis & Coding",
-      subjectMapping: "Mathematics & Computer Science",
-      description: "Strengthens quantitative logic required for AI, Data Science, and algorithmic reasoning."
-    },
-    {
-      skill: "Cross-functional Collaboration",
-      subjectMapping: "Group Projects & Co-Curricular Activities",
-      description: "Fosters interdisciplinary problem-solving and teamwork in modern enterprise environments."
-    }
-  ],
-  top5Careers: [
-    {
-      title: "Data Scientist",
-      cluster: "Engineering & Technology",
-      score: 95,
-      requirements: "Requires high quantitative aptitude, statistical modeling, programming (Python/R), and logical synthesis.",
-      whyGoodFit: "Aligns with High Numerical (5/5) & Logical (5/5) skills, strong Investigative (5/5) interest, and high Exploration drive.",
-      salary: { fresher: "Rs. 8 - 12 LPA", mid: "Rs. 18 - 25 LPA", senior: "Rs. 35+ LPA" },
-      investment: { tuition: "Rs. 8 - 15 Lakhs", duration: "4 Years", degree: "B.Tech / B.Sc Data Science" },
-      roadmap: {
-        exploration: "Learn Python, basic Statistics, and foundational SQL through beginner projects.",
-        stream: "Science (PCM) with CS / Statistics",
-        ugPathway: "B.Tech in CS / AI & Data Science OR B.Sc Statistics",
-        entranceExam: "JEE Main, JEE Advanced, BITSAT, CUET",
-        pgPathway: "M.Tech in Data Science / M.Sc Data Science OR MS Abroad",
-        fresherRoles: "Junior Data Analyst, Trainee Data Scientist, Associate BI Developer"
+    const sampleData = {
+      studentName: "Aarav Sharma",
+      classGrade: "Grade 10",
+      schoolName: "Delhi Public School",
+      testDate: "15 Oct 2023",
+      scores: {
+        Administrative: 4, Numerical: 5, Logical: 5, Mechanical: 2, Verbal: 4,
+        Realistic: 3, Investigative: 5, Artistic: 2, Social: 3, Enterprising: 4, Conventional: 4,
+        Empathy: 3, "Emotional Intelligence": 4, Engagement: 5, Exploration: 4, Efficiency: 3
       },
-      institutions: ["IIT Madras", "IIT Bombay", "ISI Kolkata", "BITS Pilani", "IIIT Hyderabad"]
-    },
-    {
-      title: "Software Engineer",
-      cluster: "Engineering & Technology",
-      score: 92,
-      requirements: "Requires structured algorithmic thinking, software architectural design, problem-solving, and continuous learning.",
-      whyGoodFit: "Strong match for Logical (5/5) skills combined with high Engagement (5/5) and structured Conventional/Investigative orientation.",
-      salary: { fresher: "Rs. 6 - 10 LPA", mid: "Rs. 15 - 22 LPA", senior: "Rs. 30+ LPA" },
-      investment: { tuition: "Rs. 6 - 12 Lakhs", duration: "4 Years", degree: "B.Tech in CS / IT" },
-      roadmap: {
-        exploration: "Build web apps, practice algorithmic coding.",
-        stream: "Science (PCM)",
-        ugPathway: "B.Tech / B.E. in Computer Science Engineering",
-        entranceExam: "JEE Main, JEE Advanced, VITEEE, MET",
-        pgPathway: "M.Tech in CS OR MS in Computer Science",
-        fresherRoles: "Software Engineer Trainee, Graduate Engineer Trainee"
+      triProfile: {
+        skillProficiency: 88,
+        individualityProfile: 76,
+        passionExploration: 84
       },
-      institutions: ["IIT Delhi", "IIT Kharagpur", "BITS Pilani", "NIT Trichy", "DTU Delhi"]
-    },
-    {
-      title: "Financial Analyst",
-      cluster: "Commerce, Finance & Accounting",
-      score: 88,
-      requirements: "Requires financial modeling, quantitative data evaluation, market understanding, and risk assessment capabilities.",
-      whyGoodFit: "Synthesizes Numerical (5/5) proficiency with Enterprising (4/5) and Conventional (4/5) career interest parameters.",
-      salary: { fresher: "Rs. 5 - 8 LPA", mid: "Rs. 12 - 18 LPA", senior: "Rs. 25+ LPA" },
-      investment: { tuition: "Rs. 4 - 8 Lakhs", duration: "3 Years", degree: "B.Com / BBA Finance" },
-      roadmap: {
-        exploration: "Follow financial news, study stock dynamics.",
-        stream: "Commerce with Maths OR Science (PCM)",
-        ugPathway: "B.Com (Hons) / BBA Finance / B.Sc Finance",
-        entranceExam: "CUET, IPMAT, NPAT, SET",
-        pgPathway: "MBA in Finance / M.Sc Finance / CFA Charter",
-        fresherRoles: "Financial Analyst Trainee, Research Associate"
+      executiveSummary: {
+        archetype: "Quantitative Investigator & Strategic Analyst",
+        keyStrengths: ["High Numerical & Algorithmic Logic (5/5)", "Inquisitive Problem Solving (Investigative 5/5)", "High Task Engagement & Goal Focus (5/5)"],
+        primaryCluster: "Engineering, Data Science & Quantitative Finance",
+        overviewText: "Aarav demonstrates an outstanding cognitive profile characterized by exceptional mathematical reasoning and logical synthesis. Coupled with strong investigative curiosity, he excels in structured problem-solving, analytical research, and technology-driven domain execution."
       },
-      institutions: ["SRCC Delhi", "St. Xavier's Kolkata", "Christ University Bangalore", "NMIMS Mumbai", "Loyola College Chennai"]
-    },
-    {
-      title: "AI & Machine Learning Engineer",
-      cluster: "Engineering & Technology",
-      score: 87,
-      requirements: "Requires advanced calculus, deep neural network modeling, Python engineering, and research curiosity.",
-      whyGoodFit: "Directly leverages top Investigative (5/5) and Logical (5/5) scores alongside high Exploration (4/5) profile.",
-      salary: { fresher: "Rs. 9 - 14 LPA", mid: "Rs. 20 - 28 LPA", senior: "Rs. 40+ LPA" },
-      investment: { tuition: "Rs. 8 - 16 Lakhs", duration: "4 Years", degree: "B.Tech AI/ML" },
-      roadmap: {
-        exploration: "Study linear algebra, train ML models.",
-        stream: "Science (PCM)",
-        ugPathway: "B.Tech in Artificial Intelligence & ML",
-        entranceExam: "JEE Main, JEE Advanced, MHT-CET",
-        pgPathway: "M.Tech in AI / MS in Robotics or ML",
-        fresherRoles: "Associate ML Engineer, AI Trainee"
-      },
-      institutions: ["IIT Hyderabad", "IIIT Hyderabad", "IIT Roorkee", "BITS Pilani", "Anna University"]
-    },
-    {
-      title: "Business Analyst",
-      cluster: "Management & Business",
-      score: 85,
-      requirements: "Requires bridge-building between business needs and data insights, process mapping, and effective communication.",
-      whyGoodFit: "Complements high Administrative (4/5) and Verbal (4/5) traits with Enterprising (4/5) leadership drive.",
-      salary: { fresher: "Rs. 6 - 9 LPA", mid: "Rs. 14 - 20 LPA", senior: "Rs. 28+ LPA" },
-      investment: { tuition: "Rs. 5 - 10 Lakhs", duration: "3-4 Years", degree: "BBA / B.Tech / B.Sc" },
-      roadmap: {
-        exploration: "Analyze business case studies, practice dashboards.",
-        stream: "Commerce with Maths OR Science",
-        ugPathway: "BBA / B.Sc Analytics / B.Tech",
-        entranceExam: "CUET, IPMAT, NPAT",
-        pgPathway: "MBA / PGDM in Business Analytics",
-        fresherRoles: "Junior Business Analyst, Operations Analyst"
-      },
-      institutions: ["IIM Indore (IPM)", "IIM Rohtak (IPM)", "Shaheed Sukhdev (DU)", "NMIMS Mumbai", "Symbiosis Pune"]
-    }
-  ],
-  goodFitCareers: [
-    { title: "Cybersecurity Specialist", cluster: "Engineering & Technology", score: 82 },
-    { title: "Product Manager", cluster: "Management & Business", score: 80 },
-    { title: "Actuary", cluster: "Commerce, Finance & Accounting", score: 79 },
-    { title: "Cloud Architect", cluster: "Engineering & Technology", score: 78 },
-    { title: "Investment Banker", cluster: "Commerce, Finance & Accounting", score: 76 }
-  ],
-  actionPlan: {
-    certifications: ["Python for Data Science (NPTEL / Coursera)", "Advanced Financial Excel & Modeling", "Intro to Machine Learning (Stanford Online)"],
-    competitions: ["Olympiads (Mathematics / Informatics)", "Kaggle Beginner Competitions", "National School Hackathons"],
-    parentGuidance: [
-      "Encourage focus on PCM + Computer Science / Economics during Grade 11 stream selection.",
-      "Support structured preparation for entrance examinations (JEE / IPMAT / CUET) starting early Grade 11.",
-      "Facilitate exposure to real-world analytical tools and summer coding or data workshops."
-    ]
-  }
-};
+      developmentPriorities: [
+        {
+          skill: "Public Speaking & Articulation",
+          subjectMapping: "English & Social Sciences",
+          description: "Enhances presentation of technical concepts, team communication, and leadership presence."
+        },
+        {
+          skill: "Time Management & Goal Planning",
+          subjectMapping: "General Academic Schedule / Project Work",
+          description: "Builds structure for balancing competitive exam preparation with core board studies."
+        },
+        {
+          skill: "Advanced Data Analysis & Coding",
+          subjectMapping: "Mathematics & Computer Science",
+          description: "Strengthens quantitative logic required for AI, Data Science, and algorithmic reasoning."
+        },
+        {
+          skill: "Cross-functional Collaboration",
+          subjectMapping: "Group Projects & Co-Curricular Activities",
+          description: "Fosters interdisciplinary problem-solving and teamwork in modern enterprise environments."
+        }
+      ],
+      top5Careers: [
+        {
+          title: "Data Scientist",
+          cluster: "Engineering & Technology",
+          score: 95,
+          requirements: "Requires high quantitative aptitude, statistical modeling, programming (Python/R), and logical synthesis.",
+          whyGoodFit: "Aligns with High Numerical (5/5) & Logical (5/5) skills, strong Investigative (5/5) interest, and high Exploration drive.",
+          salary: { fresher: "Rs. 8 - 12 LPA", mid: "Rs. 18 - 25 LPA", senior: "Rs. 35+ LPA" },
+          investment: { tuition: "Rs. 8 - 15 Lakhs", duration: "4 Years", degree: "B.Tech / B.Sc Data Science" },
+          roadmap: {
+            exploration: "Learn Python, basic Statistics, and foundational SQL through beginner projects.",
+            stream: "Science (PCM) with CS / Statistics",
+            ugPathway: "B.Tech in CS / AI & Data Science OR B.Sc Statistics",
+            entranceExam: "JEE Main, JEE Advanced, BITSAT, CUET",
+            pgPathway: "M.Tech in Data Science / M.Sc Data Science OR MS Abroad",
+            fresherRoles: "Junior Data Analyst, Trainee Data Scientist, Associate BI Developer"
+          },
+          institutions: ["IIT Madras", "IIT Bombay", "ISI Kolkata", "BITS Pilani", "IIIT Hyderabad"]
+        },
+        {
+          title: "Software Engineer",
+          cluster: "Engineering & Technology",
+          score: 92,
+          requirements: "Requires structured algorithmic thinking, software architectural design, problem-solving, and continuous learning.",
+          whyGoodFit: "Strong match for Logical (5/5) skills combined with high Engagement (5/5) and structured Conventional/Investigative orientation.",
+          salary: { fresher: "Rs. 6 - 10 LPA", mid: "Rs. 15 - 22 LPA", senior: "Rs. 30+ LPA" },
+          investment: { tuition: "Rs. 6 - 12 Lakhs", duration: "4 Years", degree: "B.Tech in CS / IT" },
+          roadmap: {
+            exploration: "Build web apps, practice algorithmic coding.",
+            stream: "Science (PCM)",
+            ugPathway: "B.Tech / B.E. in Computer Science Engineering",
+            entranceExam: "JEE Main, JEE Advanced, VITEEE, MET",
+            pgPathway: "M.Tech in CS OR MS in Computer Science",
+            fresherRoles: "Software Engineer Trainee, Graduate Engineer Trainee"
+          },
+          institutions: ["IIT Delhi", "IIT Kharagpur", "BITS Pilani", "NIT Trichy", "DTU Delhi"]
+        },
+        {
+          title: "Financial Analyst",
+          cluster: "Commerce, Finance & Accounting",
+          score: 88,
+          requirements: "Requires financial modeling, quantitative data evaluation, market understanding, and risk assessment capabilities.",
+          whyGoodFit: "Synthesizes Numerical (5/5) proficiency with Enterprising (4/5) and Conventional (4/5) career interest parameters.",
+          salary: { fresher: "Rs. 5 - 8 LPA", mid: "Rs. 12 - 18 LPA", senior: "Rs. 25+ LPA" },
+          investment: { tuition: "Rs. 4 - 8 Lakhs", duration: "3 Years", degree: "B.Com / BBA Finance" },
+          roadmap: {
+            exploration: "Follow financial news, study stock dynamics.",
+            stream: "Commerce with Maths OR Science (PCM)",
+            ugPathway: "B.Com (Hons) / BBA Finance / B.Sc Finance",
+            entranceExam: "CUET, IPMAT, NPAT, SET",
+            pgPathway: "MBA in Finance / M.Sc Finance / CFA Charter",
+            fresherRoles: "Financial Analyst Trainee, Research Associate"
+          },
+          institutions: ["SRCC Delhi", "St. Xavier's Kolkata", "Christ University Bangalore", "NMIMS Mumbai", "Loyola College Chennai"]
+        },
+        {
+          title: "AI & Machine Learning Engineer",
+          cluster: "Engineering & Technology",
+          score: 87,
+          requirements: "Requires advanced calculus, deep neural network modeling, Python engineering, and research curiosity.",
+          whyGoodFit: "Directly leverages top Investigative (5/5) and Logical (5/5) scores alongside high Exploration (4/5) profile.",
+          salary: { fresher: "Rs. 9 - 14 LPA", mid: "Rs. 20 - 28 LPA", senior: "Rs. 40+ LPA" },
+          investment: { tuition: "Rs. 8 - 16 Lakhs", duration: "4 Years", degree: "B.Tech AI/ML" },
+          roadmap: {
+            exploration: "Study linear algebra, train ML models.",
+            stream: "Science (PCM)",
+            ugPathway: "B.Tech in Artificial Intelligence & ML",
+            entranceExam: "JEE Main, JEE Advanced, MHT-CET",
+            pgPathway: "M.Tech in AI / MS in Robotics or ML",
+            fresherRoles: "Associate ML Engineer, AI Trainee"
+          },
+          institutions: ["IIT Hyderabad", "IIIT Hyderabad", "IIT Roorkee", "BITS Pilani", "Anna University"]
+        },
+        {
+          title: "Business Analyst",
+          cluster: "Management & Business",
+          score: 85,
+          requirements: "Requires bridge-building between business needs and data insights, process mapping, and effective communication.",
+          whyGoodFit: "Complements high Administrative (4/5) and Verbal (4/5) traits with Enterprising (4/5) leadership drive.",
+          salary: { fresher: "Rs. 6 - 9 LPA", mid: "Rs. 14 - 20 LPA", senior: "Rs. 28+ LPA" },
+          investment: { tuition: "Rs. 5 - 10 Lakhs", duration: "3-4 Years", degree: "BBA / B.Tech / B.Sc" },
+          roadmap: {
+            exploration: "Analyze business case studies, practice dashboards.",
+            stream: "Commerce with Maths OR Science",
+            ugPathway: "BBA / B.Sc Analytics / B.Tech",
+            entranceExam: "CUET, IPMAT, NPAT",
+            pgPathway: "MBA / PGDM in Business Analytics",
+            fresherRoles: "Junior Business Analyst, Operations Analyst"
+          },
+          institutions: ["IIM Indore (IPM)", "IIM Rohtak (IPM)", "Shaheed Sukhdev (DU)", "NMIMS Mumbai", "Symbiosis Pune"]
+        }
+      ],
+      goodFitCareers: [
+        { title: "Cybersecurity Specialist", cluster: "Engineering & Technology", score: 82 },
+        { title: "Product Manager", cluster: "Management & Business", score: 80 },
+        { title: "Actuary", cluster: "Commerce, Finance & Accounting", score: 79 },
+        { title: "Cloud Architect", cluster: "Engineering & Technology", score: 78 },
+        { title: "Investment Banker", cluster: "Commerce, Finance & Accounting", score: 76 }
+      ],
+      actionPlan: {
+        certifications: ["Python for Data Science (NPTEL / Coursera)", "Advanced Financial Excel & Modeling", "Intro to Machine Learning (Stanford Online)"],
+        competitions: ["Olympiads (Mathematics / Informatics)", "Kaggle Beginner Competitions", "National School Hackathons"],
+        parentGuidance: [
+          "Encourage focus on PCM + Computer Science / Economics during Grade 11 stream selection.",
+          "Support structured preparation for entrance examinations (JEE / IPMAT / CUET) starting early Grade 11.",
+          "Facilitate exposure to real-world analytical tools and summer coding or data workshops."
+        ]
+      }
+    };
 
-function renderReport(data) {
-  if (data && data.studentName) {
-    const cleanName = data.studentName.replace(/[^a-zA-Z0-9\s_-]/g, "").trim().replace(/\s+/g, "_");
-    document.title = `MentorMe_Career_Report_${cleanName}`;
-  }
+    function renderReport(data) {
+      if (data && data.studentName) {
+        const cleanName = data.studentName.replace(/[^a-zA-Z0-9\s_-]/g, "").trim().replace(/\s+/g, "_");
+        document.title = `MentorMe_Career_Report_${cleanName}`;
+      }
 
-  const container = document.getElementById('report');
-  let html = '';
+      const container = document.getElementById('report');
+      let html = '';
 
-  if (window.self === window.top) {
-    html += `
+      if (window.self === window.top) {
+        html += `
     <div class="toolbar no-print" style="position:sticky;top:0;z-index:100;background:#0d2545;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;width:100%;color:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.15);">
       <div style="font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px;">
         <span>Mentor<span style="color:#00a6a6;">Me</span> Career Intelligence Report</span>
@@ -245,10 +903,10 @@ function renderReport(data) {
         Download PDF
       </button>
     </div>`;
-  }
+      }
 
-  // --- COVER PAGE ---
-  html += `
+      // --- COVER PAGE ---
+      html += `
   <div class="page cover">
     <div>
       <div style="display:flex;justify-content:space-between;align-items:center;">
@@ -273,8 +931,8 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 01: EXECUTIVE SUMMARY ---
-  html += `
+      // --- SECTION 01: EXECUTIVE SUMMARY ---
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -314,43 +972,43 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 02: 16-PARAMETER PROFILE & 3D CHART ---
-  const sp = data.triProfile ? data.triProfile.skillProficiency : 80;
-  const ip = data.triProfile ? data.triProfile.individualityProfile : 75;
-  const pe = data.triProfile ? data.triProfile.passionExploration : 82;
+      // --- SECTION 02: 16-PARAMETER PROFILE & 3D CHART ---
+      const sp = data.triProfile ? data.triProfile.skillProficiency : 80;
+      const ip = data.triProfile ? data.triProfile.individualityProfile : 75;
+      const pe = data.triProfile ? data.triProfile.passionExploration : 82;
 
-  const cx = 290, cy = 135;
-  const topX = 290, topY = 28;
-  const brX = 390, brY = 190;
-  const blX = 190, blY = 190;
+      const cx = 290, cy = 135;
+      const topX = 290, topY = 28;
+      const brX = 390, brY = 190;
+      const blX = 190, blY = 190;
 
-  const spF = sp / 100;
-  const ipF = ip / 100;
-  const peF = pe / 100;
+      const spF = sp / 100;
+      const ipF = ip / 100;
+      const peF = pe / 100;
 
-  const p1x = cx + (topX - cx) * spF;
-  const p1y = cy + (topY - cy) * spF;
-  const p2x = cx + (brX - cx) * peF;
-  const p2y = cy + (brY - cy) * peF;
-  const p3x = cx + (blX - cx) * ipF;
-  const p3y = cy + (blY - cy) * ipF;
+      const p1x = cx + (topX - cx) * spF;
+      const p1y = cy + (topY - cy) * spF;
+      const p2x = cx + (brX - cx) * peF;
+      const p2y = cy + (brY - cy) * peF;
+      const p3x = cx + (blX - cx) * ipF;
+      const p3y = cy + (blY - cy) * ipF;
 
-  const getScorePct = (p) => {
-    if (data.pctScores && data.pctScores[p] !== undefined) return data.pctScores[p];
-    const alias = p === "Extraversion" ? "Efficiency" : (p === "Efficiency" ? "Extraversion" : null);
-    if (alias && data.pctScores && data.pctScores[alias] !== undefined) return data.pctScores[alias];
-    if (data.scores && data.scores[p] !== undefined) {
-      const val = data.scores[p];
-      return val > 5 ? Math.min(100, Math.round(val)) : Math.round((val / 5) * 100);
-    }
-    if (alias && data.scores && data.scores[alias] !== undefined) {
-      const val = data.scores[alias];
-      return val > 5 ? Math.min(100, Math.round(val)) : Math.round((val / 5) * 100);
-    }
-    return 0;
-  };
+      const getScorePct = (p) => {
+        if (data.pctScores && data.pctScores[p] !== undefined) return data.pctScores[p];
+        const alias = p === "Extraversion" ? "Efficiency" : (p === "Efficiency" ? "Extraversion" : null);
+        if (alias && data.pctScores && data.pctScores[alias] !== undefined) return data.pctScores[alias];
+        if (data.scores && data.scores[p] !== undefined) {
+          const val = data.scores[p];
+          return val > 5 ? Math.min(100, Math.round(val)) : Math.round((val / 5) * 100);
+        }
+        if (alias && data.scores && data.scores[alias] !== undefined) {
+          const val = data.scores[alias];
+          return val > 5 ? Math.min(100, Math.round(val)) : Math.round((val / 5) * 100);
+        }
+        return 0;
+      };
 
-  html += `
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -421,8 +1079,8 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 03: DEVELOPMENT PRIORITIES ---
-  html += `
+      // --- SECTION 03: DEVELOPMENT PRIORITIES ---
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -459,8 +1117,8 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 04: CAREER DIRECTION AT A GLANCE ---
-  html += `
+      // --- SECTION 04: CAREER DIRECTION AT A GLANCE ---
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -476,7 +1134,7 @@ function renderReport(data) {
         <div class="rank">
           <div class="rank-header">
             <div class="rank-left">
-              <div class="ranknum">${i+1}</div>
+              <div class="ranknum">${i + 1}</div>
               <div>
                 <strong style="font-size:13px; color:var(--navy);">${c.title}</strong>
                 <span class="muted" style="font-size:10px;">| ${c.cluster}</span>
@@ -497,7 +1155,7 @@ function renderReport(data) {
           <div class="rank" style="border-style:dashed; padding:6px 10px;">
             <div class="rank-header">
               <div class="rank-left">
-                <div class="ranknum" style="background:var(--navy2); width:22px; height:22px; font-size:10px;">${i+6}</div>
+                <div class="ranknum" style="background:var(--navy2); width:22px; height:22px; font-size:10px;">${i + 6}</div>
                 <div>
                   <strong style="font-size:11px;">${c.title}</strong>
                 </div>
@@ -514,8 +1172,8 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 05: CAREER FINANCIALS ---
-  html += `
+      // --- SECTION 05: CAREER FINANCIALS ---
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -581,8 +1239,8 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 06: EDUCATIONAL PLANNING & CO-CURRICULAR STRATEGY ---
-  html += `
+      // --- SECTION 06: EDUCATIONAL PLANNING & CO-CURRICULAR STRATEGY ---
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -644,8 +1302,8 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 07: RECOMMENDED INSTITUTIONS ---
-  html += `
+      // --- SECTION 07: RECOMMENDED INSTITUTIONS ---
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -684,8 +1342,8 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 08: GLOBAL PATHWAYS & NEXT STEPS ---
-  html += `
+      // --- SECTION 08: GLOBAL PATHWAYS & NEXT STEPS ---
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -739,9 +1397,9 @@ function renderReport(data) {
       <div class="card" style="border-left:4px solid var(--navy); padding:10px 12px;">
         <ul style="margin:0; padding-left:18px; font-size:11px; color:#2c3a4e; line-height:1.6;">
           ${(data.actionPlan ? data.actionPlan.parentGuidance : [
-            "Encourage stream selection aligned with quantitative strengths.",
-            "Schedule entrance prep early in Grade 11."
-          ]).map(g => `<li>${g}</li>`).join('')}
+          "Encourage stream selection aligned with quantitative strengths.",
+          "Schedule entrance prep early in Grade 11."
+        ]).map(g => `<li>${g}</li>`).join('')}
         </ul>
       </div>
 
@@ -758,8 +1416,8 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  // --- SECTION 09: METHODOLOGY, DISCLAIMER & CONTACT ---
-  html += `
+      // --- SECTION 09: METHODOLOGY, DISCLAIMER & CONTACT ---
+      html += `
   <div class="page">
     <div class="page-head">
       <img src="/logos/MentorMe logo.png" alt="MentorMe" class="brand">
@@ -788,7 +1446,7 @@ function renderReport(data) {
             </td>
             <td style="width:33.33%;">
               <strong>Call Us</strong>
-              +91-9392707596<br>+91-8188824440
+              +91-8142222481<br>+91-8188824440
             </td>
             <td style="width:33.33%;">
               <strong>Visit Website</strong>
@@ -804,498 +1462,499 @@ function renderReport(data) {
     </div>
   </div>`;
 
-  container.innerHTML = html;
-}
+      container.innerHTML = html;
+    }
 
-function formatDate(dateInput) {
-  if (!dateInput) return "";
-  const d = new Date(dateInput);
-  if (isNaN(d.getTime())) return String(dateInput);
-  return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
-}
+    function formatDate(dateInput) {
+      if (!dateInput) return "";
+      const d = new Date(dateInput);
+      if (isNaN(d.getTime())) return String(dateInput);
+      return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+    }
 
-function buildReportDataFromAssessment(input) {
-  if (!input) return sampleData;
+    function buildReportDataFromAssessment(input) {
+      if (!input) return sampleData;
 
-  if (input.top5Careers && Array.isArray(input.top5Careers) && input.top5Careers.length > 0 && input.executiveSummary) {
-    return {
-      studentName: input.studentName || input.student?.name || "Student",
-      classGrade: input.classGrade || (input.student?.grade ? "Grade " + input.student.grade : "Grade 10"),
-      schoolName: input.schoolName || input.student?.school || "",
-      testDate: input.testDate || (input.student?.assessmentDate ? formatDate(input.student.assessmentDate) : formatDate(new Date())),
-      scores: input.scores || sampleData.scores,
-      triProfile: input.triProfile || sampleData.triProfile,
-      executiveSummary: input.executiveSummary || sampleData.executiveSummary,
-      developmentPriorities: input.developmentPriorities || sampleData.developmentPriorities,
-      top5Careers: input.top5Careers,
-      goodFitCareers: input.goodFitCareers || sampleData.goodFitCareers,
-      actionPlan: input.actionPlan || sampleData.actionPlan
-    };
-  }
+      if (input.top5Careers && Array.isArray(input.top5Careers) && input.top5Careers.length > 0 && input.executiveSummary) {
+        return {
+          studentName: input.studentName || input.student?.name || "Student",
+          classGrade: input.classGrade || (input.student?.grade ? "Grade " + input.student.grade : "Grade 10"),
+          schoolName: input.schoolName || input.student?.school || "",
+          testDate: input.testDate || (input.student?.assessmentDate ? formatDate(input.student.assessmentDate) : formatDate(new Date())),
+          scores: input.scores || sampleData.scores,
+          triProfile: input.triProfile || sampleData.triProfile,
+          executiveSummary: input.executiveSummary || sampleData.executiveSummary,
+          developmentPriorities: input.developmentPriorities || sampleData.developmentPriorities,
+          top5Careers: input.top5Careers,
+          goodFitCareers: input.goodFitCareers || sampleData.goodFitCareers,
+          actionPlan: input.actionPlan || sampleData.actionPlan
+        };
+      }
 
-  const studentName = input.studentName || input.student?.name || input.userName || "Student";
-  const rawGrade = input.classGrade || input.student?.grade || input.userClass || "10";
-  const classGrade = String(rawGrade).toLowerCase().includes("grade") ? rawGrade : `Grade ${rawGrade}`;
-  const schoolName = input.schoolName || input.student?.school || input.userSchool || "";
-  const testDate = input.testDate || (input.student?.assessmentDate ? formatDate(input.student.assessmentDate) : formatDate(new Date()));
+      const studentName = input.studentName || input.student?.name || input.userName || "Student";
+      const rawGrade = input.classGrade || input.student?.grade || input.userClass || "10";
+      const classGrade = String(rawGrade).toLowerCase().includes("grade") ? rawGrade : `Grade ${rawGrade}`;
+      const schoolName = input.schoolName || input.student?.school || input.userSchool || "";
+      const testDate = input.testDate || (input.student?.assessmentDate ? formatDate(input.student.assessmentDate) : formatDate(new Date()));
 
-  const rawScores = input.scores || {};
-  const normalizedPct = {};
-  const normalized1to5 = {};
+      const rawScores = input.scores || {};
+      const normalizedPct = {};
+      const normalized1to5 = {};
 
-  const allParams = [
-    "Administrative", "Numerical", "Logical", "Mechanical", "Verbal",
-    "Realistic", "Investigative", "Artistic", "Social", "Enterprising", "Conventional",
-    "Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Efficiency"
-  ];
+      const allParams = [
+        "Administrative", "Numerical", "Logical", "Mechanical", "Verbal",
+        "Realistic", "Investigative", "Artistic", "Social", "Enterprising", "Conventional",
+        "Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Efficiency"
+      ];
 
-  const paramMaxMap = {
-    Administrative: 24, Numerical: 24, Logical: 24, Mechanical: 24, Verbal: 24,
-    Realistic: 5, Investigative: 5, Artistic: 5, Social: 5, Enterprising: 5, Conventional: 5,
-    Empathy: 6, "Emotional Intelligence": 6, EmotionalIntelligence: 6, Engagement: 6, Exploration: 6, Extraversion: 6, Efficiency: 6
-  };
+      const paramMaxMap = {
+        Administrative: 24, Numerical: 24, Logical: 24, Mechanical: 24, Verbal: 24,
+        Realistic: 5, Investigative: 5, Artistic: 5, Social: 5, Enterprising: 5, Conventional: 5,
+        Empathy: 6, "Emotional Intelligence": 6, EmotionalIntelligence: 6, Engagement: 6, Exploration: 6, Extraversion: 6, Efficiency: 6
+      };
 
-  const getRawVal = (p) => {
-    const kUnderscore = p.replace(/ /g, "_");
-    const kNoSpace = p.replace(/ /g, "");
-    const kLowerNoSpace = p.toLowerCase().replace(/[\s_]+/g, "");
+      const getRawVal = (p) => {
+        const kUnderscore = p.replace(/ /g, "_");
+        const kNoSpace = p.replace(/ /g, "");
+        const kLowerNoSpace = p.toLowerCase().replace(/[\s_]+/g, "");
 
-    const alias = p === "Extraversion" ? "Efficiency" : (p === "Efficiency" ? "Extraversion" : null);
-    const aliasLowerNoSpace = alias ? alias.toLowerCase().replace(/[\s_]+/g, "") : null;
+        const alias = p === "Extraversion" ? "Efficiency" : (p === "Efficiency" ? "Extraversion" : null);
+        const aliasLowerNoSpace = alias ? alias.toLowerCase().replace(/[\s_]+/g, "") : null;
 
-    const lookInObj = (obj) => {
-      if (!obj || typeof obj !== "object") return undefined;
-      for (const [key, val] of Object.entries(obj)) {
-        const cleanKey = key.toLowerCase().replace(/[\s_]+/g, "");
-        if (cleanKey === kLowerNoSpace || (aliasLowerNoSpace && cleanKey === aliasLowerNoSpace)) {
-          return val;
+        const lookInObj = (obj) => {
+          if (!obj || typeof obj !== "object") return undefined;
+          for (const [key, val] of Object.entries(obj)) {
+            const cleanKey = key.toLowerCase().replace(/[\s_]+/g, "");
+            if (cleanKey === kLowerNoSpace || (aliasLowerNoSpace && cleanKey === aliasLowerNoSpace)) {
+              return val;
+            }
+          }
+          return undefined;
+        };
+
+        const sources = [
+          lookInObj(rawScores),
+          lookInObj(rawScores.skills),
+          lookInObj(rawScores.passion),
+          lookInObj(rawScores.riasec),
+          lookInObj(rawScores.individuality),
+          lookInObj(input),
+          lookInObj(input.scores),
+          rawScores[p],
+          rawScores[kUnderscore],
+          rawScores[kNoSpace],
+          rawScores.skills?.[p],
+          rawScores.passion?.[p],
+          rawScores.riasec?.[p],
+          rawScores.individuality?.[p],
+          input[p],
+          alias ? rawScores[alias] : undefined,
+          alias ? input[alias] : undefined
+        ];
+
+        for (const src of sources) {
+          if (src !== undefined && src !== null) return src;
+        }
+        return undefined;
+      };
+
+      allParams.forEach(p => {
+        let raw = getRawVal(p);
+        let pct = 0;
+        const maxVal = paramMaxMap[p] || 5;
+        if (typeof raw === 'object' && raw !== null && raw.score !== undefined) {
+          const actualMax = raw.max || maxVal;
+          pct = Math.round((raw.score / actualMax) * 100);
+        } else if (typeof raw === 'number') {
+          if (raw <= maxVal && raw > 0 && maxVal !== 100) {
+            pct = Math.round((raw / maxVal) * 100);
+          } else {
+            pct = Math.min(100, Math.max(0, Math.round(raw)));
+          }
+        }
+        normalizedPct[p] = pct;
+        normalized1to5[p] = Math.max(1, Math.min(5, Math.round((pct / 100) * 5)));
+      });
+
+      const skillsList = ["Administrative", "Numerical", "Logical", "Mechanical", "Verbal"];
+      const riasecList = ["Realistic", "Investigative", "Artistic", "Social", "Enterprising", "Conventional"];
+      const traitsList = ["Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Efficiency"];
+
+      const avgPct = (arr) => Math.round(arr.reduce((sum, k) => sum + (normalizedPct[k] || 0), 0) / arr.length);
+      const maxPct = (arr) => Math.max(...arr.map(k => normalizedPct[k] || 0));
+
+      const topInterestScore = maxPct(riasecList);
+
+      const triProfile = input.triProfile || {
+        skillProficiency: maxPct(skillsList) || avgPct(skillsList),
+        passionExploration: topInterestScore > 0 ? topInterestScore : avgPct(riasecList),
+        individualityProfile: maxPct(traitsList) || avgPct(traitsList)
+      };
+
+      const careerMaster = [
+        {
+          title: "Data Scientist",
+          cluster: "Engineering & Technology",
+          weights: { Numerical: 0.3, Logical: 0.3, Investigative: 0.2, Exploration: 0.2 },
+          requirements: "Requires high quantitative aptitude, statistical modeling, programming (Python/R), and logical synthesis.",
+          salary: { fresher: "Rs. 8 - 12 LPA", mid: "Rs. 18 - 25 LPA", senior: "Rs. 35+ LPA" },
+          investment: { tuition: "Rs. 8 - 15 Lakhs", duration: "4 Years", degree: "B.Tech / B.Sc Data Science" },
+          roadmap: {
+            exploration: "Learn Python, basic Statistics, and foundational SQL through beginner projects.",
+            stream: "Science (PCM) with CS / Statistics",
+            ugPathway: "B.Tech in CS / AI & Data Science OR B.Sc Statistics",
+            entranceExam: "JEE Main, JEE Advanced, BITSAT, CUET",
+            pgPathway: "M.Tech in Data Science / M.Sc Data Science OR MS Abroad",
+            fresherRoles: "Junior Data Analyst, Trainee Data Scientist, Associate BI Developer"
+          },
+          institutions: ["IIT Madras", "IIT Bombay", "ISI Kolkata", "BITS Pilani", "IIIT Hyderabad"]
+        },
+        {
+          title: "Software Engineer",
+          cluster: "Engineering & Technology",
+          weights: { Logical: 0.35, Mechanical: 0.25, Conventional: 0.2, Engagement: 0.2 },
+          requirements: "Requires structured algorithmic thinking, software architectural design, problem-solving, and continuous learning.",
+          salary: { fresher: "Rs. 6 - 10 LPA", mid: "Rs. 15 - 22 LPA", senior: "Rs. 30+ LPA" },
+          investment: { tuition: "Rs. 6 - 12 Lakhs", duration: "4 Years", degree: "B.Tech in CS / IT" },
+          roadmap: {
+            exploration: "Build web apps, practice algorithmic coding.",
+            stream: "Science (PCM)",
+            ugPathway: "B.Tech / B.E. in Computer Science Engineering",
+            entranceExam: "JEE Main, JEE Advanced, VITEEE, MET",
+            pgPathway: "M.Tech in CS OR MS in Computer Science",
+            fresherRoles: "Software Engineer Trainee, Graduate Engineer Trainee"
+          },
+          institutions: ["IIT Delhi", "IIT Kharagpur", "BITS Pilani", "NIT Trichy", "DTU Delhi"]
+        },
+        {
+          title: "Financial Analyst",
+          cluster: "Commerce, Finance & Accounting",
+          weights: { Numerical: 0.35, Conventional: 0.25, Enterprising: 0.2, Administrative: 0.2 },
+          requirements: "Requires financial modeling, quantitative data evaluation, market understanding, and risk assessment capabilities.",
+          salary: { fresher: "Rs. 5 - 8 LPA", mid: "Rs. 12 - 18 LPA", senior: "Rs. 25+ LPA" },
+          investment: { tuition: "Rs. 4 - 8 Lakhs", duration: "3 Years", degree: "B.Com / BBA Finance" },
+          roadmap: {
+            exploration: "Follow financial news, study stock dynamics.",
+            stream: "Commerce with Maths OR Science (PCM)",
+            ugPathway: "B.Com (Hons) / BBA Finance / B.Sc Finance",
+            entranceExam: "CUET, IPMAT, NPAT, SET",
+            pgPathway: "MBA in Finance / M.Sc Finance / CFA Charter",
+            fresherRoles: "Financial Analyst Trainee, Research Associate"
+          },
+          institutions: ["SRCC Delhi", "St. Xavier's Kolkata", "Christ University Bangalore", "NMIMS Mumbai", "Loyola College Chennai"]
+        },
+        {
+          title: "AI & Machine Learning Engineer",
+          cluster: "Engineering & Technology",
+          weights: { Investigative: 0.35, Logical: 0.3, Numerical: 0.2, Exploration: 0.15 },
+          requirements: "Requires advanced calculus, deep neural network modeling, Python engineering, and research curiosity.",
+          salary: { fresher: "Rs. 9 - 14 LPA", mid: "Rs. 20 - 28 LPA", senior: "Rs. 40+ LPA" },
+          investment: { tuition: "Rs. 8 - 16 Lakhs", duration: "4 Years", degree: "B.Tech AI/ML" },
+          roadmap: {
+            exploration: "Study linear algebra, train ML models.",
+            stream: "Science (PCM)",
+            ugPathway: "B.Tech in Artificial Intelligence & ML",
+            entranceExam: "JEE Main, JEE Advanced, MHT-CET",
+            pgPathway: "M.Tech in AI / MS in Robotics or ML",
+            fresherRoles: "Associate ML Engineer, AI Trainee"
+          },
+          institutions: ["IIT Hyderabad", "IIIT Hyderabad", "IIT Roorkee", "BITS Pilani", "Anna University"]
+        },
+        {
+          title: "Business Analyst",
+          cluster: "Management & Business",
+          weights: { Administrative: 0.3, Verbal: 0.3, Enterprising: 0.25, Social: 0.15 },
+          requirements: "Requires bridge-building between business needs and data insights, process mapping, and effective communication.",
+          salary: { fresher: "Rs. 6 - 9 LPA", mid: "Rs. 14 - 20 LPA", senior: "Rs. 28+ LPA" },
+          investment: { tuition: "Rs. 5 - 10 Lakhs", duration: "3-4 Years", degree: "BBA / B.Tech / B.Sc" },
+          roadmap: {
+            exploration: "Analyze business case studies, practice dashboards.",
+            stream: "Commerce with Maths OR Science",
+            ugPathway: "BBA / B.Sc Analytics / B.Tech",
+            entranceExam: "CUET, IPMAT, NPAT",
+            pgPathway: "MBA / PGDM in Business Analytics",
+            fresherRoles: "Junior Business Analyst, Operations Analyst"
+          },
+          institutions: ["IIM Indore (IPM)", "IIM Rohtak (IPM)", "Shaheed Sukhdev (DU)", "NMIMS Mumbai", "Symbiosis Pune"]
+        },
+        {
+          title: "Cybersecurity Specialist",
+          cluster: "Engineering & Technology",
+          weights: { Mechanical: 0.3, Logical: 0.3, Investigative: 0.25, Conventional: 0.15 },
+          requirements: "Requires network security knowledge, vulnerability testing, risk management, and rapid incident response.",
+          salary: { fresher: "Rs. 7 - 11 LPA", mid: "Rs. 16 - 24 LPA", senior: "Rs. 32+ LPA" },
+          investment: { tuition: "Rs. 6 - 12 Lakhs", duration: "4 Years", degree: "B.Tech Cyber Security" },
+          roadmap: {
+            exploration: "Learn Linux, ethical hacking fundamentals, and network protocols.",
+            stream: "Science (PCM)",
+            ugPathway: "B.Tech in CS / Cyber Security",
+            entranceExam: "JEE Main, BITSAT, VITEEE",
+            pgPathway: "M.Tech Cyber Security / MS in Information Security",
+            fresherRoles: "SOC Analyst, Cybersecurity Associate"
+          },
+          institutions: ["IIT Kanpur", "IIIT Allahabad", "BITS Pilani", "Amity University", "SRM Institute"]
+        },
+        {
+          title: "Product Manager",
+          cluster: "Management & Business",
+          weights: { Enterprising: 0.3, Verbal: 0.25, Engagement: 0.25, "Emotional Intelligence": 0.2 },
+          requirements: "Requires user empathy, product roadmap strategy, cross-functional team coordination, and market sense.",
+          salary: { fresher: "Rs. 8 - 13 LPA", mid: "Rs. 19 - 27 LPA", senior: "Rs. 38+ LPA" },
+          investment: { tuition: "Rs. 8 - 18 Lakhs", duration: "4 Years", degree: "B.Tech / BBA + MBA" },
+          roadmap: {
+            exploration: "Analyze popular mobile/web apps, write product teardowns.",
+            stream: "Science or Commerce",
+            ugPathway: "B.Tech / BBA / B.Des",
+            entranceExam: "JEE Main, IPMAT, CUET",
+            pgPathway: "MBA from Top B-Schools",
+            fresherRoles: "Associate Product Manager (APM), Product Analyst"
+          },
+          institutions: ["IIM Ahmedabad", "IIM Bangalore", "ISB Hyderabad", "FMS Delhi", "XLRI Jamshedpur"]
+        },
+        {
+          title: "Actuary",
+          cluster: "Commerce, Finance & Accounting",
+          weights: { Numerical: 0.4, Logical: 0.3, Conventional: 0.2, Administrative: 0.1 },
+          requirements: "Requires expert mathematical statistics, financial risk evaluation, probability theory, and actuarial exams.",
+          salary: { fresher: "Rs. 7 - 10 LPA", mid: "Rs. 17 - 25 LPA", senior: "Rs. 35+ LPA" },
+          investment: { tuition: "Rs. 3 - 6 Lakhs", duration: "3-4 Years", degree: "B.Sc Actuarial Science / Statistics" },
+          roadmap: {
+            exploration: "Solve probability puzzles, study insurance mathematics.",
+            stream: "Commerce with Maths OR Science (PCM)",
+            ugPathway: "B.Sc Statistics / Actuarial Science / B.Com",
+            entranceExam: "ACET (Actuarial Common Entrance Test), CUET",
+            pgPathway: "M.Sc Statistics / IAI Core Examinations",
+            fresherRoles: "Actuarial Analyst, Risk Trainee"
+          },
+          institutions: ["ISI Kolkata", "DU (Hindu/Hansraj)", "Christ University", "NMIMS Mumbai", "Mumbai University"]
+        },
+        {
+          title: "Cloud Architect",
+          cluster: "Engineering & Technology",
+          weights: { Mechanical: 0.3, Logical: 0.3, Administrative: 0.2, Conventional: 0.2 },
+          requirements: "Requires enterprise cloud infrastructure design, DevOps pipelines, system security, and scalability management.",
+          salary: { fresher: "Rs. 7 - 11 LPA", mid: "Rs. 18 - 26 LPA", senior: "Rs. 36+ LPA" },
+          investment: { tuition: "Rs. 6 - 14 Lakhs", duration: "4 Years", degree: "B.Tech CS / Cloud Computing" },
+          roadmap: {
+            exploration: "Deploy simple cloud servers on AWS/GCP, learn Docker.",
+            stream: "Science (PCM)",
+            ugPathway: "B.Tech CS / IT",
+            entranceExam: "JEE Main, BITSAT, MHT-CET",
+            pgPathway: "M.Tech CS / AWS & Azure Professional Certifications",
+            fresherRoles: "Junior Cloud Engineer, DevOps Trainee"
+          },
+          institutions: ["IIT Kharagpur", "BITS Pilani", "DTU Delhi", "VIT Vellore", "MIT Manipal"]
+        },
+        {
+          title: "Investment Banker",
+          cluster: "Commerce, Finance & Accounting",
+          weights: { Enterprising: 0.35, Numerical: 0.3, Verbal: 0.2, Engagement: 0.15 },
+          requirements: "Requires corporate finance modeling, M&A valuation, client pitching, and high-intensity financial strategy.",
+          salary: { fresher: "Rs. 10 - 16 LPA", mid: "Rs. 25 - 40 LPA", senior: "Rs. 60+ LPA" },
+          investment: { tuition: "Rs. 10 - 22 Lakhs", duration: "3-5 Years", degree: "B.Com / BBA + MBA Finance" },
+          roadmap: {
+            exploration: "Study corporate M&A deals, practice valuation models.",
+            stream: "Commerce with Maths OR Science",
+            ugPathway: "B.Com (Hons) / BBA Finance",
+            entranceExam: "CUET, IPMAT, CAT (for PG)",
+            pgPathway: "MBA Finance (IIMs/ISB) / CFA Charter",
+            fresherRoles: "Investment Banking Analyst, Corporate Finance Trainee"
+          },
+          institutions: ["IIM Ahmedabad", "IIM Bangalore", "IIM Calcutta", "SRCC Delhi", "ISB Hyderabad"]
+        }
+      ];
+
+      const rankedCareers = careerMaster.map(c => {
+        let sumWeight = 0;
+        let weightedScoreSum = 0;
+        Object.entries(c.weights).forEach(([param, weight]) => {
+          sumWeight += weight;
+          const paramScore = normalizedPct[param] !== undefined ? normalizedPct[param] : 50;
+          weightedScoreSum += paramScore * weight;
+        });
+        const rawScore = sumWeight > 0 ? weightedScoreSum / sumWeight : 65;
+        const finalScore = Math.min(96, Math.max(60, Math.round(rawScore)));
+
+        const sortedParams = Object.keys(c.weights).sort((a, b) => (normalizedPct[b] || 0) - (normalizedPct[a] || 0));
+        const topP1 = sortedParams[0] || "Logical";
+        const topP2 = sortedParams[1] || "Numerical";
+        const whyGoodFit = `Strong match for ${topP1} (${normalized1to5[topP1]}/5) and ${topP2} (${normalized1to5[topP2]}/5) skills, aligning with student's profile strengths.`;
+
+        return {
+          title: c.title,
+          cluster: c.cluster,
+          score: finalScore,
+          requirements: c.requirements,
+          whyGoodFit,
+          salary: c.salary,
+          investment: c.investment,
+          roadmap: c.roadmap,
+          institutions: c.institutions
+        };
+      });
+
+      rankedCareers.sort((a, b) => b.score - a.score);
+
+      const top5Careers = input.top5Careers && input.top5Careers.length > 0 ? input.top5Careers : rankedCareers.slice(0, 5);
+
+      let goodFitCareers;
+      if (input.goodFitCareers && input.goodFitCareers.length > 0) {
+        goodFitCareers = input.goodFitCareers;
+      } else {
+        const rawGoodFit = rankedCareers.slice(5, 10);
+        const lastTop5Score = top5Careers[4]?.score || 80;
+        goodFitCareers = rawGoodFit.map((c, idx) => {
+          let score = c.score;
+          if (score >= lastTop5Score) {
+            score = Math.max(65, lastTop5Score - (idx + 1) * 2);
+          }
+          return {
+            title: c.title,
+            cluster: c.cluster,
+            score: score
+          };
+        });
+        for (let i = 0; i < goodFitCareers.length; i++) {
+          if (i > 0 && goodFitCareers[i].score >= goodFitCareers[i - 1].score) {
+            goodFitCareers[i].score = Math.max(60, goodFitCareers[i - 1].score - 2);
+          }
         }
       }
-      return undefined;
-    };
 
-    const sources = [
-      lookInObj(rawScores),
-      lookInObj(rawScores.skills),
-      lookInObj(rawScores.passion),
-      lookInObj(rawScores.riasec),
-      lookInObj(rawScores.individuality),
-      lookInObj(input),
-      lookInObj(input.scores),
-      rawScores[p],
-      rawScores[kUnderscore],
-      rawScores[kNoSpace],
-      rawScores.skills?.[p],
-      rawScores.passion?.[p],
-      rawScores.riasec?.[p],
-      rawScores.individuality?.[p],
-      input[p],
-      alias ? rawScores[alias] : undefined,
-      alias ? input[alias] : undefined
-    ];
+      const sortedAllParams = [...allParams].sort((a, b) => normalizedPct[b] - normalizedPct[a]);
+      const top3Params = sortedAllParams.slice(0, 3);
+      const lowest4Params = sortedAllParams.slice(-4).reverse();
 
-    for (const src of sources) {
-      if (src !== undefined && src !== null) return src;
-    }
-    return undefined;
-  };
+      const topSkill = sortedAllParams.find(p => skillsList.includes(p)) || "Logical";
+      const topInterest = sortedAllParams.find(p => riasecList.includes(p)) || "Investigative";
 
-  allParams.forEach(p => {
-    let raw = getRawVal(p);
-    let pct = 0;
-    const maxVal = paramMaxMap[p] || 5;
-    if (typeof raw === 'object' && raw !== null && raw.score !== undefined) {
-      const actualMax = raw.max || maxVal;
-      pct = Math.round((raw.score / actualMax) * 100);
-    } else if (typeof raw === 'number') {
-      if (raw <= maxVal && raw > 0 && maxVal !== 100) {
-        pct = Math.round((raw / maxVal) * 100);
-      } else {
-        pct = Math.min(100, Math.max(0, Math.round(raw)));
+      let archetype = `${topSkill} & ${topInterest} Strategist`;
+      if ((topSkill === "Numerical" || topSkill === "Logical") && topInterest === "Investigative") {
+        archetype = "Quantitative Investigator & Strategic Analyst";
+      } else if ((topSkill === "Verbal" || topSkill === "Administrative") && (topInterest === "Enterprising" || topInterest === "Social")) {
+        archetype = "Strategic Communicator & Business Leader";
+      } else if (topInterest === "Artistic") {
+        archetype = "Creative Design & Innovation Architect";
+      } else if (topSkill === "Mechanical" || topInterest === "Realistic") {
+        archetype = "Systems Specialist & Engineering Innovator";
       }
-    }
-    normalizedPct[p] = pct;
-    normalized1to5[p] = Math.max(1, Math.min(5, Math.round((pct / 100) * 5)));
-  });
 
-  const skillsList = ["Administrative", "Numerical", "Logical", "Mechanical", "Verbal"];
-  const riasecList = ["Realistic", "Investigative", "Artistic", "Social", "Enterprising", "Conventional"];
-  const traitsList = ["Empathy", "Emotional Intelligence", "Engagement", "Exploration", "Efficiency"];
-
-  const avgPct = (arr) => Math.round(arr.reduce((sum, k) => sum + (normalizedPct[k] || 0), 0) / arr.length);
-  const maxPct = (arr) => Math.max(...arr.map(k => normalizedPct[k] || 0));
-
-  const topInterestScore = maxPct(riasecList);
-
-  const triProfile = input.triProfile || {
-    skillProficiency: maxPct(skillsList) || avgPct(skillsList),
-    passionExploration: topInterestScore > 0 ? topInterestScore : avgPct(riasecList),
-    individualityProfile: maxPct(traitsList) || avgPct(traitsList)
-  };
-
-  const careerMaster = [
-    {
-      title: "Data Scientist",
-      cluster: "Engineering & Technology",
-      weights: { Numerical: 0.3, Logical: 0.3, Investigative: 0.2, Exploration: 0.2 },
-      requirements: "Requires high quantitative aptitude, statistical modeling, programming (Python/R), and logical synthesis.",
-      salary: { fresher: "Rs. 8 - 12 LPA", mid: "Rs. 18 - 25 LPA", senior: "Rs. 35+ LPA" },
-      investment: { tuition: "Rs. 8 - 15 Lakhs", duration: "4 Years", degree: "B.Tech / B.Sc Data Science" },
-      roadmap: {
-        exploration: "Learn Python, basic Statistics, and foundational SQL through beginner projects.",
-        stream: "Science (PCM) with CS / Statistics",
-        ugPathway: "B.Tech in CS / AI & Data Science OR B.Sc Statistics",
-        entranceExam: "JEE Main, JEE Advanced, BITSAT, CUET",
-        pgPathway: "M.Tech in Data Science / M.Sc Data Science OR MS Abroad",
-        fresherRoles: "Junior Data Analyst, Trainee Data Scientist, Associate BI Developer"
-      },
-      institutions: ["IIT Madras", "IIT Bombay", "ISI Kolkata", "BITS Pilani", "IIIT Hyderabad"]
-    },
-    {
-      title: "Software Engineer",
-      cluster: "Engineering & Technology",
-      weights: { Logical: 0.35, Mechanical: 0.25, Conventional: 0.2, Engagement: 0.2 },
-      requirements: "Requires structured algorithmic thinking, software architectural design, problem-solving, and continuous learning.",
-      salary: { fresher: "Rs. 6 - 10 LPA", mid: "Rs. 15 - 22 LPA", senior: "Rs. 30+ LPA" },
-      investment: { tuition: "Rs. 6 - 12 Lakhs", duration: "4 Years", degree: "B.Tech in CS / IT" },
-      roadmap: {
-        exploration: "Build web apps, practice algorithmic coding.",
-        stream: "Science (PCM)",
-        ugPathway: "B.Tech / B.E. in Computer Science Engineering",
-        entranceExam: "JEE Main, JEE Advanced, VITEEE, MET",
-        pgPathway: "M.Tech in CS OR MS in Computer Science",
-        fresherRoles: "Software Engineer Trainee, Graduate Engineer Trainee"
-      },
-      institutions: ["IIT Delhi", "IIT Kharagpur", "BITS Pilani", "NIT Trichy", "DTU Delhi"]
-    },
-    {
-      title: "Financial Analyst",
-      cluster: "Commerce, Finance & Accounting",
-      weights: { Numerical: 0.35, Conventional: 0.25, Enterprising: 0.2, Administrative: 0.2 },
-      requirements: "Requires financial modeling, quantitative data evaluation, market understanding, and risk assessment capabilities.",
-      salary: { fresher: "Rs. 5 - 8 LPA", mid: "Rs. 12 - 18 LPA", senior: "Rs. 25+ LPA" },
-      investment: { tuition: "Rs. 4 - 8 Lakhs", duration: "3 Years", degree: "B.Com / BBA Finance" },
-      roadmap: {
-        exploration: "Follow financial news, study stock dynamics.",
-        stream: "Commerce with Maths OR Science (PCM)",
-        ugPathway: "B.Com (Hons) / BBA Finance / B.Sc Finance",
-        entranceExam: "CUET, IPMAT, NPAT, SET",
-        pgPathway: "MBA in Finance / M.Sc Finance / CFA Charter",
-        fresherRoles: "Financial Analyst Trainee, Research Associate"
-      },
-      institutions: ["SRCC Delhi", "St. Xavier's Kolkata", "Christ University Bangalore", "NMIMS Mumbai", "Loyola College Chennai"]
-    },
-    {
-      title: "AI & Machine Learning Engineer",
-      cluster: "Engineering & Technology",
-      weights: { Investigative: 0.35, Logical: 0.3, Numerical: 0.2, Exploration: 0.15 },
-      requirements: "Requires advanced calculus, deep neural network modeling, Python engineering, and research curiosity.",
-      salary: { fresher: "Rs. 9 - 14 LPA", mid: "Rs. 20 - 28 LPA", senior: "Rs. 40+ LPA" },
-      investment: { tuition: "Rs. 8 - 16 Lakhs", duration: "4 Years", degree: "B.Tech AI/ML" },
-      roadmap: {
-        exploration: "Study linear algebra, train ML models.",
-        stream: "Science (PCM)",
-        ugPathway: "B.Tech in Artificial Intelligence & ML",
-        entranceExam: "JEE Main, JEE Advanced, MHT-CET",
-        pgPathway: "M.Tech in AI / MS in Robotics or ML",
-        fresherRoles: "Associate ML Engineer, AI Trainee"
-      },
-      institutions: ["IIT Hyderabad", "IIIT Hyderabad", "IIT Roorkee", "BITS Pilani", "Anna University"]
-    },
-    {
-      title: "Business Analyst",
-      cluster: "Management & Business",
-      weights: { Administrative: 0.3, Verbal: 0.3, Enterprising: 0.25, Social: 0.15 },
-      requirements: "Requires bridge-building between business needs and data insights, process mapping, and effective communication.",
-      salary: { fresher: "Rs. 6 - 9 LPA", mid: "Rs. 14 - 20 LPA", senior: "Rs. 28+ LPA" },
-      investment: { tuition: "Rs. 5 - 10 Lakhs", duration: "3-4 Years", degree: "BBA / B.Tech / B.Sc" },
-      roadmap: {
-        exploration: "Analyze business case studies, practice dashboards.",
-        stream: "Commerce with Maths OR Science",
-        ugPathway: "BBA / B.Sc Analytics / B.Tech",
-        entranceExam: "CUET, IPMAT, NPAT",
-        pgPathway: "MBA / PGDM in Business Analytics",
-        fresherRoles: "Junior Business Analyst, Operations Analyst"
-      },
-      institutions: ["IIM Indore (IPM)", "IIM Rohtak (IPM)", "Shaheed Sukhdev (DU)", "NMIMS Mumbai", "Symbiosis Pune"]
-    },
-    {
-      title: "Cybersecurity Specialist",
-      cluster: "Engineering & Technology",
-      weights: { Mechanical: 0.3, Logical: 0.3, Investigative: 0.25, Conventional: 0.15 },
-      requirements: "Requires network security knowledge, vulnerability testing, risk management, and rapid incident response.",
-      salary: { fresher: "Rs. 7 - 11 LPA", mid: "Rs. 16 - 24 LPA", senior: "Rs. 32+ LPA" },
-      investment: { tuition: "Rs. 6 - 12 Lakhs", duration: "4 Years", degree: "B.Tech Cyber Security" },
-      roadmap: {
-        exploration: "Learn Linux, ethical hacking fundamentals, and network protocols.",
-        stream: "Science (PCM)",
-        ugPathway: "B.Tech in CS / Cyber Security",
-        entranceExam: "JEE Main, BITSAT, VITEEE",
-        pgPathway: "M.Tech Cyber Security / MS in Information Security",
-        fresherRoles: "SOC Analyst, Cybersecurity Associate"
-      },
-      institutions: ["IIT Kanpur", "IIIT Allahabad", "BITS Pilani", "Amity University", "SRM Institute"]
-    },
-    {
-      title: "Product Manager",
-      cluster: "Management & Business",
-      weights: { Enterprising: 0.3, Verbal: 0.25, Engagement: 0.25, "Emotional Intelligence": 0.2 },
-      requirements: "Requires user empathy, product roadmap strategy, cross-functional team coordination, and market sense.",
-      salary: { fresher: "Rs. 8 - 13 LPA", mid: "Rs. 19 - 27 LPA", senior: "Rs. 38+ LPA" },
-      investment: { tuition: "Rs. 8 - 18 Lakhs", duration: "4 Years", degree: "B.Tech / BBA + MBA" },
-      roadmap: {
-        exploration: "Analyze popular mobile/web apps, write product teardowns.",
-        stream: "Science or Commerce",
-        ugPathway: "B.Tech / BBA / B.Des",
-        entranceExam: "JEE Main, IPMAT, CUET",
-        pgPathway: "MBA from Top B-Schools",
-        fresherRoles: "Associate Product Manager (APM), Product Analyst"
-      },
-      institutions: ["IIM Ahmedabad", "IIM Bangalore", "ISB Hyderabad", "FMS Delhi", "XLRI Jamshedpur"]
-    },
-    {
-      title: "Actuary",
-      cluster: "Commerce, Finance & Accounting",
-      weights: { Numerical: 0.4, Logical: 0.3, Conventional: 0.2, Administrative: 0.1 },
-      requirements: "Requires expert mathematical statistics, financial risk evaluation, probability theory, and actuarial exams.",
-      salary: { fresher: "Rs. 7 - 10 LPA", mid: "Rs. 17 - 25 LPA", senior: "Rs. 35+ LPA" },
-      investment: { tuition: "Rs. 3 - 6 Lakhs", duration: "3-4 Years", degree: "B.Sc Actuarial Science / Statistics" },
-      roadmap: {
-        exploration: "Solve probability puzzles, study insurance mathematics.",
-        stream: "Commerce with Maths OR Science (PCM)",
-        ugPathway: "B.Sc Statistics / Actuarial Science / B.Com",
-        entranceExam: "ACET (Actuarial Common Entrance Test), CUET",
-        pgPathway: "M.Sc Statistics / IAI Core Examinations",
-        fresherRoles: "Actuarial Analyst, Risk Trainee"
-      },
-      institutions: ["ISI Kolkata", "DU (Hindu/Hansraj)", "Christ University", "NMIMS Mumbai", "Mumbai University"]
-    },
-    {
-      title: "Cloud Architect",
-      cluster: "Engineering & Technology",
-      weights: { Mechanical: 0.3, Logical: 0.3, Administrative: 0.2, Conventional: 0.2 },
-      requirements: "Requires enterprise cloud infrastructure design, DevOps pipelines, system security, and scalability management.",
-      salary: { fresher: "Rs. 7 - 11 LPA", mid: "Rs. 18 - 26 LPA", senior: "Rs. 36+ LPA" },
-      investment: { tuition: "Rs. 6 - 14 Lakhs", duration: "4 Years", degree: "B.Tech CS / Cloud Computing" },
-      roadmap: {
-        exploration: "Deploy simple cloud servers on AWS/GCP, learn Docker.",
-        stream: "Science (PCM)",
-        ugPathway: "B.Tech CS / IT",
-        entranceExam: "JEE Main, BITSAT, MHT-CET",
-        pgPathway: "M.Tech CS / AWS & Azure Professional Certifications",
-        fresherRoles: "Junior Cloud Engineer, DevOps Trainee"
-      },
-      institutions: ["IIT Kharagpur", "BITS Pilani", "DTU Delhi", "VIT Vellore", "MIT Manipal"]
-    },
-    {
-      title: "Investment Banker",
-      cluster: "Commerce, Finance & Accounting",
-      weights: { Enterprising: 0.35, Numerical: 0.3, Verbal: 0.2, Engagement: 0.15 },
-      requirements: "Requires corporate finance modeling, M&A valuation, client pitching, and high-intensity financial strategy.",
-      salary: { fresher: "Rs. 10 - 16 LPA", mid: "Rs. 25 - 40 LPA", senior: "Rs. 60+ LPA" },
-      investment: { tuition: "Rs. 10 - 22 Lakhs", duration: "3-5 Years", degree: "B.Com / BBA + MBA Finance" },
-      roadmap: {
-        exploration: "Study corporate M&A deals, practice valuation models.",
-        stream: "Commerce with Maths OR Science",
-        ugPathway: "B.Com (Hons) / BBA Finance",
-        entranceExam: "CUET, IPMAT, CAT (for PG)",
-        pgPathway: "MBA Finance (IIMs/ISB) / CFA Charter",
-        fresherRoles: "Investment Banking Analyst, Corporate Finance Trainee"
-      },
-      institutions: ["IIM Ahmedabad", "IIM Bangalore", "IIM Calcutta", "SRCC Delhi", "ISB Hyderabad"]
-    }
-  ];
-
-  const rankedCareers = careerMaster.map(c => {
-    let sumWeight = 0;
-    let weightedScoreSum = 0;
-    Object.entries(c.weights).forEach(([param, weight]) => {
-      sumWeight += weight;
-      const paramScore = normalizedPct[param] !== undefined ? normalizedPct[param] : 50;
-      weightedScoreSum += paramScore * weight;
-    });
-    const rawScore = sumWeight > 0 ? weightedScoreSum / sumWeight : 65;
-    const finalScore = Math.min(96, Math.max(60, Math.round(rawScore)));
-    
-    const sortedParams = Object.keys(c.weights).sort((a, b) => (normalizedPct[b] || 0) - (normalizedPct[a] || 0));
-    const topP1 = sortedParams[0] || "Logical";
-    const topP2 = sortedParams[1] || "Numerical";
-    const whyGoodFit = `Strong match for ${topP1} (${normalized1to5[topP1]}/5) and ${topP2} (${normalized1to5[topP2]}/5) skills, aligning with student's profile strengths.`;
-
-    return {
-      title: c.title,
-      cluster: c.cluster,
-      score: finalScore,
-      requirements: c.requirements,
-      whyGoodFit,
-      salary: c.salary,
-      investment: c.investment,
-      roadmap: c.roadmap,
-      institutions: c.institutions
-    };
-  });
-
-  rankedCareers.sort((a, b) => b.score - a.score);
-
-  const top5Careers = input.top5Careers && input.top5Careers.length > 0 ? input.top5Careers : rankedCareers.slice(0, 5);
-  
-  let goodFitCareers;
-  if (input.goodFitCareers && input.goodFitCareers.length > 0) {
-    goodFitCareers = input.goodFitCareers;
-  } else {
-    const rawGoodFit = rankedCareers.slice(5, 10);
-    const lastTop5Score = top5Careers[4]?.score || 80;
-    goodFitCareers = rawGoodFit.map((c, idx) => {
-      let score = c.score;
-      if (score >= lastTop5Score) {
-        score = Math.max(65, lastTop5Score - (idx + 1) * 2);
-      }
-      return {
-        title: c.title,
-        cluster: c.cluster,
-        score: score
+      const executiveSummary = input.executiveSummary || {
+        archetype,
+        keyStrengths: top3Params.map(p => `High ${p} (${normalized1to5[p]}/5)`),
+        primaryCluster: top5Careers[0]?.cluster || "Engineering & Technology",
+        overviewText: `${studentName} demonstrates a distinct cognitive profile highlighted by strong ${top3Params[0]} and ${top3Params[1]} capabilities. Coupled with ${topInterest} career interests, ${studentName} excels in analytical problem-solving and structured domain execution.`
       };
-    });
-    for (let i = 0; i < goodFitCareers.length; i++) {
-      if (i > 0 && goodFitCareers[i].score >= goodFitCareers[i - 1].score) {
-        goodFitCareers[i].score = Math.max(60, goodFitCareers[i - 1].score - 2);
+
+      const devMeta = {
+        Administrative: { skill: "Systematic Data Organization", subjectMapping: "Computer Applications & Admin", description: "Enhances structured workflow, documentation, and operational accuracy." },
+        Numerical: { skill: "Quantitative Problem Solving", subjectMapping: "Mathematics & Statistics", description: "Strengthens numerical calculations, data interpretation, and analytical logic." },
+        Logical: { skill: "Algorithmic Thinking & Reasoning", subjectMapping: "Mathematics & Computer Science", description: "Develops step-by-step problem-solving and structured analytical reasoning." },
+        Mechanical: { skill: "Spatial & Practical Reasoning", subjectMapping: "Physics & Practical Labs", description: "Builds practical understanding of mechanical systems and physical concepts." },
+        Verbal: { skill: "Public Speaking & Articulation", subjectMapping: "English & Social Sciences", description: "Enhances presentation of technical concepts, team communication, and leadership presence." },
+        Realistic: { skill: "Hands-on Practical Execution", subjectMapping: "Science Practicals & Workshops", description: "Increases direct application and technical implementation skills." },
+        Investigative: { skill: "Scientific Research & Exploration", subjectMapping: "Sciences (Physics/Chemistry)", description: "Deepens analytical research capability and inquisitive inquiry." },
+        Artistic: { skill: "Creative Design & Originality", subjectMapping: "Fine Arts, Design & Literature", description: "Promotes out-of-the-box thinking, aesthetic judgment, and creative expression." },
+        Social: { skill: "Cross-functional Collaboration", subjectMapping: "Group Projects & Co-Curriculars", description: "Fosters interdisciplinary problem-solving and teamwork in modern enterprise environments." },
+        Enterprising: { skill: "Leadership & Initiative", subjectMapping: "Economics & Business Studies", description: "Develops initiative, project management, and persuasive communication." },
+        Conventional: { skill: "Time Management & Goal Planning", subjectMapping: "General Academic Schedule / Projects", description: "Builds structure for balancing competitive exam preparation with core studies." },
+        Empathy: { skill: "Interpersonal Sensitivity", subjectMapping: "Psychology & Team Activities", description: "Improves empathy and understanding of diverse team perspectives." },
+        "Emotional Intelligence": { skill: "Self-Regulation & Composure", subjectMapping: "Co-Curricular & Personal Growth", description: "Enhances self-awareness and composure in high-pressure situations." },
+        Engagement: { skill: "Goal Focus & Task Persistence", subjectMapping: "Project Work & Exam Prep", description: "Drives sustained focus, dedication, and completion of long-term targets." },
+        Exploration: { skill: "Curiosity & Domain Expansion", subjectMapping: "General Knowledge & Electives", description: "Encourages exploring emerging technologies, fields, and interdisciplinary topics." },
+        Efficiency: { skill: "Time Management & Workflow Optimization", subjectMapping: "Operational Execution & Debates", description: "Strengthens productivity, task execution, time management, and active engagement." },
+        Extraversion: { skill: "Networking & Active Dynamics", subjectMapping: "Public Forums & Debates", description: "Strengthens confidence in group settings and active verbal engagement." }
+      };
+
+      const developmentPriorities = input.developmentPriorities || lowest4Params.map(p => devMeta[p] || devMeta.Conventional);
+
+      let actionPlan = input.actionPlan;
+      if (!actionPlan) {
+        actionPlan = {
+          certifications: [
+            `Certifications in ${top5Careers[0]?.title || "Data Analytics"}`,
+            `Foundations in ${top5Careers[1]?.title || "Management"}`,
+            "Domain Skill Building & Practical Tools"
+          ],
+          competitions: [
+            "School & National Olympiads",
+            "Hackathons & Innovation Challenges",
+            "Case Study & Project Competitions"
+          ],
+          parentGuidance: [
+            `Encourage focus on subjects aligned with ${top5Careers[0]?.title || "chosen pathway"} during Grade 11 stream selection.`,
+            "Support structured preparation for relevant national entrance examinations.",
+            "Facilitate exposure to real-world skill-building programs and practical projects."
+          ]
+        };
+      } else if (actionPlan.parentGuidance) {
+        actionPlan = {
+          ...actionPlan,
+          parentGuidance: actionPlan.parentGuidance.map(g => g.replace("Data Scientist", top5Careers[0]?.title || "chosen pathway"))
+        };
+      }
+
+      return {
+        studentName,
+        classGrade,
+        schoolName,
+        testDate,
+        scores: normalized1to5,
+        pctScores: normalizedPct,
+        triProfile,
+        executiveSummary,
+        developmentPriorities,
+        top5Careers,
+        goodFitCareers,
+        actionPlan
+      };
+    }
+
+    function loadDemo() {
+      document.getElementById('jsonBox').value = JSON.stringify(sampleData, null, 2);
+      renderReport(sampleData);
+    }
+
+    function generateFromBox() {
+      try {
+        const raw = JSON.parse(document.getElementById('jsonBox').value);
+        const data = buildReportDataFromAssessment(raw);
+        document.getElementById('jsonBox').value = JSON.stringify(data, null, 2);
+        renderReport(data);
+      } catch (e) {
+        alert("Invalid JSON data provided: " + e.message);
       }
     }
-  }
 
-  const sortedAllParams = [...allParams].sort((a, b) => normalizedPct[b] - normalizedPct[a]);
-  const top3Params = sortedAllParams.slice(0, 3);
-  const lowest4Params = sortedAllParams.slice(-4).reverse();
+    function toggleJSON() {
+      const box = document.getElementById('jsonBox');
+      box.style.display = box.style.display === 'none' || box.style.display === '' ? 'block' : 'none';
+    }
 
-  const topSkill = sortedAllParams.find(p => skillsList.includes(p)) || "Logical";
-  const topInterest = sortedAllParams.find(p => riasecList.includes(p)) || "Investigative";
+    window.addEventListener("message", function (event) {
+      if (!event.data) return;
+      const payload = event.data.payload || event.data;
+      if (payload && (payload.scores || payload.student || payload.studentName || payload.top5Careers)) {
+        const formattedData = buildReportDataFromAssessment(payload);
+        const box = document.getElementById('jsonBox');
+        if (box) box.value = JSON.stringify(formattedData, null, 2);
+        renderReport(formattedData);
+      }
+    });
 
-  let archetype = `${topSkill} & ${topInterest} Strategist`;
-  if ((topSkill === "Numerical" || topSkill === "Logical") && topInterest === "Investigative") {
-    archetype = "Quantitative Investigator & Strategic Analyst";
-  } else if ((topSkill === "Verbal" || topSkill === "Administrative") && (topInterest === "Enterprising" || topInterest === "Social")) {
-    archetype = "Strategic Communicator & Business Leader";
-  } else if (topInterest === "Artistic") {
-    archetype = "Creative Design & Innovation Architect";
-  } else if (topSkill === "Mechanical" || topInterest === "Realistic") {
-    archetype = "Systems Specialist & Engineering Innovator";
-  }
-
-  const executiveSummary = input.executiveSummary || {
-    archetype,
-    keyStrengths: top3Params.map(p => `High ${p} (${normalized1to5[p]}/5)`),
-    primaryCluster: top5Careers[0]?.cluster || "Engineering & Technology",
-    overviewText: `${studentName} demonstrates a distinct cognitive profile highlighted by strong ${top3Params[0]} and ${top3Params[1]} capabilities. Coupled with ${topInterest} career interests, ${studentName} excels in analytical problem-solving and structured domain execution.`
-  };
-
-  const devMeta = {
-    Administrative: { skill: "Systematic Data Organization", subjectMapping: "Computer Applications & Admin", description: "Enhances structured workflow, documentation, and operational accuracy." },
-    Numerical: { skill: "Quantitative Problem Solving", subjectMapping: "Mathematics & Statistics", description: "Strengthens numerical calculations, data interpretation, and analytical logic." },
-    Logical: { skill: "Algorithmic Thinking & Reasoning", subjectMapping: "Mathematics & Computer Science", description: "Develops step-by-step problem-solving and structured analytical reasoning." },
-    Mechanical: { skill: "Spatial & Practical Reasoning", subjectMapping: "Physics & Practical Labs", description: "Builds practical understanding of mechanical systems and physical concepts." },
-    Verbal: { skill: "Public Speaking & Articulation", subjectMapping: "English & Social Sciences", description: "Enhances presentation of technical concepts, team communication, and leadership presence." },
-    Realistic: { skill: "Hands-on Practical Execution", subjectMapping: "Science Practicals & Workshops", description: "Increases direct application and technical implementation skills." },
-    Investigative: { skill: "Scientific Research & Exploration", subjectMapping: "Sciences (Physics/Chemistry)", description: "Deepens analytical research capability and inquisitive inquiry." },
-    Artistic: { skill: "Creative Design & Originality", subjectMapping: "Fine Arts, Design & Literature", description: "Promotes out-of-the-box thinking, aesthetic judgment, and creative expression." },
-    Social: { skill: "Cross-functional Collaboration", subjectMapping: "Group Projects & Co-Curriculars", description: "Fosters interdisciplinary problem-solving and teamwork in modern enterprise environments." },
-    Enterprising: { skill: "Leadership & Initiative", subjectMapping: "Economics & Business Studies", description: "Develops initiative, project management, and persuasive communication." },
-    Conventional: { skill: "Time Management & Goal Planning", subjectMapping: "General Academic Schedule / Projects", description: "Builds structure for balancing competitive exam preparation with core studies." },
-    Empathy: { skill: "Interpersonal Sensitivity", subjectMapping: "Psychology & Team Activities", description: "Improves empathy and understanding of diverse team perspectives." },
-    "Emotional Intelligence": { skill: "Self-Regulation & Composure", subjectMapping: "Co-Curricular & Personal Growth", description: "Enhances self-awareness and composure in high-pressure situations." },
-    Engagement: { skill: "Goal Focus & Task Persistence", subjectMapping: "Project Work & Exam Prep", description: "Drives sustained focus, dedication, and completion of long-term targets." },
-    Exploration: { skill: "Curiosity & Domain Expansion", subjectMapping: "General Knowledge & Electives", description: "Encourages exploring emerging technologies, fields, and interdisciplinary topics." },
-    Efficiency: { skill: "Time Management & Workflow Optimization", subjectMapping: "Operational Execution & Debates", description: "Strengthens productivity, task execution, time management, and active engagement." },
-    Extraversion: { skill: "Networking & Active Dynamics", subjectMapping: "Public Forums & Debates", description: "Strengthens confidence in group settings and active verbal engagement." }
-  };
-
-  const developmentPriorities = input.developmentPriorities || lowest4Params.map(p => devMeta[p] || devMeta.Conventional);
-
-  let actionPlan = input.actionPlan;
-  if (!actionPlan) {
-    actionPlan = {
-      certifications: [
-        `Certifications in ${top5Careers[0]?.title || "Data Analytics"}`,
-        `Foundations in ${top5Careers[1]?.title || "Management"}`,
-        "Domain Skill Building & Practical Tools"
-      ],
-      competitions: [
-        "School & National Olympiads",
-        "Hackathons & Innovation Challenges",
-        "Case Study & Project Competitions"
-      ],
-      parentGuidance: [
-        `Encourage focus on subjects aligned with ${top5Careers[0]?.title || "chosen pathway"} during Grade 11 stream selection.`,
-        "Support structured preparation for relevant national entrance examinations.",
-        "Facilitate exposure to real-world skill-building programs and practical projects."
-      ]
+    window.MentorMeCareerReport = {
+      renderReport,
+      buildReportDataFromAssessment,
+      sampleData
     };
-  } else if (actionPlan.parentGuidance) {
-    actionPlan = {
-      ...actionPlan,
-      parentGuidance: actionPlan.parentGuidance.map(g => g.replace("Data Scientist", top5Careers[0]?.title || "chosen pathway"))
+
+    window.generateReport = function (data) {
+      const formattedData = buildReportDataFromAssessment(data);
+      const box = document.getElementById('jsonBox');
+      if (box) box.value = JSON.stringify(formattedData, null, 2);
+      renderReport(formattedData);
     };
-  }
-
-  return {
-    studentName,
-    classGrade,
-    schoolName,
-    testDate,
-    scores: normalized1to5,
-    pctScores: normalizedPct,
-    triProfile,
-    executiveSummary,
-    developmentPriorities,
-    top5Careers,
-    goodFitCareers,
-    actionPlan
-  };
-}
-
-function loadDemo() {
-  document.getElementById('jsonBox').value = JSON.stringify(sampleData, null, 2);
-  renderReport(sampleData);
-}
-
-function generateFromBox() {
-  try {
-    const raw = JSON.parse(document.getElementById('jsonBox').value);
-    const data = buildReportDataFromAssessment(raw);
-    document.getElementById('jsonBox').value = JSON.stringify(data, null, 2);
-    renderReport(data);
-  } catch (e) {
-    alert("Invalid JSON data provided: " + e.message);
-  }
-}
-
-function toggleJSON() {
-  const box = document.getElementById('jsonBox');
-  box.style.display = box.style.display === 'none' || box.style.display === '' ? 'block' : 'none';
-}
-
-window.addEventListener("message", function(event) {
-  if (!event.data) return;
-  const payload = event.data.payload || event.data;
-  if (payload && (payload.scores || payload.student || payload.studentName || payload.top5Careers)) {
-    const formattedData = buildReportDataFromAssessment(payload);
-    const box = document.getElementById('jsonBox');
-    if (box) box.value = JSON.stringify(formattedData, null, 2);
-    renderReport(formattedData);
-  }
-});
-
-window.MentorMeCareerReport = {
-  renderReport,
-  buildReportDataFromAssessment,
-  sampleData
-};
-
-window.generateReport = function(data) {
-  const formattedData = buildReportDataFromAssessment(data);
-  const box = document.getElementById('jsonBox');
-  if (box) box.value = JSON.stringify(formattedData, null, 2);
-  renderReport(formattedData);
-};
-</script>
+  </script>
 </body>
+
 </html>

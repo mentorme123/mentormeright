@@ -180,7 +180,7 @@ export default function StudyAbroadHub() {
             <Link href="/contact" className="px-12 py-5 bg-white text-brand-blue font-black text-xl rounded-2xl shadow-xl hover:bg-brand-orange hover:text-white transition-all hover:scale-105">
               Apply Now
             </Link>
-            <a href="tel:+919392707596" className="px-12 py-5 border-2 border-white/30 text-white font-black text-xl rounded-2xl hover:bg-white/10 transition-all">
+            <a href="tel:+918142222481" className="px-12 py-5 border-2 border-white/30 text-white font-black text-xl rounded-2xl hover:bg-white/10 transition-all">
               Call Advisor
             </a>
           </div>

@@ -224,9 +224,10 @@ export default function ContactPage() {
                   <h3 className="font-semibold text-lg mb-1">WhatsApp Us</h3>
                   <p className="text-muted-foreground text-sm mb-3">Instant support from our team.</p>
                   <a href="https://api.whatsapp.com/send?phone=918188824440" target="_blank" rel="noreferrer" className="text-brand-blue font-medium hover:underline block">
-                    +91-9392707596
+                    +91-8142222481
                   </a>
                   <a href="https://api.whatsapp.com/send?phone=918188824440" target="_blank" rel="noreferrer" className="text-brand-blue font-medium hover:underline block">
+                    +91-8188824440
                     +91-8188824440
                   </a>
                 </div>
@@ -254,8 +255,8 @@ export default function ContactPage() {
                 <div>
                   <h3 className="font-semibold text-lg mb-1">Call Us</h3>
                   <p className="text-muted-foreground text-sm mb-3">Speak directly to our advisors.</p>
-                  <a href="tel:+919392707596" className="text-brand-blue font-medium hover:underline block">
-                    +91-9392707596
+                  <a href="tel:+918142222481" className="text-brand-blue font-medium hover:underline block">
+                    +91-8142222481
                   </a>
                 </div>
               </div>

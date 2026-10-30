@@ -19,7 +19,7 @@ export function Footer() {
               Turning Passions into Professions
             </p>
             <div className="text-xs text-gray-700 space-y-1 pt-2">
-              <p><span className="font-semibold text-gray-900">Call us at:</span> +91-9392707596, +91-8188824440</p>
+              <p><span className="font-semibold text-gray-900">Call us at:</span> +91-8142222481, +91-8188824440</p>
               <p><span className="font-semibold text-gray-900">Mail us at:</span> admin@mentormeright.in</p>
               <p><span className="font-semibold text-gray-900">Location:</span> Hyderabad, India</p>
             </div>

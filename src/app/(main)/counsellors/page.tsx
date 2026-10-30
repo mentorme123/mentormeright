@@ -135,7 +135,7 @@ export default function CounsellorsLanding() {
               <p className="text-emerald-600 font-bold">+91 81888 24440</p>
             </a>
 
-            <a href="tel:+919392707596" className="bg-white p-8 rounded-3xl border border-slate-200 hover:border-brand-blue hover:shadow-xl transition-all group block">
+            <a href="tel:+918142222481" className="bg-white p-8 rounded-3xl border border-slate-200 hover:border-brand-blue hover:shadow-xl transition-all group block">
               <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform">
                 <PhoneCall className="text-brand-blue w-8 h-8" />
               </div>

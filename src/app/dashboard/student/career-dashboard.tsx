@@ -544,7 +544,7 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           <span className="mx-2">|</span>
           <span>admin@mentormeright.in</span>
           <span className="mx-2">|</span>
-          <span>+91-9392707596, +91-8188824440</span>
+          <span>+91-8142222481, +91-8188824440</span>
         </div>
       </div>
     </div>

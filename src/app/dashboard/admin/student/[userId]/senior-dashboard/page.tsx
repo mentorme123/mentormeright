@@ -482,7 +482,7 @@ export default function AdminSeniorDashboard({ params }: { params: { userId: str
           <span className="mx-2">|</span>
           <a href="mailto:admin@mentormeright.in" className="hover:text-slate-600 underline">admin@mentormeright.in</a>
           <span className="mx-2">|</span>
-          <a href="tel:+919392707596" className="hover:text-slate-600 underline">+91-9392707596</a>
+          <a href="tel:+918142222481" className="hover:text-slate-600 underline">+91-8142222481</a>
           <span className="mx-2">|</span>
           <a href="tel:+918188824440" className="hover:text-slate-600 underline">+91-8188824440</a>
         </div>

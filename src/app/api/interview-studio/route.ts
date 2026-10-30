@@ -116,9 +116,14 @@ async function transcribeAudio(file: File): Promise<string> {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body,
-          signal: AbortSignal.timeout(90000),
+          signal: AbortSignal.timeout(60000),
         }
       );
+      if (!r.ok && r.status >= 500) {
+        let detail='';
+        try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
+        throw Object.assign(new Error(detail||r.statusText), {status: r.status});
+      }
       return r;
     });
   } catch (e: any) {
@@ -170,9 +175,14 @@ async function evaluateAnswer(prompt: any): Promise<any> {
             }
           ]
         }),
-        signal: AbortSignal.timeout(90000),
+        signal: AbortSignal.timeout(60000),
       }
       );
+      if (!r.ok && r.status >= 500) {
+        let detail='';
+        try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
+        throw Object.assign(new Error(detail||r.statusText), {status: r.status});
+      }
       return r;
     });
   } catch (e: any) {

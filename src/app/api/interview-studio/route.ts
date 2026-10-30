@@ -31,14 +31,43 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
     try {
       return await fn();
     } catch (e: any) {
-      if (attempt < maxRetries - 1 && (e.status >= 500 || !e.status)) {
-        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+      if (attempt < maxRetries - 1 && (e.status >= 500 || e.status === 429 || !e.status)) {
+        const delay = Math.pow(2, attempt + 2) * 1000 + Math.random() * 1000;
+        console.warn(`[withRetry] attempt ${attempt + 1}/${maxRetries} failed (${e.message || e.status}). Retrying in ${Math.round(delay)}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
         continue;
       }
       throw e;
     }
   }
   throw new Error('Max retries exceeded');
+}
+
+const FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-3.7-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
+
+async function withModelFallback<T>(
+  primaryModel: string,
+  fn: (model: string) => Promise<T>,
+  maxRetries = 3
+): Promise<T> {
+  const models = Array.from(new Set([primaryModel, ...FALLBACK_MODELS]));
+  let lastError: any;
+  for (const model of models) {
+    try {
+      return await withRetry(() => fn(model), maxRetries);
+    } catch (e: any) {
+      lastError = e;
+      if (e.name === 'AbortError' || e.message?.includes('timeout') || e.message?.includes('aborted')) {
+        throw e;
+      }
+      if (e.status === 503 || e.status === 429 || e.status === 404) {
+        console.warn(`[withModelFallback] model ${model} unavailable (status ${e.status}), trying next...`);
+        continue;
+      }
+      throw e;
+    }
+  }
+  throw lastError;
 }
 
 function getAuthUser(req: NextRequest) {
@@ -108,10 +137,11 @@ async function transcribeAudio(file: File): Promise<string> {
   });
 
   let response;
+  let lastError: any;
   try {
-    response = await withRetry(async () => {
+    response = await withModelFallback(env.TRANSCRIPTION_MODEL, async (model) => {
       const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${env.TRANSCRIPTION_MODEL}:generateContent?key=${env.GOOGLE_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GOOGLE_API_KEY}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -119,7 +149,7 @@ async function transcribeAudio(file: File): Promise<string> {
           signal: AbortSignal.timeout(60000),
         }
       );
-      if (!r.ok && r.status >= 500) {
+      if (!r.ok && (r.status >= 500 || r.status === 429 || r.status === 404)) {
         let detail='';
         try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
         throw Object.assign(new Error(detail||r.statusText), {status: r.status});
@@ -130,10 +160,13 @@ async function transcribeAudio(file: File): Promise<string> {
     if (e.name === 'AbortError' || e.message?.includes('timeout') || e.message?.includes('aborted') || e.message?.includes('aborted')) {
       fail('Audio transcription timed out. The language model API is busy; please try again in a few minutes.', 502);
     }
-    throw e;
+    lastError = e;
   }
 
-  if (!response) fail('Audio transcription request was aborted. Please try again.', 502);
+  if (!response) {
+    if (lastError) throw lastError;
+    fail('Audio transcription request was aborted. Please try again.', 502);
+  }
   if (!response.ok) {
     let detail = '';
     try {
@@ -155,10 +188,11 @@ async function transcribeAudio(file: File): Promise<string> {
 async function evaluateAnswer(prompt: any): Promise<any> {
   const env = getEnv();
   let response;
+  let lastError: any;
   try {
-    response = await withRetry(async () => {
+    response = await withModelFallback(env.EVALUATION_MODEL, async (model) => {
       const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${env.EVALUATION_MODEL}:generateContent?key=${env.GOOGLE_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GOOGLE_API_KEY}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -178,7 +212,7 @@ async function evaluateAnswer(prompt: any): Promise<any> {
         signal: AbortSignal.timeout(60000),
       }
       );
-      if (!r.ok && r.status >= 500) {
+      if (!r.ok && (r.status >= 500 || r.status === 429 || r.status === 404)) {
         let detail='';
         try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
         throw Object.assign(new Error(detail||r.statusText), {status: r.status});
@@ -189,10 +223,13 @@ async function evaluateAnswer(prompt: any): Promise<any> {
     if (e.name === 'AbortError' || e.message?.includes('timeout') || e.message?.includes('aborted')) {
       fail('AI answer evaluation timed out. The language model API is busy; please try again in a few minutes.', 502);
     }
-    throw e;
+    lastError = e;
   }
 
-  if (!response) fail('AI answer evaluation request was aborted. Please try again.', 502);
+  if (!response) {
+    if (lastError) throw lastError;
+    fail('AI answer evaluation request was aborted. Please try again.', 502);
+  }
   if (!response.ok) {
     let detail = '';
     try {

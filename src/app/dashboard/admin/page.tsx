@@ -380,11 +380,11 @@ export default function AdminDashboard() {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to fetch placement results');
       const results = data.results || [];
-      const headers = "Name,Email,Test Name,Score,Correct,Total,Completed At\n";
-      const rows = results.map((r: any) => {
-        const completed = r.completedAt ? new Date(r.completedAt).toLocaleString() : '';
-        return `"${(r.userName || '').replace(/"/g, '""')}","${(r.userEmail || '').replace(/"/g, '""')}","${(r.testName || '').replace(/"/g, '""')}","${r.score || 0}","${r.correctAnswers || 0}","${r.totalQuestions || 0}","${completed}"`;
-      }).join('\n');
+       const headers = "Name,Email,Class,Test Name,Score,Correct,Total,Completed At\n";
+       const rows = results.map((r: any) => {
+         const completed = r.completedAt ? new Date(r.completedAt).toLocaleString() : '';
+         return `"${(r.userName || '').replace(/"/g, '""')}","${(r.userEmail || '').replace(/"/g, '""')}","${(r.userClass || '').replace(/"/g, '""')}","${(r.testName || '').replace(/"/g, '""')}","${r.score || 0}","${r.correctAnswers || 0}","${r.totalQuestions || 0}","${completed}"`;
+       }).join('\n');
       const csvContent = headers + rows;
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -417,12 +417,12 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleDownloadPlacementResults = () => {
-    const headers = "Name,Email,Test Name,Score,Correct,Total,Completed At\n";
-    const rows = placementResults.map((r: any) => {
-      const completed = r.completedAt ? new Date(r.completedAt).toLocaleString() : '';
-      return `"${(r.userName || '').replace(/"/g, '""')}","${(r.userEmail || '').replace(/"/g, '""')}","${(r.testName || '').replace(/"/g, '""')}","${r.score || 0}","${r.correctAnswers || 0}","${r.totalQuestions || 0}","${completed}"`;
-    }).join('\n');
+   const handleDownloadPlacementResults = () => {
+     const headers = "Name,Email,Class,Test Name,Score,Correct,Total,Completed At\n";
+     const rows = placementResults.map((r: any) => {
+       const completed = r.completedAt ? new Date(r.completedAt).toLocaleString() : '';
+       return `"${(r.userName || '').replace(/"/g, '""')}","${(r.userEmail || '').replace(/"/g, '""')}","${(r.userClass || '').replace(/"/g, '""')}","${(r.testName || '').replace(/"/g, '""')}","${r.score || 0}","${r.correctAnswers || 0}","${r.totalQuestions || 0}","${completed}"`;
+     }).join('\n');
     const csvContent = headers + rows;
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -1743,9 +1743,10 @@ export default function AdminDashboard() {
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border border-slate-200 rounded-xl overflow-hidden">
                       <thead>
-                        <tr className="bg-slate-50 border-b border-slate-200">
+                          <tr className="bg-slate-50 border-b border-slate-200">
                           <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Name</th>
                           <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Email</th>
+                          <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Class</th>
                           <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
                           <th className="py-3 px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">View Report</th>
                         </tr>
@@ -1757,6 +1758,7 @@ export default function AdminDashboard() {
                             <tr key={result.id} className="border-b border-slate-100 hover:bg-slate-50/60">
                               <td className="py-3 px-3 text-xs font-bold text-slate-800">{result.userName || 'Guest User'}</td>
                               <td className="py-3 px-3 text-xs text-slate-600">{result.userEmail || result.userId}</td>
+                              <td className="py-3 px-3 text-xs text-slate-600">{result.userClass || '-'}</td>
                               <td className="py-3 px-3">
                                 <span className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-black ${(result.score || 0) >= 80 ? 'bg-emerald-100 text-emerald-700' : (result.score || 0) >= 60 ? 'bg-amber-100 text-amber-700' : 'bg-red-100 text-red-700'}`}>
                                   {(result.score || 0) >= 80 ? 'Strong' : (result.score || 0) >= 60 ? 'Good' : 'Needs Work'}

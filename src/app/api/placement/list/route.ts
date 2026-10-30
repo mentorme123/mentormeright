@@ -29,14 +29,14 @@ export async function GET(req: NextRequest) {
     const results = data || [];
     const userIds = Array.from(new Set(results.map((r: any) => r.user_id).filter(Boolean)));
 
-    const userMap: Record<string, { name: string; email: string }> = {};
+    const userMap: Record<string, { name: string; email: string; education_level: string }> = {};
     if (userIds.length > 0) {
       const { data: usersData } = await getSupabaseAdmin()
         .from('users')
-        .select('id, name, email')
+        .select('id, name, email, education_level')
         .in('id', userIds);
       (usersData || []).forEach((u: any) => {
-        userMap[u.id] = { name: u.name || '', email: u.email || '' };
+        userMap[u.id] = { name: u.name || '', email: u.email || '', education_level: u.education_level || '' };
       });
     }
 
@@ -50,7 +50,8 @@ export async function GET(req: NextRequest) {
       completedAt: r.completed_at,
       userId: r.user_id,
       userName: userMap[r.user_id]?.name || 'Guest User',
-      userEmail: userMap[r.user_id]?.email || r.user_id
+      userEmail: userMap[r.user_id]?.email || r.user_id,
+      userClass: userMap[r.user_id]?.education_level || ''
     }));
 
     return NextResponse.json({ results: mapped });

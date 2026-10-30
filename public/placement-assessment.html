@@ -537,6 +537,7 @@ function showCatalogue(){
   renderTabs();renderCards();
   document.getElementById('regCloseBtn').onclick = hideRegistrationModal;
   document.getElementById('regModal').onclick = function(e){ if(e.target === this) hideRegistrationModal(); };
+  if(!getRegistrationData()){ showRegistrationModal(function(){}); }
 </script>
 </body>
 </html>

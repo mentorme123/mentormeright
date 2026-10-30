@@ -6,11 +6,11 @@ import './globals.css';
 const tracks=['All tracks','AI','Computer Science','Accounting','Banking'];
 const icons:any={'AI':BrainCircuit,'Computer Science':Code2,'Accounting':Calculator,'Banking':Landmark};
 const colors:any={'AI':'lavender','Computer Science':'blue','Accounting':'peach','Banking':'mint'};
-async function call(data:any){const r=await fetch('/api/interview-studio',{method:'POST',headers:data instanceof FormData?{}:{'Content-Type':'application/json'},body:data instanceof FormData?data:JSON.stringify(data)});const v:any=await r.json();if(!r.ok)throw Error(v.error);return v}
+async function call(data:any){try{const r=await fetch('/api/interview-studio',{method:'POST',headers:data instanceof FormData?{}:{'Content-Type':'application/json'},body:data instanceof FormData?data:JSON.stringify(data),signal:AbortSignal.timeout(120000)});let v:any;try{v=await r.json()}catch{throw Error('Server error (HTTP '+r.status+'). Please try again.')}if(!r.ok)throw Error(v.error||('Request failed (HTTP '+r.status+').'));return v}catch(e:any){if(e.name==='AbortError'||/timed?\s*out/i.test(e.message||''))throw Error('Request timed out. The server may be busy; please try again.');throw e}}
 export default function Studio(){
 const [state,S]=useState<any>({catalogue,attempts:[]}),[tab,T]=useState('Explore interviews'),[track,F]=useState('All tracks'),[selected,Q]=useState<any>(null),[active,A]=useState<any>(null),[report,R]=useState<any>(null),[error,E]=useState(''),[busy,B]=useState(false),[feedback,G]=useState<any>(null),[recording,V]=useState(false),[blob,BlobS]=useState<Blob|null>(null),[blobURL,U]=useState(''),[remaining,C]=useState(900),[consent,K]=useState(false);
 const rec=useRef<MediaRecorder|null>(null),stream=useRef<MediaStream|null>(null),audio=useRef<HTMLAudioElement|null>(null);
-async function refresh(){try{const r=await fetch('/api/interview-studio');const d:any=await r.json();if(!r.ok)throw Error(d.error);S(d);return d}catch(e:any){E(e.message)}}
+async function refresh(){try{const r=await fetch('/api/interview-studio',{signal:AbortSignal.timeout(120000)});let d:any;try{d=await r.json()}catch{throw Error('Server error (HTTP '+r.status+').')}if(!r.ok)throw Error(d.error);S(d);return d}catch(e:any){E(e.message)}}
 useEffect(()=>{refresh();return()=>{stream.current?.getTracks().forEach(t=>t.stop());window.speechSynthesis?.cancel()}},[]);
 useEffect(()=>{if(!active)return;const t=setInterval(()=>C(Math.max(0,900-Math.floor((Date.now()-active.created)/1000))),1000);return()=>clearInterval(t)},[active]);
 useEffect(()=>{if(active&&remaining===0){if(rec.current?.state==='recording')rec.current.stop();if(!busy)finish()}},[remaining,busy]);

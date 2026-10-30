@@ -4,6 +4,7 @@ import { createClient } from '@supabase/supabase-js';
 import { catalogue } from '../../(main)/interview-studio/catalogue';
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 300;
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -25,7 +26,7 @@ function fail(s: string, n = 400): never {
   throw Object.assign(new Error(s), { status: n });
 }
 
-async function withRetry<T>(fn: () => Promise<T>, maxRetries = 1): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       return await fn();
@@ -110,7 +111,7 @@ async function transcribeAudio(file: File): Promise<string> {
   try {
     response = await withRetry(async () => {
       const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/${env.TRANSCRIPTION_MODEL}:generateContent?key=${env.GOOGLE_API_KEY}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -152,7 +153,7 @@ async function evaluateAnswer(prompt: any): Promise<any> {
   try {
     response = await withRetry(async () => {
       const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${env.GOOGLE_API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/${env.EVALUATION_MODEL}:generateContent?key=${env.GOOGLE_API_KEY}`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

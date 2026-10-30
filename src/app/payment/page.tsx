@@ -78,13 +78,6 @@ export default function PaymentPage() {
           return;
         }
 
-        const isGoogleUser = user.user_metadata?.provider === 'google' || user.user_metadata?.iss === 'https://accounts.google.com';
-
-        if (!isGoogleUser) {
-          window.location.href = `/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;
-          return;
-        }
-
         const hasPaid = type === 'career_assessment'
           ? userProfile?.has_paid_assessment
           : userProfile?.has_paid_report;

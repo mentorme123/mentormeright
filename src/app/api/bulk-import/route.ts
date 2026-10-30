@@ -26,7 +26,9 @@ export async function POST(req: NextRequest) {
     const results: Array<{ name?: string; email?: string; password?: string; status: string; error?: string }> = [];
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
 
+    let counter = 0;
     for (const student of students) {
+      counter++;
       const studentKeys = Object.keys(student);
       const nameKey = studentKeys.find(k => k.toLowerCase() === 'name' || k.toLowerCase() === 'full name' || k.toLowerCase() === 'full_name' || k.toLowerCase() === 'student name');
       const rawName = String(student[nameKey || ''] || '').trim().replace(/\s+/g, ' ');
@@ -37,13 +39,12 @@ export async function POST(req: NextRequest) {
       const rawClass = String(student[classKey || ''] || '').trim();
       const rawRoll = String(student[rollKey || ''] || '').trim();
 
-      const cleanName = rawName.replace(/[^a-zA-Z\s]/g, '').trim();
-      const firstName = cleanName.split(/\s+/)[0] || '';
+      const firstName = (rawName.split(/\s+/)[0] || '').replace(/[^a-zA-Z0-9]/gi, '');
       const nameUser = firstName ? `${firstName.toLowerCase()}@mentormeright.com` : '';
       const rollDigits = rawRoll.replace(/[^0-9]/g, '').slice(0, 20);
-      const email = rollDigits ? `R${rollDigits}@mentormeright.com` : (nameUser || `student${Math.floor(Date.now() / 1000)}@mentormeright.com`);
+      const email = rollDigits ? `R${rollDigits}@mentormeright.com` : (nameUser || `student${Math.floor(Date.now() / 1000)}_${counter}@mentormeright.com`);
       const username = email;
-      const password = rollDigits ? `R@${rollDigits}` : `MM${email.split('@')[0].replace(/[^a-z0-9]/gi, '')}@123`;
+      const password = rollDigits ? `R@${rollDigits}` : `MM${firstName || 'student'}@123`;
       const sanitizedName = rawName.slice(0, 100);
       const sanitizedGrade = rawClass.slice(0, 50);
 

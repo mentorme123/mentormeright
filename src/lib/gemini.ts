@@ -9,7 +9,7 @@ if (!apiKey) {
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
-export const getModel = (modelName: string = 'gemini-1.5-flash'): GenerativeModel => {
+export const getModel = (modelName: string = 'gemini-2.5-flash'): GenerativeModel => {
   // v1beta supports the latest and experimental models reliably.
   return genAI.getGenerativeModel(
     { model: modelName },
@@ -22,7 +22,7 @@ export const getModel = (modelName: string = 'gemini-1.5-flash'): GenerativeMode
  */
 export async function generateWithRetry(
   prompt: string,
-  modelName: string = 'gemini-1.5-flash',
+  modelName: string = 'gemini-2.5-flash',
   maxRetries: number = 5
 ) {
   let lastError: any;

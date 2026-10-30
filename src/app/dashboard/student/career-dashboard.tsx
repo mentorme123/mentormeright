@@ -409,7 +409,6 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {isSchool ? (
             <>
-              <KPICard label="Career Clarity Score" value={getKpiValue("Career Clarity Score", `${overallScore}%`)} color="text-[#1B3A6B]" bg="bg-blue-50" />
               <KPICard label="Recommended Stream" value={getKpiValue("Recommended Stream", report?.academicRoadmap?.recommendedStream || stream.stream)} color="text-[#15803D]" bg="bg-emerald-50" />
               <KPICard label="Subject Readiness" value={getKpiValue("Subject Readiness", `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#7C3AED]" bg="bg-purple-50" />
               <KPICard label="Personality & Interest Alignment" value={getKpiValue("Personality & Interest Alignment", `${pct(displayScores[topRIASEC.key] || 0, MAX_RIASEC)}%`)} color="text-[#C2410C]" bg="bg-orange-50" />

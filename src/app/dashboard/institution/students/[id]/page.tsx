@@ -113,11 +113,6 @@ export default async function StudentViewPage({ params }: { params: { id: string
               ) : (
                 <>
                   <MetricCard
-                    label="Career Clarity Score"
-                    value={`${Math.round((scores?.Enterprising || 0) / 20 * 100)}%`}
-                    valueColor="text-blue-800"
-                  />
-                  <MetricCard
                     label="Recommended Stream"
                     value={stream || "Commerce"}
                     valueColor="text-emerald-700"

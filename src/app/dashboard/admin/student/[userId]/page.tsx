@@ -383,7 +383,6 @@ export default function AdminStudentEditPage({ params }: { params: { userId: str
             <p className="text-xs text-slate-400 mb-4">CSV format: <code className="bg-white px-1 py-0.5 rounded border border-slate-200">label,value</code> on each line. Header row is ignored.</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {(overrides.kpiOverrides ? Object.entries(overrides.kpiOverrides) : [
-                ['Career Clarity Score', ''],
                 ['Recommended Stream', ''],
                 ['Subject Readiness', ''],
                 ['Personality & Interest Alignment', ''],

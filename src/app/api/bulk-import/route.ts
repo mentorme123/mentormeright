@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
         continue;
       }
 
-      const { data: existingAuthUsers, error: listError } = await supabaseAdmin.auth.admin.listUsers({
+      const { data: existingAuthUsers } = await supabaseAdmin.auth.admin.listUsers({
         email,
       });
 

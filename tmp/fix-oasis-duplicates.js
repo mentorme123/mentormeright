@@ -87,15 +87,6 @@ async function countAssessments(uuid) {
   return Array.isArray(data) ? data.length : 0;
 }
 
-async function transferAssessments(fromId, toId) {
-  const { data, status } = await api(
-    `/rest/v1/assessment_results?user_id=eq.${encodeURIComponent(fromId)}`,
-    'PATCH',
-    { user_id: toId }
-  );
-  return { data, status };
-}
-
 async function deleteAuthUser(uuid) {
   const { status } = await authApi(`/auth/v1/admin/users/${encodeURIComponent(uuid)}`, 'DELETE');
   return status;
@@ -106,15 +97,7 @@ async function deletePublicUser(uuid) {
   return status;
 }
 
-async function findAuthUsersByEmail(email) {
-  const { data } = await authApi(`/auth/v1/admin/users?email=${encodeURIComponent(email)}`);
-  if (!data || !data.users) return [];
-  return data.users;
-}
-
-// Normalize a name for fuzzy duplicate matching:
-// - trim, lowercase, collapse whitespace
-// - remove punctuation
+// Normalize a name for fuzzy duplicate matching
 function normalizeName(name) {
   return String(name || '')
     .trim()
@@ -128,9 +111,9 @@ async function main() {
   console.log(`Scanning for duplicates at "${INSTITUTION}"...\n`);
 
   const users = await getAllUsers(INSTITUTION);
-  console.log(`Total users with institution="${INSTITUTION}": ${users.length}`);
+  console.log(`Total users with institution="${INSTITUTION}": ${users.length}\n`);
 
-  // --- Detect duplicates by EMAIL (same email, multiple rows) ---
+  // --- Detect duplicates by EMAIL ---
   const emailGroups = {};
   for (const u of users) {
     const key = String(u.email || '').toLowerCase().trim();
@@ -139,8 +122,7 @@ async function main() {
     emailGroups[key].push(u);
   }
 
-  // --- Detect duplicates by NAME (same normalized name, multiple rows with DIFFERENT emails) ---
-  // This catches the auto-generated student@ emails that change on every import run
+  // --- Detect duplicates by NAME (catches auto-generated student@ emails) ---
   const nameGroups = {};
   for (const u of users) {
     const normName = normalizeName(u.name);
@@ -149,101 +131,103 @@ async function main() {
     nameGroups[normName].push(u);
   }
 
-  // Collect all duplicate groups
-  // Email-based: groups with >1 user sharing the same email
   const emailDupes = Object.entries(emailGroups).filter(([k, g]) => g.length > 1);
-  // Name-based: groups with >1 user sharing the same normalized name (but different emails)
   const nameDupes = Object.entries(nameGroups).filter(([k, g]) => {
     if (g.length <= 1) return false;
-    // If all users in this group share the same email, it's already covered by emailDupes
     const uniqueEmails = new Set(g.map(u => String(u.email || '').toLowerCase().trim()));
-    return uniqueEmails.size > 1;
+    return uniqueEmails.size > 1; // same name, different emails = duplicate
   });
 
-  console.log(`Duplicate email groups: ${emailDupes.length}`);
-  console.log(`Duplicate name groups (different emails): ${nameDupes.length}\n`);
+  console.log(`Duplicate email groups (same email multiple times): ${emailDupes.length}`);
+  console.log(`Duplicate name groups (same name, different emails): ${nameDupes.length}\n`);
 
-  let deleted = 0;
-  let transferred = 0;
-  let errors = 0;
-
-  // Helper: collect all duplicate IDs to remove across both email and name groups
-  // Map: keepId -> Set of dupeIds to remove
-  const allDupes = {}; // key: email|name -> { keep: user, dupes: [users] }
+  // Collect IDs to remove and IDs to keep
+  const idsToRemove = new Set();
+  const idsToKeep = new Set();
 
   for (const [email, group] of emailDupes) {
     const sorted = group.slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-    const keep = sorted[0];
-    const dupes = sorted.slice(1);
-    if (!allDupes[email]) allDupes[email] = { keep, dupes: [] };
-    allDupes[email].dupes.push(...dupes);
+    const [oldest, ...duplicates] = sorted;
+    idsToKeep.add(oldest.id);
+    for (const d of duplicates) idsToRemove.add(d.id);
+    console.log(`[EMAIL] ${oldest.name || 'unnamed'} <${oldest.email}>`);
+    console.log(`  KEEP: id=${oldest.id}`);
+    for (const d of duplicates) {
+      console.log(`  REMOVE: id=${d.id} email=${d.email} created=${d.created_at}`);
+    }
   }
 
   for (const [name, group] of nameDupes) {
+    // Only process if not already handled by email dedup
+    if (idsToRemove.size === 0 && group.length <= 1) continue;
+    const uniqueEmails = new Set(group.map(u => String(u.email || '').toLowerCase().trim()));
+    if (uniqueEmails.size <= 1) continue;
+
     const sorted = group.slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-    const keep = sorted[0];
-    const dupes = sorted.slice(1);
-    if (!allDupes['name:' + name]) allDupes['name:' + name] = { keep, dupes: [] };
-    allDupes['name:' + name].dupes.push(...dupes);
+    const [oldest, ...duplicates] = sorted;
+    if (!idsToKeep.has(oldest.id)) idsToKeep.add(oldest.id);
+    for (const d of duplicates) idsToRemove.add(d.id);
+    console.log(`[NAME] "${oldest.name}" (normalized: "${name}")`);
+    console.log(`  KEEP: id=${oldest.id} email=${oldest.email}`);
+    for (const d of duplicates) {
+      console.log(`  REMOVE: id=${d.id} email=${d.email} created=${d.created_at}`);
+    }
   }
 
-  for (const key of Object.keys(allDupes)) {
-    const { keep, dupes } = allDupes[key];
-    if (dupes.length === 0) continue;
+  console.log(`\nTotal IDs to remove: ${idsToRemove.size}`);
+  console.log(`Total IDs to keep:   ${idsToKeep.size}\n`);
 
-    const label = keep.name || 'unnamed';
-    console.log(`\n=== ${label} <${keep.email}> ===`);
-    console.log(`  KEEP:  id=${keep.id}  created=${keep.created_at}`);
+  let deleted = 0;
+  let skippedWithTests = 0;
+  let errors = 0;
 
-    for (const dupe of dupes) {
-      console.log(`  DUP:   id=${dupe.id}  email=${dupe.email}  created=${dupe.created_at}`);
+  for (const dupeId of idsToRemove) {
+    // Don't delete an ID that's also marked as "keep" in another group
+    if (idsToKeep.has(dupeId)) {
+      console.log(`SKIP (marked as keep): id=${dupeId}`);
+      continue;
+    }
 
-      const assessmentCount = await countAssessments(dupe.id);
+    const assessmentCount = await countAssessments(dupeId);
 
-      if (assessmentCount > 0) {
-        console.log(`  >> This duplicate has ${assessmentCount} completed test(s). Transferring to kept user...`);
-        const transferResult = await transferAssessments(dupe.id, keep.id);
-        if (transferResult.status === 200 || transferResult.status === 204) {
-          transferred += assessmentCount;
-          console.log(`  >> Transfer SUCCESS (${assessmentCount} test(s) preserved)`);
-        } else {
-          console.error(`  >> Transfer FAILED: HTTP ${transferResult.status}`);
-          errors++;
-          continue;
-        }
-      }
+    if (assessmentCount > 0) {
+      console.log(`SKIP (has ${assessmentCount} completed test(s)): id=${dupeId} — NOT touching completed tests`);
+      skippedWithTests++;
+      continue;
+    }
 
-      // Also delete from auth.users for the duplicate email
-      const authDupes = await findAuthUsersByEmail(dupe.email);
-      const authDupesToDelete = authDupes.filter(a => a.id !== keep.id && a.id === dupe.id);
-      for (const authDupe of authDupesToDelete) {
-        const delStatus = await deleteAuthUser(authDupe.id);
-        if (delStatus === 200 || delStatus === 204) {
-          console.log(`  >> Deleted auth user ${authDupe.id}`);
-        } else {
-          console.log(`  >> Auth delete ${authDupe.id}: HTTP ${delStatus} (may already be gone)`);
-        }
-      }
+    const user = users.find(u => u.id === dupeId);
+    const userEmail = user?.email || 'unknown';
+    const userName = user?.name || 'unnamed';
 
-      // Delete from public.users
-      const pubStatus = await deletePublicUser(dupe.id);
-      if (pubStatus === 200 || pubStatus === 204 || pubStatus === 206) {
-        console.log(`  >> Deleted public user ${dupe.id}`);
-        deleted++;
-      } else {
-        console.error(`  >> Public delete FAILED: HTTP ${pubStatus}`);
-        errors++;
-      }
+    console.log(`DELETE: ${userName} <${userEmail}> id=${dupeId}`);
+
+    // Delete from auth.users
+    const authStatus = await deleteAuthUser(dupeId);
+    if (authStatus === 200 || authStatus === 204) {
+      console.log(`  -> Deleted auth user`);
+    } else {
+      console.log(`  -> Auth delete: HTTP ${authStatus} (may already be gone)`);
+    }
+
+    // Delete from public.users
+    const pubStatus = await deletePublicUser(dupeId);
+    if (pubStatus === 200 || pubStatus === 204 || pubStatus === 206) {
+      deleted++;
+      console.log(`  -> Deleted public user`);
+    } else {
+      console.error(`  -> Public delete FAILED: HTTP ${pubStatus}`);
+      errors++;
     }
   }
 
   console.log(`\n=== SUMMARY ===`);
   console.log(`Total users scanned: ${users.length}`);
-  console.log(`Duplicate groups processed: ${Object.keys(allDupes).filter(k => allDupes[k].dupes.length > 0).length}`);
   console.log(`Users deleted: ${deleted}`);
-  console.log(`Completed tests preserved (transferred): ${transferred}`);
+  console.log(`Users skipped (had completed tests): ${skippedWithTests}`);
+  console.log(`Users kept: ${users.length - deleted - skippedWithTests}`);
   console.log(`Errors: ${errors}`);
-  console.log(`\nNOTE: Completed assessment results were transferred to the KEPT (oldest) account, never deleted.`);
+  console.log(`\nCompleted tests were NOT touched — users with completed assessments were skipped.`);
 }
 
 main().catch(err => console.error('Script error:', err));

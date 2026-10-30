@@ -184,7 +184,7 @@ export default function InstitutionDashboardContent() {
   };
 
   const handleDeleteDuplicates = async () => {
-    if (!confirm('This will find and delete duplicate student accounts (same email). Completed assessments will be transferred to the kept account. Continue?')) return;
+    if (!confirm('This will find and delete duplicate student accounts (by email and name). Users with completed tests will be skipped — NOT touched. Continue?')) return;
     setDeletingDuplicates(true);
     setDuplicateResult(null);
     try {
@@ -194,7 +194,7 @@ export default function InstitutionDashboardContent() {
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Failed to delete duplicates');
-      setDuplicateResult({ deleted: data.deleted, kept: data.kept, transferred: data.transferredAssessments });
+      setDuplicateResult({ deleted: data.deleted, kept: data.kept, transferred: data.skippedWithTests });
       await refreshStudents(institutionName);
     } catch (err: unknown) {
       setErrorMessage(err instanceof Error ? err.message : 'Failed to delete duplicates');
@@ -738,7 +738,7 @@ export default function InstitutionDashboardContent() {
               )}
               {duplicateResult && (
                 <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl text-sm font-bold flex items-center gap-2">
-                  <CheckCircle2 size={18} /> Duplicate cleanup complete: {duplicateResult.deleted} deleted, {duplicateResult.kept} kept, {duplicateResult.transferred} assessment(s) transferred to kept accounts.
+                  <CheckCircle2 size={18} /> Duplicate cleanup: {duplicateResult.deleted} deleted, {duplicateResult.kept} kept, {duplicateResult.transferred} user(s) with completed tests skipped (not touched).
                 </div>
               )}
             </div>

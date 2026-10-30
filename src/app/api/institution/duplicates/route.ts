@@ -54,7 +54,8 @@ export async function DELETE(req: NextRequest) {
       emailGroups.get(key)!.push(s);
     }
 
-    // --- Detect duplicates by NAME (catches auto-generated student@ emails that change each import) ---
+    // --- Detect duplicates by NAME ---
+    // Catches auto-generated student@ emails: same name, different emails = duplicate
     const nameGroups = new Map<string, typeof studentList>();
     for (const s of studentList) {
       const normName = normalizeName(s.name || '');
@@ -75,19 +76,19 @@ export async function DELETE(req: NextRequest) {
     let totalDuplicates = 0;
     let kept = 0;
     let deleted = 0;
-    let transferredAssessments = 0;
+    let skippedWithTests = 0;
     let errors = 0;
 
+    // Collect all duplicate IDs to remove and all kept IDs to avoid deleting
+    const idsToRemove = new Set<string>();
+    const idsToKeep = new Set<string>();
+
     // Process email-based duplicates
-    const emailEntries = Array.from(emailGroups.entries());
-    for (const [email, group] of emailEntries) {
-      if (group.length <= 1) {
-        kept += group.length;
-        continue;
-      }
+    for (const [email, group] of Array.from(emailGroups.entries())) {
+      if (group.length <= 1) continue;
       const [oldest, ...duplicates] = group;
-      kept += 1;
-      totalDuplicates += duplicates.length;
+      idsToKeep.add(oldest.id);
+      for (const d of duplicates) idsToRemove.add(d.id);
       duplicateGroups.push({
         type: 'email',
         key: email,
@@ -95,65 +96,12 @@ export async function DELETE(req: NextRequest) {
         keepName: oldest.name || '',
         remove: duplicates.map((d) => d.id),
       });
-
-      if (shouldDelete) {
-        for (const dupe of duplicates) {
-          // Transfer completed assessment results to the kept user
-          const { data: assessmentResults } = await supabaseAdmin
-            .from('assessment_results')
-            .select('id')
-            .eq('user_id', dupe.id);
-
-          if (assessmentResults && assessmentResults.length > 0) {
-            console.log(`Transferring ${assessmentResults.length} assessment result(s) from ${dupe.email} to kept user ${oldest.id}`);
-            const { error: transferError } = await supabaseAdmin
-              .from('assessment_results')
-              .update({ user_id: oldest.id })
-              .eq('user_id', dupe.id);
-
-            if (transferError) {
-              console.error(`Failed to transfer assessments for ${dupe.email}:`, transferError.message);
-              errors++;
-            } else {
-              transferredAssessments += assessmentResults.length;
-            }
-          }
-
-          // Delete auth user
-          const { error: deleteAuthError } = await supabaseAdmin.auth.admin.deleteUser(dupe.id);
-          if (deleteAuthError) {
-            console.error(`Failed to delete auth user for ${dupe.email}:`, deleteAuthError.message);
-            errors++;
-          } else {
-            deleted++;
-          }
-
-          // Delete public user (in case auth delete didn't cascade)
-          const { error: deletePublicError } = await supabaseAdmin
-            .from('users')
-            .delete()
-            .eq('id', dupe.id);
-
-          if (deletePublicError) {
-            console.error(`Failed to delete public user for ${dupe.email}:`, deletePublicError.message);
-            errors++;
-          }
-        }
-      }
     }
 
-    // Process name-based duplicates (students with same name but different emails)
-    const nameEntries = Array.from(nameGroups.entries());
-    for (const [name, group] of nameEntries) {
-      if (group.length <= 1) {
-        // Only count as kept if not already counted via email dedup
-        if (!duplicateGroups.some(g => g.remove.includes(group[0].id))) {
-          kept += group.length;
-        }
-        continue;
-      }
+    // Process name-based duplicates (same name, different emails)
+    for (const [name, group] of Array.from(nameGroups.entries())) {
+      if (group.length <= 1) continue;
 
-      // Only process as name-dupes if they have different emails (same email already handled above)
       const uniqueEmails = new Set(group.map(u => String(u.email || '').toLowerCase().trim()));
       if (uniqueEmails.size <= 1) continue;
 
@@ -163,10 +111,8 @@ export async function DELETE(req: NextRequest) {
         return ta - tb;
       });
       const [oldest, ...duplicates] = sorted;
-
-      const alreadyKept = duplicateGroups.some(g => g.keep === oldest.id);
-      if (!alreadyKept) kept += 1;
-      totalDuplicates += duplicates.length;
+      idsToKeep.add(oldest.id);
+      for (const d of duplicates) idsToRemove.add(d.id);
       duplicateGroups.push({
         type: 'name',
         key: name,
@@ -174,60 +120,88 @@ export async function DELETE(req: NextRequest) {
         keepName: oldest.name || '',
         remove: duplicates.map((d) => d.id),
       });
+    }
 
-      if (shouldDelete) {
-        for (const dupe of duplicates) {
-          const { data: assessmentResults } = await supabaseAdmin
-            .from('assessment_results')
-            .select('id')
-            .eq('user_id', dupe.id);
+    totalDuplicates = idsToRemove.size;
 
-          if (assessmentResults && assessmentResults.length > 0) {
-            console.log(`Transferring ${assessmentResults.length} assessment result(s) from name-dupe ${dupe.email} to kept user ${oldest.id}`);
-            const { error: transferError } = await supabaseAdmin
-              .from('assessment_results')
-              .update({ user_id: oldest.id })
-              .eq('user_id', dupe.id);
-
-            if (transferError) {
-              console.error(`Failed to transfer assessments for ${dupe.email}:`, transferError.message);
-              errors++;
-            } else {
-              transferredAssessments += assessmentResults.length;
-            }
-          }
-
-          const { error: deleteAuthError } = await supabaseAdmin.auth.admin.deleteUser(dupe.id);
-          if (deleteAuthError) {
-            console.error(`Failed to delete auth user for ${dupe.email}:`, deleteAuthError.message);
-            errors++;
-          } else {
-            deleted++;
-          }
-
-          const { error: deletePublicError } = await supabaseAdmin
-            .from('users')
-            .delete()
-            .eq('id', dupe.id);
-
-          if (deletePublicError) {
-            console.error(`Failed to delete public user for ${dupe.email}:`, deletePublicError.message);
-            errors++;
-          }
+    if (!shouldDelete) {
+      // Report-only mode: just count unique kept users
+      for (const u of studentList) {
+        if (!idsToRemove.has(u.id)) {
+          kept++;
         }
+      }
+      return NextResponse.json({
+        deleted: 0,
+        kept,
+        duplicateCount: totalDuplicates,
+        duplicateGroups,
+        skippedWithTests: 0,
+        errors: 0,
+        message: 'Duplicate IDs reported by email and name. Add &delete=true to remove duplicates (users with completed tests are skipped, not touched).',
+      });
+    }
+
+    // Delete mode: only delete duplicates that have NO completed assessment_results
+    const idsToRemoveArr = Array.from(idsToRemove);
+    for (const dupeId of idsToRemoveArr) {
+      if (idsToKeep.has(dupeId)) {
+        // This ID is the kept user in another group, don't delete
+        continue;
+      }
+
+      // Check if this user has completed assessment results
+      const { data: assessmentResults, error: arError } = await supabaseAdmin
+        .from('assessment_results')
+        .select('id')
+        .eq('user_id', dupeId);
+
+      const hasCompletedTests = !arError && assessmentResults && assessmentResults.length > 0;
+
+      if (hasCompletedTests) {
+        console.log(`SKIP (has ${assessmentResults.length} completed test(s)): user_id=${dupeId} — not touching completed tests`);
+        skippedWithTests++;
+        continue;
+      }
+
+      // Find the user's email for logging
+      const user = studentList.find(s => s.id === dupeId);
+      const userEmail = user?.email || 'unknown';
+
+      console.log(`DELETE: user_id=${dupeId} email=${userEmail}`);
+
+      // Delete auth user
+      const { error: deleteAuthError } = await supabaseAdmin.auth.admin.deleteUser(dupeId);
+      if (deleteAuthError) {
+        console.error(`Failed to delete auth user ${dupeId}:`, deleteAuthError.message);
+        errors++;
+      } else {
+        deleted++;
+      }
+
+      // Delete public user (in case auth delete didn't cascade)
+      const { error: deletePublicError } = await supabaseAdmin
+        .from('users')
+        .delete()
+        .eq('id', dupeId);
+
+      if (deletePublicError) {
+        console.error(`Failed to delete public user ${dupeId}:`, deletePublicError.message);
+        errors++;
       }
     }
 
     return NextResponse.json({
-      deleted: shouldDelete ? deleted : 0,
-      kept,
+      deleted,
+      kept: studentList.length - deleted - skippedWithTests,
       duplicateCount: totalDuplicates,
       duplicateGroups,
-      transferredAssessments: shouldDelete ? transferredAssessments : 0,
-      errors: shouldDelete ? errors : 0,
+      deletedIds: shouldDelete ? deleted : 0,
+      skippedWithTests,
+      errors,
       message: shouldDelete
-        ? 'Duplicates deleted by email and name. Completed assessment results transferred to kept users.'
-        : 'Duplicate IDs reported by email and name. Add &delete=true to remove duplicates (completed tests are preserved via transfer).',
+        ? `Done: ${deleted} duplicate(s) deleted, ${skippedWithTests} duplicate(s) with completed tests skipped (not touched).`
+        : 'Duplicate IDs reported. Add &delete=true to remove duplicates.',
     });
   } catch (error: unknown) {
     const err = error as Error;

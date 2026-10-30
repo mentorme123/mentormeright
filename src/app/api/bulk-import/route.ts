@@ -69,6 +69,7 @@ export async function POST(req: NextRequest) {
 
       const username = email;
 
+      // 1. Check by email (exact match)
       const { data: existingUser } = await supabaseAdmin
         .from('users')
         .select('id, email')
@@ -88,6 +89,34 @@ export async function POST(req: NextRequest) {
             audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
           });
         results.push({ name: sanitizedName, username, password, status: 'success', education_level: sanitizedGrade || null });
+        continue;
+      }
+
+      // 2. Check by name + institution (matches users with different email formats)
+      const { data: existingUserByName } = await supabaseAdmin
+        .from('users')
+        .select('id, email')
+        .eq('name', sanitizedName)
+        .eq('institution_name', sanitizedInstitution)
+        .eq('role', 'individual')
+        .maybeSingle();
+
+      if (existingUserByName) {
+        await supabaseAdmin.auth.admin.updateUserById(existingUserByName.id, {
+          email,
+        });
+        await supabaseAdmin
+          .from('users')
+          .upsert({
+            id: existingUserByName.id,
+            email,
+            name: sanitizedName,
+            role: 'individual',
+            education_level: sanitizedGrade || null,
+            institution_name: sanitizedInstitution,
+            audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
+          });
+        results.push({ name: sanitizedName, username: email, password, status: 'success', education_level: sanitizedGrade || null });
         continue;
       }
 

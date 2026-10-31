@@ -31,15 +31,20 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
     try {
       return await fn();
     } catch (e: any) {
-      // A timeout means this model is slow right now. Throw it so the caller
-      // can try the next fallback model instead of wasting retries on a dead
-      // model - the client only has ~240s to wait in total.
-      if (e.name === 'AbortError' || /timed?out|aborted/i.test(e.message || '')) {
+      const msg = e.message || '';
+      // A timeout means this model is slow. Throw it so the caller can try
+      // the next fallback model instead of wasting retries on a dead model.
+      if (e.name === 'AbortError' || /timed?out|aborted/i.test(msg)) {
         throw e;
       }
-      if (attempt < maxRetries - 1 && (e.status >= 500 || e.status === 429 || !e.status)) {
+      // Quota/rate-limit (429) is per-model daily budget. Retrying the same
+      // model just burns the wait time; let the caller switch models instead.
+      if (e.status === 429 || /quota|rate.?limit|exhausted/i.test(msg)) {
+        throw e;
+      }
+      if (attempt < maxRetries - 1 && (e.status >= 500 || !e.status)) {
         const delay = Math.pow(2, attempt + 1) * 1000 + Math.random() * 800;
-        console.warn(`[withRetry] attempt ${attempt + 1}/${maxRetries} failed (${e.message || e.status}). Retrying in ${Math.round(delay)}ms...`);
+        console.warn(`[withRetry] attempt ${attempt + 1}/${maxRetries} failed (${msg}). Retrying in ${Math.round(delay)}ms...`);
         await new Promise(resolve => setTimeout(resolve, delay));
         continue;
       }
@@ -629,7 +634,14 @@ export async function POST(req: NextRequest) {
     fail('Unknown action.');
   } catch (e: any) {
     console.error('[interview-studio POST]', e);
-    return json({ error: e.message || 'Something went wrong.' }, e.status || 500);
+    // Surface the quota/rate-limit reason so the student sees why the answer
+    // could not be evaluated, instead of a generic "Something went wrong."
+    const msg = String(e.message || '');
+    const isQuota = /quota|rate.?limit|exhausted|free_tier|429/i.test(msg);
+    const detail = isQuota
+      ? 'The AI service has reached its daily request limit. Please try again later, or contact MentorMe to raise the limit.'
+      : (e.message || 'Something went wrong.');
+    return json({ error: detail, quota: isQuota }, e.status || 500);
   } finally {
     if (lockedId) {
       const supabase = getSupabase();

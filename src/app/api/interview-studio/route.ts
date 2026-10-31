@@ -131,6 +131,7 @@ function getSupabase() {
 /**
  * Count how many free (unpaid) answers this user has submitted today.
  * Resets at midnight UTC, so the 10-free-answers-per-day budget refreshes daily.
+ * Derived from the existing `history` JSON array, so it needs no schema change.
  */
 async function countTodaysFreeAnswers(supabase: any, userId: string): Promise<number> {
   const startOfDay = new Date();
@@ -139,7 +140,7 @@ async function countTodaysFreeAnswers(supabase: any, userId: string): Promise<nu
 
   const { data, error } = await supabase
     .from('interview_attempts')
-    .select('id,answers_count,payment_id,order_id,created')
+    .select('history,payment_id,order_id,created')
     .eq('user_id', userId)
     .gte('created', cutoff);
 
@@ -148,7 +149,12 @@ async function countTodaysFreeAnswers(supabase: any, userId: string): Promise<nu
   return (data || []).reduce((sum: number, a: any) => {
     // Only count attempts that were NOT paid for (no payment_id/order_id).
     if (a.payment_id || a.order_id) return sum;
-    return sum + (Number(a.answers_count) || 0);
+    try {
+      const hist = JSON.parse(a.history || '[]');
+      return sum + (Array.isArray(hist) ? hist.length : 0);
+    } catch {
+      return sum;
+    }
   }, 0);
 }
 
@@ -457,7 +463,6 @@ export async function POST(req: NextRequest) {
           status: 'active',
           question: s.opening,
           history: '[]',
-          answers_count: 0,
         });
       if (insertError) throw insertError;
       return json({ id, question: s.opening, created: now, freeRemaining });
@@ -586,17 +591,14 @@ if (action === 'answer') {
 
       const done = history.length >= 8 || Date.now() - a.created >= 850000;
 
-      // Increment the daily free-answer counter for unpaid attempts.
-      // Paid attempts (payment_id/order_id set) are unlimited.
+      // The daily free-answer counter is derived from the `history` array length,
+      // so no extra column is needed. Paid attempts are unlimited.
       const updatePayload: any = {
         history: JSON.stringify(history),
         question: feedback.nextQuestion,
         busy: 0,
         status: done ? 'complete' : 'active',
       };
-      if (!a.payment_id && !a.order_id) {
-        updatePayload.answers_count = (Number(a.answers_count) || 0) + 1;
-      }
 
       await supabase
         .from('interview_attempts')
@@ -604,7 +606,8 @@ if (action === 'answer') {
         .eq('id', attemptId);
 
       lockedId = null;
-      const freeRemaining = (a.payment_id || a.order_id) ? null : Math.max(0, 10 - ((Number(a.answers_count) || 0) + 1));
+      // history now includes this answer, so remaining = 10 - history.length
+      const freeRemaining = (a.payment_id || a.order_id) ? null : Math.max(0, 10 - history.length);
       return json({ feedback, history, question: feedback.nextQuestion, done, freeRemaining });
     }
 

@@ -31,8 +31,14 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
     try {
       return await fn();
     } catch (e: any) {
+      // A timeout means this model is slow right now. Throw it so the caller
+      // can try the next fallback model instead of wasting retries on a dead
+      // model - the client only has ~240s to wait in total.
+      if (e.name === 'AbortError' || /timed?out|aborted/i.test(e.message || '')) {
+        throw e;
+      }
       if (attempt < maxRetries - 1 && (e.status >= 500 || e.status === 429 || !e.status)) {
-        const delay = Math.pow(2, attempt + 2) * 1000 + Math.random() * 1000;
+        const delay = Math.pow(2, attempt + 1) * 1000 + Math.random() * 800;
         console.warn(`[withRetry] attempt ${attempt + 1}/${maxRetries} failed (${e.message || e.status}). Retrying in ${Math.round(delay)}ms...`);
         await new Promise(resolve => setTimeout(resolve, delay));
         continue;
@@ -57,8 +63,11 @@ async function withModelFallback<T>(
       return await withRetry(() => fn(model), maxRetries);
     } catch (e: any) {
       lastError = e;
+      // A timeout means this particular model is slow. Try the next fallback
+      // model instead of giving up - a different model may respond quickly.
       if (e.name === 'AbortError' || e.message?.includes('timeout') || e.message?.includes('aborted')) {
-        throw e;
+        console.warn(`[withModelFallback] model ${model} timed out, trying next...`);
+        continue;
       }
       if (e.status === 503 || e.status === 429 || e.status === 404) {
         console.warn(`[withModelFallback] model ${model} unavailable (status ${e.status}), trying next...`);
@@ -146,7 +155,7 @@ async function transcribeAudio(file: File): Promise<string> {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body,
-          signal: AbortSignal.timeout(60000),
+signal: AbortSignal.timeout(30000),
         }
       );
       if (!r.ok && (r.status >= 500 || r.status === 429 || r.status === 404)) {
@@ -209,7 +218,7 @@ async function evaluateAnswer(prompt: any): Promise<any> {
             }
           ]
         }),
-        signal: AbortSignal.timeout(60000),
+        signal: AbortSignal.timeout(30000),
       }
       );
       if (!r.ok && (r.status >= 500 || r.status === 429 || r.status === 404)) {

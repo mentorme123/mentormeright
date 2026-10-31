@@ -128,6 +128,30 @@ function getSupabase() {
   });
 }
 
+/**
+ * Count how many free (unpaid) answers this user has submitted today.
+ * Resets at midnight UTC, so the 10-free-answers-per-day budget refreshes daily.
+ */
+async function countTodaysFreeAnswers(supabase: any, userId: string): Promise<number> {
+  const startOfDay = new Date();
+  startOfDay.setUTCHours(0, 0, 0, 0);
+  const cutoff = startOfDay.getTime();
+
+  const { data, error } = await supabase
+    .from('interview_attempts')
+    .select('id,answers_count,payment_id,order_id,created')
+    .eq('user_id', userId)
+    .gte('created', cutoff);
+
+  if (error) throw error;
+
+  return (data || []).reduce((sum: number, a: any) => {
+    // Only count attempts that were NOT paid for (no payment_id/order_id).
+    if (a.payment_id || a.order_id) return sum;
+    return sum + (Number(a.answers_count) || 0);
+  }, 0);
+}
+
 async function transcribeAndEvaluate(file: File, prompt: any): Promise<{ transcript: string; feedback: any }> {
   const env = getEnv();
   const arrayBuffer = await file.arrayBuffer();
@@ -373,77 +397,70 @@ export async function POST(req: NextRequest) {
 
       if (pending) return json({ id: pending.id, question: pending.question, created: pending.created, history: JSON.parse(pending.history || '[]') });
 
-      // Check if free attempt was used - only count attempts with actual answers
-      const { data: freeAttempt } = await supabase
+      // Enforce the 10-free-answers-per-day budget. If the user has already
+      // submitted 10 free answers today, require payment (₹199) to continue.
+      const usedToday = await countTodaysFreeAnswers(supabase, user.userId);
+      const freeRemaining = Math.max(0, 10 - usedToday);
+
+      if (freeRemaining <= 0) {
+        const razorpayKeyId = String(env.RAZORPAY_KEY_ID);
+        const razorpayKeySecret = String(env.RAZORPAY_KEY_SECRET);
+
+        if (!razorpayKeyId || !razorpayKeySecret || /your_|replace|paste|example|placeholder|xxxx/i.test(razorpayKeyId + razorpayKeySecret)) {
+          fail('Razorpay is not configured with real credentials. Contact MentorMe.', 503);
+        }
+
+        const orderRes = await fetch('https://api.razorpay.com/v1/orders', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Basic ' + Buffer.from(razorpayKeyId + ':' + razorpayKeySecret).toString('base64'),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ amount: 19900, currency: 'INR', receipt: id }),
+        });
+
+        if (!orderRes.ok) {
+          let detail = '';
+          try {
+            const result: any = await orderRes.json();
+            detail = String(result.error?.description || result.error?.reason || '');
+          } catch {}
+          if (orderRes.status === 401 || orderRes.status === 403) fail('Razorpay rejected the configured credentials.', 502);
+          fail(detail || `Razorpay could not create the order (HTTP ${orderRes.status}).`, 502);
+        }
+
+        const order: any = await orderRes.json();
+        const { error: attemptError } = await supabase.from('interview_attempts').insert({
+          id,
+          user_id: user.userId,
+          assessment: s.id,
+          created: now,
+          expires: now + 30 * 86400000,
+          status: 'payment_pending',
+          question: s.opening,
+          order_id: order.id,
+        });
+        if (attemptError) throw attemptError;
+
+        return json({ id, order, key: razorpayKeyId });
+      }
+
+      // Free interview within today's budget
+      const { error: insertError } = await supabase
         .from('interview_attempts')
-        .select('id')
-        .eq('user_id', user.userId)
-        .is('payment_id', null)
-        .is('order_id', null)
-        .eq('status', 'complete')
-        .neq('history', '[]')
-        .limit(1)
-        .maybeSingle();
-
-      if (!freeAttempt) {
-        // Create free attempt
-        const { error: insertError } = await supabase
-          .from('interview_attempts')
-          .insert({
-            id,
-            user_id: user.userId,
-            assessment: s.id,
-            created: now,
-            expires: now + 30 * 86400000,
-            status: 'active',
-            question: s.opening,
-            history: '[]',
-          });
-        if (insertError) throw insertError;
-        return json({ id, question: s.opening, created: now });
-      }
-
-      // Free attempt already used - require payment
-      const razorpayKeyId = String(env.RAZORPAY_KEY_ID);
-      const razorpayKeySecret = String(env.RAZORPAY_KEY_SECRET);
-      
-      if (!razorpayKeyId || !razorpayKeySecret || /your_|replace|paste|example|placeholder|xxxx/i.test(razorpayKeyId + razorpayKeySecret)) {
-        fail('Razorpay is not configured with real credentials. Contact MentorMe.', 503);
-      }
-
-      const orderRes = await fetch('https://api.razorpay.com/v1/orders', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Basic ' + Buffer.from(razorpayKeyId + ':' + razorpayKeySecret).toString('base64'),
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ amount: 19900, currency: 'INR', receipt: id }),
-      });
-
-      if (!orderRes.ok) {
-        let detail = '';
-        try {
-          const result: any = await orderRes.json();
-          detail = String(result.error?.description || result.error?.reason || '');
-        } catch {}
-        if (orderRes.status === 401 || orderRes.status === 403) fail('Razorpay rejected the configured credentials.', 502);
-        fail(detail || `Razorpay could not create the order (HTTP ${orderRes.status}).`, 502);
-      }
-
-      const order: any = await orderRes.json();
-      const { error: attemptError } = await supabase.from('interview_attempts').insert({
-        id,
-        user_id: user.userId,
-        assessment: s.id,
-        created: now,
-        expires: now + 30 * 86400000,
-        status: 'payment_pending',
-        question: s.opening,
-        order_id: order.id,
-      });
-      if (attemptError) throw attemptError;
-
-      return json({ id, order, key: razorpayKeyId });
+        .insert({
+          id,
+          user_id: user.userId,
+          assessment: s.id,
+          created: now,
+          expires: now + 30 * 86400000,
+          status: 'active',
+          question: s.opening,
+          history: '[]',
+          answers_count: 0,
+        });
+      if (insertError) throw insertError;
+      return json({ id, question: s.opening, created: now, freeRemaining });
     }
 
     if (action === 'reconcile') {
@@ -508,16 +525,26 @@ export async function POST(req: NextRequest) {
       return json({ ok: true });
     }
 
-    if (action === 'answer') {
+if (action === 'answer') {
       if (a.status !== 'active') fail('This interview has ended.');
       if (Date.now() - a.created > 915000) fail('The 15-minute interview has ended. Please open your report.');
-      
+
       const history = JSON.parse(a.history || '[]');
       if (history.length >= 8) fail('All questions have been completed.');
 
       const file = data.get('audio');
       if (!(file instanceof File) || file.size < 1000 || file.size > 12 * 1024 * 1024 || !['audio/webm', 'audio/mp4', 'audio/ogg', 'audio/wav'].some(t => file.type.startsWith(t))) {
         fail('Record a valid audio answer (maximum 12 MB).');
+      }
+
+      // Enforce the 10-free-answers-per-day budget. Paid attempts
+      // (payment_id/order_id set) are unlimited.
+      const isPaid = !!(a.payment_id || a.order_id);
+      if (!isPaid) {
+        const usedToday = await countTodaysFreeAnswers(supabase, user.userId);
+        if (usedToday >= 10) {
+          fail('You have used your 10 free answers for today. Please try again tomorrow, or pay ₹199 for unlimited answers.');
+        }
       }
 
       const claimTime = Math.floor(Date.now() / 1000);
@@ -559,18 +586,26 @@ export async function POST(req: NextRequest) {
 
       const done = history.length >= 8 || Date.now() - a.created >= 850000;
 
+      // Increment the daily free-answer counter for unpaid attempts.
+      // Paid attempts (payment_id/order_id set) are unlimited.
+      const updatePayload: any = {
+        history: JSON.stringify(history),
+        question: feedback.nextQuestion,
+        busy: 0,
+        status: done ? 'complete' : 'active',
+      };
+      if (!a.payment_id && !a.order_id) {
+        updatePayload.answers_count = (Number(a.answers_count) || 0) + 1;
+      }
+
       await supabase
         .from('interview_attempts')
-        .update({
-          history: JSON.stringify(history),
-          question: feedback.nextQuestion,
-          busy: 0,
-          status: done ? 'complete' : 'active',
-        })
+        .update(updatePayload)
         .eq('id', attemptId);
 
       lockedId = null;
-      return json({ feedback, history, question: feedback.nextQuestion, done });
+      const freeRemaining = (a.payment_id || a.order_id) ? null : Math.max(0, 10 - ((Number(a.answers_count) || 0) + 1));
+      return json({ feedback, history, question: feedback.nextQuestion, done, freeRemaining });
     }
 
     fail('Unknown action.');

@@ -21,8 +21,12 @@ create table if not exists interview_attempts (
   order_id text,
   payment_id text,
   busy bigint default 0,
-  audio_purged integer default 0
+  audio_purged integer default 0,
+  answers_count integer default 0
 );
+
+-- Track how many free answers a user has submitted today (resets daily).
+alter table interview_attempts add column if not exists answers_count integer default 0;
 
 create table if not exists interview_custom_sets (
   id text primary key,

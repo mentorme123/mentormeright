@@ -128,79 +128,38 @@ function getSupabase() {
   });
 }
 
-async function transcribeAudio(file: File): Promise<string> {
+async function transcribeAndEvaluate(file: File, prompt: any): Promise<{ transcript: string; feedback: any }> {
   const env = getEnv();
   const arrayBuffer = await file.arrayBuffer();
   const base64 = Buffer.from(arrayBuffer).toString('base64');
-
   const mimeType = file.type || 'audio/webm';
 
   const body = JSON.stringify({
+    generationConfig: { responseMimeType: 'application/json' },
     contents: [{
       role: 'user',
       parts: [
-        { text: 'Transcribe the following audio to text. Return ONLY the transcribed text, nothing else.' },
-        {
-          inlineData: {
-            mimeType,
-            data: base64,
-          }
-        }
+        { text: `You are MentorMe, an interview practice coach for Indian graduates. Listen to the audio answer and do BOTH steps in one pass (this saves one API call per answer):
+
+STEP 1 - TRANSCRIBE: Return the exact spoken text verbatim, including fillers. Do not paraphrase.
+
+STEP 2 - EVALUATE and return ONLY a JSON object with this exact shape:
+{technical:number 0..100,english:number 0..100,strength:string,improvement:string,example:string,nextQuestion:string,nextRubric:string,transcript:string}
+- technical: correctness 40%, application 30%, completeness 20%, reasoning 10%
+- english: grammar 30%, vocabulary 20%, clarity 30%, structure 20%
+- strength: what worked in the answer
+- improvement: specific errors to fix
+- example: a model approach
+- nextQuestion: the next interview question
+- nextRubric: the rubric for that next question
+- transcript: your STEP 1 transcription
+
+Return ONLY the JSON object, nothing else.\\n\\n${JSON.stringify(prompt)}` },
+        { inlineData: { mimeType, data: base64 } }
       ]
     }]
   });
 
-  let response;
-  let lastError: any;
-  try {
-    response = await withModelFallback(env.TRANSCRIPTION_MODEL, async (model) => {
-      const r = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GOOGLE_API_KEY}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body,
-signal: AbortSignal.timeout(30000),
-        }
-      );
-      if (!r.ok && (r.status >= 500 || r.status === 429 || r.status === 404)) {
-        let detail='';
-        try { const errorData: any = await r.json(); detail = String(errorData.error?.message||''); } catch {}
-        throw Object.assign(new Error(detail||r.statusText), {status: r.status});
-      }
-      return r;
-    });
-  } catch (e: any) {
-    if (e.name === 'AbortError' || e.message?.includes('timeout') || e.message?.includes('aborted') || e.message?.includes('aborted')) {
-      fail('Audio transcription timed out. The language model API is busy; please try again in a few minutes.', 502);
-    }
-    lastError = e;
-  }
-
-  if (!response) {
-    if (lastError) throw lastError;
-    fail('Audio transcription request was aborted. Please try again.', 502);
-  }
-  if (!response.ok) {
-    let detail = '';
-    try {
-      const errorData: any = await response.json();
-      detail = String(errorData.error?.message || JSON.stringify(errorData));
-    } catch {}
-    if (response.status === 401) fail('Audio transcription failed: API key rejected.', 502);
-    if (response.status === 429) fail(`Audio transcription failed: ${detail.includes('uota')||detail.includes('imit exceeded')?'quota exceeded. ':'rate limit reached. '}${detail.slice(0, 200)}`, 502);
-    if (response.status >= 500) fail(`Audio transcription failed: service is temporarily unavailable. ${detail.slice(0, 200)}`, 502);
-    fail(`Audio transcription failed: ${detail.slice(0, 200)}`, 502);
-  }
-
-  const result: any = await response.json();
-  const text = result.candidates?.[0]?.content?.parts?.[0]?.text || '';
-  return text.trim();
-}
-
-
-async function evaluateAnswer(prompt: any): Promise<any> {
-  const env = getEnv();
   let response;
   let lastError: any;
   try {
@@ -210,21 +169,9 @@ async function evaluateAnswer(prompt: any): Promise<any> {
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-          generationConfig: {
-            responseMimeType: 'application/json',
-          },
-          contents: [
-            {
-              role: 'user',
-              parts: [{
-                text: `You are MentorMe, an interview practice coach for Indian graduates. Return JSON: {technical:number 0..100,english:number 0..100,strength:string,improvement:string,example:string,nextQuestion:string,nextRubric:string}. Technical: correctness 40%, application 30%, completeness 20%, reasoning 10%. English: grammar 30%, vocabulary 20%, clarity 30%, structure 20%. Explain errors specifically.\\n\\n${JSON.stringify(prompt)}`
-              }]
-            }
-          ]
-        }),
-        signal: AbortSignal.timeout(30000),
-      }
+          body,
+          signal: AbortSignal.timeout(30000),
+        }
       );
       if (!r.ok && (r.status >= 500 || r.status === 429 || r.status === 404)) {
         let detail='';
@@ -234,15 +181,15 @@ async function evaluateAnswer(prompt: any): Promise<any> {
       return r;
     });
   } catch (e: any) {
-    if (e.name === 'AbortError' || e.message?.includes('timeout') || e.message?.includes('aborted')) {
-      fail('AI answer evaluation timed out. The language model API is busy; please try again in a few minutes.', 502);
+    if (e.name === 'AbortError' || /timed?out|aborted/i.test(e.message || '')) {
+      fail('AI processing timed out. The language model API is busy; please try again in a few minutes.', 502);
     }
     lastError = e;
   }
 
   if (!response) {
     if (lastError) throw lastError;
-    fail('AI answer evaluation request was aborted. Please try again.', 502);
+    fail('AI processing request was aborted. Please try again.', 502);
   }
   if (!response.ok) {
     let detail = '';
@@ -250,9 +197,9 @@ async function evaluateAnswer(prompt: any): Promise<any> {
       const errorData: any = await response.json();
       detail = String(errorData.error?.message || JSON.stringify(errorData));
     } catch {}
-    if (response.status === 401) throw Object.assign(new Error('AI answer evaluation failed: API key rejected.'), { status: 401 });
-    if (response.status === 429) throw Object.assign(new Error('AI answer evaluation failed: ' + (detail.includes('uota')||detail.includes('imit exceeded')?'quota exceeded. ':'') + detail.slice(0, 200)), { status: response.status });
-    throw Object.assign(new Error('AI answer evaluation failed: ' + detail.slice(0, 200)), { status: 400 });
+    if (response.status === 401) throw Object.assign(new Error('AI processing failed: API key rejected.'), { status: 401 });
+    if (response.status === 429) throw Object.assign(new Error('AI processing failed: ' + (detail.includes('uota')||detail.includes('imit exceeded')?'quota exceeded. ':'') + detail.slice(0, 200)), { status: response.status });
+    throw Object.assign(new Error('AI processing failed: ' + detail.slice(0, 200)), { status: 400 });
   }
 
   const result: any = await response.json();
@@ -263,7 +210,9 @@ async function evaluateAnswer(prompt: any): Promise<any> {
   } catch {
     fail('Evaluation was incomplete. Please retry.', 502);
   }
-  return feedback;
+  const transcript = String(feedback.transcript || '').trim();
+  if (transcript.length < 8) fail('Speech could not be understood. Please record your answer again.');
+  return { transcript, feedback };
 }
 
 
@@ -583,20 +532,18 @@ export async function POST(req: NextRequest) {
 
       lockedId = attemptId;
 
-      // Transcribe audio with Google Speech-to-Text
-      const transcript = await transcribeAudio(file);
-      if (transcript.length < 8) fail('Speech could not be understood. Please record your answer again.');
-
+      // Single combined API call: transcribe + evaluate in one pass.
+      // This halves Gemini quota usage per answer (1 call instead of 2),
+      // doubling how many answers the Free Tier's 20/day budget allows.
       const allSets = [...catalogue];
       const s = allSets.find((x: any) => x.id === a.assessment);
       if (!s) fail('Assessment unavailable.');
 
-      const feedback = await evaluateAnswer({
+      const { transcript, feedback } = await transcribeAndEvaluate(file, {
         assessment: s.title,
         track: s.track,
         question: a.question,
         rubric: history.length ? history[history.length - 1].nextRubric : s.rubric,
-        answer: transcript,
         priorQuestions: history.map((h: any) => h.question),
         scenario: s.scenario,
         scenarioRubric: s.scenarioRubric
@@ -604,13 +551,8 @@ export async function POST(req: NextRequest) {
 
       const historyEntry = { question: a.question, transcript, ...feedback };
       history.push(historyEntry);
-      
+
       // Upload audio blob to storage
-      const { data: { publicUrl: storageUrl } } = supabase.storage
-        .from('recordings')
-        .getPublicUrl(`${attemptId}/${history.length - 1}`);
-      
-      // Insert audio file
       await supabase.storage
         .from('recordings')
         .upload(`${attemptId}/${history.length - 1}`, file, { contentType: file.type });

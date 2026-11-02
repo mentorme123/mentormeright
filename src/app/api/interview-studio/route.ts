@@ -26,7 +26,7 @@ function fail(s: string, n = 400): never {
   throw Object.assign(new Error(s), { status: n });
 }
 
-async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 2): Promise<T> {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       return await fn();
@@ -43,7 +43,7 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
         throw e;
       }
       if (attempt < maxRetries - 1 && (e.status >= 500 || !e.status)) {
-        const delay = Math.pow(2, attempt + 1) * 1000 + Math.random() * 800;
+        const delay = Math.pow(2, attempt + 1) * 500 + Math.random() * 500;
         console.warn(`[withRetry] attempt ${attempt + 1}/${maxRetries} failed (${msg}). Retrying in ${Math.round(delay)}ms...`);
         await new Promise(resolve => setTimeout(resolve, delay));
         continue;
@@ -59,7 +59,7 @@ const FALLBACK_MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-3.7-fla
 async function withModelFallback<T>(
   primaryModel: string,
   fn: (model: string) => Promise<T>,
-  maxRetries = 3
+  maxRetries = 2
 ): Promise<T> {
   const models = Array.from(new Set([primaryModel, ...FALLBACK_MODELS]));
   let lastError: any;

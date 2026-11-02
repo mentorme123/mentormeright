@@ -54,7 +54,7 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 2): Promise<T> {
   throw new Error('Max retries exceeded');
 }
 
-const FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
+const FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-3.8-flash'];
 
 async function withModelFallback<T>(
   primaryModel: string,

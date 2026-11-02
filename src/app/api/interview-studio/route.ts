@@ -408,7 +408,20 @@ export async function POST(req: NextRequest) {
       const usedToday = await countTodaysFreeAnswers(supabase, user.userId);
       const freeRemaining = Math.max(0, 10 - usedToday);
 
-      if (freeRemaining <= 0) {
+      // If the user has already used their one-time free interview (any day),
+      // always require payment instead of starting another free interview.
+      const { data: freeAttempt } = await supabase
+        .from('interview_attempts')
+        .select('id')
+        .eq('user_id', user.userId)
+        .is('payment_id', null)
+        .is('order_id', null)
+        .eq('status', 'complete')
+        .neq('history', '[]')
+        .maybeSingle();
+      const freeUsed = !!freeAttempt;
+
+      if (freeUsed || freeRemaining <= 0) {
         const razorpayKeyId = String(env.RAZORPAY_KEY_ID);
         const razorpayKeySecret = String(env.RAZORPAY_KEY_SECRET);
 

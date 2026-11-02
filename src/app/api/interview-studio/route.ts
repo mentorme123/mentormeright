@@ -14,8 +14,8 @@ function getEnv() {
     GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '',
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID || '',
     RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET || '',
-    TRANSCRIPTION_MODEL: process.env.TRANSCRIPTION_MODEL || 'gemini-3.8-flash',
-    EVALUATION_MODEL: process.env.EVALUATION_MODEL || 'gemini-3.8-flash',
+    TRANSCRIPTION_MODEL: process.env.TRANSCRIPTION_MODEL || 'gemini-2.5-flash',
+    EVALUATION_MODEL: process.env.EVALUATION_MODEL || 'gemini-2.5-flash',
     ADMIN_EMAILS: (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean),
   };
 }
@@ -26,7 +26,7 @@ function fail(s: string, n = 400): never {
   throw Object.assign(new Error(s), { status: n });
 }
 
-async function withRetry<T>(fn: () => Promise<T>, maxRetries = 1): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 2): Promise<T> {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       return await fn();
@@ -54,12 +54,12 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 1): Promise<T> {
   throw new Error('Max retries exceeded');
 }
 
-const FALLBACK_MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-3.7-flash'];
+const FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
 
 async function withModelFallback<T>(
   primaryModel: string,
   fn: (model: string) => Promise<T>,
-  maxRetries = 1
+  maxRetries = 2
 ): Promise<T> {
   const models = Array.from(new Set([primaryModel, ...FALLBACK_MODELS]));
   let lastError: any;
@@ -200,7 +200,7 @@ Return ONLY the JSON object, nothing else.\\n\\n${JSON.stringify(prompt)}` },
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body,
-          signal: AbortSignal.timeout(20000),
+          signal: AbortSignal.timeout(30000),
         }
       );
       if (!r.ok && (r.status >= 500 || r.status === 429 || r.status === 404)) {

@@ -26,7 +26,7 @@ function fail(s: string, n = 400): never {
   throw Object.assign(new Error(s), { status: n });
 }
 
-async function withRetry<T>(fn: () => Promise<T>, maxRetries = 2): Promise<T> {
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 1): Promise<T> {
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
       return await fn();
@@ -59,7 +59,7 @@ const FALLBACK_MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-3.7-fla
 async function withModelFallback<T>(
   primaryModel: string,
   fn: (model: string) => Promise<T>,
-  maxRetries = 2
+  maxRetries = 1
 ): Promise<T> {
   const models = Array.from(new Set([primaryModel, ...FALLBACK_MODELS]));
   let lastError: any;
@@ -200,7 +200,7 @@ Return ONLY the JSON object, nothing else.\\n\\n${JSON.stringify(prompt)}` },
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body,
-          signal: AbortSignal.timeout(30000),
+          signal: AbortSignal.timeout(20000),
         }
       );
       if (!r.ok && (r.status >= 500 || r.status === 429 || r.status === 404)) {

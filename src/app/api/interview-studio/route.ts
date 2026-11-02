@@ -14,8 +14,8 @@ function getEnv() {
     GOOGLE_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY || process.env.GEMINI_API_KEY || '',
     RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID || '',
     RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET || '',
-    TRANSCRIPTION_MODEL: process.env.TRANSCRIPTION_MODEL || 'gemini-2.5-flash',
-    EVALUATION_MODEL: process.env.EVALUATION_MODEL || 'gemini-2.5-flash',
+    TRANSCRIPTION_MODEL: process.env.TRANSCRIPTION_MODEL || 'gemini-3.8-flash',
+    EVALUATION_MODEL: process.env.EVALUATION_MODEL || 'gemini-3.8-flash',
     ADMIN_EMAILS: (process.env.ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean),
   };
 }
@@ -54,7 +54,7 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 1): Promise<T> {
   throw new Error('Max retries exceeded');
 }
 
-const FALLBACK_MODELS = ['gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
+const FALLBACK_MODELS = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-3.7-flash'];
 
 async function withModelFallback<T>(
   primaryModel: string,

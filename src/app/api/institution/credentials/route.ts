@@ -78,6 +78,7 @@ export async function GET(req: NextRequest) {
           results.push({ name: '', username: '', password: '', error: errMsg });
         }
       }
+
     }
 
     const csvHeader = 'Name,Username,Password,Class\n';

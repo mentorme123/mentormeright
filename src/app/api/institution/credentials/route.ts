@@ -72,6 +72,10 @@ export async function GET(req: NextRequest) {
       for (const result of settledResults) {
         if (result.status === 'fulfilled') {
           results.push(result.value);
+        } else {
+          const reason = result.reason;
+          const errMsg = reason?.message || reason?.error || 'Password update failed';
+          results.push({ name: '', username: '', password: '', error: errMsg });
         }
       }
     }

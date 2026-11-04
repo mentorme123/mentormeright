@@ -303,8 +303,9 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         const gradeMatch2 = rawEducation2.match(/class\s*(\d+)/i);
         const gradeNum2 = gradeMatch2 ? parseInt(gradeMatch2[1], 10) : null;
         const isGrade910 = gradeNum2 === 9 || gradeNum2 === 10 || /school/i.test(rawEducation2);
+        const isGrade1112 = gradeNum2 === 11 || gradeNum2 === 12;
 
-        if (isGrade910) {
+        if (isGrade910 || isGrade1112) {
           try {
             const dashRes = await fetch('/api/dashboard', {
               headers: { Authorization: `Bearer ${(await supabase.auth.getSession()).data.session?.access_token || ''}` }
@@ -429,11 +430,18 @@ export default function CareerDashboard({ userId }: { userId: string }) {
         )}
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          {isSchool ? (
+          {isGrade910 ? (
             <>
               <KPICard label="Recommended Stream" value={getKpiValue("Recommended Stream", automatedData?.recommendedStream || report?.academicRoadmap?.recommendedStream || stream.stream)} color="text-[#15803D]" bg="bg-emerald-50" />
               <KPICard label="Subject Readiness" value={getKpiValue("Subject Readiness", automatedData?.subjectReadiness != null ? `${automatedData.subjectReadiness}%` : `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#7C3AED]" bg="bg-purple-50" />
               <KPICard label="Personality & Interest Alignment" value={getKpiValue("Personality & Interest Alignment", automatedData?.personalityInterestAlignment != null ? `${automatedData.personalityInterestAlignment}%` : `${pct(displayScores[topRIASEC.key] || 0, MAX_RIASEC)}%`)} color="text-[#C2410C]" bg="bg-orange-50" />
+            </>
+          ) : isGrade1112 ? (
+            <>
+              <KPICard label="Overall Academic Fit" value={getKpiValue("Overall Academic Fit", automatedData?.overallAcademicFit != null ? `${automatedData.overallAcademicFit}%` : `${pct(topSkills.reduce((s, sk) => s + sk.score, 0), topSkills.length * MAX_SKILL)}%`)} color="text-[#1B3A6B]" bg="bg-blue-50" />
+              <KPICard label="Profile Strength Score" value={getKpiValue("Profile Strength Score", automatedData?.profileStrengthScore != null ? `${automatedData.profileStrengthScore}/100` : "Not available")} color="text-[#7C3AED]" bg="bg-purple-50" />
+              <KPICard label="Career Readiness Score" value={getKpiValue("Career Readiness Score", automatedData?.careerReadinessScore != null ? `${automatedData.careerReadinessScore}%` : "Not available")} color="text-[#15803D]" bg="bg-emerald-50" />
+              <KPICard label="Target Course" value={getKpiValue("Target Course", automatedData?.targetCourse || report?.educationPathways?.degrees?.[0] || stream.courses[0])} color="text-[#C2410C]" bg="bg-orange-50" />
             </>
           ) : (
             <>
@@ -449,9 +457,9 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           <div className="lg:col-span-1 h-full">
             <div className="rounded-2xl p-6 border-2 shadow-sm h-full bg-blue-50 border-blue-200">
               <h3 className="text-lg font-black text-slate-800 mb-4">
-                {isSchool ? "Career Match Index" : "Academic Fitness"}
+                {isGrade910 ? "Career Match Index" : isGrade1112 ? "Academic Fitness" : "Academic Fitness"}
               </h3>
-              {isSchool ? (
+              {isGrade910 ? (
                 <div className="space-y-4">
                   {automatedData?.careerMatchIndex?.length ? (
                     automatedData.careerMatchIndex.map((career: any, i: number) => (
@@ -485,6 +493,40 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                     ))
                   )}
                 </div>
+              ) : isGrade1112 ? (
+                <div className="space-y-4">
+                  {automatedData?.academicFitness?.length ? (
+                    automatedData.academicFitness.map((subject: any, i: number) => (
+                      <div key={i}>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm font-medium text-slate-600">{subject.subject}</span>
+                          <span className="text-sm font-bold text-[#1B3A6B]">{subject.score != null ? subject.score : 0}%</span>
+                        </div>
+                        <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 bg-[#1B3A6B]"
+                            style={{ width: `${subject.score != null ? subject.score : 0}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    academicFitness.map((subject, i) => (
+                      <div key={i}>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm font-medium text-slate-600">{subject.name}</span>
+                          <span className="text-sm font-bold text-[#1B3A6B]">{subject.pct}%</span>
+                        </div>
+                        <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 bg-[#1B3A6B]"
+                            style={{ width: `${subject.pct}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               ) : (
                 <div className="space-y-4">
                   {academicFitness.map((subject, i) => (
@@ -509,9 +551,9 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           <div className="lg:col-span-1 h-full">
             <div className={`rounded-2xl p-6 border-2 shadow-sm h-full bg-orange-50 border-orange-200`}>
               <h3 className="text-lg font-black text-slate-800 mb-4">
-                {isSchool ? "Subject Readiness" : "Career Path Readiness"}
+                {isGrade910 ? "Subject Readiness" : isGrade1112 ? "Career Path Readiness" : "Career Path Readiness"}
               </h3>
-              {isSchool ? (
+              {isGrade910 ? (
                 <div className="space-y-4">
                   {automatedData?.subjectStrengths?.length ? (
                     [...automatedData.subjectStrengths, ...(automatedData.developmentSubjects || [])].map((subject: any, i: number) => (
@@ -545,6 +587,40 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                     ))
                   )}
                 </div>
+              ) : isGrade1112 ? (
+                <div className="space-y-4">
+                  {automatedData?.careerPathReadiness?.length ? (
+                    automatedData.careerPathReadiness.map((path: any, i: number) => (
+                      <div key={i}>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm font-medium text-slate-600">{path.career}</span>
+                          <span className="text-sm font-bold text-[#F59E0B]">{path.score != null ? path.score : 0}%</span>
+                        </div>
+                        <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 bg-[#F59E0B]"
+                            style={{ width: `${path.score != null ? path.score : 0}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    careerPaths.map((path, i) => (
+                      <div key={i}>
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="text-sm font-medium text-slate-600">{path.name}</span>
+                          <span className="text-sm font-bold text-[#F59E0B]">{path.pct}%</span>
+                        </div>
+                        <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-700 bg-[#F59E0B]"
+                            style={{ width: `${path.pct}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
               ) : (
                 <div className="space-y-4">
                   {careerPaths.map((path, i) => (
@@ -563,10 +639,17 @@ export default function CareerDashboard({ userId }: { userId: string }) {
                   ))}
                 </div>
               )}
-              {isSchool && (
+              {isGrade910 && (
                 <div className="mt-4 pt-4 border-t border-orange-200">
                   <button className="w-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold py-2 px-4 rounded-xl hover:bg-emerald-100 transition">
                     Recommended Stream: {automatedData?.recommendedStream || report?.academicRoadmap?.recommendedStream || stream.stream}
+                  </button>
+                </div>
+              )}
+              {isGrade1112 && (
+                <div className="mt-4 pt-4 border-t border-orange-200">
+                  <button className="w-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-bold py-2 px-4 rounded-xl hover:bg-emerald-100 transition">
+                    Target Course: {automatedData?.targetCourse || report?.educationPathways?.degrees?.[0] || stream.courses[0]}
                   </button>
                 </div>
               )}
@@ -576,12 +659,14 @@ export default function CareerDashboard({ userId }: { userId: string }) {
           <div className="lg:col-span-1 h-full">
             <div className="bg-emerald-50 rounded-2xl p-6 border-2 border-emerald-200 shadow-sm h-full">
               <h3 className="text-lg font-black text-emerald-800 mb-4">
-                {isSchool ? "Counselor Recommendation" : "Counselor Recommendations"}
+                {isGrade910 ? "Counselor Recommendation" : isGrade1112 ? "Counselor Recommendations" : "Counselor Recommendations"}
               </h3>
               <p className="text-sm text-emerald-700 mb-4">
-                {isSchool
+                {isGrade910
                   ? `Strong suitability for ${automatedData?.recommendedStream || report?.academicRoadmap?.recommendedStream || stream.stream} pathways based on current performance.`
-                  : `Strong suitability for ${stream.courses[0]} and related career pathways based on current performance.`}
+                  : isGrade1112
+                    ? `Strong suitability for ${automatedData?.targetCourse || stream.courses[0]} and related career pathways based on current performance.`
+                    : `Strong suitability for ${stream.courses[0]} and related career pathways based on current performance.`}
               </p>
               <div className="space-y-3">
                 {(automatedData?.counselorRecommendations?.length ? automatedData.counselorRecommendations : (counselorRecs || [])).map((rec: string, i: number) => (

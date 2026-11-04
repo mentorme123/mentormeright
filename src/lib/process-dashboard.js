@@ -1,4 +1,5 @@
 import { buildDashboard, toExistingDashboardFields } from './dashboard-engine.js';
+import { buildSeniorDashboard } from './senior-dashboard-engine.js';
 import { loadStudentSources } from './source-adapter.js';
 
 export async function processDashboardJob(supabase, job) {
@@ -6,7 +7,9 @@ export async function processDashboardJob(supabase, job) {
   try {
     const source = await loadStudentSources(supabase, studentId);
     const fields = source.status === 'ready'
-      ? toExistingDashboardFields(buildDashboard({ studentId, report: source.report, marks: source.marks, stage: source.stage }))
+      ? ([11,12].includes(Number(source.grade))
+        ? buildSeniorDashboard({ studentId, report: source.report, marks: source.marks, grade: source.grade, examTracking: source.examTracking, profileEvidence: source.profileEvidence })
+        : toExistingDashboardFields(buildDashboard({ studentId, report: source.report, marks: source.marks, stage: source.stage })))
       : null;
     const { data, error } = await supabase.rpc('finish_dashboard_job', {
       p_student_id: studentId, p_claim_token: claimToken, p_status: source.status,

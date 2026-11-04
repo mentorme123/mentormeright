@@ -353,6 +353,8 @@ export default function CareerDashboard({ userId }: { userId: string }) {
   const gradeMatch = rawEducation.match(/class\s*(\d+)/i);
   const gradeNum = gradeMatch ? parseInt(gradeMatch[1], 10) : null;
   const isSchool = gradeNum === 9 || gradeNum === 10 || /school/i.test(rawEducation);
+  const isGrade910 = gradeNum === 9 || gradeNum === 10 || /school/i.test(rawEducation);
+  const isGrade1112 = gradeNum === 11 || gradeNum === 12;
 
   if (profile?.education_level) {
     console.log('CareerDashboard profile education_level:', JSON.stringify(profile.education_level), 'gradeNum:', gradeNum, 'isSchool:', isSchool, 'profile:', profile);

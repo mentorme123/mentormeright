@@ -62,7 +62,7 @@ function loadCredentials() {
   const rows = [];
   for (let i = 1; i < raw.length; i++) {
     const parts = raw[i].split(',').map(p => p.replace(/^"|"$/g, ''));
-    rows.push({ name: parts[0], username: parts[1], password: parts[2] });
+    rows.push({ name: parts[0], username: parts[1], password: parts[2], class: parts[3] || null });
   }
   return rows;
 }
@@ -82,14 +82,14 @@ async function getAllAuthUsers() {
 }
 
 // Upsert public.users row
-async function upsertPublicUser(uuid, email, name) {
+async function upsertPublicUser(uuid, email, name, classLevel) {
   const r = await apiRequestWithRetry('/rest/v1/users', 'POST', [{
-    id: uuid, email, name, role: 'individual', institution_name: INSTITUTION
+    id: uuid, email, name, role: 'individual', institution_name: INSTITUTION, education_level: classLevel || null
   }], { 'Prefer': 'resolution=merge-dupes' });
   if (r.status === 200 || r.status === 201 || r.status === 204) return { ok: true };
   if (r.status === 409) {
     const r2 = await apiRequestWithRetry(`/rest/v1/users?id=eq.${encodeURIComponent(uuid)}`, 'PATCH', {
-      name, institution_name: INSTITUTION, password: null
+      name, institution_name: INSTITUTION, education_level: classLevel || null, password: null
     });
     if (r2.status === 200 || r2.status === 204) return { ok: true };
     return { ok: false, status: r2.status, body: r2.body };
@@ -113,6 +113,7 @@ async function main() {
     const email = cred.username;
     const password = cred.password;
     const name = cred.name;
+    const classLevel = cred.class;
     let authUser = authByEmail[email];
 
     try {
@@ -141,7 +142,7 @@ async function main() {
         }
       }
 
-      const pub = await upsertPublicUser(authUser.id, email, name);
+      const pub = await upsertPublicUser(authUser.id, email, name, classLevel);
       if (pub.ok) pubOk++;
       else { pubFail++; console.error(`Public failed ${email}: ${pub.status} ${JSON.stringify(pub.body)}`); }
     } catch (err) {

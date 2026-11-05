@@ -47,38 +47,12 @@ export async function GET(req: NextRequest) {
       return { username: email, password: `MM${local.replace(/[^a-z0-9]/gi, '')}@123` };
     };
 
-    const CONCURRENT_LIMIT = 20;
-    for (let i = 0; i < studentList.length; i += CONCURRENT_LIMIT) {
-      const batch = studentList.slice(i, i + CONCURRENT_LIMIT);
-      const batchPromises = batch.map(async (student) => {
-        const sanitizedName = String(student.name || '').trim().slice(0, 100);
-        const email = String(student.email || '').trim();
-        const { username, password } = generateCredentials(email);
+    for (const student of studentList) {
+      const sanitizedName = String(student.name || '').trim().slice(0, 100);
+      const email = String(student.email || '').trim();
+      const { username, password } = generateCredentials(email);
 
-        try {
-          await supabaseAdmin.auth.admin.updateUserById(student.id, {
-            password: password,
-            email_confirm: true,
-          });
-           return { name: sanitizedName, username, password, education_level: student.education_level, institution_name: student.institution_name };
-        } catch (authError: unknown) {
-          const err = authError as Error;
-          console.error(`Failed to update password for ${email}:`, err);
-           return { name: sanitizedName, username, password, education_level: student.education_level, institution_name: student.institution_name, error: err.message || 'Failed to update password' };
-        }
-      });
-
-      const settledResults = await Promise.allSettled(batchPromises);
-      for (const result of settledResults) {
-        if (result.status === 'fulfilled') {
-          results.push(result.value);
-        } else {
-          const reason = result.reason;
-          const errMsg = reason?.message || reason?.error || 'Password update failed';
-          results.push({ name: '', username: '', password: '', error: errMsg });
-        }
-      }
-
+      results.push({ name: sanitizedName, username, password, education_level: student.education_level, institution_name: student.institution_name });
     }
 
     const csvHeader = 'Name,Username,Password,Class\n';

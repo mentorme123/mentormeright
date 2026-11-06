@@ -207,8 +207,8 @@ export default function InstitutionDashboardContent() {
   const handleDownloadCredentials = async () => {
     try {
       setLoading(true);
-      const url = `/api/institution/credentials?institution=${encodeURIComponent(institutionName)}&t=${Date.now()}`;
-      const response = await fetch(url, { cache: 'no-store' });
+      const url = `/api/institution/credentials?institution=${encodeURIComponent(institutionName)}`;
+      const response = await fetch(url);
       if (!response.ok) {
         const text = await response.text();
         throw new Error(text || 'Failed to download credentials');

@@ -109,11 +109,8 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
         }
       }
 
-      const { data: assessment } = await supabase
-        .from('assessment_results')
-        .select('report, scores')
-        .eq('user_id', user.id)
-        .maybeSingle();
+      const { data: assessmentRes } = await fetch(`/api/student/assessment-status?userId=${user.id}`).then(r => r.json());
+      const assessment = assessmentRes?.assessment;
       
       if (assessment) {
         setAssessmentStatus('completed');

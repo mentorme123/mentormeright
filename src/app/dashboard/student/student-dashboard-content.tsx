@@ -109,10 +109,29 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
         }
       }
 
-      const { data: assessmentRes } = await fetch(`/api/student/assessment-status?userId=${user.id}`, { cache: 'no-store' }).then(r => r.json());
-      const assessment = assessmentRes?.assessment;
-      
-      if (assessment) {
+      // Check assessment completion via API route (bypasses RLS for recreated/duplicate accounts)
+      let found = false;
+      try {
+        const res = await fetch(`/api/student/assessment-status?userId=${user.id}`, { cache: 'no-store' });
+        const json = await res.json();
+        if (json?.assessment) found = true;
+      } catch (e) {
+        console.error('assessment-status fetch failed:', e);
+      }
+      // Fallback: direct Supabase query (works for normal accounts)
+      if (!found) {
+        try {
+          const { data: directAssessment } = await supabase
+            .from('assessment_results')
+            .select('id')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          if (directAssessment) found = true;
+        } catch (e) {
+          console.error('direct assessment query failed:', e);
+        }
+      }
+      if (found) {
         setAssessmentStatus('completed');
       }
 

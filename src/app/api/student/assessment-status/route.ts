@@ -20,31 +20,35 @@ export async function GET(req: NextRequest) {
     // Check assessment_results for this user (and also check for any old IDs that map to this user's email)
     const { data: userProfile } = await supabaseAdmin
       .from('users')
-      .select('id, email')
+      .select('id, email, name')
       .eq('id', userId)
       .maybeSingle();
 
-    let query = supabaseAdmin
-      .from('assessment_results')
-      .select('report, scores, user_id');
-
-    if (userProfile?.email) {
-      // Find all public.users with this email (in case of duplicate/old rows)
+    // Find all public.users rows with the same name or email (handles duplicate/old rows from recreated accounts)
+    let userIds = [userId];
+    if (userProfile?.name) {
+      const { data: allUsers } = await supabaseAdmin
+        .from('users')
+        .select('id')
+        .eq('name', userProfile.name);
+      if (allUsers && allUsers.length > 0) {
+        userIds = allUsers.map((u: any) => u.id);
+      }
+    } else if (userProfile?.email) {
       const { data: allUsers } = await supabaseAdmin
         .from('users')
         .select('id')
         .eq('email', userProfile.email);
-      const userIds = (allUsers || []).map((u: any) => u.id);
-      if (userIds.length > 0) {
-        query = query.in('user_id', userIds);
-      } else {
-        query = query.eq('user_id', userId);
+      if (allUsers && allUsers.length > 0) {
+        userIds = allUsers.map((u: any) => u.id);
       }
-    } else {
-      query = query.eq('user_id', userId);
     }
 
-    const { data, error } = await query.maybeSingle();
+    const { data, error } = await supabaseAdmin
+      .from('assessment_results')
+      .select('report, scores, user_id')
+      .in('user_id', userIds)
+      .maybeSingle();
 
     if (error) {
       console.error('assessment-status error:', error);

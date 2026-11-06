@@ -115,18 +115,20 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
         const res = await fetch(`/api/student/assessment-status?userId=${user.id}`, { cache: 'no-store' });
         const json = await res.json();
         if (json?.assessment) found = true;
+        else console.log('API assessment-status:', JSON.stringify(json).slice(0, 200));
       } catch (e) {
         console.error('assessment-status fetch failed:', e);
       }
       // Fallback: direct Supabase query (works for normal accounts)
       if (!found) {
         try {
-          const { data: directAssessment } = await supabase
+          const { data: directAssessment, error: directError } = await supabase
             .from('assessment_results')
             .select('id')
             .eq('user_id', user.id)
             .maybeSingle();
           if (directAssessment) found = true;
+          else if (directError) console.log('direct query error:', directError.message);
         } catch (e) {
           console.error('direct assessment query failed:', e);
         }

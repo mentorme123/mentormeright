@@ -56,8 +56,9 @@ export async function GET(req: NextRequest) {
       const escapedName = `"${(r.name || '').replace(/"/g, '""')}"`;
       const escapedUsername = `"${(r.username || '').replace(/"/g, '""')}"`;
       const escapedPassword = `"${(r.password || '').replace(/"/g, '""')}"`;
-      const cls = (r.education_level || r.institution_name || '').replace(/"/g, '""');
-      return `${escapedName},${escapedUsername},${escapedPassword},"${cls}"`;
+      const cls = (r.education_level || r.institution_name || '').trim();
+      const classLabel = cls ? (cls.toLowerCase().startsWith('class ') ? cls : `Class ${cls}`) : '';
+      return `${escapedName},${escapedUsername},${escapedPassword},"${classLabel.replace(/"/g, '""')}"`;
     }).join('\n');
     const csvContent = csvHeader + csvRows;
 

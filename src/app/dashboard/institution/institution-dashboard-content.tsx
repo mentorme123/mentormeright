@@ -221,8 +221,9 @@ export default function InstitutionDashboardContent() {
       const csvHeader = 'Name,Username,Password,Class\n';
       const csvRows = students.map((s) => {
         const { username, password } = genCred(s.email);
-        const cls = String(s.education_level || '').replace(/"/g, '""');
-        return `"${String(s.name || '').replace(/"/g, '""')}","${username.replace(/"/g, '""')}","${password.replace(/"/g, '""')}","${cls}"`;
+        const cls = String(s.education_level || '').trim();
+        const classLabel = cls ? (cls.toLowerCase().startsWith('class ') ? cls : `Class ${cls}`) : '';
+        return `"${String(s.name || '').replace(/"/g, '""')}","${username.replace(/"/g, '""')}","${password.replace(/"/g, '""')}","${classLabel.replace(/"/g, '""')}"`;
       }).join('\n');
       const csvContent = csvHeader + csvRows;
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

@@ -216,14 +216,6 @@ export default function InstitutionDashboardContent() {
           const digits = local.replace(/^R/i, '').slice(0, 20);
           return { username: email, password: `R@${digits}` };
         }
-        // Password overrides for exceptions where formula doesn't match stored auth password
-        const overrides: Record<string, string> = {
-          'abdul_hadi@mentormeright.in': 'MMabdulhadi1@123',
-        };
-        const override = overrides[String(email || '').toLowerCase()];
-        if (override) {
-          return { username: email, password: override };
-        }
         return { username: email, password: `MM${local.replace(/[^a-z0-9]/gi, '')}@123` };
       };
       const csvHeader = 'Name,Username,Password,Class\n';

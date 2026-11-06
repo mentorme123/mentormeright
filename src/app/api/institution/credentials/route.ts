@@ -34,16 +34,7 @@ export async function GET(req: NextRequest) {
 
     const results: Array<{ name: string; username: string; password: string; education_level?: string | null; institution_name?: string | null; error?: string }> = [];
 
-    // Password overrides for exceptions where formula doesn't match stored auth password
-    const passwordOverrides: Record<string, string> = {
-      'abdul_hadi@mentormeright.in': 'MMabdulhadi1@123',
-    };
-
     const generateCredentials = (email: string) => {
-      const override = passwordOverrides[email.toLowerCase()];
-      if (override) {
-        return { username: email, password: override };
-      }
       const local = String(email || '').split('@')[0];
       if (/^R\d+$/i.test(local)) {
         const digits = local.replace(/^R/i, '').slice(0, 20);

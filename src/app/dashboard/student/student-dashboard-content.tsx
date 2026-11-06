@@ -109,7 +109,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
         }
       }
 
-      const { data: assessmentRes } = await fetch(`/api/student/assessment-status?userId=${user.id}`).then(r => r.json());
+      const { data: assessmentRes } = await fetch(`/api/student/assessment-status?userId=${user.id}`, { cache: 'no-store' }).then(r => r.json());
       const assessment = assessmentRes?.assessment;
       
       if (assessment) {

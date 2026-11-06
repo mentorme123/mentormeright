@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Printer, LayoutDashboard } from "lucide-react";
+import { ArrowLeft, Printer, FileText } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -191,11 +191,11 @@ const PARAM_MAX_MAP: Record<string, number> = {
           </p>
           <div className="flex flex-nowrap items-center justify-center gap-2">
             <Link 
-              href={`/report?userId=${encodeURIComponent(userId)}`}
+              href={`/career-report?userId=${encodeURIComponent(userId)}`}
               className="inline-flex items-center gap-1.5 bg-[#0f2460] border border-blue-200 text-white hover:bg-blue-800 font-bold px-3 py-2.5 rounded-xl transition-all text-xs whitespace-nowrap shadow-sm"
             >
-              <LayoutDashboard size={14} />
-              <span>Student Dashboard</span>
+              <FileText size={14} />
+              <span>Career Report</span>
             </Link>
             <div className="bg-[#0f2460] rounded-xl px-3 py-2.5 min-w-[70px] border border-blue-200 text-center text-white">
               <div className="text-xl font-black">{overall}%</div>

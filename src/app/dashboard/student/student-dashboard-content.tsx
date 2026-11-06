@@ -5,6 +5,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
 import {
+  FileText,
   ClipboardList, 
   ArrowRight, 
   ArrowLeft,
@@ -423,7 +424,7 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
         {assessmentStatus === 'completed' ? (
           <section className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { label: "Student Dashboard", icon: <ClipboardList className="text-brand-blue" />, sub: "Your Full Report", link: "/dashboard/student" },
+              { label: "Career Report", icon: <FileText className="text-brand-blue" />, sub: "View Full Report", link: `/career-report?userId=${encodeURIComponent(authUser?.id || '')}` },
               { label: "Exam War Room", icon: <Timer className="text-brand-orange" />, sub: "JEE/NEET/CUET", link: "/dashboard/student/exams", badge: "LIVE" },
               { label: "NEP Certificates", icon: <Award className="text-emerald-500" />, sub: "Get Certified", badge: "HOT" },
               { label: "Career ROI", icon: <IndianRupee className="text-purple-500" />, sub: "Salary Insights", link: "/career-library" }

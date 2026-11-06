@@ -48,6 +48,8 @@ export async function GET(req: NextRequest) {
       .from('assessment_results')
       .select('report, scores, user_id')
       .in('user_id', userIds)
+      .order('completed_at', { ascending: false })
+      .limit(1)
       .maybeSingle();
 
     if (error) {

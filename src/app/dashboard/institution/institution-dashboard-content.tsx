@@ -207,19 +207,37 @@ export default function InstitutionDashboardContent() {
   const handleDownloadCredentials = async () => {
     try {
       setLoading(true);
-      const url = `/api/institution/credentials?institution=${encodeURIComponent(institutionName)}`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text || 'Failed to download credentials');
+      if (!students || students.length === 0) {
+        throw new Error('No students loaded. Please refresh and try again.');
       }
-      const blob = new Blob([await response.blob()], { type: 'text/csv;charset=utf-8;' });
+      const genCred = (email: string) => {
+        const local = String(email || '').split('@')[0];
+        if (/^R\d+$/i.test(local)) {
+          const digits = local.replace(/^R/i, '').slice(0, 20);
+          return { username: email, password: `R@${digits}` };
+        }
+        // Password overrides for exceptions where formula doesn't match stored auth password
+        const overrides: Record<string, string> = {
+          'abdul_hadi@mentormeright.in': 'MMabdulhadi1@123',
+        };
+        const override = overrides[String(email || '').toLowerCase()];
+        if (override) {
+          return { username: email, password: override };
+        }
+        return { username: email, password: `MM${local.replace(/[^a-z0-9]/gi, '')}@123` };
+      };
+      const csvHeader = 'Name,Username,Password,Class\n';
+      const csvRows = students.map((s) => {
+        const { username, password } = genCred(s.email);
+        const cls = String(s.education_level || '').replace(/"/g, '""');
+        return `"${String(s.name || '').replace(/"/g, '""')}","${username.replace(/"/g, '""')}","${password.replace(/"/g, '""')}","${cls}"`;
+      }).join('\n');
+      const csvContent = csvHeader + csvRows;
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
       const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = downloadUrl;
-      const disposition = response.headers.get('Content-Disposition');
-      const filenameMatch = disposition?.match(/filename="?([^"]+)"?/);
-      link.setAttribute('download', filenameMatch?.[1] || 'credentials.csv');
+      link.setAttribute('download', `credentials_${institutionName.replace(/[^a-z0-9]/gi, '_')}_${new Date().toISOString().split('T')[0]}.csv`);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

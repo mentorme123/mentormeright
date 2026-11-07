@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     const { data: profile } = await supabaseAdmin
       .from('users')
-      .select('id, email, name, role, city, mobile, education_level, institution_name')
+      .select('id, email, name, role, city, mobile, education_level, institution_name, audience_type, has_paid_assessment')
       .eq('id', data.user.id)
       .maybeSingle();
 
@@ -43,6 +43,8 @@ export async function POST(request: NextRequest) {
       school: profile?.institution_name || '',
       city: profile?.city || '',
       mobile: profile?.mobile || '',
+      audience_type: profile?.audience_type || '',
+      has_paid_assessment: profile?.has_paid_assessment || false,
     };
 
     return NextResponse.json({ success: true, user });

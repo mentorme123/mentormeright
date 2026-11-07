@@ -66,7 +66,10 @@ export default function PaymentPage() {
           "121324083002@sfc.ac.in",
           "st13109@hpsbegumpet.org.in",
           "tanvinahata2008@gmail.com",
-          "st13036@hpsbegumpet.org.in"
+          "st13036@hpsbegumpet.org.in",
+          "ruba1032208@gmail.com",
+          "gayathrirajkumar2309@gmail.com",
+          "keerthana1801@gmail.com"
         ]);
 
         const isFreeAccess = FREE_CM_EMAILS.has(String(user.email || '').trim().toLowerCase()) ||

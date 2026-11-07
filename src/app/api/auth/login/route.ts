@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 
 export const dynamic = 'force-dynamic';
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     const { data: profile } = await supabaseAdmin
       .from('users')
-      .select('id, email, name, role, grade, school, city, mobile, education_level, institution_name')
+      .select('id, email, name, role, city, mobile, education_level, institution_name')
       .eq('id', data.user.id)
       .maybeSingle();
 

@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    const { name, email, grade, institutionName } = await req.json();
+    const { name, email, grade, institutionName, mobile } = await req.json();
 
     if (!email || !name) {
       return NextResponse.json({ error: 'Name and email are required.' }, { status: 400 });
@@ -180,9 +180,18 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     if (existingUser) {
+      // Reset password so recreated/existing students can log in with the generated credentials
+      try {
+        await supabaseAdmin.auth.admin.updateUserById(existingUser.id, {
+          password: generatedPassword,
+          email_confirm: true,
+        });
+      } catch (e) {
+        console.error('Failed to reset password for existing student:', e);
+      }
       await supabaseAdmin
         .from('users')
-        .update({ institution_name: sanitizedInstitution, education_level: sanitizedGrade || null })
+        .update({ institution_name: sanitizedInstitution, education_level: sanitizedGrade || null, mobile: mobile || null })
         .eq('id', existingUser.id);
       return NextResponse.json({ success: true, student: { id: existingUser.id, email: finalEmail, name: sanitizedName, password: generatedPassword } });
     }
@@ -207,7 +216,8 @@ export async function POST(req: NextRequest) {
         role: 'individual',
         education_level: sanitizedGrade || null,
         institution_name: sanitizedInstitution,
-        audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST')
+        audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST'),
+        mobile: mobile || null,
       });
 
     if (profileError) {

@@ -68,7 +68,10 @@ export default function LoginPage() {
         "st13036@hpsbegumpet.org.in",
         "vincyy2007@gmail.com",
         "27kumarravichandran01@gmail.com",
-        "harini20102006143@gmail.com"
+        "harini20102006143@gmail.com",
+        "ruba1032208@gmail.com",
+        "gayathrirajkumar2309@gmail.com",
+        "keerthana1801@gmail.com"
       ]);
 
       if (redirect === '/payment') {

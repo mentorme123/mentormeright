@@ -17,13 +17,14 @@ export async function GET(req: NextRequest) {
     let query = supabase
       .from('users')
       .select(`
-        id,
-        name,
-        email,
-        education_level,
-        role,
-        institution_name,
-        created_at
+         id,
+         name,
+         email,
+         education_level,
+         role,
+         institution_name,
+         audience_type,
+         created_at
       `)
       .eq('role', 'individual');
 
@@ -150,7 +151,7 @@ export async function POST(req: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY!
     );
 
-    const { name, email, grade, institutionName, mobile } = await req.json();
+    const { name, email, grade, institutionName, mobile, cmFree } = await req.json();
 
     if (!email || !name) {
       return NextResponse.json({ error: 'Name and email are required.' }, { status: 400 });
@@ -159,6 +160,7 @@ export async function POST(req: NextRequest) {
     const sanitizedName = String(name).trim().slice(0, 100);
     const sanitizedGrade = String(grade || '').trim().slice(0, 50);
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
+    const audienceType = cmFree === true ? 'CM' : (sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST'));
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const providedEmail = String(email || '').trim().toLowerCase();
@@ -191,7 +193,7 @@ export async function POST(req: NextRequest) {
       }
       await supabaseAdmin
         .from('users')
-        .update({ institution_name: sanitizedInstitution, education_level: sanitizedGrade || null, mobile: mobile || null })
+        .update({ institution_name: sanitizedInstitution, education_level: sanitizedGrade || null, mobile: mobile || null, audience_type: audienceType })
         .eq('id', existingUser.id);
       return NextResponse.json({ success: true, student: { id: existingUser.id, email: finalEmail, name: sanitizedName, password: generatedPassword } });
     }
@@ -216,7 +218,7 @@ export async function POST(req: NextRequest) {
         role: 'individual',
         education_level: sanitizedGrade || null,
         institution_name: sanitizedInstitution,
-        audience_type: sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST'),
+         audience_type: audienceType,
         mobile: mobile || null,
       });
 

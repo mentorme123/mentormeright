@@ -286,8 +286,9 @@ export default function AdminDashboard() {
           name: cmStudentName.trim(),
           email,
           grade: cmStudentGrade.trim(),
-          institutionName: cmStudentSchool.trim() || 'MentorMe C&M Free Assessment',
-          mobile: cmStudentMobile.trim() || null
+           institutionName: cmStudentSchool.trim() || 'MentorMe C&M Free Assessment',
+           mobile: cmStudentMobile.trim() || null,
+           cmFree: true
         })
       });
       const data = await response.json();
@@ -313,7 +314,7 @@ export default function AdminDashboard() {
       const response = await fetch('/api/institution/students');
       const data = await response.json();
       const allStudents = (data.students || []) as DBUser[];
-      const cmStudents = allStudents.filter((s: any) => FREE_CM_EMAILS.has(String(s.email || '').trim().toLowerCase()));
+       const cmStudents = allStudents.filter((s: any) => FREE_CM_EMAILS.has(String(s.email || '').trim().toLowerCase()) || s.audience_type === 'CM');
       setCmFreeStudents(cmStudents);
       const completed = cmStudents.filter((s: any) => s.assessment_results && s.assessment_results.length > 0).length;
       setCmCompletedCount(completed);

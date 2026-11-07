@@ -39,11 +39,11 @@ export default function LoginPage() {
 
       const role = profile?.role || (data.user.user_metadata as Record<string, string | undefined>)?.role || 'individual';
 
-      const { data: userProfile } = await supabase
-        .from('users')
-        .select('name, education_level, institution_name')
-        .eq('id', data.user.id)
-        .maybeSingle();
+       const { data: userProfile } = await supabase
+         .from('users')
+         .select('name, education_level, institution_name, audience_type')
+         .eq('id', data.user.id)
+         .maybeSingle();
 
       const profileName = userProfile?.name || (data.user.user_metadata as Record<string, string | undefined>)?.full_name || '';
       const profileClass = userProfile?.education_level || '';
@@ -83,7 +83,7 @@ export default function LoginPage() {
       if (role === 'institutional') target = '/dashboard/institution';
       else if (role === 'admin') target = '/dashboard/admin';
       else if (role === 'counselor') target = '/dashboard/counselor';
-      else if (FREE_CM_EMAILS.has(String(data.user.email || '').trim().toLowerCase())) target = `/career-intelligence.html?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
+       else if (FREE_CM_EMAILS.has(String(data.user.email || '').trim().toLowerCase()) || userProfile?.audience_type === 'CM') target = `/career-intelligence.html?email=${encodeURIComponent(data.user.email || '')}&name=${encodeURIComponent(profileName)}&class=${encodeURIComponent(profileClass)}&school=${encodeURIComponent(profileSchool)}`;
 
       window.location.href = target;
     } catch (err: unknown) {

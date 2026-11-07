@@ -72,9 +72,10 @@ export default function PaymentPage() {
           "keerthana1801@gmail.com"
         ]);
 
-        const isFreeAccess = FREE_CM_EMAILS.has(String(user.email || '').trim().toLowerCase()) ||
-                             userProfile?.role === 'institutional' ||
-                             userProfile?.role === 'school';
+         const isFreeAccess = FREE_CM_EMAILS.has(String(user.email || '').trim().toLowerCase()) ||
+                              userProfile?.audience_type === 'CM' ||
+                              userProfile?.role === 'institutional' ||
+                              userProfile?.role === 'school';
 
         if (isFreeAccess) {
           window.location.href = `/career-assessment.html?email=${encodeURIComponent(user.email || '')}&name=${encodeURIComponent(userProfile?.name || user.user_metadata?.full_name || '')}&class=${encodeURIComponent(userProfile?.education_level || '')}&school=${encodeURIComponent(userProfile?.institution_name || '')}`;

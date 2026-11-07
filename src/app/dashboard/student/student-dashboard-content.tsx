@@ -126,8 +126,8 @@ function StudentDashboardInner({ supabase }: { supabase: ReturnType<typeof creat
             .from('assessment_results')
             .select('id')
             .eq('user_id', user.id)
-            .maybeSingle();
-          if (directAssessment) found = true;
+            .limit(1);
+          if (directAssessment && directAssessment.length > 0) found = true;
           else if (directError) console.log('direct query error:', directError.message);
         } catch (e) {
           console.error('direct assessment query failed:', e);

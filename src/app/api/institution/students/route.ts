@@ -161,7 +161,6 @@ export async function POST(req: NextRequest) {
     const sanitizedGrade = String(grade || '').trim().slice(0, 50);
     const sanitizedInstitution = String(institutionName || 'Institution').trim().slice(0, 100);
     const audienceType = cmFree === true ? 'CM' : (sanitizedGrade === 'Working Professional' ? 'WP' : (sanitizedGrade === 'Graduate' ? 'GR' : 'ST'));
-    const hasPaidAssessment = cmFree === true;
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const providedEmail = String(email || '').trim().toLowerCase();
@@ -194,7 +193,7 @@ export async function POST(req: NextRequest) {
       }
       await supabaseAdmin
         .from('users')
-        .update({ institution_name: sanitizedInstitution, education_level: sanitizedGrade || null, mobile: mobile || null, audience_type: audienceType, has_paid_assessment: hasPaidAssessment })
+        .update({ institution_name: sanitizedInstitution, education_level: sanitizedGrade || null, mobile: mobile || null, audience_type: audienceType })
         .eq('id', existingUser.id);
       return NextResponse.json({ success: true, student: { id: existingUser.id, email: finalEmail, name: sanitizedName, password: generatedPassword } });
     }
@@ -221,7 +220,6 @@ export async function POST(req: NextRequest) {
         institution_name: sanitizedInstitution,
          audience_type: audienceType,
         mobile: mobile || null,
-         has_paid_assessment: hasPaidAssessment,
       });
 
     if (profileError) {

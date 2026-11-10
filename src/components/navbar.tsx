@@ -385,10 +385,6 @@ export function Navbar() {
                       <LogOut size={18} className="text-red-600" />
                       <span className="text-sm font-bold text-red-600">SIGN OUT</span>
                     </button>
-                    <button type="button" onClick={() => { setProfileOpen(false); window.location.reload(); }} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-slate-50 transition-colors text-left border border-slate-200">
-                      <RefreshCw size={18} className="text-slate-600" />
-                      <span className="text-sm font-bold text-slate-700">Refresh Page</span>
-                    </button>
                   </div>
                 </div>
               </div>

@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { AiCornerChatbot } from "@/components/ai-corner-chatbot";
-import { LoginPopup } from "@/components/login-popup";
+import { ReferencePopup } from "@/components/reference-popup";
 import { PathTracker } from "@/components/back-button";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -104,7 +104,7 @@ export default function RootLayout({
         </a>
 
         <AiCornerChatbot />
-        <LoginPopup />
+        <ReferencePopup />
         <SpeedInsights />
       </body>
     </html>

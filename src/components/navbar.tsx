@@ -327,6 +327,13 @@ export function Navbar() {
                         >
                           9] Emerging Careers
                         </Link>
+                        <Link 
+                          href="/MentorMe_Science_Career_Intelligence_v2_Enhanced_Report.html" 
+                          className="block px-3 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-brand-blue/5 hover:text-brand-blue transition-all"
+                          onClick={() => setCareerRoadmapsOpen(false)}
+                        >
+                          10] Science Career Intelligence Assessment
+                        </Link>
                     </div>
                 </div>
               </div>
@@ -428,6 +435,7 @@ export function Navbar() {
                           <Link href="/career-library/architecture-construction" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">7] Architecture, Construction &amp; Infrastructure</Link>
                           <Link href="/career-library/science-research" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">8] Science &amp; Research</Link>
                           <Link href="/career-library/emerging-careers" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">9] Emerging Careers</Link>
+                           <Link href="/MentorMe_Science_Career_Intelligence_v2_Enhanced_Report.html" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-brand-blue/5 hover:text-brand-blue transition-all">10] Science Career Intelligence Assessment</Link>
                        </div>
                     </div>
                   </div>

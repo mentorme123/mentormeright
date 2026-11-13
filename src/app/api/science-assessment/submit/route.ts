@@ -24,33 +24,44 @@ export async function POST(req: NextRequest) {
 
     const student = attempt.student || {};
     const name = String(student.name || 'Science Student').trim() || 'Science Student';
-    const generatedUserId = crypto.randomUUID();
-    const syntheticEmail = `science-${generatedUserId}@mentorme.local`;
+    const emailUuid = crypto.randomUUID();
+    const syntheticEmail = `science-${emailUuid}@mentorme.local`;
 
-    const { error: profileInsertError } = await getSupabaseAdmin()
+    // Create an auth user so the foreign key on public.users is satisfied
+    const { data: authData, error: authError } = await getSupabaseAdmin().auth.admin.createUser({
+      email: syntheticEmail,
+      password: crypto.randomUUID(),
+      email_confirm: true,
+      user_metadata: { full_name: name }
+    });
+
+    if (authError || !authData?.user) {
+      console.error('Science assessment: auth user creation error', authError);
+      return NextResponse.json({ error: authError?.message || 'Auth user creation failed' }, { status: 500 });
+    }
+
+    const userId = authData.user.id;
+
+    const { error: profileUpdateError } = await getSupabaseAdmin()
       .from('users')
-      .insert([
-        {
-          id: generatedUserId,
-          email: syntheticEmail,
-          name,
-          role: 'individual',
-          audience_type: 'ST',
-          education_level: student.stage ? String(student.stage) : 'School Student',
-          institution_name: student.institution ? String(student.institution) : null,
-          state: student.state ? String(student.state) : null,
-        }
-      ]);
+      .update({
+        name,
+        audience_type: 'ST',
+        education_level: student.stage ? String(student.stage) : 'School Student',
+        institution_name: student.institution ? String(student.institution) : null,
+        state: student.state ? String(student.state) : null,
+      })
+      .eq('id', userId);
 
-    if (profileInsertError) {
-      console.error('Science assessment: user insert error', profileInsertError);
+    if (profileUpdateError) {
+      console.error('Science assessment: user update error', profileUpdateError);
     }
 
     const { error: insertError } = await getSupabaseAdmin()
       .from('assessment_results')
       .insert([
         {
-          user_id: generatedUserId,
+          user_id: userId,
           answers: attempt.answers || {},
           scores: attempt.result || {},
           report: {
@@ -71,7 +82,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: insertError.message }, { status: 500 });
     }
 
-    return NextResponse.json({ success: true, userId: generatedUserId });
+    return NextResponse.json({ success: true, userId });
   } catch (error: unknown) {
     const err = error as Error;
     console.error('Science assessment submit error:', err);

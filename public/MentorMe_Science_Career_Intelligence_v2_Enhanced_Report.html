@@ -408,6 +408,7 @@ console.error('Assessment scoring failed',error);return;
 }
 stopTimer();attempt.result=result;attempt.completed=Date.now();attempt.expired=expired;attempt.modelVersion=VERSION;attempt.status='complete';
 if(!persist())notice='Your report is ready, but browser storage is unavailable. Export this record now to keep your answers and report.';
+try{fetch('/api/science-assessment/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({attempt})}).catch(function(){});}catch(e){}
 active=null;report(attempt.id);
 }
 function evidence(c,a){let ds=c.apt.map(x=>vectorDim(x,a.student.stream));return a.result.profile.aptitude.filter(x=>ds.includes(x.dim)).sort((x,y)=>y.value-x.value).slice(0,2).map(x=>(DIM[x.dim]||x.dim)+' ('+Math.round(x.value)+')').join('; ')}
